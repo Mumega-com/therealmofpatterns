@@ -1,0 +1,42 @@
+{
+  "name": "therealmofpatterns",
+  "version": "1.0.0",
+  "description": "Cosmic Identity Cartography - 100% Cloudflare Native",
+  "main": "public/index.html",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler pages dev public --d1=DB --kv=CACHE --r2=STORAGE --ai",
+    "build": "tsc",
+    "deploy": "wrangler pages deploy public --project-name=therealmofpatterns",
+    "db:migrate": "wrangler d1 execute therealmofpatterns-db --file=src/db/schema.sql",
+    "db:seed": "wrangler d1 execute therealmofpatterns-db --file=src/db/seed.sql",
+    "db:query": "wrangler d1 execute therealmofpatterns-db",
+    "lint": "eslint functions src",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cloudflare",
+    "pages",
+    "workers",
+    "d1",
+    "r2",
+    "astrology",
+    "identity",
+    "cosmic"
+  ],
+  "author": "Hadi Servat (FRC 893 Series)",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240117.0",
+    "@types/node": "^20.11.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.22.0"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

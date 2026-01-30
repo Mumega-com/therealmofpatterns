@@ -35,3 +35,17 @@ build/
 # Local development
 *.log
 .cache/
+
+# Node.js
+node_modules/
+
+# TypeScript
+*.tsbuildinfo
+
+# Cloudflare
+.wrangler/
+.dev.vars
+
+# Secrets
+*.pem
+*.key

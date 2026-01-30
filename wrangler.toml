@@ -1,0 +1,68 @@
+# The Realm of Patterns - Cloudflare Configuration
+# 100% Cloudflare Native
+
+name = "therealmofpatterns"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "public"
+
+# Main account settings
+# account_id set via CLOUDFLARE_ACCOUNT_ID env var
+
+# ============================================
+# D1 Database (SQLite at the edge)
+# ============================================
+[[d1_databases]]
+binding = "DB"
+database_name = "therealmofpatterns-db"
+database_id = "f7396c67-c475-40ec-ae4a-acf7b22834a9"
+
+# ============================================
+# R2 Object Storage (PDFs, Images)
+# ============================================
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "therealmofpatterns-assets"
+
+# ============================================
+# KV Namespace (Sessions, Rate Limits)
+# ============================================
+[[kv_namespaces]]
+binding = "CACHE"
+id = "9ec0ef8400f5430fbebb73ce6ce64995"
+
+# ============================================
+# Workers AI
+# ============================================
+[ai]
+binding = "AI"
+
+# ============================================
+# Environment Variables
+# ============================================
+[vars]
+ENVIRONMENT = "production"
+APP_NAME = "The Realm of Patterns"
+APP_URL = "https://therealmofpatterns.pages.dev"
+
+# ============================================
+# Development Settings
+# ============================================
+[dev]
+port = 8788
+local_protocol = "http"
+
+# ============================================
+# Build Settings (handled by Pages)
+# ============================================
+# [build]
+# command = "npm run build"
+
+# ============================================
+# Secrets (set via wrangler secret put <NAME>)
+# ============================================
+# STRIPE_SECRET_KEY
+# STRIPE_WEBHOOK_SECRET
+# STRIPE_PUBLISHABLE_KEY
+# TWITTER_BEARER_TOKEN (optional)
+# TELEGRAM_BOT_TOKEN (optional)
+# DISCORD_WEBHOOK_URL (optional)

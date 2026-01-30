@@ -558,6 +558,11 @@
                         <input type="text" id="location" placeholder="City, Country (for timezone)">
                     </div>
 
+                    <div class="form-group" id="email-group" style="display: none;">
+                        <label>Email (for report delivery)</label>
+                        <input type="email" id="email" placeholder="your@email.com">
+                    </div>
+
                     <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
                         <span id="submit-text">Generate Preview</span>
                     </button>
@@ -583,9 +588,18 @@
     </footer>
 
     <script>
-        // Stripe will be initialized when backend API is ready
-        let stripe = null;
-        let currentMode = 'preview';
+        // Initialize Stripe with your publishable key
+        var stripe = null;
+        var currentMode = 'preview';
+        var API_BASE = '/api';
+
+        // Try to initialize Stripe (will be set via env)
+        try {
+            // Stripe publishable key will be injected or fetched
+            stripe = Stripe('pk_test_placeholder'); // Replace with actual key
+        } catch (e) {
+            console.log('Stripe not initialized - payment features disabled');
+        }
 
         function openModal(mode) {
             currentMode = mode;
@@ -593,15 +607,26 @@
             document.getElementById('form-container').style.display = 'block';
             document.getElementById('preview-results').style.display = 'none';
 
-            const title = document.getElementById('modal-title');
-            const submitText = document.getElementById('submit-text');
+            var title = document.getElementById('modal-title');
+            var submitText = document.getElementById('submit-text');
+            var emailGroup = document.getElementById('email-group');
+            var emailInput = document.getElementById('email');
 
             if (mode === 'preview') {
                 title.textContent = 'Free Preview';
                 submitText.textContent = 'Generate Preview';
+                emailGroup.style.display = 'none';
+                emailInput.removeAttribute('required');
+            } else if (mode === 'bundle') {
+                title.textContent = 'Complete Bundle - $697';
+                submitText.textContent = 'Continue to Payment';
+                emailGroup.style.display = 'block';
+                emailInput.setAttribute('required', 'required');
             } else {
                 title.textContent = 'Premium Report - $497';
                 submitText.textContent = 'Continue to Payment';
+                emailGroup.style.display = 'block';
+                emailInput.setAttribute('required', 'required');
             }
         }
 
@@ -609,39 +634,122 @@
             document.getElementById('modal').classList.remove('active');
         }
 
-        document.getElementById('birth-form').addEventListener('submit', async (e) => {
+        document.getElementById('birth-form').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const birthData = {
+            var birthData = {
                 year: parseInt(document.getElementById('year').value),
                 month: parseInt(document.getElementById('month').value),
                 day: parseInt(document.getElementById('day').value),
                 hour: parseInt(document.getElementById('hour').value) || 12,
                 minute: parseInt(document.getElementById('minute').value) || 0,
-                latitude: 0,  // Would need geocoding
+                latitude: 0,
                 longitude: 0,
                 timezone_offset: 0
             };
 
-            const name = document.getElementById('name').value;
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email') ? document.getElementById('email').value : '';
 
             document.getElementById('form-container').style.display = 'none';
             document.getElementById('loading-container').style.display = 'block';
 
             if (currentMode === 'preview') {
-                // Client-side preview computation (no backend needed)
-                setTimeout(() => {
-                    const data = computeLocalPreview(birthData);
-                    showPreviewResults(data, name);
-                }, 1500);
+                // Try API first, fall back to client-side
+                try {
+                    var response = await fetch(API_BASE + '/preview', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ birth_data: birthData })
+                    });
+
+                    if (response.ok) {
+                        var data = await response.json();
+                        showPreviewResults(transformApiResponse(data), name);
+                    } else {
+                        // Fall back to client-side
+                        var localData = computeLocalPreview(birthData);
+                        showPreviewResults(localData, name);
+                    }
+                } catch (err) {
+                    // API not available, use client-side
+                    var fallbackData = computeLocalPreview(birthData);
+                    showPreviewResults(fallbackData, name);
+                }
             } else {
-                // Premium reports - coming soon
-                setTimeout(() => {
-                    document.getElementById('loading-container').style.display = 'none';
-                    showComingSoon();
-                }, 1000);
+                // Premium purchase - redirect to Stripe Checkout
+                var productId = currentMode === 'bundle' ? 'complete_bundle' : 'premium_16d_report';
+                await handlePurchase(productId, birthData, name, email);
             }
         });
+
+        // Transform API response to match our display format
+        function transformApiResponse(apiData) {
+            return {
+                success: apiData.success,
+                dominant: apiData.dominant,
+                primary_archetype: {
+                    name: apiData.archetype.name,
+                    culture: apiData.archetype.culture + ' (' + apiData.archetype.era + ')',
+                    quote: apiData.archetype.quote,
+                    resonance: Math.round(apiData.archetype.resonance * 100) + '%'
+                },
+                teaser: apiData.teaser
+            };
+        }
+
+        // Handle premium purchase via Stripe
+        async function handlePurchase(productId, birthData, name, email) {
+            try {
+                var response = await fetch(API_BASE + '/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        birth_data: birthData,
+                        name: name,
+                        email: email || 'customer@example.com'
+                    })
+                });
+
+                if (response.ok) {
+                    var data = await response.json();
+                    // Redirect to Stripe Checkout
+                    window.location.href = data.url;
+                } else {
+                    var error = await response.json();
+                    document.getElementById('loading-container').style.display = 'none';
+                    showError(error.error ? error.error.message : 'Payment system unavailable');
+                }
+            } catch (err) {
+                document.getElementById('loading-container').style.display = 'none';
+                showComingSoon();
+            }
+        }
+
+        function showError(message) {
+            var container = document.getElementById('preview-results');
+            container.textContent = '';
+
+            var h2 = document.createElement('h2');
+            h2.textContent = 'Oops!';
+            h2.style.color = 'var(--nebula-pink)';
+            container.appendChild(h2);
+
+            var p = document.createElement('p');
+            p.style.cssText = 'margin: 2rem 0;';
+            p.textContent = message;
+            container.appendChild(p);
+
+            var btn = document.createElement('button');
+            btn.className = 'btn btn-secondary';
+            btn.style.cssText = 'width: 100%; margin-top: 1rem;';
+            btn.textContent = 'Try Again';
+            btn.onclick = function() { openModal(currentMode); };
+            container.appendChild(btn);
+
+            container.style.display = 'block';
+        }
 
         function showPreviewResults(data, name) {
             document.getElementById('loading-container').style.display = 'none';

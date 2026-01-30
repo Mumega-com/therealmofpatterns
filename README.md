@@ -1,6 +1,6 @@
 # The Realm of Patterns
 
-**Cosmic Identity Cartography**
+**Cosmic Identity Cartography — 100% Cloudflare Native**
 
 ```
      μ₁ · μ₂ · μ₃ · μ₄ · μ₅ · μ₆ · μ₇ · μ₈
@@ -9,21 +9,94 @@
 
 ---
 
-## What is The Realm of Patterns?
+## Overview
 
-A system for mapping cosmic identity through mathematical patterns. Using JPL ephemeris data and the FRC 16D vector framework, we compute your unique 8-dimensional signature based on planetary positions at your birth moment.
+A system for mapping cosmic identity through mathematical patterns. Using astronomical calculations and the FRC 16D vector framework, we compute your unique 8-dimensional signature based on planetary positions at your birth moment.
 
 **The algorithm is open. The transformation is yours.**
 
-🌐 **Live**: [therealmofpatterns.pages.dev](https://therealmofpatterns.pages.dev)
+| | |
+|---|---|
+| **Live** | [therealmofpatterns.pages.dev](https://therealmofpatterns.pages.dev) |
+| **Stack** | 100% Cloudflare (Pages, Workers, D1, R2, KV, Workers AI) |
+| **Payments** | Stripe |
+| **License** | MIT |
 
 ---
 
-## The Three Layers
+## Architecture
 
-### 1. 8 Mu (Free Public Layer)
+This app runs entirely on Cloudflare's free tier — no external servers required.
 
-The inner octave of identity—8 fundamental frequencies:
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              THE REALM OF PATTERNS - CLOUDFLARE NATIVE          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│                    ┌─────────────────────┐                      │
+│                    │   Cloudflare Pages  │                      │
+│                    │  (Static Frontend)  │                      │
+│                    └──────────┬──────────┘                      │
+│                               │                                 │
+│              ┌────────────────┼────────────────┐                │
+│              ▼                ▼                ▼                │
+│    ┌─────────────────────────────────────────────────┐          │
+│    │              Pages Functions (API)              │          │
+│    ├─────────────────────────────────────────────────┤          │
+│    │  /api/preview     → Free 16D preview            │          │
+│    │  /api/compute     → Full 16D + figure matching  │          │
+│    │  /api/checkout    → Stripe payment session      │          │
+│    │  /api/webhook     → Stripe webhook handler      │          │
+│    │  /api/report      → Generate PDF report         │          │
+│    │  /api/share       → Post to social media        │          │
+│    └─────────────────────────────────────────────────┘          │
+│                               │                                 │
+│       ┌───────────────────────┼───────────────────────┐         │
+│       ▼                       ▼                       ▼         │
+│  ┌─────────┐            ┌─────────┐            ┌─────────┐      │
+│  │   D1    │            │   R2    │            │   KV    │      │
+│  │ SQLite  │            │ Storage │            │  Cache  │      │
+│  ├─────────┤            ├─────────┤            ├─────────┤      │
+│  │• users  │            │• PDFs   │            │• sessions│     │
+│  │• figures│            │• images │            │• tokens  │     │
+│  │• reports│            │• art    │            │• limits  │     │
+│  │• orders │            │         │            │          │     │
+│  └─────────┘            └─────────┘            └─────────┘      │
+│                               │                                 │
+│                               ▼                                 │
+│                    ┌─────────────────────┐                      │
+│                    │    Workers AI       │                      │
+│                    ├─────────────────────┤                      │
+│                    │ • Text generation   │                      │
+│                    │ • Image generation  │                      │
+│                    │ • Embeddings        │                      │
+│                    └─────────────────────┘                      │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                    EXTERNAL API CALLS                           │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐         │
+│  │  Stripe  │  │ Twitter  │  │ Telegram │  │ Discord  │         │
+│  │ Payments │  │   API    │  │ Bot API  │  │ Webhook  │         │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘         │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Cloudflare Services Used
+
+| Service | Purpose | Free Tier |
+|---------|---------|-----------|
+| **Pages** | Static frontend + Functions | Unlimited requests |
+| **Workers** | API backend | 100K requests/day |
+| **D1** | SQLite database | 5GB, 5M reads/day |
+| **R2** | Object storage (PDFs, images) | 10GB, 10M reads/month |
+| **KV** | Session cache, rate limiting | 100K reads/day |
+| **Workers AI** | Text & image generation | 10K neurons/day |
+
+---
+
+## The 8 Dimensions (Mu)
 
 | Mu | Symbol | Name | Question |
 |----|--------|------|----------|
@@ -36,112 +109,143 @@ The inner octave of identity—8 fundamental frequencies:
 | μ₇ | R | Relation | Who do I love? |
 | μ₈ | Φ | Field | What witnesses? |
 
-**FREE:** Daily Mu weather, your dominant Mu, basic resonance.
+---
 
-### 2. 16D (Premium Layer)
+## Product Tiers
 
-The full vector—inner octave plus outer octave:
-- Shadow integration
-- Collective resonance
-- Historical figure matching
+### Free Preview
+- Your dominant dimension
+- Primary archetype match
+- One historical figure
+- Basic 8D vector
+
+### Premium Report ($497)
+- 40+ page luxury PDF
+- Full 16D vector analysis
+- 10 historical figure matches
 - AI-generated sacred art
-- Transpersonal dimensions
+- Shadow work guidance
+- Daily practices
+- Downloadable identity token
 
-**$497:** Complete identity report with 40+ pages.
+### Complete Bundle ($697)
+- Everything in Premium
+- 18×24" Art Print
+- Hardcover Booklet
+- Priority Processing
 
-### 3. Lambda Field (Infrastructure)
+---
 
-The computational substrate:
-- Identity minting
-- Resonance computation
-- Weather generation
-- River content stream
+## Project Structure
+
+```
+therealmofpatterns/
+├── public/                      # Static frontend
+│   └── index.html
+├── functions/                   # Cloudflare Pages Functions
+│   └── api/
+│       ├── preview.ts           # Free preview endpoint
+│       ├── compute.ts           # Full 16D computation
+│       ├── checkout.ts          # Stripe checkout
+│       ├── webhook.ts           # Stripe webhooks
+│       ├── report.ts            # PDF generation
+│       └── share.ts             # Social media posting
+├── src/
+│   ├── lib/
+│   │   ├── 16d-engine.ts        # Core 16D calculation
+│   │   ├── historical-figures.ts # Figure matching
+│   │   ├── pdf-generator.ts     # jsPDF report generation
+│   │   └── ai.ts                # Workers AI wrapper
+│   ├── db/
+│   │   └── schema.sql           # D1 database schema
+│   └── types/
+│       └── index.ts             # TypeScript types
+├── docs/                        # Documentation
+│   ├── ARCHITECTURE.md
+│   ├── API.md
+│   ├── DEPLOYMENT.md
+│   └── 16D-MATH.md
+├── wrangler.toml                # Cloudflare configuration
+├── package.json
+└── tsconfig.json
+```
 
 ---
 
 ## Quick Start
 
+### Prerequisites
+- Node.js 18+
+- Wrangler CLI (`npm install -g wrangler`)
+- Cloudflare account
+
+### Local Development
+
 ```bash
 # Install dependencies
-pip install -r requirements.txt
+npm install
 
-# Generate a report
-python generate_report.py --name "Your Name" --birth "1990-01-15 14:30"
+# Login to Cloudflare
+wrangler login
+
+# Create D1 database
+wrangler d1 create therealmofpatterns-db
+
+# Run migrations
+wrangler d1 execute therealmofpatterns-db --file=src/db/schema.sql
+
+# Start dev server
+npm run dev
 ```
 
----
-
-## Architecture
-
-```
-therealmofpatterns/
-├── core/
-│   ├── frc_16d.py          # FRC 16D.002 calculation (JPL Ephemeris)
-│   ├── eight_mu.py         # Legacy 8 Mu computation
-│   ├── forecast.py         # Daily/weekly forecasts
-│   └── full_16d.py         # Complete 16D computation
-├── art/
-│   ├── sacred_geometry.py  # Procedural sacred art (PIL/Pillow)
-│   ├── grok_images.py      # xAI/Grok image generation
-│   ├── gemini_images.py    # Gemini image generation
-│   └── sacred_sources.py   # Museum art APIs
-├── river/
-│   └── stream.py           # Content stream (news, events, seasons)
-├── lambda_field/
-│   └── field.py            # Computation substrate
-├── premium_app/
-│   ├── app.py              # Flask web application
-│   ├── premium_pdf.py      # PDF report generation (ReportLab)
-│   ├── historical_figures.py # Historical resonance matching
-│   └── config.py           # Stripe & app configuration
-├── public/                  # Static frontend (Cloudflare Pages)
-│   └── index.html
-├── design/
-│   └── COSMIC_CARTOGRAPHY.md # Design philosophy
-├── generate_report.py       # CLI entry point
-├── generate_forecast.py     # Forecast generation
-└── requirements.txt
-```
-
----
-
-## Deployment
-
-### Frontend (Cloudflare Pages)
-Automatic deployment via GitHub Actions on push to `main`:
-
-```yaml
-# .github/workflows/deploy.yml
-- Deploys public/ to therealmofpatterns.pages.dev
-```
-
-### Backend (Flask)
-Run locally or deploy to your server:
+### Deployment
 
 ```bash
-cd premium_app
-python app.py
+# Deploy to Cloudflare Pages
+npm run deploy
+```
+
+Or push to `main` branch — GitHub Actions handles deployment automatically.
+
+---
+
+## Environment Variables
+
+Set these in Cloudflare Pages dashboard or `wrangler.toml`:
+
+```bash
+# Stripe
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_PUBLISHABLE_KEY=pk_live_...
+
+# Social Media (optional)
+TWITTER_API_KEY=...
+TWITTER_API_SECRET=...
+TELEGRAM_BOT_TOKEN=...
+DISCORD_WEBHOOK_URL=...
 ```
 
 ---
 
-## API Endpoints (Planned)
+## API Endpoints
 
-### Free Tier
-```
-GET  /api/v1/weather          # Current 8 Mu field
-GET  /api/v1/weather/{date}   # Historical field state
-POST /api/v1/mu/natal         # Your 8 Mu (birth data)
-GET  /api/v1/resonance        # Compare two vectors
-```
+### Public
 
-### Premium Tier
-```
-POST /api/v1/16d/compute      # Full 16D computation
-GET  /api/v1/16d/historical   # Historical figure matches
-POST /api/v1/report/generate  # Premium PDF report
-GET  /api/v1/art/sacred       # AI-generated sacred art
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/preview` | Generate free 8D preview |
+| GET | `/api/weather` | Current cosmic weather |
+
+### Authenticated (requires payment)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/compute` | Full 16D computation |
+| POST | `/api/checkout` | Create Stripe session |
+| POST | `/api/webhook` | Stripe webhook handler |
+| GET | `/api/report/:id` | Download PDF report |
+| POST | `/api/share` | Share to social media |
 
 ---
 
@@ -172,6 +276,18 @@ Where θ = ecliptic longitude in radians
 ρ = (U₁ · U₂) / (||U₁|| × ||U₂||)
 ```
 
+See [docs/16D-MATH.md](docs/16D-MATH.md) for complete mathematical specification.
+
+---
+
+## Workers AI Models
+
+| Task | Model | Usage |
+|------|-------|-------|
+| Report Text | `@cf/meta/llama-3.1-8b-instruct` | Personalized insights |
+| Sacred Art | `@cf/stabilityai/stable-diffusion-xl-base-1.0` | Unique imagery |
+| Embeddings | `@cf/baai/bge-base-en-v1.5` | Figure matching |
+
 ---
 
 ## Philosophy
@@ -187,14 +303,12 @@ The journey is yours.
 
 ---
 
-## Design Philosophy
+## Contributing
 
-From `design/COSMIC_CARTOGRAPHY.md`:
-
-- **Visual Language**: Deep cosmic darkness as the void from which form emerges
-- **Sacred Geometry**: Eight dimensions form an octave, visualized through perfect geometric forms
-- **Spatial Philosophy**: Vast breathing room—elements cluster like constellations
-- **Material Honesty**: Numbers are real (JPL ephemeris), interpretation is poetic but grounded
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
 ---
 
@@ -202,8 +316,6 @@ From `design/COSMIC_CARTOGRAPHY.md`:
 
 **FRC 893 Series**
 Created by Hadi Servat
-
-Open source at: [github.com/FractalResonance/therealmofpatterns](https://github.com/FractalResonance/therealmofpatterns)
 
 ---
 

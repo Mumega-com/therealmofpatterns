@@ -1,0 +1,16 @@
+# The Realm of Patterns - Local Development Variables
+# Copy this to .dev.vars and fill in your values
+
+# Stripe (required for payments)
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key
+
+# Social Media (optional)
+TWITTER_BEARER_TOKEN=your_twitter_bearer_token
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/your_webhook
+
+# Cloudflare (for wrangler CLI)
+CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+CLOUDFLARE_ACCOUNT_ID=your_account_id
