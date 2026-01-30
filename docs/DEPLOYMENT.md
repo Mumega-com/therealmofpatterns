@@ -16,10 +16,36 @@ wrangler login
 
 | Resource | ID/Name |
 |----------|---------|
+| Worker URL | `https://therealmofpatterns.weathered-scene-2272.workers.dev` |
 | D1 Database | `f7396c67-c475-40ec-ae4a-acf7b22834a9` |
 | R2 Bucket | `therealmofpatterns-assets` |
 | KV Namespace | `9ec0ef8400f5430fbebb73ce6ce64995` |
 | Account ID | `e39eaf94f33092c4efd029d94ae1e9dd` |
+
+## Architecture
+
+The Realm of Patterns runs as a **Cloudflare Worker** (not Pages):
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Cloudflare Worker                        │
+│                 (src/worker.ts)                             │
+├─────────────────────────────────────────────────────────────┤
+│  Static Files (/)     │  API Routes (/api/*)                │
+│  - Served from R2     │  - /api/preview (8D preview)        │
+│  - index.html         │  - /api/checkout (Stripe)           │
+│  - success.html       │  - /api/webhook (Stripe webhook)    │
+│                       │  - /api/compute (16D compute)       │
+│                       │  - /api/report/:id (get report)     │
+│                       │  - /api/art/:id (get AI art)        │
+└─────────────────────────────────────────────────────────────┘
+         │                        │                  │
+         ▼                        ▼                  ▼
+    ┌─────────┐              ┌─────────┐       ┌─────────┐
+    │   R2    │              │   D1    │       │   KV    │
+    │ Storage │              │  SQLite │       │  Cache  │
+    └─────────┘              └─────────┘       └─────────┘
+```
 
 ## Initial Setup
 
@@ -47,54 +73,18 @@ wrangler r2 bucket create therealmofpatterns-assets
 wrangler kv namespace create CACHE
 ```
 
-### 3. Configure Cloudflare Pages Bindings
-
-In Cloudflare Dashboard → Workers & Pages → therealmofpatterns → Settings → Functions:
-
-**D1 Database:**
-- Variable name: `DB`
-- Database: `therealmofpatterns-db`
-
-**R2 Bucket:**
-- Variable name: `STORAGE`
-- Bucket: `therealmofpatterns-assets`
-
-**KV Namespace:**
-- Variable name: `CACHE`
-- Namespace ID: `9ec0ef8400f5430fbebb73ce6ce64995`
-
-**Workers AI:**
-- Variable name: `AI`
-
-### 4. wrangler.toml Reference
-
-```toml
-name = "therealmofpatterns"
-compatibility_date = "2024-01-01"
-pages_build_output_dir = "public"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "therealmofpatterns-db"
-database_id = "f7396c67-c475-40ec-ae4a-acf7b22834a9"
-
-[[r2_buckets]]
-binding = "STORAGE"
-bucket_name = "therealmofpatterns-assets"
-
-[[kv_namespaces]]
-binding = "CACHE"
-id = "9ec0ef8400f5430fbebb73ce6ce64995"
-
-[ai]
-binding = "AI"
-```
-
-### 4. Run Database Migrations
+### 3. Run Database Migrations
 
 ```bash
 wrangler d1 execute therealmofpatterns-db --file=src/db/schema.sql
 wrangler d1 execute therealmofpatterns-db --file=src/db/seed.sql
+```
+
+### 4. Upload Static Files to R2
+
+```bash
+wrangler r2 object put therealmofpatterns-assets/public/index.html --file=public/index.html --content-type="text/html"
+wrangler r2 object put therealmofpatterns-assets/public/success.html --file=public/success.html --content-type="text/html"
 ```
 
 ### 5. Set Environment Secrets
@@ -103,11 +93,6 @@ wrangler d1 execute therealmofpatterns-db --file=src/db/seed.sql
 # Stripe (required)
 wrangler secret put STRIPE_SECRET_KEY
 wrangler secret put STRIPE_WEBHOOK_SECRET
-
-# Social Media (optional)
-wrangler secret put TWITTER_BEARER_TOKEN
-wrangler secret put TELEGRAM_BOT_TOKEN
-wrangler secret put DISCORD_WEBHOOK_URL
 ```
 
 ## Local Development
@@ -117,7 +102,7 @@ wrangler secret put DISCORD_WEBHOOK_URL
 npm run dev
 
 # This starts:
-# - Pages dev server on http://localhost:8788
+# - Worker dev server on http://localhost:8787
 # - Local D1 database
 # - Local KV store
 # - Workers AI (remote)
@@ -130,42 +115,51 @@ npm run dev
 brew install stripe/stripe-cli/stripe
 
 # Forward webhooks to local
-stripe listen --forward-to localhost:8788/api/webhook
+stripe listen --forward-to localhost:8787/api/webhook
 ```
 
 ## Deployment
 
+### Manual Deploy
+
+```bash
+export CLOUDFLARE_API_TOKEN="your-token"
+export CLOUDFLARE_ACCOUNT_ID="e39eaf94f33092c4efd029d94ae1e9dd"
+
+# Deploy Worker
+npx wrangler deploy
+```
+
 ### Automatic (GitHub Actions)
 
-Push to `main` branch triggers automatic deployment:
+Push to `main` branch triggers automatic deployment.
+
+**Required GitHub Secrets:**
+- `CLOUDFLARE_API_TOKEN` - API token with Workers Scripts:Edit permission
+- `CLOUDFLARE_ACCOUNT_ID` - `e39eaf94f33092c4efd029d94ae1e9dd`
 
 ```yaml
 # .github/workflows/deploy.yml
-name: Deploy to Cloudflare Pages
+name: Deploy to Cloudflare Workers
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cloudflare/pages-action@v1
+      - uses: actions/setup-node@v4
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: therealmofpatterns
-          directory: public
-```
-
-### Manual
-
-```bash
-npm run deploy
-# or
-wrangler pages deploy public --project-name=therealmofpatterns
+          node-version: '20'
+      - run: npm ci
+      - run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 ```
 
 ## Stripe Configuration
@@ -180,69 +174,44 @@ wrangler pages deploy public --project-name=therealmofpatterns
 ### 2. Configure Webhook
 
 1. Go to Stripe Dashboard → Developers → Webhooks
-2. Add endpoint: `https://therealmofpatterns.pages.dev/api/webhook`
+2. Add endpoint: `https://therealmofpatterns.weathered-scene-2272.workers.dev/api/webhook`
 3. Select events:
    - `checkout.session.completed`
    - `payment_intent.payment_failed`
 4. Copy signing secret to `STRIPE_WEBHOOK_SECRET`
 
-### 3. Update Price IDs
-
-Edit `src/lib/stripe.ts`:
-
-```typescript
-export const PRODUCTS = {
-  premium_16d_report: {
-    price_id: 'price_xxx',
-    amount: 49700,
-  },
-  complete_bundle: {
-    price_id: 'price_yyy',
-    amount: 69700,
-  },
-};
-```
-
 ## Custom Domain
 
-### 1. Add Domain in Cloudflare
+### 1. Add Route in Cloudflare Dashboard
 
-1. Go to Pages → therealmofpatterns → Custom domains
-2. Add domain: `therealmofpatterns.com`
-3. Follow DNS setup instructions
+Workers → therealmofpatterns → Settings → Triggers → Routes
+
+Add route: `therealmofpatterns.com/*`
 
 ### 2. Update Stripe Webhook
 
 Update webhook URL to use custom domain.
 
-### 3. Update CORS (if needed)
+## API Token Permissions Required
 
-Edit `functions/_middleware.ts`:
-
-```typescript
-const ALLOWED_ORIGINS = [
-  'https://therealmofpatterns.com',
-  'https://therealmofpatterns.pages.dev',
-];
-```
+The Cloudflare API token needs these permissions:
+- **Workers Scripts:Edit** - Deploy workers
+- **Workers KV Storage:Edit** - Manage KV cache
+- **D1:Edit** - Database access
+- **Workers R2 Storage:Edit** - Object storage
 
 ## Monitoring
 
 ### Cloudflare Dashboard
 
 - **Analytics**: Request volume, errors, latency
-- **Workers Logs**: Real-time function logs
+- **Workers Logs**: Real-time function logs (`wrangler tail`)
 - **D1 Metrics**: Query performance
 
-### Recommended Additions
+### Live Logs
 
 ```bash
-# Add Sentry for error tracking
-npm install @sentry/cloudflare
-
-# Configure in functions
-import * as Sentry from '@sentry/cloudflare';
-Sentry.init({ dsn: 'https://...' });
+wrangler tail
 ```
 
 ## Troubleshooting
@@ -251,42 +220,39 @@ Sentry.init({ dsn: 'https://...' });
 
 **D1 Query Errors**
 ```bash
-# Check database state
 wrangler d1 execute therealmofpatterns-db --command="SELECT * FROM users LIMIT 5"
 ```
 
 **KV Not Found**
 ```bash
-# Verify namespace exists
 wrangler kv:namespace list
 ```
 
 **R2 Permission Denied**
 ```bash
-# Check bucket exists
 wrangler r2 bucket list
 ```
 
 **Workers AI Timeout**
 - AI calls can take 5-30 seconds
-- Increase timeout in wrangler.toml if needed
+- Check Workers AI status
 
-### Logs
+### View Logs
 
 ```bash
 # Tail live logs
-wrangler pages deployment tail
+wrangler tail
 
 # View specific deployment
-wrangler pages deployment list
+wrangler deployments list
 ```
 
 ## Rollback
 
 ```bash
 # List deployments
-wrangler pages deployment list --project-name=therealmofpatterns
+wrangler deployments list
 
 # Rollback to specific deployment
-wrangler pages deployment rollback <deployment-id>
+wrangler rollback <deployment-id>
 ```
