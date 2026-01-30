@@ -31,7 +31,7 @@
     "@types/node": "^20.11.0",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3",
-    "wrangler": "^3.22.0"
+    "wrangler": "^4.61.1"
   },
   "dependencies": {
     "jspdf": "^2.5.1"
