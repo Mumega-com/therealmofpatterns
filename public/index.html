@@ -880,7 +880,7 @@
                 },
                 primary_archetype: {
                     ...archetypes[maxIdx],
-                    resonance: (0.75 + Math.random() * 0.2).toFixed(0) + '%'
+                    resonance: Math.round((0.75 + Math.random() * 0.2) * 100) + '%'
                 },
                 teaser: `Your ${dimInfo[maxIdx].name} dimension shows strong ${dimInfo[maxIdx].desc.toLowerCase()} energy. The full 16D report reveals your complete cosmic signature, shadow dimensions, and 10 historical figures who share your frequency pattern.`
             };
