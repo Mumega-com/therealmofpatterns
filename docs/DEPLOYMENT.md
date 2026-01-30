@@ -16,7 +16,7 @@ wrangler login
 
 | Resource | ID/Name |
 |----------|---------|
-| Worker URL | `https://therealmofpatterns.weathered-scene-2272.workers.dev` |
+| **Production URL** | `https://therealmofpatterns.pages.dev` |
 | D1 Database | `f7396c67-c475-40ec-ae4a-acf7b22834a9` |
 | R2 Bucket | `therealmofpatterns-assets` |
 | KV Namespace | `9ec0ef8400f5430fbebb73ce6ce64995` |
@@ -24,20 +24,20 @@ wrangler login
 
 ## Architecture
 
-The Realm of Patterns runs as a **Cloudflare Worker** (not Pages):
+The Realm of Patterns runs on **Cloudflare Pages** with Pages Functions:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Cloudflare Worker                        │
-│                 (src/worker.ts)                             │
+│                    Cloudflare Pages                         │
+│              (therealmofpatterns.pages.dev)                 │
 ├─────────────────────────────────────────────────────────────┤
-│  Static Files (/)     │  API Routes (/api/*)                │
-│  - Served from R2     │  - /api/preview (8D preview)        │
-│  - index.html         │  - /api/checkout (Stripe)           │
-│  - success.html       │  - /api/webhook (Stripe webhook)    │
-│                       │  - /api/compute (16D compute)       │
-│                       │  - /api/report/:id (get report)     │
-│                       │  - /api/art/:id (get AI art)        │
+│  Static Files (/)          │  Pages Functions (/api/*)     │
+│  - public/index.html       │  - /api/preview               │
+│  - public/success.html     │  - /api/checkout              │
+│                            │  - /api/webhook               │
+│                            │  - /api/compute               │
+│                            │  - /api/report/:id            │
+│                            │  - /api/art/:id               │
 └─────────────────────────────────────────────────────────────┘
          │                        │                  │
          ▼                        ▼                  ▼
@@ -102,7 +102,7 @@ wrangler secret put STRIPE_WEBHOOK_SECRET
 npm run dev
 
 # This starts:
-# - Worker dev server on http://localhost:8787
+# - Pages dev server on http://localhost:8788
 # - Local D1 database
 # - Local KV store
 # - Workers AI (remote)
@@ -115,7 +115,7 @@ npm run dev
 brew install stripe/stripe-cli/stripe
 
 # Forward webhooks to local
-stripe listen --forward-to localhost:8787/api/webhook
+stripe listen --forward-to localhost:8788/api/webhook
 ```
 
 ## Deployment
@@ -126,8 +126,8 @@ stripe listen --forward-to localhost:8787/api/webhook
 export CLOUDFLARE_API_TOKEN="your-token"
 export CLOUDFLARE_ACCOUNT_ID="e39eaf94f33092c4efd029d94ae1e9dd"
 
-# Deploy Worker
-npx wrangler deploy
+# Deploy to Cloudflare Pages
+npx wrangler pages deploy public --project-name=therealmofpatterns
 ```
 
 ### Automatic (GitHub Actions)
@@ -135,12 +135,12 @@ npx wrangler deploy
 Push to `main` branch triggers automatic deployment.
 
 **Required GitHub Secrets:**
-- `CLOUDFLARE_API_TOKEN` - API token with Workers Scripts:Edit permission
+- `CLOUDFLARE_API_TOKEN` - API token with Cloudflare Pages:Edit permission
 - `CLOUDFLARE_ACCOUNT_ID` - `e39eaf94f33092c4efd029d94ae1e9dd`
 
 ```yaml
 # .github/workflows/deploy.yml
-name: Deploy to Cloudflare Workers
+name: Deploy to Cloudflare Pages
 
 on:
   push:
@@ -156,7 +156,7 @@ jobs:
         with:
           node-version: '20'
       - run: npm ci
-      - run: npx wrangler deploy
+      - run: npx wrangler pages deploy public --project-name=therealmofpatterns
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -174,7 +174,7 @@ jobs:
 ### 2. Configure Webhook
 
 1. Go to Stripe Dashboard → Developers → Webhooks
-2. Add endpoint: `https://therealmofpatterns.weathered-scene-2272.workers.dev/api/webhook`
+2. Add endpoint: `https://therealmofpatterns.pages.dev/api/webhook`
 3. Select events:
    - `checkout.session.completed`
    - `payment_intent.payment_failed`
@@ -182,11 +182,11 @@ jobs:
 
 ## Custom Domain
 
-### 1. Add Route in Cloudflare Dashboard
+### 1. Add Domain in Cloudflare Dashboard
 
-Workers → therealmofpatterns → Settings → Triggers → Routes
+Pages → therealmofpatterns → Custom domains → Add
 
-Add route: `therealmofpatterns.com/*`
+Add domain: `therealmofpatterns.com`
 
 ### 2. Update Stripe Webhook
 
@@ -195,7 +195,7 @@ Update webhook URL to use custom domain.
 ## API Token Permissions Required
 
 The Cloudflare API token needs these permissions:
-- **Workers Scripts:Edit** - Deploy workers
+- **Cloudflare Pages:Edit** - Deploy to Pages
 - **Workers KV Storage:Edit** - Manage KV cache
 - **D1:Edit** - Database access
 - **Workers R2 Storage:Edit** - Object storage
