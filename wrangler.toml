@@ -2,8 +2,8 @@
 # 100% Cloudflare Native
 
 name = "therealmofpatterns"
+main = "src/worker.ts"
 compatibility_date = "2024-01-01"
-pages_build_output_dir = "public"
 
 # Main account settings
 # account_id set via CLOUDFLARE_ACCOUNT_ID env var
@@ -42,7 +42,7 @@ binding = "AI"
 [vars]
 ENVIRONMENT = "production"
 APP_NAME = "The Realm of Patterns"
-APP_URL = "https://therealmofpatterns.pages.dev"
+APP_URL = "https://therealmofpatterns.weathered-scene-2272.workers.dev"
 
 # ============================================
 # Development Settings
