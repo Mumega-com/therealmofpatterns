@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generating Your Report | FRC 16D</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --deep-space: #0a0a1a;
+            --cosmic-purple: #2d1b4e;
+            --stellar-gold: #d4af37;
+            --nebula-pink: #c77dff;
+            --stardust: #e8e8f0;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: var(--deep-space);
+            color: var(--stardust);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: var(--stellar-gold);
+            margin-bottom: 1rem;
+        }
+
+        .progress-container {
+            background: var(--cosmic-purple);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .spinner {
+            border: 4px solid var(--cosmic-purple);
+            border-top: 4px solid var(--stellar-gold);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 1.5s linear infinite;
+            margin: 0 auto 2rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            min-height: 2rem;
+        }
+
+        .progress-bar {
+            background: var(--deep-space);
+            border-radius: 4px;
+            height: 8px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--stellar-gold), var(--nebula-pink));
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .download-section {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .download-section.active {
+            display: block;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            text-decoration: none;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--stellar-gold);
+            color: var(--deep-space);
+        }
+
+        .btn-primary:hover {
+            background: #e8c547;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--stardust);
+            border: 1px solid var(--stardust);
+        }
+
+        .vector-display {
+            font-family: monospace;
+            font-size: 0.9rem;
+            background: var(--deep-space);
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            word-break: break-all;
+        }
+
+        .result-info {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--cosmic-purple);
+        }
+
+        .result-info p {
+            margin: 0.5rem 0;
+        }
+
+        .archetype-list {
+            color: var(--nebula-pink);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Creating Your Cosmic Report</h1>
+        <p>{{ name }}, your 16D identity is being computed...</p>
+
+        <div class="progress-container">
+            <div class="spinner" id="spinner"></div>
+            <div class="status" id="status">Initializing cosmic calculations...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="download-section" id="download-section">
+            <h2 style="color: var(--stellar-gold); margin-bottom: 1rem;">Your Report is Ready!</h2>
+
+            <div class="vector-display" id="vector-display"></div>
+
+            <div class="result-info" id="result-info"></div>
+
+            <div style="margin-top: 2rem;">
+                <a class="btn btn-primary" id="pdf-link" href="#">
+                    Download PDF Report
+                </a>
+                <a class="btn btn-secondary" id="json-link" href="#">
+                    Download 16D Token (JSON)
+                </a>
+            </div>
+
+            <p style="margin-top: 2rem; font-size: 0.9rem; color: #888;">
+                Your 16D JSON token can be shared with AI models to help them understand your cosmic signature.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const orderId = '{{ order_id }}';
+
+        const statuses = [
+            { text: 'Computing planetary positions...', progress: 10 },
+            { text: 'Calculating 16D vector...', progress: 25 },
+            { text: 'Finding historical resonances...', progress: 40 },
+            { text: 'Matching archetypes...', progress: 55 },
+            { text: 'Generating AI imagery...', progress: 70 },
+            { text: 'Composing premium report...', progress: 85 },
+            { text: 'Finalizing your cosmic identity...', progress: 95 }
+        ];
+
+        let currentStatus = 0;
+
+        function updateStatus() {
+            if (currentStatus < statuses.length) {
+                document.getElementById('status').textContent = statuses[currentStatus].text;
+                document.getElementById('progress-fill').style.width = statuses[currentStatus].progress + '%';
+                currentStatus++;
+            }
+        }
+
+        // Update status every 2 seconds
+        const statusInterval = setInterval(updateStatus, 2000);
+
+        // Start generation
+        async function generateReport() {
+            try {
+                // Get birth data from session (passed via template or stored)
+                const response = await fetch(`/generate/${orderId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: '{{ name }}',
+                        birth_data: JSON.parse('{{ birth_data | default("{}") | safe }}'),
+                        include_images: true
+                    })
+                });
+
+                const data = await response.json();
+
+                clearInterval(statusInterval);
+
+                if (data.success) {
+                    // Update UI
+                    document.getElementById('spinner').style.display = 'none';
+                    document.getElementById('status').textContent = 'Complete!';
+                    document.getElementById('progress-fill').style.width = '100%';
+
+                    // Show results
+                    document.getElementById('vector-display').textContent =
+                        'Your 16D: [' + data.vector.map(v => v.toFixed(3)).join(', ') + ']';
+
+                    document.getElementById('result-info').innerHTML = `
+                        <p><strong>Dominant Dimension:</strong> ${data.dominant}</p>
+                        <p class="archetype-list"><strong>Top Archetypes:</strong> ${data.archetypes.join(', ')}</p>
+                    `;
+
+                    document.getElementById('pdf-link').href = data.pdf_url;
+                    document.getElementById('json-link').href = data.json_url;
+
+                    document.getElementById('download-section').classList.add('active');
+                } else {
+                    document.getElementById('status').textContent = 'Error: ' + data.error;
+                    document.getElementById('spinner').style.display = 'none';
+                }
+            } catch (error) {
+                clearInterval(statusInterval);
+                document.getElementById('status').textContent = 'Error: ' + error.message;
+                document.getElementById('spinner').style.display = 'none';
+            }
+        }
+
+        // Start after a short delay
+        setTimeout(generateReport, 1000);
+        updateStatus();
+    </script>
+</body>
+</html>
