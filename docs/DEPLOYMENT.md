@@ -5,11 +5,21 @@
 1. **Cloudflare Account** (free tier is sufficient)
 2. **Node.js 18+**
 3. **Wrangler CLI**
+4. **Stripe Account** (for payments)
 
 ```bash
 npm install -g wrangler
 wrangler login
 ```
+
+## Current Production Resources
+
+| Resource | ID/Name |
+|----------|---------|
+| D1 Database | `f7396c67-c475-40ec-ae4a-acf7b22834a9` |
+| R2 Bucket | `therealmofpatterns-assets` |
+| KV Namespace | `9ec0ef8400f5430fbebb73ce6ce64995` |
+| Account ID | `e39eaf94f33092c4efd029d94ae1e9dd` |
 
 ## Initial Setup
 
@@ -21,9 +31,12 @@ cd therealmofpatterns
 npm install
 ```
 
-### 2. Create Cloudflare Resources
+### 2. Create Cloudflare Resources (if not exists)
 
 ```bash
+export CLOUDFLARE_API_TOKEN="your-token"
+export CLOUDFLARE_ACCOUNT_ID="e39eaf94f33092c4efd029d94ae1e9dd"
+
 # Create D1 database
 wrangler d1 create therealmofpatterns-db
 
@@ -31,13 +44,29 @@ wrangler d1 create therealmofpatterns-db
 wrangler r2 bucket create therealmofpatterns-assets
 
 # Create KV namespace
-wrangler kv:namespace create CACHE
-wrangler kv:namespace create CACHE --preview
+wrangler kv namespace create CACHE
 ```
 
-### 3. Update wrangler.toml
+### 3. Configure Cloudflare Pages Bindings
 
-Copy the IDs from the commands above:
+In Cloudflare Dashboard → Workers & Pages → therealmofpatterns → Settings → Functions:
+
+**D1 Database:**
+- Variable name: `DB`
+- Database: `therealmofpatterns-db`
+
+**R2 Bucket:**
+- Variable name: `STORAGE`
+- Bucket: `therealmofpatterns-assets`
+
+**KV Namespace:**
+- Variable name: `CACHE`
+- Namespace ID: `9ec0ef8400f5430fbebb73ce6ce64995`
+
+**Workers AI:**
+- Variable name: `AI`
+
+### 4. wrangler.toml Reference
 
 ```toml
 name = "therealmofpatterns"
@@ -47,7 +76,7 @@ pages_build_output_dir = "public"
 [[d1_databases]]
 binding = "DB"
 database_name = "therealmofpatterns-db"
-database_id = "<your-database-id>"
+database_id = "f7396c67-c475-40ec-ae4a-acf7b22834a9"
 
 [[r2_buckets]]
 binding = "STORAGE"
@@ -55,8 +84,7 @@ bucket_name = "therealmofpatterns-assets"
 
 [[kv_namespaces]]
 binding = "CACHE"
-id = "<your-kv-id>"
-preview_id = "<your-preview-kv-id>"
+id = "9ec0ef8400f5430fbebb73ce6ce64995"
 
 [ai]
 binding = "AI"
