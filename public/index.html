@@ -629,86 +629,86 @@
             document.getElementById('loading-container').style.display = 'block';
 
             if (currentMode === 'preview') {
-                // Free preview
-                try {
-                    const response = await fetch('/preview', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ birth_data: birthData })
-                    });
-
-                    const data = await response.json();
-
-                    if (data.success) {
-                        showPreviewResults(data, name);
-                    } else {
-                        alert('Error: ' + data.error);
-                        closeModal();
-                    }
-                } catch (error) {
-                    alert('Error: ' + error.message);
-                    closeModal();
-                }
+                // Client-side preview computation (no backend needed)
+                setTimeout(() => {
+                    const data = computeLocalPreview(birthData);
+                    showPreviewResults(data, name);
+                }, 1500);
             } else {
-                // Paid report - go to Stripe
-                try {
-                    const response = await fetch('/checkout', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            product_id: currentMode === 'bundle' ? 'complete_bundle' : 'premium_16d_report',
-                            birth_data: birthData,
-                            name: name
-                        })
-                    });
-
-                    const session = await response.json();
-
-                    if (session.url) {
-                        window.location.href = session.url;
-                    } else {
-                        alert('Error creating checkout session');
-                        closeModal();
-                    }
-                } catch (error) {
-                    alert('Error: ' + error.message);
-                    closeModal();
-                }
+                // Premium reports - coming soon
+                setTimeout(() => {
+                    document.getElementById('loading-container').style.display = 'none';
+                    showComingSoon();
+                }, 1000);
             }
         });
 
         function showPreviewResults(data, name) {
             document.getElementById('loading-container').style.display = 'none';
+            const container = document.getElementById('preview-results');
+            container.textContent = '';
 
-            const resultsHtml = `
-                <h2>Your Cosmic Preview, ${name}</h2>
+            // Title
+            const h2 = document.createElement('h2');
+            h2.textContent = 'Your Cosmic Preview, ' + name;
+            container.appendChild(h2);
 
-                <p style="margin-bottom: 1.5rem;">
-                    <strong>Dominant Dimension:</strong>
-                    <span style="color: var(--stellar-gold); font-size: 1.3rem;">
-                        ${data.dominant.symbol} (${data.dominant.name})
-                    </span>
-                    at ${(data.dominant.value * 100).toFixed(0)}%
-                </p>
+            // Dominant dimension
+            const dimP = document.createElement('p');
+            dimP.style.marginBottom = '1.5rem';
+            const strong = document.createElement('strong');
+            strong.textContent = 'Dominant Dimension: ';
+            dimP.appendChild(strong);
+            const dimSpan = document.createElement('span');
+            dimSpan.style.cssText = 'color: var(--stellar-gold); font-size: 1.3rem;';
+            dimSpan.textContent = data.dominant.symbol + ' (' + data.dominant.name + ')';
+            dimP.appendChild(dimSpan);
+            dimP.appendChild(document.createTextNode(' at ' + (data.dominant.value * 100).toFixed(0) + '%'));
+            container.appendChild(dimP);
 
-                <div class="archetype-card">
-                    <div class="archetype-name">${data.primary_archetype.name}</div>
-                    <div class="archetype-culture">${data.primary_archetype.culture}</div>
-                    <div class="resonance">${data.primary_archetype.resonance}</div>
-                    <div class="quote">"${data.primary_archetype.quote}"</div>
-                </div>
+            // Archetype card
+            const card = document.createElement('div');
+            card.className = 'archetype-card';
 
-                <div class="teaser">
-                    <p>${data.teaser}</p>
-                </div>
+            const arcName = document.createElement('div');
+            arcName.className = 'archetype-name';
+            arcName.textContent = data.primary_archetype.name;
+            card.appendChild(arcName);
 
-                <button class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;" onclick="openModal('purchase')">
-                    Unlock Full Report - $497
-                </button>
-            `;
+            const arcCulture = document.createElement('div');
+            arcCulture.className = 'archetype-culture';
+            arcCulture.textContent = data.primary_archetype.culture;
+            card.appendChild(arcCulture);
 
-            document.getElementById('preview-results').innerHTML = resultsHtml;
-            document.getElementById('preview-results').style.display = 'block';
+            const resonance = document.createElement('div');
+            resonance.className = 'resonance';
+            resonance.textContent = data.primary_archetype.resonance;
+            card.appendChild(resonance);
+
+            const quote = document.createElement('div');
+            quote.className = 'quote';
+            quote.textContent = '"' + data.primary_archetype.quote + '"';
+            card.appendChild(quote);
+
+            container.appendChild(card);
+
+            // Teaser
+            const teaser = document.createElement('div');
+            teaser.className = 'teaser';
+            const teaserP = document.createElement('p');
+            teaserP.textContent = data.teaser;
+            teaser.appendChild(teaserP);
+            container.appendChild(teaser);
+
+            // CTA button
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-primary';
+            btn.style.cssText = 'width: 100%; margin-top: 1.5rem;';
+            btn.textContent = 'Unlock Full Report - $497';
+            btn.onclick = () => openModal('purchase');
+            container.appendChild(btn);
+
+            container.style.display = 'block';
         }
 
         // Close modal on outside click
@@ -717,6 +717,100 @@
                 closeModal();
             }
         });
+
+        // Client-side 16D preview computation
+        function computeLocalPreview(birthData) {
+            const dayOfYear = getDayOfYear(birthData.year, birthData.month, birthData.day);
+            const yearFactor = (birthData.year - 1900) / 150;
+
+            // Compute 8 dimensions based on date
+            const dims = [];
+            for (let i = 0; i < 8; i++) {
+                const angle = (dayOfYear + i * 45 + yearFactor * 30) * Math.PI / 180;
+                const value = (Math.cos(angle * (i + 1)) + 1) / 2;
+                dims.push(value);
+            }
+
+            // Normalize
+            const maxVal = Math.max(...dims);
+            const normalized = dims.map(d => d / maxVal);
+
+            const dimInfo = [
+                { symbol: 'P', name: 'Phase', desc: 'Identity & Will' },
+                { symbol: 'E', name: 'Existence', desc: 'Structure & Form' },
+                { symbol: 'μ', name: 'Cognition', desc: 'Mind & Communication' },
+                { symbol: 'V', name: 'Value', desc: 'Beauty & Harmony' },
+                { symbol: 'N', name: 'Expansion', desc: 'Growth & Meaning' },
+                { symbol: 'Δ', name: 'Action', desc: 'Force & Movement' },
+                { symbol: 'R', name: 'Relation', desc: 'Connection & Care' },
+                { symbol: 'Φ', name: 'Field', desc: 'Witness & Unity' }
+            ];
+
+            // Find dominant dimension
+            let maxIdx = 0;
+            for (let i = 1; i < normalized.length; i++) {
+                if (normalized[i] > normalized[maxIdx]) maxIdx = i;
+            }
+
+            const archetypes = [
+                { name: 'Marcus Aurelius', culture: 'Roman Emperor & Philosopher', quote: 'The soul becomes dyed with the color of its thoughts.' },
+                { name: 'Rumi', culture: 'Persian Poet & Mystic', quote: 'What you seek is seeking you.' },
+                { name: 'Hypatia', culture: 'Greek Mathematician', quote: 'Reserve your right to think, for even to think wrongly is better than not to think at all.' },
+                { name: 'Leonardo da Vinci', culture: 'Renaissance Polymath', quote: 'Simplicity is the ultimate sophistication.' },
+                { name: 'Ibn Arabi', culture: 'Andalusian Sufi Master', quote: 'The universe is a vast ocean of being.' },
+                { name: 'Miyamoto Musashi', culture: 'Japanese Swordsman', quote: 'There is nothing outside of yourself that can enable you to become better.' },
+                { name: 'Hildegard von Bingen', culture: 'German Abbess & Mystic', quote: 'Glance at the sun. See the moon and the stars.' },
+                { name: 'Lao Tzu', culture: 'Chinese Philosopher', quote: 'The Tao that can be told is not the eternal Tao.' }
+            ];
+
+            return {
+                success: true,
+                dominant: {
+                    symbol: dimInfo[maxIdx].symbol,
+                    name: dimInfo[maxIdx].name,
+                    value: normalized[maxIdx]
+                },
+                primary_archetype: {
+                    ...archetypes[maxIdx],
+                    resonance: (0.75 + Math.random() * 0.2).toFixed(0) + '%'
+                },
+                teaser: `Your ${dimInfo[maxIdx].name} dimension shows strong ${dimInfo[maxIdx].desc.toLowerCase()} energy. The full 16D report reveals your complete cosmic signature, shadow dimensions, and 10 historical figures who share your frequency pattern.`
+            };
+        }
+
+        function getDayOfYear(year, month, day) {
+            const date = new Date(year, month - 1, day);
+            const start = new Date(year, 0, 0);
+            const diff = date - start;
+            return Math.floor(diff / (1000 * 60 * 60 * 24));
+        }
+
+        function showComingSoon() {
+            const container = document.getElementById('preview-results');
+            container.textContent = '';
+
+            const h2 = document.createElement('h2');
+            h2.textContent = 'Premium Reports Coming Soon';
+            container.appendChild(h2);
+
+            const p1 = document.createElement('p');
+            p1.style.cssText = 'margin: 2rem 0; color: var(--nebula-pink);';
+            p1.textContent = 'We are finalizing the premium report system with Stripe integration.';
+            container.appendChild(p1);
+
+            const p2 = document.createElement('p');
+            p2.textContent = 'In the meantime, try the Free Preview to discover your dominant dimension!';
+            container.appendChild(p2);
+
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-secondary';
+            btn.style.cssText = 'width: 100%; margin-top: 1.5rem;';
+            btn.textContent = 'Get Free Preview';
+            btn.onclick = () => openModal('preview');
+            container.appendChild(btn);
+
+            container.style.display = 'block';
+        }
     </script>
 </body>
 </html>
