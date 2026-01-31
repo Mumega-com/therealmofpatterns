@@ -229,10 +229,15 @@ curl https://api.yourserver.com/health
 
 ## Connecting to Cloudflare Pages
 
+**Backend currently deployed at:**
+- Local: `http://localhost:5660`
+- Production: `http://5.161.216.149:5660` (or your domain)
+
 **Update Cloudflare secret:**
 ```bash
 wrangler pages secret put PYTHON_BACKEND_URL --project-name=therealmofpatterns
-# Value: https://api.yourserver.com
+# Value: http://5.161.216.149:5660
+# Or: https://api.yourdomain.com (after setting up Nginx + SSL)
 ```
 
 **Update `/functions/api/compute-full.ts`:**
