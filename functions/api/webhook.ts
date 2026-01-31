@@ -192,7 +192,15 @@ async function generateReport(
     // Continue without PDF - can retry later
   }
 
-  // TODO: Send email with report access link
+  // Send email notification via Cloudflare Email Workers
+  try {
+    await sendReportEmail(env, email, reportId, sessionToken);
+    console.log(`Report email sent to ${email}`);
+  } catch (error) {
+    console.error('Failed to send email:', error);
+    // Don't fail the webhook if email fails - customer can still access via dashboard
+  }
+
   console.log(`Report ${reportId} generated for order ${orderId}`);
 }
 
@@ -344,4 +352,56 @@ async function hashEmail(email: string): Promise<string> {
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function sendReportEmail(
+  env: Env,
+  to: string,
+  reportId: string,
+  sessionToken: string
+): Promise<void> {
+  // Load email template
+  const templateResponse = await fetch(`${env.APP_URL}/templates/report-ready.html`);
+  let emailHtml = await templateResponse.text();
+
+  // Personalize template
+  const name = to.split('@')[0];
+  const downloadUrl = `${env.APP_URL}/api/report/${reportId}?token=${sessionToken}`;
+
+  emailHtml = emailHtml
+    .replace(/\{\{name\}\}/g, name)
+    .replace(/\{\{download_url\}\}/g, downloadUrl);
+
+  // Send email via MailChannels (Cloudflare's email partner)
+  const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      personalizations: [
+        {
+          to: [{ email: to, name }],
+          dkim_domain: 'therealmofpatterns.pages.dev',
+          dkim_selector: 'mailchannels',
+        },
+      ],
+      from: {
+        email: 'reports@therealmofpatterns.pages.dev',
+        name: 'The Realm of Patterns',
+      },
+      subject: 'Your 16D Universal Vector Report is Ready 🌌',
+      content: [
+        {
+          type: 'text/html',
+          value: emailHtml,
+        },
+      ],
+    }),
+  });
+
+  if (!emailResponse.ok) {
+    const errorText = await emailResponse.text();
+    throw new Error(`MailChannels error: ${errorText}`);
+  }
 }
