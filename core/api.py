@@ -220,11 +220,11 @@ async def calculate_16d(request: Calculate16DRequest):
 
         # Format response
         response = Full16DResponse(
-            inner_8d=profile['inner_8d'].tolist(),
-            outer_8d=profile['outer_8d'].tolist(),
-            u_16=profile['u_16'].tolist(),
+            inner_8d=profile['inner_8d'],
+            outer_8d=profile['outer_8d'],
+            u_16=profile['U_16'],
             kappa_bar=float(profile['kappa_bar']),
-            kappa_dims=profile['kappa_dims'].tolist(),
+            kappa_dims=profile['kappa_dims'],
             RU=float(profile['RU']),
             W=float(profile['W']),
             C=float(profile['C']),
