@@ -58,6 +58,12 @@ local_protocol = "http"
 # command = "npm run build"
 
 # ============================================
+# Cron Triggers (Scheduled Jobs)
+# ============================================
+[triggers]
+crons = ["0 0 * * *"]  # Daily at 00:00 UTC
+
+# ============================================
 # Secrets (set via wrangler secret put <NAME>)
 # ============================================
 # STRIPE_SECRET_KEY
@@ -66,3 +72,4 @@ local_protocol = "http"
 # TWITTER_BEARER_TOKEN (optional)
 # TELEGRAM_BOT_TOKEN (optional)
 # DISCORD_WEBHOOK_URL (optional)
+# ADMIN_KEY (for manual cron triggers)

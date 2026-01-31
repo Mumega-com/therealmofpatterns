@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Vector Dashboard - The Realm of Patterns</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #1a1a2e;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b0;
+            --accent-gold: #d4af37;
+            --accent-purple: #9b59b6;
+            --border: #2a2a3e;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-gold);
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+        }
+
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .metric-value.positive {
+            color: #27ae60;
+        }
+
+        .metric-value.negative {
+            color: #e74c3c;
+        }
+
+        .metric-value.neutral {
+            color: var(--accent-gold);
+        }
+
+        .failure-mode {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .failure-mode.healthy {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+        }
+
+        .failure-mode.collapse {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .failure-mode.inversion {
+            background: rgba(230, 126, 34, 0.2);
+            color: #e67e22;
+        }
+
+        .failure-mode.dissociation {
+            background: rgba(155, 89, 182, 0.2);
+            color: #9b59b6;
+        }
+
+        .failure-mode.dispersion {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-purple));
+            transition: width 0.3s ease;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 1rem 0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .error {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            color: #e74c3c;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .dimension-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .dimension-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+
+        .dimension-symbol {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-purple);
+            margin-bottom: 0.25rem;
+        }
+
+        .dimension-name {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .dimension-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dimension-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Universal Vector Dashboard</h1>
+            <p class="subtitle">Your 16D Consciousness Signature</p>
+        </header>
+
+        <div id="loading" class="loading">
+            <p>Loading your Universal Vector profile...</p>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div id="content" style="display: none;">
+            <!-- Metrics Overview -->
+            <div class="grid">
+                <div class="card">
+                    <h2 class="card-title">Current Status</h2>
+                    <div class="metric">
+                        <span class="metric-label">Failure Mode</span>
+                        <span id="failure-mode" class="failure-mode">Loading...</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">κ̄ (Kappa)</span>
+                        <span id="kappa" class="metric-value">--</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">RU (Resonance)</span>
+                        <span id="ru" class="metric-value">--</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">W (Witness)</span>
+                        <span id="witness" class="metric-value">--</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">C (Coherence)</span>
+                        <span id="coherence" class="metric-value">--</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Elder Attractor Progress</h2>
+                    <div id="elder-progress-text" class="metric-value neutral" style="margin: 1rem 0;">0%</div>
+                    <div class="progress-bar">
+                        <div id="elder-progress-bar" class="progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-top: 1rem; font-size: 0.9rem;">
+                        Goal: κ̄ > 0.85, RU > 45, W > 2.5
+                    </p>
+                </div>
+            </div>
+
+            <!-- 16D Radar Chart -->
+            <div class="card">
+                <h2 class="card-title">16D Universal Vector (Inner + Outer)</h2>
+                <div class="chart-container">
+                    <canvas id="radar-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Inner Octave Dimensions -->
+            <div class="card">
+                <h2 class="card-title">Inner Octave (Karma)</h2>
+                <div class="dimension-list" id="inner-dimensions"></div>
+            </div>
+
+            <!-- Outer Octave Dimensions -->
+            <div class="card">
+                <h2 class="card-title">Outer Octave (Dharma)</h2>
+                <div class="dimension-list" id="outer-dimensions"></div>
+            </div>
+
+            <!-- Historical Trends -->
+            <div class="grid">
+                <div class="card">
+                    <h2 class="card-title">Kappa (κ̄) Trend (30 Days)</h2>
+                    <div class="chart-container">
+                        <canvas id="kappa-trend"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">RU Trend (30 Days)</h2>
+                    <div class="chart-container">
+                        <canvas id="ru-trend"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Elder Progress Trend -->
+            <div class="card">
+                <h2 class="card-title">Elder Progress Trend (30 Days)</h2>
+                <div class="chart-container">
+                    <canvas id="elder-trend"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dimension metadata
+        const DIM_NAMES = ['P', 'E', 'μ', 'V', 'N', 'Δ', 'R', 'Φ'];
+        const DIM_FULL = {
+            'P': 'Phase/Identity',
+            'E': 'Existence/Structure',
+            'μ': 'Cognition/Mind',
+            'V': 'Value/Beauty',
+            'N': 'Narrative/Growth',
+            'Δ': 'Action/Momentum',
+            'R': 'Relation/Connection',
+            'Φ': 'Field/Witness'
+        };
+
+        // Get email_hash from URL or session
+        const urlParams = new URLSearchParams(window.location.search);
+        const emailHash = urlParams.get('email_hash') || 'demo'; // Use 'demo' for testing
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                // Fetch current snapshot (mock for now)
+                const mockProfile = {
+                    inner_8d: [0.78, 0.28, 0.24, 0.32, 1.00, 0.89, 0.15, 0.78],
+                    outer_8d: [1.00, 0.59, 0.72, 0.90, 0.62, 0.95, 0.51, 0.68],
+                    U_16: [
+                        0.78, 0.28, 0.24, 0.32, 1.00, 0.89, 0.15, 0.78,
+                        1.00, 0.59, 0.72, 0.90, 0.62, 0.95, 0.51, 0.68
+                    ],
+                    kappa_bar: 0.014,
+                    kappa_dims: [0.02, -0.15, 0.18, 0.24, -0.08, 0.12, 0.05, -0.03],
+                    RU: 1.58,
+                    W: 2.82,
+                    C: 0.93,
+                    dominant: { index: 4, symbol: 'N', value: 1.0, name: 'Narrative/Growth' },
+                    failure_mode: 'Collapse',
+                    elder_progress: 0.219
+                };
+
+                // Update metrics
+                updateMetrics(mockProfile);
+
+                // Create radar chart
+                createRadarChart(mockProfile);
+
+                // Create dimension lists
+                createDimensionLists(mockProfile);
+
+                // Load historical trends
+                await loadTrends();
+
+                // Show content
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                showError('Failed to load dashboard data');
+            }
+        }
+
+        function updateMetrics(profile) {
+            // Failure mode
+            const failureModeEl = document.getElementById('failure-mode');
+            failureModeEl.textContent = profile.failure_mode;
+            failureModeEl.className = `failure-mode ${profile.failure_mode.toLowerCase()}`;
+
+            // Kappa
+            const kappaEl = document.getElementById('kappa');
+            kappaEl.textContent = profile.kappa_bar.toFixed(3);
+            kappaEl.className = `metric-value ${profile.kappa_bar > 0.5 ? 'positive' : profile.kappa_bar < 0 ? 'negative' : 'neutral'}`;
+
+            // RU
+            document.getElementById('ru').textContent = profile.RU.toFixed(2);
+
+            // W
+            document.getElementById('witness').textContent = profile.W.toFixed(2);
+
+            // C
+            document.getElementById('coherence').textContent = profile.C.toFixed(2);
+
+            // Elder progress
+            const progressPct = (profile.elder_progress * 100).toFixed(1);
+            document.getElementById('elder-progress-text').textContent = `${progressPct}%`;
+            document.getElementById('elder-progress-bar').style.width = `${progressPct}%`;
+        }
+
+        function createRadarChart(profile) {
+            const ctx = document.getElementById('radar-chart');
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'P (Phase)', 'E (Existence)', 'μ (Cognition)', 'V (Value)',
+                        'N (Narrative)', 'Δ (Action)', 'R (Relation)', 'Φ (Field)'
+                    ],
+                    datasets: [
+                        {
+                            label: 'Inner Octave (Karma)',
+                            data: profile.inner_8d,
+                            fill: true,
+                            backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                            borderColor: '#d4af37',
+                            pointBackgroundColor: '#d4af37',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#d4af37'
+                        },
+                        {
+                            label: 'Outer Octave (Dharma)',
+                            data: profile.outer_8d,
+                            fill: true,
+                            backgroundColor: 'rgba(155, 89, 182, 0.2)',
+                            borderColor: '#9b59b6',
+                            pointBackgroundColor: '#9b59b6',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#9b59b6'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { color: '#a0a0b0', font: { size: 12 } },
+                            ticks: { color: '#a0a0b0', backdropColor: 'transparent' },
+                            suggestedMin: 0,
+                            suggestedMax: 1
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e8e8f0', font: { size: 14 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createDimensionLists(profile) {
+            const innerContainer = document.getElementById('inner-dimensions');
+            const outerContainer = document.getElementById('outer-dimensions');
+
+            profile.inner_8d.forEach((value, i) => {
+                const dim = DIM_NAMES[i];
+                innerContainer.innerHTML += `
+                    <div class="dimension-item">
+                        <div class="dimension-symbol">${dim}</div>
+                        <div class="dimension-name">${DIM_FULL[dim]}</div>
+                        <div class="dimension-value">${value.toFixed(3)}</div>
+                    </div>
+                `;
+            });
+
+            profile.outer_8d.forEach((value, i) => {
+                const dim = DIM_NAMES[i];
+                outerContainer.innerHTML += `
+                    <div class="dimension-item">
+                        <div class="dimension-symbol">${dim}ₜ</div>
+                        <div class="dimension-name">${DIM_FULL[dim]}</div>
+                        <div class="dimension-value">${value.toFixed(3)}</div>
+                    </div>
+                `;
+            });
+        }
+
+        async function loadTrends() {
+            // Mock trend data for 30 days
+            const dates = [];
+            const kappaData = [];
+            const ruData = [];
+            const elderData = [];
+
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                dates.push(date.toISOString().split('T')[0]);
+
+                // Generate mock trend data with some variation
+                kappaData.push(0.01 + Math.random() * 0.03);
+                ruData.push(1.5 + Math.random() * 0.5);
+                elderData.push(0.20 + Math.random() * 0.05);
+            }
+
+            createTrendChart('kappa-trend', 'κ̄ (Kappa)', dates, kappaData, '#d4af37');
+            createTrendChart('ru-trend', 'RU (Resonance Units)', dates, ruData, '#e74c3c');
+            createTrendChart('elder-trend', 'Elder Progress', dates, elderData, '#9b59b6');
+        }
+
+        function createTrendChart(canvasId, label, dates, data, color) {
+            const ctx = document.getElementById(canvasId);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderColor: color,
+                        backgroundColor: `${color}33`,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            ticks: { color: '#a0a0b0' },
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        },
+                        y: {
+                            ticks: { color: '#a0a0b0' },
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e8e8f0' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('error').textContent = message;
+        }
+
+        // Initialize dashboard
+        loadDashboard();
+    </script>
+</body>
+</html>
