@@ -151,6 +151,47 @@ async function generateReport(
     { expirationTtl: 86400 * 30 } // 30 days
   );
 
+  // Generate PDF via premium_app server
+  try {
+    const pdfResponse = await fetch(`http://5.161.216.149:5661/generate/${orderId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: email.split('@')[0],
+        birth_data: {
+          year: birthData.year,
+          month: birthData.month,
+          day: birthData.day,
+          hour: birthData.hour || 12,
+          minute: birthData.minute || 0,
+          latitude: birthData.latitude || 0,
+          longitude: birthData.longitude || 0
+        },
+        include_images: false  // Skip Gemini for speed
+      })
+    });
+
+    if (pdfResponse.ok) {
+      const result = await pdfResponse.json();
+
+      // Fetch the generated PDF
+      const pdfFile = await fetch(`http://5.161.216.149:5661${result.pdf_url}`)
+        .then(r => r.arrayBuffer());
+
+      // Upload PDF to R2
+      await env.STORAGE.put(`reports/${reportId}.pdf`, pdfFile, {
+        httpMetadata: { contentType: 'application/pdf' }
+      });
+
+      console.log(`PDF generated and uploaded for ${reportId}`);
+    } else {
+      console.error('PDF generation failed:', await pdfResponse.text());
+    }
+  } catch (error) {
+    console.error('PDF generation error:', error);
+    // Continue without PDF - can retry later
+  }
+
   // TODO: Send email with report access link
   console.log(`Report ${reportId} generated for order ${orderId}`);
 }

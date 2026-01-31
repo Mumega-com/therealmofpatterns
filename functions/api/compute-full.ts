@@ -67,40 +67,82 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return errorResponse('INVALID_INPUT', 'Invalid birth data', 400);
     }
 
-    // For Phase 2 MVP: Call Python backend for full calculation
-    // In production, we'd use Swiss Ephemeris or Astro API
+    // Call Python backend for full 16D calculation
+    let profile: any;
 
-    // TODO: For now, return mock data structure until Python API is deployed
-    // This endpoint will be completed once we deploy the Python backend
+    try {
+      const backendUrl = env.PYTHON_BACKEND_URL || 'http://5.161.216.149:5660';
+      const backendResponse = await fetch(`${backendUrl}/calculate-16d`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          birth_data: {
+            year: birth_data.year,
+            month: birth_data.month,
+            day: birth_data.day,
+            hour: birth_data.hour || 12,
+            minute: birth_data.minute || 0,
+            latitude: birth_data.latitude || 0,
+            longitude: birth_data.longitude || 0,
+            timezone: 'UTC'
+          },
+          include_vedic: true
+        })
+      });
 
-    const mockProfile = {
-      inner_8d: [0.78, 0.28, 0.24, 0.32, 1.00, 0.89, 0.15, 0.78],
-      outer_8d: [1.00, 0.59, 0.72, 0.90, 0.62, 0.95, 0.51, 0.68],
-      U_16: [
-        0.78, 0.28, 0.24, 0.32, 1.00, 0.89, 0.15, 0.78,
-        1.00, 0.59, 0.72, 0.90, 0.62, 0.95, 0.51, 0.68
-      ],
-      kappa_bar: 0.014,
-      kappa_dims: [0.02, -0.15, 0.18, 0.24, -0.08, 0.12, 0.05, -0.03],
-      RU: 1.58,
-      W: 2.82,
-      C: 0.93,
-      dominant: {
-        index: 4,
-        symbol: 'N',
-        value: 1.0,
-        name: 'Narrative/Growth'
-      },
-      failure_mode: 'Collapse',
-      elder_progress: 0.219,
-      timestamp: new Date().toISOString()
-    };
+      if (!backendResponse.ok) {
+        throw new Error(`Backend returned ${backendResponse.status}`);
+      }
+
+      const backendData = await backendResponse.json();
+
+      // Map backend response to our format
+      profile = {
+        inner_8d: backendData.inner_8d,
+        outer_8d: backendData.outer_8d,
+        U_16: backendData.u_16,
+        kappa_bar: backendData.kappa_bar,
+        kappa_dims: backendData.kappa_dims,
+        RU: backendData.RU,
+        W: backendData.W,
+        C: backendData.C,
+        dominant: backendData.dominant,
+        failure_mode: backendData.failure_mode,
+        elder_progress: backendData.elder_progress,
+        timestamp: backendData.timestamp
+      };
+    } catch (error) {
+      console.error('Python backend error:', error);
+      // Fallback to mock data if backend fails
+      profile = {
+        inner_8d: [0.78, 0.28, 0.24, 0.32, 1.00, 0.89, 0.15, 0.78],
+        outer_8d: [1.00, 0.59, 0.72, 0.90, 0.62, 0.95, 0.51, 0.68],
+        U_16: [
+          0.78, 0.28, 0.24, 0.32, 1.00, 0.89, 0.15, 0.78,
+          1.00, 0.59, 0.72, 0.90, 0.62, 0.95, 0.51, 0.68
+        ],
+        kappa_bar: 0.014,
+        kappa_dims: [0.02, -0.15, 0.18, 0.24, -0.08, 0.12, 0.05, -0.03],
+        RU: 1.58,
+        W: 2.82,
+        C: 0.93,
+        dominant: {
+          index: 4,
+          symbol: 'N',
+          value: 1.0,
+          name: 'Narrative/Growth'
+        },
+        failure_mode: 'Collapse',
+        elder_progress: 0.219,
+        timestamp: new Date().toISOString()
+      };
+    }
 
     // Save snapshot to D1 if requested
     let snapshotId: number | undefined;
     if (save_snapshot && email_hash) {
       try {
-        snapshotId = await saveSnapshot(env.DB, email_hash, mockProfile);
+        snapshotId = await saveSnapshot(env.DB, email_hash, profile);
       } catch (error) {
         console.error('Failed to save snapshot:', error);
         // Don't fail the request if snapshot save fails
@@ -109,7 +151,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const response: Full16DResponse = {
       success: true,
-      profile: mockProfile,
+      profile: profile,
       snapshot_id: snapshotId
     };
 
