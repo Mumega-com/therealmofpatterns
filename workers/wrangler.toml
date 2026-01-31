@@ -1,0 +1,17 @@
+# Cron Worker Configuration
+# Separate worker for handling scheduled tasks
+
+name = "therealmofpatterns-cron"
+main = "cron-worker.ts"
+compatibility_date = "2024-01-01"
+
+# Cron trigger - daily at 00:00 UTC
+[triggers]
+crons = ["0 0 * * *"]
+
+# Environment variables
+[vars]
+PAGES_URL = "https://therealmofpatterns.pages.dev"
+
+# Secrets (set via: wrangler secret put ADMIN_KEY --name therealmofpatterns-cron)
+# ADMIN_KEY

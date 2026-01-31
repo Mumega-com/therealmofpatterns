@@ -60,8 +60,11 @@ local_protocol = "http"
 # ============================================
 # Cron Triggers (Scheduled Jobs)
 # ============================================
-[triggers]
-crons = ["0 0 * * *"]  # Daily at 00:00 UTC
+# NOTE: For Pages projects, cron triggers must be configured via:
+# 1. Cloudflare Dashboard > Pages > Settings > Functions > Cron Triggers
+# 2. OR deploy a separate Worker with cron trigger
+# Schedule: "0 0 * * *" (Daily at 00:00 UTC)
+# Handler: functions/scheduled.ts
 
 # ============================================
 # Secrets (set via wrangler secret put <NAME>)
