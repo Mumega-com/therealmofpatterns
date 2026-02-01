@@ -847,6 +847,11 @@ class GeminiKeyRotator {
     if (env.GEMINI_API_KEY_4) this.keys.push(env.GEMINI_API_KEY_4);
     if (env.GEMINI_API_KEY_5) this.keys.push(env.GEMINI_API_KEY_5);
     if (env.GEMINI_API_KEY_6) this.keys.push(env.GEMINI_API_KEY_6);
+    if (env.GEMINI_API_KEY_7) this.keys.push(env.GEMINI_API_KEY_7);
+    if (env.GEMINI_API_KEY_8) this.keys.push(env.GEMINI_API_KEY_8);
+    if (env.GEMINI_API_KEY_9) this.keys.push(env.GEMINI_API_KEY_9);
+    if (env.GEMINI_API_KEY_10) this.keys.push(env.GEMINI_API_KEY_10);
+    if (env.GEMINI_API_KEY_11) this.keys.push(env.GEMINI_API_KEY_11);
 
     console.log(`[GEMINI] Loaded ${this.keys.length} API keys for rotation`);
   }

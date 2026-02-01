@@ -186,6 +186,11 @@ export interface Env {
   GEMINI_API_KEY_4?: string;
   GEMINI_API_KEY_5?: string;
   GEMINI_API_KEY_6?: string;
+  GEMINI_API_KEY_7?: string;
+  GEMINI_API_KEY_8?: string;
+  GEMINI_API_KEY_9?: string;
+  GEMINI_API_KEY_10?: string;
+  GEMINI_API_KEY_11?: string;
 
   // Python backend for PDF generation (optional)
   PYTHON_BACKEND_URL?: string;
