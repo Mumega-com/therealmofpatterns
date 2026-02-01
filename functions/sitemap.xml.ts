@@ -1,8 +1,12 @@
 /**
- * Dynamic Sitemap Generator for The Realm of Patterns
+ * Public Sitemap Endpoint for The Realm of Patterns
  *
- * Queries cosmic_content for all published pages and generates
- * a standard XML sitemap with:
+ * Priority order:
+ * 1. Serve from R2 storage (uploaded by /api/sitemap-analytics cron job)
+ * 2. Serve from KV cache
+ * 3. Dynamically generate from cms_cosmic_content
+ *
+ * Features:
  * - loc (full URL)
  * - lastmod (updated_at)
  * - changefreq (based on content_type)
@@ -78,9 +82,28 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
   // Check for lang query parameter to serve language-specific sitemap
   const langParam = url.searchParams.get('lang');
+  const sitemapKey = langParam ? `sitemap-${langParam}.xml` : 'sitemap.xml';
 
   try {
-    // Check cache first
+    // 1. Try to serve from R2 storage first (uploaded by /api/sitemap-analytics cron job)
+    try {
+      const r2Object = await env.STORAGE.get(sitemapKey);
+      if (r2Object) {
+        const sitemapXml = await r2Object.text();
+        return new Response(sitemapXml, {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/xml; charset=utf-8',
+            'Cache-Control': 'public, max-age=3600',
+            'X-Sitemap-Source': 'r2',
+          },
+        });
+      }
+    } catch (r2Error) {
+      console.log('[SITEMAP] R2 fetch failed, trying cache:', r2Error);
+    }
+
+    // 2. Check KV cache
     const cacheKey = langParam ? `sitemap:${langParam}` : 'sitemap:all';
     const cached = await env.CACHE.get(cacheKey);
     if (cached) {
@@ -89,15 +112,15 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         headers: {
           'Content-Type': 'application/xml; charset=utf-8',
           'Cache-Control': 'public, max-age=3600',
-          'X-Robots-Tag': 'noindex',
+          'X-Sitemap-Source': 'kv-cache',
         },
       });
     }
 
-    // Query all published content from cosmic_content
+    // 3. Dynamically generate from cms_cosmic_content
     let query = `
       SELECT id, slug, content_type, language, updated_at, hreflang_map
-      FROM cosmic_content
+      FROM cms_cosmic_content
       WHERE published = 1
     `;
 
@@ -125,7 +148,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       headers: {
         'Content-Type': 'application/xml; charset=utf-8',
         'Cache-Control': 'public, max-age=3600',
-        'X-Robots-Tag': 'noindex',
+        'X-Sitemap-Source': 'dynamic',
       },
     });
   } catch (error) {
@@ -147,6 +170,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       headers: {
         'Content-Type': 'application/xml; charset=utf-8',
         'Cache-Control': 'public, max-age=300',
+        'X-Sitemap-Source': 'fallback',
       },
     });
   }

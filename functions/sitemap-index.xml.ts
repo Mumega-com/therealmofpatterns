@@ -44,7 +44,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       try {
         const result = await env.DB.prepare(`
           SELECT MAX(updated_at) as last_modified
-          FROM cosmic_content
+          FROM cms_cosmic_content
           WHERE published = 1 AND language = ?
         `).bind(lang).first<{ last_modified: string | null }>();
 

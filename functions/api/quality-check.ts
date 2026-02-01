@@ -7,17 +7,21 @@
  * 2. Manual trigger from admin dashboard
  *
  * Features:
- * - Validates content quality (word count, structure, SEO)
- * - Retries failed queue items (up to max_retries)
- * - Updates quality scores in cosmic_content
- * - Reports validation results
+ * - Queries cms_cosmic_content for low quality_score items (< 0.5)
+ * - Retries failed queue items (reset status to pending if attempts < max_retries)
+ * - Updates quality scores based on content validation
+ * - Reports validation results with QualityCheckResult
  */
 
 import { Env } from '../../src/types';
 
+// Quality threshold default (0.0 - 1.0 scale, stored as 0-100 in DB)
+const DEFAULT_QUALITY_THRESHOLD = 0.5; // 50 in DB scale
+
 interface RequestBody {
-  retry_failed?: boolean; // Whether to retry failed items
+  retry_failed?: boolean; // Whether to retry failed items (default: true)
   max_retries?: number; // Max retry attempts (default: 3)
+  quality_threshold?: number; // Quality score threshold 0-1 (default: 0.5)
   admin_key?: string;
 }
 
@@ -40,7 +44,10 @@ interface ContentItem {
   title: string;
   content_blocks: string;
   meta_description: string;
-  status: string;
+  quality_score: number;
+  word_count: number;
+  language: string;
+  content_type: string;
 }
 
 interface QueueItem {
@@ -50,6 +57,7 @@ interface QueueItem {
   status: string;
   attempts: number;
   error_message: string;
+  created_at: string;
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -69,10 +77,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return errorResponse('UNAUTHORIZED', 'Invalid admin key', 401);
     }
 
-    const maxRetries = body.max_retries || 3;
-    const retryFailed = body.retry_failed !== false;
+    const maxRetries = body.max_retries ?? 3;
+    const retryFailed = body.retry_failed ?? true;
+    const qualityThreshold = body.quality_threshold ?? DEFAULT_QUALITY_THRESHOLD;
+    // Convert 0-1 scale to 0-100 DB scale
+    const dbThreshold = qualityThreshold * 100;
 
-    console.log('[QC] Running quality check...');
+    console.log(`[QC] Running quality check (threshold=${qualityThreshold}, retry_failed=${retryFailed}, max_retries=${maxRetries})...`);
 
     let checked = 0;
     let passed = 0;
@@ -81,56 +92,91 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const errors: string[] = [];
 
     // ============================================
-    // Part 1: Check recently published content
+    // Part 1: Check low quality content from cms_cosmic_content
     // ============================================
-    const recentContent = await getRecentContent(env.DB);
-    console.log(`[QC] Checking ${recentContent.length} recent content items...`);
+    try {
+      const lowQualityContent = await getLowQualityContent(env.DB, dbThreshold);
+      console.log(`[QC] Found ${lowQualityContent.length} items with quality_score < ${dbThreshold}...`);
 
-    for (const item of recentContent) {
-      checked++;
+      // Also get total published count for accurate passed count
+      const totalPublished = await getTotalPublishedCount(env.DB);
+      checked = totalPublished;
+      failed = lowQualityContent.length;
+      passed = totalPublished - failed;
 
-      const issues = validateContent(item);
+      // Re-validate and potentially update scores for low quality items
+      for (const item of lowQualityContent) {
+        const issues = validateContent(item);
 
-      if (issues.length === 0) {
-        passed++;
-        // Update quality score if needed
-        await updateQualityScore(env.DB, item.id, 100);
-      } else {
-        failed++;
-        errors.push(`${item.slug}: ${issues.join(', ')}`);
+        if (issues.length > 0) {
+          errors.push(`${item.slug}: ${issues.join(', ')}`);
 
-        // Calculate quality score based on issues
-        const qualityScore = Math.max(0, 100 - issues.length * 20);
-        await updateQualityScore(env.DB, item.id, qualityScore);
+          // Recalculate quality score based on validation
+          const newScore = calculateQualityScore(item, issues);
+          if (newScore !== item.quality_score) {
+            await updateQualityScore(env.DB, item.id, newScore);
+            console.log(`[QC] Updated quality score for ${item.slug}: ${item.quality_score} -> ${newScore}`);
+          }
 
-        // Mark as needing review if score too low
-        if (qualityScore < 50) {
-          await markForReview(env.DB, item.id);
+          // Unpublish if score is critically low (< 30)
+          if (newScore < 30) {
+            await unpublishContent(env.DB, item.id);
+            console.log(`[QC] Unpublished critically low quality content: ${item.slug}`);
+          }
         }
       }
+
+      console.log(`[QC] Content check: ${passed} passed, ${failed} failed out of ${checked} total`);
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      console.error('[QC] Error checking content quality:', errorMsg);
+      errors.push(`Content quality check failed: ${errorMsg}`);
     }
 
     // ============================================
     // Part 2: Retry failed queue items
     // ============================================
     if (retryFailed) {
-      const failedItems = await getFailedQueueItems(env.DB, maxRetries);
-      console.log(`[QC] Found ${failedItems.length} failed items eligible for retry...`);
+      try {
+        const failedItems = await getFailedQueueItems(env.DB, maxRetries);
+        console.log(`[QC] Found ${failedItems.length} failed queue items eligible for retry (attempts < ${maxRetries})...`);
 
-      for (const item of failedItems) {
-        // Reset status to pending for retry
-        await resetForRetry(env.DB, item.id);
-        retried++;
+        for (const item of failedItems) {
+          try {
+            // Reset status to pending for retry
+            await resetForRetry(env.DB, item.id);
+            retried++;
+            console.log(`[QC] Reset queue item ${item.id} for retry (was attempt ${item.attempts})`);
+          } catch (error) {
+            const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+            console.error(`[QC] Failed to reset queue item ${item.id}:`, errorMsg);
+            errors.push(`Failed to reset ${item.id}: ${errorMsg}`);
+          }
+        }
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+        console.error('[QC] Error retrying failed items:', errorMsg);
+        errors.push(`Queue retry failed: ${errorMsg}`);
       }
     }
 
+    // ============================================
+    // Part 3: Log stats
+    // ============================================
+    try {
+      await logQualityCheckStats(env.DB, checked, passed, failed, retried);
+    } catch (error) {
+      console.error('[QC] Failed to log stats:', error);
+      // Non-fatal error, don't add to errors array
+    }
+
     const result: QualityCheckResult = {
-      success: true,
+      success: errors.length === 0,
       checked,
       passed,
       failed,
       retried,
-      errors: errors.slice(0, 10), // Limit errors in response
+      errors: errors.slice(0, 20), // Limit errors in response
     };
 
     console.log(`[QC] Completed: ${checked} checked, ${passed} passed, ${failed} failed, ${retried} retried`);
@@ -147,17 +193,27 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 // Content Validation
 // ============================================
 
-async function getRecentContent(db: D1Database): Promise<ContentItem[]> {
-  // Get content published in last 24 hours that hasn't been quality checked
+async function getLowQualityContent(db: D1Database, threshold: number): Promise<ContentItem[]> {
+  // Get published content with quality_score below threshold
   const { results } = await db.prepare(`
-    SELECT id, slug, title, content_blocks, meta_description, status
-    FROM cosmic_content
-    WHERE published_at > datetime('now', '-24 hours')
-    AND (quality_checked_at IS NULL OR quality_checked_at < datetime('now', '-24 hours'))
-    LIMIT 50
-  `).all();
+    SELECT id, slug, title, content_blocks, meta_description, quality_score, word_count, language, content_type
+    FROM cms_cosmic_content
+    WHERE published = 1 AND quality_score < ?
+    ORDER BY quality_score ASC
+    LIMIT 100
+  `).bind(threshold).all();
 
   return (results || []) as unknown as ContentItem[];
+}
+
+async function getTotalPublishedCount(db: D1Database): Promise<number> {
+  const result = await db.prepare(`
+    SELECT COUNT(*) as count
+    FROM cms_cosmic_content
+    WHERE published = 1
+  `).first();
+
+  return (result?.count as number) || 0;
 }
 
 function validateContent(item: ContentItem): string[] {
@@ -185,7 +241,7 @@ function validateContent(item: ContentItem): string[] {
     if (!Array.isArray(blocks) || blocks.length === 0) {
       issues.push('no content blocks');
     } else {
-      // Check total word count
+      // Check total word count from blocks
       const totalText = blocks.map((b: any) => b.content || '').join(' ');
       const wordCount = totalText.split(/\s+/).filter((w: string) => w.length > 0).length;
 
@@ -197,20 +253,40 @@ function validateContent(item: ContentItem): string[] {
     issues.push('invalid content blocks JSON');
   }
 
+  // Check word count from DB
+  if (item.word_count < 100) {
+    issues.push('word count critically low');
+  }
+
   // Check for placeholder text
   const content = JSON.stringify(item);
-  if (content.includes('Lorem ipsum') || content.includes('[PLACEHOLDER]')) {
+  if (content.includes('Lorem ipsum') || content.includes('[PLACEHOLDER]') || content.includes('[TODO]')) {
     issues.push('contains placeholder text');
   }
 
   return issues;
 }
 
+function calculateQualityScore(item: ContentItem, issues: string[]): number {
+  let score = 100;
+
+  // Deduct points based on issues
+  score -= issues.length * 15;
+
+  // Bonus/penalty based on word count
+  if (item.word_count >= 800) score += 10;
+  else if (item.word_count >= 500) score += 5;
+  else if (item.word_count < 200) score -= 10;
+
+  // Ensure score is within bounds
+  return Math.max(0, Math.min(100, score));
+}
+
 async function updateQualityScore(db: D1Database, id: string, score: number): Promise<void> {
   try {
     await db.prepare(`
-      UPDATE cosmic_content
-      SET quality_score = ?, quality_checked_at = ?
+      UPDATE cms_cosmic_content
+      SET quality_score = ?, updated_at = ?
       WHERE id = ?
     `).bind(score, new Date().toISOString(), id).run();
   } catch (error) {
@@ -218,15 +294,15 @@ async function updateQualityScore(db: D1Database, id: string, score: number): Pr
   }
 }
 
-async function markForReview(db: D1Database, id: string): Promise<void> {
+async function unpublishContent(db: D1Database, id: string): Promise<void> {
   try {
     await db.prepare(`
-      UPDATE cosmic_content
-      SET status = 'review'
+      UPDATE cms_cosmic_content
+      SET published = 0, updated_at = ?
       WHERE id = ?
-    `).bind(id).run();
+    `).bind(new Date().toISOString(), id).run();
   } catch (error) {
-    console.error(`[QC] Failed to mark for review ${id}:`, error);
+    console.error(`[QC] Failed to unpublish content ${id}:`, error);
   }
 }
 
@@ -236,25 +312,62 @@ async function markForReview(db: D1Database, id: string): Promise<void> {
 
 async function getFailedQueueItems(db: D1Database, maxRetries: number): Promise<QueueItem[]> {
   const { results } = await db.prepare(`
-    SELECT id, content_type, language, status, attempts, error_message
+    SELECT id, content_type, language, status, attempts, error_message, created_at
     FROM content_queue
     WHERE status = 'failed'
     AND (attempts IS NULL OR attempts < ?)
-    LIMIT 20
+    ORDER BY created_at ASC
+    LIMIT 50
   `).bind(maxRetries).all();
 
   return (results || []) as unknown as QueueItem[];
 }
 
 async function resetForRetry(db: D1Database, id: string): Promise<void> {
+  await db.prepare(`
+    UPDATE content_queue
+    SET status = 'pending',
+        error_message = NULL,
+        started_at = NULL,
+        completed_at = NULL
+    WHERE id = ?
+  `).bind(id).run();
+}
+
+// ============================================
+// Stats Logging
+// ============================================
+
+async function logQualityCheckStats(
+  db: D1Database,
+  _checked: number, // Total checked (included for completeness, not logged separately)
+  passed: number,
+  failed: number,
+  retried: number
+): Promise<void> {
+  const today = new Date().toISOString().split('T')[0];
+  const apiKeySuffix = 'quality-check';
+
   try {
+    const id = crypto.randomUUID();
     await db.prepare(`
-      UPDATE content_queue
-      SET status = 'pending', error_message = NULL
-      WHERE id = ?
-    `).bind(id).run();
+      INSERT INTO generation_stats (id, date, api_key_suffix, pages_generated, errors, tokens_used, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(date, api_key_suffix) DO UPDATE SET
+        pages_generated = excluded.pages_generated,
+        errors = excluded.errors,
+        tokens_used = excluded.tokens_used
+    `).bind(
+      id,
+      today,
+      apiKeySuffix,
+      passed,   // pages_generated = passed count
+      failed,   // errors = failed count
+      retried,  // tokens_used = retried count (repurposing field for this endpoint)
+      new Date().toISOString()
+    ).run();
   } catch (error) {
-    console.error(`[QC] Failed to reset queue item ${id}:`, error);
+    console.error('[QC] Failed to log quality check stats:', error);
   }
 }
 

@@ -114,10 +114,10 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       });
     }
 
-    // Query all published content for this language
+    // Query all published content for this language from cms_cosmic_content
     const { results } = await env.DB.prepare(`
       SELECT id, slug, canonical_slug, content_type, language, title, updated_at, hreflang_map
-      FROM cosmic_content
+      FROM cms_cosmic_content
       WHERE published = 1 AND language = ?
       ORDER BY
         CASE content_type

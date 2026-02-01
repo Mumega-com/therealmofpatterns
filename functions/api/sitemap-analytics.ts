@@ -17,7 +17,6 @@ import { Env } from '../../src/types';
 
 // Supported languages
 const SUPPORTED_LANGUAGES = ['en', 'pt-br', 'pt-pt', 'es-mx', 'es-ar', 'es-es'] as const;
-type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
 
 interface RequestBody {
   regenerate_sitemap?: boolean;
@@ -190,30 +189,42 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 // ============================================
 
 async function getAllPublishedPages(db: D1Database): Promise<ContentPage[]> {
-  // Get all published content
+  // Get all published content from cms_cosmic_content
   const { results: contentResults } = await db.prepare(`
-    SELECT slug, language_code, content_type, updated_at, view_count
-    FROM cosmic_content
-    WHERE status = 'published'
+    SELECT
+      slug,
+      language as language_code,
+      content_type,
+      updated_at,
+      0 as view_count
+    FROM cms_cosmic_content
+    WHERE published = 1
     ORDER BY updated_at DESC
   `).all();
 
-  // Get all cosmic weather content
-  const { results: weatherResults } = await db.prepare(`
-    SELECT
-      id as slug,
-      language_code,
-      'daily_weather' as content_type,
-      created_at as updated_at,
-      0 as view_count
-    FROM cosmic_weather_content
-    WHERE date >= date('now', '-30 days')
-    ORDER BY date DESC
-  `).all();
+  // Get all cosmic weather content (if table exists)
+  let weatherResults: any[] = [];
+  try {
+    const weatherQuery = await db.prepare(`
+      SELECT
+        id as slug,
+        language_code,
+        'daily_weather' as content_type,
+        created_at as updated_at,
+        0 as view_count
+      FROM cosmic_weather_content
+      WHERE date >= date('now', '-30 days')
+      ORDER BY date DESC
+    `).all();
+    weatherResults = weatherQuery.results || [];
+  } catch {
+    // Table may not exist yet, that's okay
+    console.log('[SITEMAP] cosmic_weather_content table not found, skipping weather pages');
+  }
 
   const allPages = [
     ...(contentResults || []),
-    ...(weatherResults || []),
+    ...weatherResults,
   ] as ContentPage[];
 
   return allPages;
@@ -280,59 +291,87 @@ function escapeXml(str: string): string {
 // ============================================
 
 async function aggregateAnalytics(db: D1Database): Promise<SitemapResult['analytics_summary']> {
-  // Total views today
-  const { results: viewsResult } = await db.prepare(`
-    SELECT COUNT(*) as total
-    FROM content_analytics
-    WHERE event_type = 'view'
-    AND created_at >= date('now', '-1 day')
-  `).all();
-  const totalViews = (viewsResult?.[0] as any)?.total || 0;
+  // Total views (all time from cms_content_analytics)
+  let totalViews = 0;
+  try {
+    const { results: viewsResult } = await db.prepare(`
+      SELECT COUNT(*) as total
+      FROM cms_content_analytics
+      WHERE event_type = 'view'
+    `).all();
+    totalViews = (viewsResult?.[0] as any)?.total || 0;
+  } catch (error) {
+    console.log('[SITEMAP] Error counting total views:', error);
+  }
 
-  // Unique visitors today
-  const { results: visitorsResult } = await db.prepare(`
-    SELECT COUNT(DISTINCT visitor_hash) as unique_count
-    FROM content_analytics
-    WHERE event_type = 'view'
-    AND created_at >= date('now', '-1 day')
-  `).all();
-  const uniqueVisitors = (visitorsResult?.[0] as any)?.unique_count || 0;
+  // Unique visitors (count distinct content_id + country combinations)
+  let uniqueVisitors = 0;
+  try {
+    const { results: visitorsResult } = await db.prepare(`
+      SELECT COUNT(*) as unique_count
+      FROM (
+        SELECT DISTINCT content_id, country
+        FROM cms_content_analytics
+        WHERE event_type = 'view'
+      )
+    `).all();
+    uniqueVisitors = (visitorsResult?.[0] as any)?.unique_count || 0;
+  } catch (error) {
+    console.log('[SITEMAP] Error counting unique visitors:', error);
+  }
 
-  // Top pages by views (from cosmic_content view_count)
-  const { results: topPagesResult } = await db.prepare(`
-    SELECT slug, view_count as views
-    FROM cosmic_content
-    WHERE status = 'published'
-    ORDER BY view_count DESC
-    LIMIT 10
-  `).all();
-  const topPages = (topPagesResult || []).map((p: any) => ({
-    slug: p.slug,
-    views: p.views || 0,
-  }));
+  // Top 10 pages by views (join cms_cosmic_content with analytics)
+  let topPages: Array<{ slug: string; views: number }> = [];
+  try {
+    const { results: topPagesResult } = await db.prepare(`
+      SELECT c.slug, COUNT(a.id) as views
+      FROM cms_cosmic_content c
+      LEFT JOIN cms_content_analytics a ON c.id = a.content_id AND a.event_type = 'view'
+      WHERE c.published = 1
+      GROUP BY c.id, c.slug
+      ORDER BY views DESC
+      LIMIT 10
+    `).all();
+    topPages = (topPagesResult || []).map((p: any) => ({
+      slug: p.slug,
+      views: p.views || 0,
+    }));
+  } catch (error) {
+    console.log('[SITEMAP] Error fetching top pages:', error);
+  }
 
   // Views by language
-  const { results: langResult } = await db.prepare(`
-    SELECT language_code, SUM(view_count) as views
-    FROM cosmic_content
-    WHERE status = 'published'
-    GROUP BY language_code
-  `).all();
   const viewsByLanguage: Record<string, number> = {};
-  for (const row of langResult || []) {
-    viewsByLanguage[(row as any).language_code] = (row as any).views || 0;
+  try {
+    const { results: langResult } = await db.prepare(`
+      SELECT c.language, COUNT(a.id) as views
+      FROM cms_cosmic_content c
+      LEFT JOIN cms_content_analytics a ON c.id = a.content_id AND a.event_type = 'view'
+      WHERE c.published = 1
+      GROUP BY c.language
+    `).all();
+    for (const row of langResult || []) {
+      viewsByLanguage[(row as any).language] = (row as any).views || 0;
+    }
+  } catch (error) {
+    console.log('[SITEMAP] Error fetching views by language:', error);
   }
 
   // Views by content type
-  const { results: typeResult } = await db.prepare(`
-    SELECT content_type, SUM(view_count) as views
-    FROM cosmic_content
-    WHERE status = 'published'
-    GROUP BY content_type
-  `).all();
   const viewsByContentType: Record<string, number> = {};
-  for (const row of typeResult || []) {
-    viewsByContentType[(row as any).content_type] = (row as any).views || 0;
+  try {
+    const { results: typeResult } = await db.prepare(`
+      SELECT c.content_type, COUNT(a.id) as views
+      FROM cms_cosmic_content c
+      LEFT JOIN cms_content_analytics a ON c.id = a.content_id AND a.event_type = 'view'
+      WHERE c.published = 1
+      GROUP BY c.content_type
+    `).all();
+    for (const row of typeResult || []) {
+      viewsByContentType[(row as any).content_type] = (row as any).views || 0;
+    }
+  } catch (error) {
+    console.log('[SITEMAP] Error fetching views by content type:', error);
   }
 
   return {
