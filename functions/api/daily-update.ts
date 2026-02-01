@@ -9,6 +9,7 @@
  * Features:
  * - UV snapshots for subscribed users
  * - Cosmic weather content for 6 languages (en, pt-br, pt-pt, es-mx, es-ar, es-es)
+ * - Stores to cms_cosmic_content table with date-based slugs
  * - Threshold alerts and Elder milestone tracking
  */
 
@@ -59,19 +60,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const body: RequestBody = await request.json();
 
-    // Check authorization
-    // Cron requests have special header, manual requests need admin key
-    const cronAuth = request.headers.get('Cf-Cron-Auth');
-    const isValidCron = cronAuth !== null; // Cloudflare adds this header automatically
+    // Check authorization - ADMIN_KEY must be configured in environment
+    const adminKey = body.admin_key || request.headers.get('X-Admin-Key');
+    if (!env.ADMIN_KEY) {
+      console.error('[DAILY-UPDATE] ADMIN_KEY not configured in environment');
+      return errorResponse('CONFIGURATION_ERROR', 'Admin key not configured', 500);
+    }
 
-    if (!isValidCron) {
-      // Manual trigger - check admin key
-      const adminKey = body.admin_key || request.headers.get('X-Admin-Key');
-      const validAdminKey = env.ADMIN_KEY || 'change-me-in-production';
-
-      if (adminKey !== validAdminKey) {
-        return errorResponse('UNAUTHORIZED', 'Invalid admin key', 401);
-      }
+    if (adminKey !== env.ADMIN_KEY) {
+      return errorResponse('UNAUTHORIZED', 'Invalid admin key', 401);
     }
 
     // Get target date (default to today UTC)
@@ -88,37 +85,66 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     // Part 1: Generate Cosmic Weather Content
     // ============================================
     if (!body.skip_content) {
-      console.log(`[DAILY] Generating cosmic weather content for ${targetDate}...`);
+      console.log(`[DAILY-UPDATE] Generating cosmic weather content for ${targetDate}...`);
 
       // Initialize key rotator for multiple API keys
       const keyRotator = new GeminiKeyRotator(env);
 
       for (const lang of languagesToGenerate) {
         try {
+          // Build slug: {lang}/cosmic-weather/{YYYY-MM-DD}
+          const slug = `${lang}/cosmic-weather/${targetDate}`;
+
           // Check if content already exists for this date/language
           const existing = await env.DB.prepare(`
-            SELECT id FROM cosmic_weather_content
-            WHERE date = ? AND language_code = ?
-          `).bind(targetDate, lang).first();
+            SELECT id FROM cms_cosmic_content
+            WHERE slug = ? AND content_type = 'daily_weather'
+          `).bind(slug).first();
 
           if (existing) {
-            console.log(`[DAILY] Content already exists for ${targetDate}/${lang}, skipping`);
+            console.log(`[DAILY-UPDATE] Content already exists for ${slug}, skipping`);
             languagesCompleted.push(lang);
             continue;
           }
+
+          // Create placeholder entry with 'processing' status
+          const contentId = crypto.randomUUID();
+          await env.DB.prepare(`
+            INSERT INTO cms_cosmic_content (
+              id, slug, canonical_slug, content_type, language, title,
+              status, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          `).bind(
+            contentId,
+            slug,
+            `cosmic-weather/${targetDate}`,
+            'daily_weather',
+            lang,
+            `Cosmic Weather - ${targetDate}`,
+            'processing',
+            new Date().toISOString(),
+            new Date().toISOString()
+          ).run();
 
           // Generate content using Gemini with key rotation
           const content = await generateCosmicWeatherContent(env, targetDate, lang, keyRotator);
 
           if (content) {
-            // Store in D1
-            await storeCosmicWeatherContent(env.DB, targetDate, lang, content);
+            // Update the entry with generated content
+            await updateCosmicWeatherContent(env.DB, contentId, content);
             contentGenerated++;
             languagesCompleted.push(lang);
-            console.log(`[DAILY] Generated content for ${targetDate}/${lang}`);
+            console.log(`[DAILY-UPDATE] Generated content for ${slug}`);
+          } else {
+            // Mark as failed
+            await env.DB.prepare(`
+              UPDATE cms_cosmic_content SET status = 'failed', updated_at = ?
+              WHERE id = ?
+            `).bind(new Date().toISOString(), contentId).run();
+            errors++;
           }
         } catch (error) {
-          console.error(`[DAILY] Error generating content for ${lang}:`, error);
+          console.error(`[DAILY-UPDATE] Error generating content for ${lang}:`, error);
           errors++;
         }
       }
@@ -133,7 +159,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       const usersToUpdate = await getUsersForUpdate(env.DB, body.user_email_hash);
 
       if (usersToUpdate.length > 0) {
-        console.log(`[DAILY] Updating ${usersToUpdate.length} user snapshots...`);
+        console.log(`[DAILY-UPDATE] Updating ${usersToUpdate.length} user snapshots...`);
 
         for (const user of usersToUpdate) {
           try {
@@ -177,7 +203,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       errors
     };
 
-    console.log(`[DAILY] Completed: ${contentGenerated} content, ${snapshotsCreated} snapshots, ${errors} errors`);
+    console.log(`[DAILY-UPDATE] Completed: ${contentGenerated} content, ${snapshotsCreated} snapshots, ${errors} errors`);
 
     return jsonResponse(response);
 
@@ -193,20 +219,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
 interface CosmicWeatherContent {
   title: string;
-  summary: string;
-  detailed_content: {
-    overview: string;
-    morning_focus: string;
-    afternoon_energy: string;
-    evening_reflection: string;
-    daily_question: string;
-    practical_suggestions: string[];
-    caution: string;
-    affirmation: string;
-  };
-  vedic_insights: string;
-  western_insights: string;
-  practical_guidance: string;
+  meta_description: string;
+  hero_content: string;
+  content_blocks: any[];
+  faqs: { question: string; answer: string }[];
+  schema_markup: any;
+  word_count: number;
+  quality_score: number;
   vector: number[];
   dominant: {
     dimension: string;
@@ -225,7 +244,7 @@ async function generateCosmicWeatherContent(
   language: SupportedLanguage,
   keyRotator: GeminiKeyRotator
 ): Promise<CosmicWeatherContent | null> {
-  // Get the 8 Mu vector for this date (mock for now, integrate with Python later)
+  // Get the 8 Mu vector for this date
   const vector = generateDailyVector(date);
   const dominantIdx = vector.indexOf(Math.max(...vector));
   const dimKeys = Object.keys(MU_DIMENSIONS);
@@ -256,24 +275,49 @@ async function generateCosmicWeatherContent(
     }
 
     // Parse and validate response
-    const content = parseGeminiResponse(response);
+    const parsed = parseGeminiResponse(response);
+
+    if (!parsed || !parsed.poetic_opening) {
+      console.error(`[GEMINI] Invalid response structure for ${language}`);
+      return null;
+    }
+
+    // Build content blocks
+    const contentBlocks = [
+      { type: 'poetic_opening', content: parsed.poetic_opening || '' },
+      { type: 'overall_energy', content: parsed.overall_cosmic_energy || '' },
+      { type: 'highlighted_dimensions', content: parsed.highlighted_dimensions || [] },
+      { type: 'practical_guidance', content: parsed.practical_guidance || '' },
+      { type: 'morning_focus', content: parsed.morning_focus || '' },
+      { type: 'afternoon_energy', content: parsed.afternoon_energy || '' },
+      { type: 'evening_reflection', content: parsed.evening_reflection || '' },
+      { type: 'daily_question', content: parsed.daily_question || '' },
+      { type: 'affirmation', content: parsed.affirmation || '' }
+    ];
+
+    // Build FAQs
+    const faqs = parsed.faqs || [
+      { question: 'What does today\'s cosmic weather mean for me?', answer: parsed.practical_guidance || '' }
+    ];
+
+    // Calculate word count
+    const wordCount = countWords(JSON.stringify(parsed));
+
+    // Calculate quality score
+    const qualityScore = calculateQualityScore(parsed, wordCount);
+
+    // Build schema markup
+    const schemaMarkup = buildSchemaMarkup(date, parsed);
 
     return {
-      title: content.theme || `Cosmic Weather - ${date}`,
-      summary: content.overview?.substring(0, 500) || '',
-      detailed_content: {
-        overview: content.overview || '',
-        morning_focus: content.morning_focus || '',
-        afternoon_energy: content.afternoon_energy || '',
-        evening_reflection: content.evening_reflection || '',
-        daily_question: content.daily_question || '',
-        practical_suggestions: content.practical_suggestions || [],
-        caution: content.caution || '',
-        affirmation: content.affirmation || ''
-      },
-      vedic_insights: content.vedic_insights || '',
-      western_insights: content.western_insights || '',
-      practical_guidance: content.practical_guidance || '',
+      title: parsed.title || `Cosmic Weather for ${date}`,
+      meta_description: parsed.meta_description || parsed.overall_cosmic_energy?.substring(0, 160) || '',
+      hero_content: parsed.poetic_opening || '',
+      content_blocks: contentBlocks,
+      faqs,
+      schema_markup: schemaMarkup,
+      word_count: wordCount,
+      quality_score: qualityScore,
       vector,
       dominant
     };
@@ -383,28 +427,130 @@ Style: ${voice.style}
 **Current 8 Mu Vector:** [${vector.map(v => v.toFixed(3)).join(', ')}]
 **Dominant Dimension:** ${dominant.name} (${dominant.symbol}) at ${(dominant.value * 100).toFixed(1)}%
 
-## Generate JSON matching this structure:
+## Generate cosmic weather content including:
+1. A poetic opening statement (2-3 sentences, evocative but grounded)
+2. Overall cosmic energy for the day (2-3 paragraphs)
+3. Which dimensions are highlighted and why (list top 3 with brief explanation)
+4. Practical guidance for navigating the day (actionable, specific)
+
+## Return JSON matching this structure:
 
 {
-  "theme": "2-4 word theme",
-  "overview": "2-3 paragraph overview (150-200 words)",
-  "dimension_highlights": [
-    {"dimension": "...", "value": 0.0, "guidance": "1-2 sentences"}
+  "title": "Cosmic Weather for ${date}",
+  "meta_description": "SEO meta description (max 160 chars)",
+  "poetic_opening": "A poetic 2-3 sentence opening that captures the day's essence",
+  "overall_cosmic_energy": "2-3 paragraph overview of the day's energy (200-300 words)",
+  "highlighted_dimensions": [
+    {"dimension": "${dominant.symbol}", "name": "${dominant.name}", "value": ${dominant.value}, "guidance": "1-2 sentences"}
   ],
+  "practical_guidance": "3-4 actionable suggestions for the day (150-200 words)",
   "morning_focus": "2-3 sentences for morning energy",
   "afternoon_energy": "2-3 sentences for afternoon activities",
   "evening_reflection": "2-3 sentences for evening wind-down",
   "daily_question": "One contemplative question for self-reflection",
-  "practical_suggestions": ["3-5 actionable items for the day"],
-  "caution": "What to watch for today (1-2 sentences)",
   "affirmation": "Daily affirmation aligned with the dominant dimension",
-  "vedic_insights": "1-2 paragraphs on Vedic/Jyotish perspective (100-150 words)",
-  "western_insights": "1-2 paragraphs on Western astrological perspective (100-150 words)",
-  "practical_guidance": "Synthesis of both traditions into practical wisdom (100-150 words)"
+  "faqs": [
+    {"question": "What does ${dominant.name} dominant mean?", "answer": "Brief explanation"},
+    {"question": "How can I work with today's energy?", "answer": "Practical guidance"}
+  ]
 }
 
 If language is not English, translate all content naturally into ${languageNames[language]}.
 Return ONLY valid JSON, no markdown code blocks.`;
+}
+
+/**
+ * Update cosmic weather content in cms_cosmic_content table
+ */
+async function updateCosmicWeatherContent(
+  db: D1Database,
+  contentId: string,
+  content: CosmicWeatherContent
+): Promise<void> {
+  await db.prepare(`
+    UPDATE cms_cosmic_content SET
+      title = ?,
+      meta_description = ?,
+      hero_content = ?,
+      content_blocks = ?,
+      faqs = ?,
+      schema_markup = ?,
+      quality_score = ?,
+      word_count = ?,
+      status = 'published',
+      published = 1,
+      updated_at = ?
+    WHERE id = ?
+  `).bind(
+    content.title,
+    content.meta_description,
+    content.hero_content,
+    JSON.stringify(content.content_blocks),
+    JSON.stringify(content.faqs),
+    JSON.stringify(content.schema_markup),
+    content.quality_score,
+    content.word_count,
+    new Date().toISOString(),
+    contentId
+  ).run();
+}
+
+/**
+ * Count words in text
+ */
+function countWords(text: string): number {
+  return text.split(/\s+/).filter(word => word.length > 0).length;
+}
+
+/**
+ * Calculate quality score based on content completeness
+ */
+function calculateQualityScore(parsed: any, wordCount: number): number {
+  let score = 0;
+
+  // Word count (0-30 points)
+  if (wordCount >= 500) score += 30;
+  else if (wordCount >= 300) score += 20;
+  else if (wordCount >= 100) score += 10;
+
+  // Has poetic opening (0-15 points)
+  if (parsed.poetic_opening && parsed.poetic_opening.length >= 50) score += 15;
+
+  // Has overall energy (0-15 points)
+  if (parsed.overall_cosmic_energy && parsed.overall_cosmic_energy.length >= 200) score += 15;
+
+  // Has highlighted dimensions (0-20 points)
+  if (parsed.highlighted_dimensions && parsed.highlighted_dimensions.length >= 3) score += 20;
+  else if (parsed.highlighted_dimensions && parsed.highlighted_dimensions.length >= 1) score += 10;
+
+  // Has practical guidance (0-20 points)
+  if (parsed.practical_guidance && parsed.practical_guidance.length >= 100) score += 20;
+  else if (parsed.practical_guidance && parsed.practical_guidance.length >= 50) score += 10;
+
+  return Math.min(score, 100);
+}
+
+/**
+ * Build schema.org markup for SEO
+ */
+function buildSchemaMarkup(date: string, parsed: any): any {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: parsed.title || `Cosmic Weather for ${date}`,
+    description: parsed.meta_description || parsed.overall_cosmic_energy?.substring(0, 160),
+    datePublished: new Date().toISOString(),
+    dateModified: new Date().toISOString(),
+    author: {
+      '@type': 'Organization',
+      name: 'The Realm of Patterns'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'The Realm of Patterns',
+      logo: 'https://therealmofpatterns.com/logo.png'
+    }
+  };
 }
 
 /**
@@ -418,11 +564,11 @@ class GeminiKeyRotator {
   constructor(env: Env) {
     // Load all available keys
     if (env.GEMINI_API_KEY) this.keys.push(env.GEMINI_API_KEY);
-    if ((env as any).GEMINI_API_KEY_2) this.keys.push((env as any).GEMINI_API_KEY_2);
-    if ((env as any).GEMINI_API_KEY_3) this.keys.push((env as any).GEMINI_API_KEY_3);
-    if ((env as any).GEMINI_API_KEY_4) this.keys.push((env as any).GEMINI_API_KEY_4);
-    if ((env as any).GEMINI_API_KEY_5) this.keys.push((env as any).GEMINI_API_KEY_5);
-    if ((env as any).GEMINI_API_KEY_6) this.keys.push((env as any).GEMINI_API_KEY_6);
+    if (env.GEMINI_API_KEY_2) this.keys.push(env.GEMINI_API_KEY_2);
+    if (env.GEMINI_API_KEY_3) this.keys.push(env.GEMINI_API_KEY_3);
+    if (env.GEMINI_API_KEY_4) this.keys.push(env.GEMINI_API_KEY_4);
+    if (env.GEMINI_API_KEY_5) this.keys.push(env.GEMINI_API_KEY_5);
+    if (env.GEMINI_API_KEY_6) this.keys.push(env.GEMINI_API_KEY_6);
 
     console.log(`[GEMINI] Loaded ${this.keys.length} API keys for rotation`);
   }
@@ -464,8 +610,8 @@ async function callGeminiAPI(
   prompt: string,
   keyRotator?: GeminiKeyRotator
 ): Promise<any | null> {
-  // Use Gemini 3 Flash - best model with 1M context and thinking support
-  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent';
+  // Use Gemini 2.0 Flash - stable production model
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
   try {
     const response = await fetch(`${url}?key=${apiKey}`, {
@@ -475,7 +621,7 @@ async function callGeminiAPI(
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.7,
-          maxOutputTokens: 4096,
+          maxOutputTokens: 8192,
           responseMimeType: 'application/json'
         }
       })
@@ -511,7 +657,7 @@ function parseGeminiResponse(response: any): any {
     const text = response?.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!text) {
       console.error('[GEMINI] No text in response');
-      return {};
+      return null;
     }
 
     // Clean up potential markdown code blocks
@@ -529,39 +675,8 @@ function parseGeminiResponse(response: any): any {
     return JSON.parse(cleanText.trim());
   } catch (error) {
     console.error('[GEMINI] Parse error:', error);
-    return {};
+    return null;
   }
-}
-
-/**
- * Store cosmic weather content in D1
- */
-async function storeCosmicWeatherContent(
-  db: D1Database,
-  date: string,
-  language: SupportedLanguage,
-  content: CosmicWeatherContent
-): Promise<void> {
-  const id = `${date}-${language}`;
-
-  await db.prepare(`
-    INSERT OR REPLACE INTO cosmic_weather_content (
-      id, date, language_code, title, summary,
-      detailed_content, vedic_insights, western_insights, practical_guidance,
-      created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `).bind(
-    id,
-    date,
-    language,
-    content.title,
-    content.summary,
-    JSON.stringify(content.detailed_content),
-    content.vedic_insights,
-    content.western_insights,
-    content.practical_guidance,
-    new Date().toISOString()
-  ).run();
 }
 
 // ============================================
@@ -714,12 +829,12 @@ async function queueNotification(
   const notificationType = alertsTriggered > 0 ? 'threshold_alert' : 'daily_update';
 
   const subject = alertsTriggered > 0
-    ? `⚠️ Threshold Alert: ${snapshot.failure_mode} Mode`
-    : `🌌 Daily UV Update: ${snapshot.dominant.symbol} Dominant`;
+    ? `Threshold Alert: ${snapshot.failure_mode} Mode`
+    : `Daily UV Update: ${snapshot.dominant.symbol} Dominant`;
 
   const body = alertsTriggered > 0
-    ? `Your UV metrics have triggered ${alertsTriggered} alert(s).\n\nCurrent Status:\n- κ̄: ${snapshot.kappa_bar.toFixed(3)}\n- RU: ${snapshot.RU.toFixed(2)}\n- Failure Mode: ${snapshot.failure_mode}`
-    : `Your daily Universal Vector update is ready.\n\nDominant: ${snapshot.dominant.name}\nκ̄: ${snapshot.kappa_bar.toFixed(3)}\nRU: ${snapshot.RU.toFixed(2)}\nElder Progress: ${(snapshot.elder_progress * 100).toFixed(1)}%`;
+    ? `Your UV metrics have triggered ${alertsTriggered} alert(s).\n\nCurrent Status:\n- kappa: ${snapshot.kappa_bar.toFixed(3)}\n- RU: ${snapshot.RU.toFixed(2)}\n- Failure Mode: ${snapshot.failure_mode}`
+    : `Your daily Universal Vector update is ready.\n\nDominant: ${snapshot.dominant.name}\nkappa: ${snapshot.kappa_bar.toFixed(3)}\nRU: ${snapshot.RU.toFixed(2)}\nElder Progress: ${(snapshot.elder_progress * 100).toFixed(1)}%`;
 
   await db.prepare(`
     INSERT INTO notification_queue (
@@ -788,15 +903,15 @@ async function queueMilestoneNotification(
   snapshot: any
 ): Promise<void> {
   const milestoneNames: { [key: string]: string } = {
-    first_healthy: '🎉 First Healthy State',
-    kappa_85: '⭐ High Coupling (κ̄ ≥ 0.85)',
-    ru_45: '🔥 High Resonance (RU ≥ 45)',
-    w_25: '👁️ Strong Witness (W ≥ 2.5)',
-    elder_48h: '🏆 Elder Attractor Reached'
+    first_healthy: 'First Healthy State',
+    kappa_85: 'High Coupling (kappa >= 0.85)',
+    ru_45: 'High Resonance (RU >= 45)',
+    w_25: 'Strong Witness (W >= 2.5)',
+    elder_48h: 'Elder Attractor Reached'
   };
 
   const subject = `${milestoneNames[milestoneType]} - Milestone Achieved!`;
-  const body = `Congratulations! You've achieved a new milestone in your journey.\n\n${milestoneNames[milestoneType]}\n\nYour current metrics:\n- κ̄: ${snapshot.kappa_bar.toFixed(3)}\n- RU: ${snapshot.RU.toFixed(2)}\n- W: ${snapshot.W.toFixed(2)}\n- Elder Progress: ${(snapshot.elder_progress * 100).toFixed(1)}%`;
+  const body = `Congratulations! You've achieved a new milestone in your journey.\n\n${milestoneNames[milestoneType]}\n\nYour current metrics:\n- kappa: ${snapshot.kappa_bar.toFixed(3)}\n- RU: ${snapshot.RU.toFixed(2)}\n- W: ${snapshot.W.toFixed(2)}\n- Elder Progress: ${(snapshot.elder_progress * 100).toFixed(1)}%`;
 
   await db.prepare(`
     INSERT INTO notification_queue (
