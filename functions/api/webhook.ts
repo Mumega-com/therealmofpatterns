@@ -360,48 +360,71 @@ async function sendReportEmail(
   reportId: string,
   sessionToken: string
 ): Promise<void> {
-  // Load email template
-  const templateResponse = await fetch(`${env.APP_URL}/templates/report-ready.html`);
-  let emailHtml = await templateResponse.text();
+  // Check if Resend is configured
+  if (!env.RESEND_API_KEY) {
+    console.warn('RESEND_API_KEY not configured, skipping email');
+    return;
+  }
 
-  // Personalize template
   const name = to.split('@')[0];
   const downloadUrl = `${env.APP_URL}/api/report/${reportId}?token=${sessionToken}`;
 
-  emailHtml = emailHtml
-    .replace(/\{\{name\}\}/g, name)
-    .replace(/\{\{download_url\}\}/g, downloadUrl);
+  // Build email HTML
+  const emailHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Report is Ready</title>
+</head>
+<body style="font-family: 'Georgia', serif; background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%); color: #e0e0e0; padding: 40px 20px; margin: 0;">
+  <div style="max-width: 600px; margin: 0 auto; background: rgba(26, 26, 46, 0.95); border-radius: 16px; padding: 40px; border: 1px solid rgba(212, 175, 55, 0.3);">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <h1 style="color: #d4af37; font-size: 28px; margin: 0;">The Realm of Patterns</h1>
+      <p style="color: #888; font-size: 14px; margin-top: 8px;">Your 16D Universal Vector Report</p>
+    </div>
 
-  // Send email via MailChannels (Cloudflare's email partner)
-  const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
+    <p style="font-size: 18px; line-height: 1.6;">Dear ${name},</p>
+
+    <p style="font-size: 16px; line-height: 1.8;">Your personalized 40+ page report has been generated and is ready for download. This comprehensive analysis reveals your unique cosmic signature across all 16 dimensions.</p>
+
+    <div style="text-align: center; margin: 40px 0;">
+      <a href="${downloadUrl}" style="display: inline-block; background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%); color: #0a0a1a; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-size: 18px; font-weight: bold;">Download Your Report</a>
+    </div>
+
+    <p style="font-size: 14px; color: #888; line-height: 1.6;">This link will expire in 30 days. Please save your PDF for permanent access.</p>
+
+    <hr style="border: none; border-top: 1px solid rgba(212, 175, 55, 0.2); margin: 30px 0;">
+
+    <p style="font-size: 14px; color: #666; text-align: center;">
+      <a href="${env.APP_URL}" style="color: #d4af37; text-decoration: none;">therealmofpatterns.com</a>
+    </p>
+  </div>
+</body>
+</html>
+  `.trim();
+
+  // Send email via Resend
+  const emailResponse = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
+      'Authorization': `Bearer ${env.RESEND_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      personalizations: [
-        {
-          to: [{ email: to, name }],
-          dkim_domain: 'therealmofpatterns.pages.dev',
-          dkim_selector: 'mailchannels',
-        },
-      ],
-      from: {
-        email: 'reports@therealmofpatterns.pages.dev',
-        name: 'The Realm of Patterns',
-      },
-      subject: 'Your 16D Universal Vector Report is Ready 🌌',
-      content: [
-        {
-          type: 'text/html',
-          value: emailHtml,
-        },
-      ],
+      from: 'The Realm of Patterns <reports@therealmofpatterns.com>',
+      to: [to],
+      subject: 'Your 16D Universal Vector Report is Ready',
+      html: emailHtml,
     }),
   });
 
   if (!emailResponse.ok) {
     const errorText = await emailResponse.text();
-    throw new Error(`MailChannels error: ${errorText}`);
+    throw new Error(`Resend error: ${errorText}`);
   }
+
+  const result = await emailResponse.json();
+  console.log(`Email sent via Resend: ${result.id}`);
 }

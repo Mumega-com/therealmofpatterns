@@ -194,6 +194,9 @@ export interface Env {
 
   // Python backend for PDF generation (optional)
   PYTHON_BACKEND_URL?: string;
+
+  // Email service
+  RESEND_API_KEY?: string;
 }
 
 // ============================================
