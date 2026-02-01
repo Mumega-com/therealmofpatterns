@@ -18,14 +18,14 @@ A production SaaS platform mapping cosmic identity through mathematical patterns
 
 | | |
 |---|---|
-| **Live** | [therealmofpatterns.pages.dev](https://therealmofpatterns.pages.dev) |
-| **Dashboard** | [dashboard.html](https://therealmofpatterns.pages.dev/dashboard.html?email_hash=demo) |
+| **Live** | [therealmofpatterns.com](https://therealmofpatterns.com) 🌐 |
+| **Dashboard** | [dashboard.html](https://therealmofpatterns.com/dashboard.html?email_hash=demo) |
 | **Stack** | Cloudflare Pages + Python API (hybrid) |
 | **Status** | 🚀 **PRODUCTION READY** - 100% Complete |
 | **Payments** | Stripe (production mode active) |
 | **License** | MIT |
 
-**Current Status:** 🎉 **READY FOR REVENUE** - All systems deployed and operational. 6,500+ lines of production code.
+**Current Status:** 🎉 **READY FOR REVENUE** - All systems deployed and operational. Custom domain active. 7,500+ lines of production code.
 
 ### Quick Links
 
@@ -132,7 +132,8 @@ A production SaaS platform mapping cosmic identity through mathematical patterns
 ```
 
 **Production URLs:**
-- **Frontend:** https://therealmofpatterns.pages.dev
+- **Frontend:** https://therealmofpatterns.com 🌐 (custom domain)
+- **Alt URL:** https://therealmofpatterns.pages.dev (Cloudflare Pages)
 - **Python API:** http://5.161.216.149:5660 (Docker, auto-restart)
 - **PDF Server:** http://5.161.216.149:5661 (Flask, 1,092 lines)
 
@@ -310,6 +311,7 @@ therealmofpatterns/
 **Total:** 7,500+ lines of production code across 4 languages (TypeScript, Python, SQL, HTML)
 
 **Production Services:**
+- ✅ Frontend: https://therealmofpatterns.com (custom domain live!)
 - ✅ Python Backend: http://5.161.216.149:5660 (Docker, auto-restart)
 - ✅ PDF Server: http://5.161.216.149:5661 (Flask, 1,092 lines)
 - ✅ Cloudflare Pages: https://therealmofpatterns.pages.dev (deployed)

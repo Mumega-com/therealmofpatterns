@@ -42,7 +42,7 @@ binding = "AI"
 [vars]
 ENVIRONMENT = "production"
 APP_NAME = "The Realm of Patterns"
-APP_URL = "https://therealmofpatterns.pages.dev"
+APP_URL = "https://therealmofpatterns.com"
 
 # ============================================
 # Development Settings
