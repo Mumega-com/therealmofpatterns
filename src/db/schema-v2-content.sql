@@ -268,3 +268,24 @@ INSERT OR REPLACE INTO jungian_concepts (concept_name, frc_mapping, description_
 ('Self', 'Balanced 16D vector (κ > 0.85)', 'The archetype of wholeness and the regulating center', '["all"]'),
 ('Synchronicity', 'Vedic-Western temporal alignment', 'Meaningful coincidences, acausal connecting principle', '["Φ", "N"]'),
 ('Active Imagination', 'Dimensional dialogue technique', 'Conscious engagement with unconscious contents', '["μ", "Φ"]');
+
+-- ============================================
+-- Generation Statistics
+-- ============================================
+CREATE TABLE IF NOT EXISTS generation_stats (
+    id TEXT PRIMARY KEY, -- UUID
+    content_type TEXT NOT NULL,
+    language_code TEXT NOT NULL,
+    slug TEXT NOT NULL,
+    tokens_used INTEGER DEFAULT 0,
+    generation_time_ms INTEGER DEFAULT 0,
+    quality_score INTEGER DEFAULT 0,
+    publish_status TEXT DEFAULT 'pending', -- pending, published, failed
+    error_message TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    published_at DATETIME
+);
+
+CREATE INDEX IF NOT EXISTS idx_gen_stats_type ON generation_stats(content_type);
+CREATE INDEX IF NOT EXISTS idx_gen_stats_status ON generation_stats(publish_status);
+CREATE INDEX IF NOT EXISTS idx_gen_stats_date ON generation_stats(created_at);

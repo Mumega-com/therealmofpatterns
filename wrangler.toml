@@ -62,9 +62,15 @@ local_protocol = "http"
 # ============================================
 # NOTE: For Pages projects, cron triggers must be configured via:
 # 1. Cloudflare Dashboard > Pages > Settings > Functions > Cron Triggers
-# 2. OR deploy a separate Worker with cron trigger
-# Schedule: "0 0 * * *" (Daily at 00:00 UTC)
-# Handler: functions/scheduled.ts
+# 2. OR deploy a separate Worker with cron trigger (recommended)
+#
+# Cron Schedule (for worker deployment):
+#   0 0 * * *   - Daily weather generation for 6 languages
+#   0 6 * * *   - Process content queue (10 items)
+#   0 12 * * *  - Quality check + retry failed items
+#   0 18 * * *  - Regenerate sitemap + analytics summary
+#
+# Handler: workers/cron-worker.ts
 
 # ============================================
 # Secrets (set via wrangler secret put <NAME>)
@@ -84,9 +90,33 @@ local_protocol = "http"
 # For scheduled content generation, deploy the cron worker:
 #   wrangler deploy workers/cron-worker.ts --name therealmofpatterns-cron
 #
-# Configure cron schedule in Cloudflare Dashboard:
+# Configure cron schedules in Cloudflare Dashboard:
 #   Workers > therealmofpatterns-cron > Triggers > Cron Triggers
-#   Add: "0 0 * * *" (Daily at 00:00 UTC)
+#
+#   Add all four triggers:
+#   1. "0 0 * * *"  - Daily at 00:00 UTC - Daily weather generation
+#   2. "0 6 * * *"  - Daily at 06:00 UTC - Process content queue
+#   3. "0 12 * * *" - Daily at 12:00 UTC - Quality check + retry
+#   4. "0 18 * * *" - Daily at 18:00 UTC - Sitemap + analytics
+#
+# Required secrets for cron worker:
+#   wrangler secret put PAGES_URL   # e.g., https://therealmofpatterns.pages.dev
+#   wrangler secret put ADMIN_KEY   # Secret for authenticating requests
+#   wrangler secret put DISCORD_WEBHOOK_URL  # Optional: for failure alerts
 #
 # Or for Pages Functions, configure via Dashboard:
 #   Pages > therealmofpatterns > Settings > Functions > Cron Triggers
+
+# ============================================
+# Cron Worker Wrangler Config (use for standalone deploy)
+# ============================================
+# To deploy the cron worker standalone, create a wrangler.cron.toml:
+#
+# name = "therealmofpatterns-cron"
+# main = "workers/cron-worker.ts"
+# compatibility_date = "2024-01-01"
+#
+# [triggers]
+# crons = ["0 0 * * *", "0 6 * * *", "0 12 * * *", "0 18 * * *"]
+#
+# Then deploy: wrangler deploy -c wrangler.cron.toml

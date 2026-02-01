@@ -1,0 +1,35 @@
+# The Realm of Patterns - Cron Worker Configuration
+# Deploy with: wrangler deploy -c wrangler.cron.toml
+
+name = "therealmofpatterns-cron"
+main = "workers/cron-worker.ts"
+compatibility_date = "2024-01-01"
+
+# ============================================
+# Cron Triggers
+# ============================================
+[triggers]
+crons = [
+  "0 0 * * *",   # 00:00 UTC - Daily weather generation for 6 languages
+  "0 6 * * *",   # 06:00 UTC - Process content queue (10 items)
+  "0 12 * * *",  # 12:00 UTC - Quality check + retry failed items
+  "0 18 * * *"   # 18:00 UTC - Regenerate sitemap + analytics summary
+]
+
+# ============================================
+# Environment Variables
+# ============================================
+[vars]
+ENVIRONMENT = "production"
+
+# ============================================
+# Secrets (set via wrangler secret put)
+# ============================================
+# PAGES_URL        - e.g., "https://therealmofpatterns.pages.dev"
+# ADMIN_KEY        - Secret for authenticating requests
+# DISCORD_WEBHOOK_URL - Optional: for failure alerts
+#
+# Set with:
+#   wrangler secret put PAGES_URL -c wrangler.cron.toml
+#   wrangler secret put ADMIN_KEY -c wrangler.cron.toml
+#   wrangler secret put DISCORD_WEBHOOK_URL -c wrangler.cron.toml

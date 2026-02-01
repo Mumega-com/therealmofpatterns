@@ -179,6 +179,16 @@ export interface Env {
   TWITTER_BEARER_TOKEN?: string;
   TELEGRAM_BOT_TOKEN?: string;
   DISCORD_WEBHOOK_URL?: string;
+
+  // Additional Gemini API keys for rotation (optional)
+  GEMINI_API_KEY_2?: string;
+  GEMINI_API_KEY_3?: string;
+  GEMINI_API_KEY_4?: string;
+  GEMINI_API_KEY_5?: string;
+  GEMINI_API_KEY_6?: string;
+
+  // Python backend for PDF generation (optional)
+  PYTHON_BACKEND_URL?: string;
 }
 
 // ============================================
