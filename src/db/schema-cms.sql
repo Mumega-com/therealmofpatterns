@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS content_queue (
     params TEXT, -- JSON object with generation parameters
     priority_score INTEGER DEFAULT 50, -- 0-100, higher = more urgent
     status TEXT DEFAULT 'pending', -- pending, processing, completed, failed
+    attempts INTEGER DEFAULT 0, -- Number of generation attempts
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     started_at DATETIME, -- When processing began
     completed_at DATETIME, -- When finished (success or failure)
