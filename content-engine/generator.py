@@ -338,7 +338,7 @@ class GeminiClient:
             self._rotator = GeminiKeyRotator()
 
         self.model = 'gemini-3-flash-preview'  # Best model: 1M context, thinking support
-        self.image_model = 'gemini-2.0-flash-exp'  # Image generation (experimental)
+        self.image_model = 'gemini-2.5-flash-image'  # Image generation model
         self.base_url = 'https://generativelanguage.googleapis.com/v1beta'
 
     def _get_key(self) -> str:
