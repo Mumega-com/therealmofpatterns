@@ -25,7 +25,7 @@ A production SaaS platform mapping cosmic identity through mathematical patterns
 | **Payments** | Stripe (production mode active) |
 | **License** | MIT |
 
-**Current Status:** 🎉 **READY FOR REVENUE** - All systems deployed and operational. Custom domain active. 7,500+ lines of production code.
+**Current Status:** 🎉 **READY FOR REVENUE** - All systems deployed and operational. Custom domain active. 17,500+ lines of production code including multi-language content generation.
 
 ### Quick Links
 
@@ -34,6 +34,7 @@ A production SaaS platform mapping cosmic identity through mathematical patterns
 - 🎯 [Backend Deployment](docs/BACKEND-DEPLOYMENT.md) - FastAPI backend on port 5660
 - 📊 [Project Status](docs/PROJECT-STATUS-UPDATED.md) - 97% complete, 2-3 hours to revenue
 - 📖 [Implementation Spec](docs/16D-IMPLEMENTATION-SPEC.md) - Full 16D mathematics
+- 🌍 [**Content Strategy**](docs/CONTENT-STRATEGY-2026.md) - Multi-language content generation (6 languages)
 - 🎯 [GitHub Issues](https://github.com/FractalResonance/therealmofpatterns/issues) - All critical issues closed
 
 ### Project Status
@@ -159,6 +160,55 @@ A production SaaS platform mapping cosmic identity through mathematical patterns
 
 ---
 
+## Content Generation System
+
+**Multi-language cosmic content powered by Gemini AI** with culturally-aware voices.
+
+### Cultural Voices (6 Languages)
+
+| Language | Voice | Cultural Framework |
+|----------|-------|-------------------|
+| **EN** | Pattern Guide | Jungian archetypes, Campbell mythology, mathematical precision |
+| **PT-BR** | Luz | Candomblé, Orixás, Axé, Bahian warmth |
+| **PT-PT** | Sophia | Saudade, Fado, Descobrimentos, Atlantic mysticism |
+| **ES-MX** | Citlali | Nahual/Tonal duality, Curanderismo, Maya cosmology |
+| **ES-AR** | Valentina | Heavy Jungian analysis, Buenos Aires psychoanalytic tradition |
+| **ES-ES** | Isabel | Al-Andalus astronomy, Duende, Mediterranean wisdom |
+
+### Content Types Generated
+
+- **Daily Cosmic Weather** - Astrological transits with cultural interpretation
+- **Dimension Guides** - Deep dives into each of the 16 dimensions
+- **Jungian Integration** - Archetype mapping to FRC dimensions
+- **Historical Astrology** - 5,000-year timeline across 5 eras
+- **Pattern Recognition** - Personalized insight generation
+
+### Generation Pipeline
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│  Voice Config   │────▶│  Gemini 2.5     │────▶│  D1 Database    │
+│  (JSON files)   │     │  Flash API      │     │  (9 tables)     │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+                               │
+                               ▼
+                        ┌─────────────────┐
+                        │  Cron Worker    │
+                        │  (Daily 00:00)  │
+                        └─────────────────┘
+```
+
+### Daily Automation
+
+- **Cron Worker**: `workers/cron-worker.ts` runs at 00:00 UTC
+- **Endpoint**: `/api/daily-update` generates content for all 6 languages
+- **Storage**: D1 database with `cosmic_weather_content` table
+- **Tokens**: ~5,000 tokens/language/day (~30K total)
+
+See [docs/CONTENT-STRATEGY-2026.md](docs/CONTENT-STRATEGY-2026.md) for full strategy.
+
+---
+
 ## The 16 Dimensions
 
 ### Inner Octave (Karma - Natal Chart)
@@ -240,12 +290,29 @@ The cosmic weather. What's available now.
 
 ```
 therealmofpatterns/
-├── public/                      # Static frontend (3 pages)
+├── public/                      # Static frontend (4 pages)
 │   ├── index.html              # Landing page (924 lines)
 │   ├── success.html            # Payment success (320 lines)
-│   └── dashboard.html          # 16D dashboard (568 lines)
+│   ├── dashboard.html          # 16D dashboard (568 lines)
+│   └── cosmic-weather.html     # Multi-language cosmic weather (453 lines)
 │
-├── functions/api/              # Cloudflare Pages Functions (13 endpoints)
+├── content/                     # Cultural voice configurations
+│   ├── voices/                 # 6 language personas
+│   │   ├── en.json             # Pattern Guide (English)
+│   │   ├── pt-br.json          # Luz (Brazilian Portuguese)
+│   │   ├── pt-pt.json          # Sophia (European Portuguese)
+│   │   ├── es-mx.json          # Citlali (Mexican Spanish)
+│   │   ├── es-ar.json          # Valentina (Argentine Spanish)
+│   │   └── es-es.json          # Isabel (Castilian Spanish)
+│   ├── historical-astrology.json # 5,000-year timeline (1,351 lines)
+│   └── jungian-mapping.json    # 16D archetype integration
+│
+├── content-engine/              # AI content generation
+│   ├── generator.py            # Gemini 2.5 Flash generator (1,117 lines)
+│   ├── content-types.ts        # TypeScript content definitions (636 lines)
+│   └── gemini-prompts.ts       # Prompt templates (807 lines)
+│
+├── functions/api/              # Cloudflare Pages Functions (14 endpoints)
 │   ├── preview.ts              # ✅ Free 8D preview (175 lines)
 │   ├── weather.ts              # ✅ Cosmic weather (210 lines)
 │   ├── checkout.ts             # ✅ Stripe checkout - production (130 lines)
@@ -283,14 +350,16 @@ therealmofpatterns/
 │   │
 │   └── db/
 │       ├── schema.sql           # Phase 1 schema (7 tables)
-│       └── schema-phase2.sql    # Phase 2 schema (8 tables, 15 total)
+│       ├── schema-phase2.sql    # Phase 2 schema (8 tables, 15 total)
+│       └── schema-v2-content.sql # Content system (9 new tables, 24 total)
 │
-├── workers/                     # Separate cron worker
-│   ├── cron-worker.ts          # Daily update trigger (100 lines)
-│   └── wrangler.toml           # Cron configuration
+├── workers/                     # Cron workers
+│   ├── cron-worker.ts          # Daily content generation (00:00 UTC)
+│   └── wrangler.toml           # Cron configuration (GEMINI_API_KEY required)
 │
 ├── docs/                        # Comprehensive documentation
 │   ├── PRODUCTION-READY.md      # ⭐⭐ GO-LIVE GUIDE (complete!)
+│   ├── CONTENT-STRATEGY-2026.md # ⭐⭐ Multi-language content strategy (467 lines)
 │   ├── INTEGRATION-COMPLETE.md  # ⭐ Backend + PDF + Email deployed
 │   ├── BACKEND-DEPLOYMENT.md    # ⭐ Python backend on port 5660
 │   ├── PROJECT-STATUS-UPDATED.md # 97% complete status
@@ -308,7 +377,7 @@ therealmofpatterns/
     └── deploy.yml               # Auto-deployment on push to main
 ```
 
-**Total:** 7,500+ lines of production code across 4 languages (TypeScript, Python, SQL, HTML)
+**Total:** 17,500+ lines of production code across 5 languages (TypeScript, Python, SQL, HTML, JSON)
 
 **Production Services:**
 - ✅ Frontend: https://therealmofpatterns.com (custom domain live!)
@@ -364,6 +433,9 @@ Set these in Cloudflare Pages dashboard or `wrangler.toml`:
 STRIPE_SECRET_KEY=sk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_PUBLISHABLE_KEY=pk_live_...
+
+# AI Content Generation
+GEMINI_API_KEY=AIza...  # Required for multi-language content generation
 
 # Social Media (optional)
 TWITTER_API_KEY=...
