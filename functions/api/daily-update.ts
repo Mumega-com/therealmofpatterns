@@ -107,13 +107,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             continue;
           }
 
-          // Create placeholder entry with 'processing' status
+          // Create placeholder entry (unpublished draft)
           const contentId = crypto.randomUUID();
           await env.DB.prepare(`
             INSERT INTO cms_cosmic_content (
               id, slug, canonical_slug, content_type, language, title,
-              status, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+              content_blocks, published, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           `).bind(
             contentId,
             slug,
@@ -121,7 +121,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             'daily_weather',
             lang,
             `Cosmic Weather - ${targetDate}`,
-            'processing',
+            '[]', // Empty content blocks placeholder
+            0, // Not published yet
             new Date().toISOString(),
             new Date().toISOString()
           ).run();
@@ -136,11 +137,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             languagesCompleted.push(lang);
             console.log(`[DAILY-UPDATE] Generated content for ${slug}`);
           } else {
-            // Mark as failed
+            // Delete failed placeholder entry
             await env.DB.prepare(`
-              UPDATE cms_cosmic_content SET status = 'failed', updated_at = ?
-              WHERE id = ?
-            `).bind(new Date().toISOString(), contentId).run();
+              DELETE FROM cms_cosmic_content WHERE id = ?
+            `).bind(contentId).run();
             errors++;
           }
         } catch (error) {
@@ -477,7 +477,6 @@ async function updateCosmicWeatherContent(
       schema_markup = ?,
       quality_score = ?,
       word_count = ?,
-      status = 'published',
       published = 1,
       updated_at = ?
     WHERE id = ?
