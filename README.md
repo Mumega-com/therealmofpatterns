@@ -18,151 +18,62 @@ A production SaaS platform mapping cosmic identity through mathematical patterns
 
 | | |
 |---|---|
-| **Live** | [therealmofpatterns.com](https://therealmofpatterns.com) 🌐 |
+| **Live** | [therealmofpatterns.com](https://therealmofpatterns.com) |
 | **Dashboard** | [dashboard.html](https://therealmofpatterns.com/dashboard.html?email_hash=demo) |
-| **Stack** | Cloudflare Pages + Python API (hybrid) |
-| **Status** | 🚀 **PRODUCTION READY** - 100% Complete |
+| **Admin** | [/admin](https://therealmofpatterns.pages.dev/admin) (requires key) |
+| **Stack** | Cloudflare Pages + D1 + R2 + Workers + Python API |
+| **Status** | **PRODUCTION** - CMS + Multi-language Content Live |
 | **Payments** | Stripe (production mode active) |
 | **License** | MIT |
 
-**Current Status:** 🎉 **READY FOR REVENUE** - All systems deployed and operational. Custom domain active. 17,500+ lines of production code including multi-language content generation.
+**Current Status:** CMS fully operational with 74+ published pages across 6 languages. Automated content generation via Gemini AI with 11-key rotation.
 
 ### Quick Links
 
-- 🚀 [**PRODUCTION READY**](docs/PRODUCTION-READY.md) - Complete deployment guide & go-live checklist
-- 📋 [Integration Complete](docs/INTEGRATION-COMPLETE.md) - Python backend + PDF + Email fully deployed
-- 🎯 [Backend Deployment](docs/BACKEND-DEPLOYMENT.md) - FastAPI backend on port 5660
-- 📊 [Project Status](docs/PROJECT-STATUS-UPDATED.md) - 97% complete, 2-3 hours to revenue
-- 📖 [Implementation Spec](docs/16D-IMPLEMENTATION-SPEC.md) - Full 16D mathematics
-- 🌍 [**Content Strategy**](docs/CONTENT-STRATEGY-2026.md) - Multi-language content generation (6 languages)
-- 🎯 [GitHub Issues](https://github.com/FractalResonance/therealmofpatterns/issues) - All critical issues closed
+- [**CMS Admin Dashboard**](https://therealmofpatterns.pages.dev/admin) - Queue stats, content management
+- [Production Ready](docs/PRODUCTION-READY.md) - Complete deployment guide
+- [Content Strategy](docs/CONTENT-STRATEGY-2026.md) - Multi-language content generation
+- [API Documentation](docs/API.md) - Full endpoint reference
+- [16D Implementation](docs/16D-IMPLEMENTATION-SPEC.md) - Full mathematics
 
-### Project Status
+---
+
+## Project Status
 
 | Phase | Status | Progress | Notes |
 |-------|--------|----------|-------|
-| **Phase 0: Infrastructure** | ✅ Complete | 100% | All deployed to Cloudflare |
-| **Phase 1: Core Engine** | ✅ Complete | 100% | Python + TypeScript implementations |
-| **Phase 2: Product Features** | ✅ Complete | 100% | Database, API, Dashboard, Cron |
-| **Phase 3: Python Backend** | ✅ **DEPLOYED** | 100% | FastAPI on port 5660 (Issue #10 closed) |
-| **Phase 4: Email Service** | ✅ **DEPLOYED** | 100% | Cloudflare Email Workers (Issue #11 closed) |
-| **Phase 5: Production Launch** | ✅ **READY** | 100% | Stripe + PDF integrated (Issues #12-13 closed) |
-
-**Time to First Revenue:** 0 hours - **OPEN FOR BUSINESS** 🚀
+| **Phase 0: Infrastructure** | ✅ Complete | 100% | Cloudflare Pages, D1, R2, KV |
+| **Phase 1: Core Engine** | ✅ Complete | 100% | Python + TypeScript 16D implementations |
+| **Phase 2: Product Features** | ✅ Complete | 100% | Database, API, Dashboard |
+| **Phase 3: Python Backend** | ✅ Deployed | 100% | FastAPI on port 5660 |
+| **Phase 4: Email + PDF** | ✅ Deployed | 100% | Cloudflare Email Workers + ReportLab |
+| **Phase 5: CMS Engine** | ✅ **LIVE** | 100% | Priority queue, 6 languages, 11 API keys |
 
 ---
 
-## Architecture
+## CMS Content Generation System
 
-**Hybrid Cloudflare + Python Backend** for optimal performance and accuracy.
+**Multi-language cosmic content powered by Gemini AI** with culturally-aware voices and automated generation pipeline.
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                  CLOUDFLARE PAGES (Edge)                        │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│                    ┌─────────────────────┐                      │
-│                    │   Static Frontend   │                      │
-│                    │  (HTML + Chart.js)  │                      │
-│                    └──────────┬──────────┘                      │
-│                               │                                 │
-│              ┌────────────────┼────────────────┐                │
-│              ▼                ▼                ▼                │
-│    ┌─────────────────────────────────────────────────┐          │
-│    │        Pages Functions API (TypeScript)         │          │
-│    ├─────────────────────────────────────────────────┤          │
-│    │  /api/preview       → Free 8D preview           │          │
-│    │  /api/compute-full  → Full 16D (calls Python)   │          │
-│    │  /api/daily-update  → Automated UV snapshots    │          │
-│    │  /api/history       → Historical trends         │          │
-│    │  /api/checkout      → Stripe payment session    │          │
-│    │  /api/webhook       → Stripe webhook handler    │          │
-│    │  /api/weather       → Cosmic weather            │          │
-│    └────────────────────┬────────────────────────────┘          │
-│                         │                                       │
-│       ┌─────────────────┼─────────────────┐                     │
-│       ▼                 ▼                 ▼                     │
-│  ┌─────────┐      ┌─────────┐      ┌─────────┐                  │
-│  │   D1    │      │   R2    │      │   KV    │                  │
-│  │ SQLite  │      │ Storage │      │  Cache  │                  │
-│  ├─────────┤      ├─────────┤      ├─────────┤                  │
-│  │• 15 tbl │      │• PDFs   │      │• sessions│                 │
-│  │• UV data│      │• images │      │• tokens  │                 │
-│  │• users  │      │• art    │      │• limits  │                 │
-│  │• orders │      │         │      │          │                 │
-│  └─────────┘      └─────────┘      └─────────┘                  │
-│                         │                                       │
-│                         ▼                                       │
-│              ┌─────────────────────┐                            │
-│              │    Workers AI       │                            │
-│              ├─────────────────────┤                            │
-│              │ • Stable Diffusion  │                            │
-│              │ • Text generation   │                            │
-│              │ • Embeddings        │                            │
-│              └─────────────────────┘                            │
-└─────────────────────┬───────────────────────────────────────────┘
-                      │ HTTPS
-                      ▼
-┌─────────────────────────────────────────────────────────────────┐
-│          PYTHON BACKEND (VPS/Docker) - ✅ DEPLOYED              │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  ┌──────────────────────┐     ┌──────────────────────┐          │
-│  │ FastAPI (Port 5660)  │     │ Flask (Port 5661)    │          │
-│  ├──────────────────────┤     ├──────────────────────┤          │
-│  │ POST /calculate-16d  │     │ POST /generate/{id}  │          │
-│  │ GET  /health         │     │ GET  /                │          │
-│  │                      │     │                      │          │
-│  │ • Full ephemeris     │     │ • 40+ page PDFs      │          │
-│  │ • 16D vectors        │     │ • ReportLab (1,092L) │          │
-│  │ • All FRC metrics    │     │ • MBTI/Enneagram     │          │
-│  │ • Vedic Dasha        │     │ • Historical matches │          │
-│  │ • Auto-restart       │     │ • JSON tokens        │          │
-│  └──────────────────────┘     └──────────────────────┘          │
-│     ✅ http://5.161.216.149:5660   ✅ http://5.161.216.149:5661 │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-                      │
-            ┌─────────┴─────────┐
-            ▼                   ▼
-      ┌──────────┐    ┌─────────────────────┐
-      │  Stripe  │    │ Cloudflare Email    │
-      │Production│    │ Workers (FREE)      │
-      │  Keys ✅ │    │ MailChannels ✅     │
-      └──────────┘    └─────────────────────┘
-```
+### Content Statistics (Live)
 
-**Production URLs:**
-- **Frontend:** https://therealmofpatterns.com 🌐 (custom domain)
-- **Alt URL:** https://therealmofpatterns.pages.dev (Cloudflare Pages)
-- **Python API:** http://5.161.216.149:5660 (Docker, auto-restart)
-- **PDF Server:** http://5.161.216.149:5661 (Flask, 1,092 lines)
+| Metric | Count |
+|--------|-------|
+| **Total Content Items** | 90 |
+| **Published Pages** | 74+ |
+| **Languages** | 6 |
+| **Gemini API Keys** | 11 (rotating) |
+| **Content Types** | 5 |
 
-**Why Hybrid?**
-- Cloudflare handles 99% of traffic (caching, CDN, sessions, email)
-- Python only called for calculations & PDFs (~100ms each)
-- Zero external costs (Cloudflare Email Workers = free)
-- Scales horizontally (add Python workers if needed)
+### Content Types
 
----
-
-## Cloudflare Services Used
-
-| Service | Purpose | Free Tier |
-|---------|---------|-----------|
-| **Pages** | Static frontend + Functions | Unlimited requests |
-| **Workers** | API backend | 100K requests/day |
-| **D1** | SQLite database | 5GB, 5M reads/day |
-| **R2** | Object storage (PDFs, images) | 10GB, 10M reads/month |
-| **KV** | Session cache, rate limiting | 100K reads/day |
-| **Workers AI** | Text & image generation | 10K neurons/day |
-| **Email Workers** | MailChannels integration | **FREE** (unlimited) ✅ |
-
----
-
-## Content Generation System
-
-**Multi-language cosmic content powered by Gemini AI** with culturally-aware voices.
+| Type | Description | Count |
+|------|-------------|-------|
+| `dimension_guide` | Deep dives into 8 Mu dimensions | 48 (8 × 6 langs) |
+| `jungian_concept` | 10 Jungian archetypes mapped to 16D | 10 |
+| `historical_figure` | 27 notable figures with UV analysis | 10+ |
+| `historical_era` | 5 eras of astrological history | 5 |
+| `daily_weather` | Daily cosmic weather per language | Auto-generated |
 
 ### Cultural Voices (6 Languages)
 
@@ -175,215 +86,200 @@ A production SaaS platform mapping cosmic identity through mathematical patterns
 | **ES-AR** | Valentina | Heavy Jungian analysis, Buenos Aires psychoanalytic tradition |
 | **ES-ES** | Isabel | Al-Andalus astronomy, Duende, Mediterranean wisdom |
 
-### Content Types Generated
-
-- **Daily Cosmic Weather** - Astrological transits with cultural interpretation
-- **Dimension Guides** - Deep dives into each of the 16 dimensions
-- **Jungian Integration** - Archetype mapping to FRC dimensions
-- **Historical Astrology** - 5,000-year timeline across 5 eras
-- **Pattern Recognition** - Personalized insight generation
-
 ### Generation Pipeline
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  Voice Config   │────▶│  Gemini 2.5     │────▶│  D1 Database    │
-│  (JSON files)   │     │  Flash API      │     │  (9 tables)     │
+│  Priority Queue │────▶│  Gemini 2.0     │────▶│  D1 Database    │
+│  (content_queue)│     │  Flash (11 keys)│     │(cms_cosmic_content)│
 └─────────────────┘     └─────────────────┘     └─────────────────┘
-                               │
-                               ▼
-                        ┌─────────────────┐
-                        │  Cron Worker    │
-                        │  (Daily 00:00)  │
-                        └─────────────────┘
+         │                      │                        │
+         ▼                      ▼                        ▼
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│ /api/queue/seed │     │/api/generate-batch│   │  /sitemap.xml   │
+│ /api/queue/stats│     │/api/quality-check │   │  /admin         │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
 ```
 
-### Daily Automation
+### Cron Automation (4 Daily Jobs)
 
-- **Cron Worker**: `workers/cron-worker.ts` runs at 00:00 UTC
-- **Endpoint**: `/api/daily-update` generates content for all 6 languages
-- **Storage**: D1 database with `cosmic_weather_content` table
-- **Tokens**: ~5,000 tokens/language/day (~30K total)
-
-See [docs/CONTENT-STRATEGY-2026.md](docs/CONTENT-STRATEGY-2026.md) for full strategy.
+| Time (UTC) | Job | Endpoint | Description |
+|------------|-----|----------|-------------|
+| 00:00 | Daily Weather | `/api/daily-update` | Generate cosmic weather for 6 languages |
+| 06:00 | Queue Processing | `/api/generate-batch` | Process 10 items from priority queue |
+| 12:00 | Quality Check | `/api/quality-check` | Validate content, retry failed items |
+| 18:00 | Sitemap/Analytics | `/api/sitemap-analytics` | Regenerate sitemaps, aggregate stats |
 
 ---
 
-## The 16 Dimensions
+## Architecture
 
-### Inner Octave (Karma - Natal Chart)
+**Hybrid Cloudflare + Python Backend** for optimal performance and accuracy.
 
-Your birth pattern. What you're working with.
-
-| Mu | Symbol | Name | Question |
-|----|--------|------|----------|
-| μ₁ | P | Phase | Who am I becoming? |
-| μ₂ | E | Existence | What grounds me? |
-| μ₃ | μ | Cognition | How do I understand? |
-| μ₄ | V | Value | What do I treasure? |
-| μ₅ | N | Expansion | Where am I growing? |
-| μ₆ | Δ | Action | What am I doing? |
-| μ₇ | R | Relation | Who do I love? |
-| μ₈ | Φ | Field | What witnesses? |
-
-### Outer Octave (Dharma - Current Transits)
-
-The cosmic weather. What's available now.
-
-| Muₜ | Symbol | Name | Description |
-|-----|--------|------|-------------|
-| μₜ₁ | Pₜ | Phase (Transit) | Current becoming |
-| μₜ₂ | Eₜ | Existence (Transit) | Present ground |
-| μₜ₃ | μₜ | Cognition (Transit) | Available understanding |
-| μₜ₄ | Vₜ | Value (Transit) | Emerging treasures |
-| μₜ₅ | Nₜ | Expansion (Transit) | Growth opportunities |
-| μₜ₆ | Δₜ | Action (Transit) | Action windows |
-| μₜ₇ | Rₜ | Relation (Transit) | Relationship currents |
-| μₜ₈ | Φₜ | Field (Transit) | Witnessing field |
-
-**Combined:** Inner (who you are) + Outer (what's happening) = Full 16D Universal Vector
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                  CLOUDFLARE PAGES (Edge)                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │             Pages Functions API (TypeScript)             │   │
+│  ├──────────────────────────────────────────────────────────┤   │
+│  │  CORE ENDPOINTS                                          │   │
+│  │  /api/preview         → Free 8D preview                  │   │
+│  │  /api/compute-full    → Full 16D (calls Python)          │   │
+│  │  /api/checkout        → Stripe payment session           │   │
+│  │  /api/webhook         → Stripe webhook handler           │   │
+│  │  /api/weather         → Cosmic weather                   │   │
+│  │                                                          │   │
+│  │  CMS ENDPOINTS                                           │   │
+│  │  /api/queue/seed      → Seed content queue               │   │
+│  │  /api/queue/stats     → Queue statistics                 │   │
+│  │  /api/queue/next      → Get next batch                   │   │
+│  │  /api/generate-batch  → Generate content (Gemini)        │   │
+│  │  /api/daily-update    → Daily weather + UV snapshots     │   │
+│  │  /api/quality-check   → Content validation + retry       │   │
+│  │  /api/sitemap-analytics → Sitemap + analytics            │   │
+│  │                                                          │   │
+│  │  ADMIN                                                   │   │
+│  │  /admin               → CMS dashboard (HTML)             │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                               │                                 │
+│         ┌─────────────────────┼─────────────────┐               │
+│         ▼                     ▼                 ▼               │
+│    ┌─────────┐          ┌─────────┐       ┌─────────┐           │
+│    │   D1    │          │   R2    │       │   KV    │           │
+│    │ SQLite  │          │ Storage │       │  Cache  │           │
+│    ├─────────┤          ├─────────┤       ├─────────┤           │
+│    │• 24 tbl │          │• PDFs   │       │• sessions│          │
+│    │• CMS    │          │• sitemaps│      │• tokens  │          │
+│    │• users  │          │• images │       │• limits  │          │
+│    │• queue  │          │         │       │          │          │
+│    └─────────┘          └─────────┘       └─────────┘           │
+│                                                                 │
+└─────────────────────┬───────────────────────────────────────────┘
+                      │ HTTPS
+                      ▼
+┌─────────────────────────────────────────────────────────────────┐
+│          PYTHON BACKEND (VPS/Docker) - ✅ DEPLOYED              │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌──────────────────────┐     ┌──────────────────────┐          │
+│  │ FastAPI (Port 5660)  │     │ Flask (Port 5661)    │          │
+│  ├──────────────────────┤     ├──────────────────────┤          │
+│  │ POST /calculate-16d  │     │ POST /generate/{id}  │          │
+│  │ • Full ephemeris     │     │ • 40+ page PDFs      │          │
+│  │ • 16D vectors        │     │ • ReportLab          │          │
+│  │ • Vedic Dasha        │     │ • MBTI/Enneagram     │          │
+│  └──────────────────────┘     └──────────────────────┘          │
+│     http://5.161.216.149:5660   http://5.161.216.149:5661       │
+└─────────────────────────────────────────────────────────────────┘
+                      │
+            ┌─────────┴─────────┐
+            ▼                   ▼
+      ┌──────────┐    ┌─────────────────────┐
+      │  Stripe  │    │ Gemini AI (11 keys) │
+      │Production│    │ Content Generation  │
+      └──────────┘    └─────────────────────┘
+```
 
 ---
 
-## Product Tiers
+## Database Schema (D1)
 
-### Free Preview ($0)
-- Your dominant dimension
-- Primary archetype match
-- Top 3 historical figure matches
-- Basic 8D vector (Inner Octave only)
-- Rate limited: 10 requests/hour
+### CMS Tables
 
-### Premium Report ($497) ✨ - **LIVE & OPERATIONAL**
-- **40+ page luxury PDF** ✅ (ReportLab, 1,092 lines of code)
-- **Full 16D Universal Vector** (Inner + Outer) ✅ (Real ephemeris calculations)
-- **10+ historical figure matches** (with resonance scores) ✅
-- **MBTI/Enneagram personality mapping** ✅
-- **Elder Attractor analysis** (path to enlightenment) ✅
-- **Failure mode assessment** (Collapse/Inversion/Dissociation/Dispersion) ✅
-- **Coupling coefficient (κ)** tracking ✅
-- **Resonance Units (RU)** metrics ✅
-- **Downloadable 16D JSON identity token** ✅
-- **Automated email delivery** ✅ (Cloudflare Email Workers)
-- **30-day download access** ✅
+| Table | Purpose |
+|-------|---------|
+| `content_queue` | Priority-based generation queue |
+| `cms_cosmic_content` | All generated content pages |
+| `cms_content_analytics` | Page view tracking |
+| `content_voices` | Cultural voice configurations |
+| `generation_stats` | Daily API usage metrics |
 
-### Complete Bundle ($697) 🎁
-- Everything in Premium
-- **18×24" Art Print** (museum quality)
-- **Hardcover Booklet** (custom binding)
-- **Priority Processing** (<24h delivery)
-- **90-day dashboard access**
+### User Tables
 
-### Living Vector Subscription ($19/month) 🔄
-*Coming Soon - Phase 2*
-- **Daily UV updates** (automated)
-- **Unlimited threshold alerts** (email notifications)
-- **365-day historical trends**
-- **Advanced transit forecasting**
-- **Elder milestone tracking** (gamification)
-- **Priority support**
-- **Data export** (JSON/CSV)
+| Table | Purpose |
+|-------|---------|
+| `user_profiles` | User data and subscriptions |
+| `uv_snapshots` | Daily UV snapshots for subscribers |
+| `threshold_alerts` | Alert history |
+| `elder_milestones` | Gamification milestones |
+| `notification_queue` | Pending notifications |
+
+See `src/db/schema-cms.sql` for full schema.
 
 ---
 
-## Project Structure
+## API Endpoints
+
+### CMS Endpoints (Admin Key Required)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/queue/seed` | Seed queue with content combinations |
+| GET | `/api/queue/stats` | Queue statistics |
+| GET | `/api/queue/next` | Get next batch of items |
+| POST | `/api/generate-batch` | Generate content from queue |
+| POST | `/api/daily-update` | Daily weather + UV snapshots |
+| POST | `/api/quality-check` | Content validation + retry |
+| POST | `/api/sitemap-analytics` | Regenerate sitemaps |
+
+### Public Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/preview` | Free 8D preview |
+| GET | `/api/weather` | Current cosmic weather |
+| POST | `/api/checkout` | Stripe payment session |
+| GET | `/sitemap.xml` | XML sitemap |
+| GET | `/sitemaps/[lang].xml` | Language-specific sitemap |
+
+### Admin Dashboard
 
 ```
-therealmofpatterns/
-├── public/                      # Static frontend (4 pages)
-│   ├── index.html              # Landing page (924 lines)
-│   ├── success.html            # Payment success (320 lines)
-│   ├── dashboard.html          # 16D dashboard (568 lines)
-│   └── cosmic-weather.html     # Multi-language cosmic weather (453 lines)
-│
-├── content/                     # Cultural voice configurations
-│   ├── voices/                 # 6 language personas
-│   │   ├── en.json             # Pattern Guide (English)
-│   │   ├── pt-br.json          # Luz (Brazilian Portuguese)
-│   │   ├── pt-pt.json          # Sophia (European Portuguese)
-│   │   ├── es-mx.json          # Citlali (Mexican Spanish)
-│   │   ├── es-ar.json          # Valentina (Argentine Spanish)
-│   │   └── es-es.json          # Isabel (Castilian Spanish)
-│   ├── historical-astrology.json # 5,000-year timeline (1,351 lines)
-│   └── jungian-mapping.json    # 16D archetype integration
-│
-├── content-engine/              # AI content generation
-│   ├── generator.py            # Gemini 2.5 Flash generator (1,117 lines)
-│   ├── content-types.ts        # TypeScript content definitions (636 lines)
-│   └── gemini-prompts.ts       # Prompt templates (807 lines)
-│
-├── functions/api/              # Cloudflare Pages Functions (14 endpoints)
-│   ├── preview.ts              # ✅ Free 8D preview (175 lines)
-│   ├── weather.ts              # ✅ Cosmic weather (210 lines)
-│   ├── checkout.ts             # ✅ Stripe checkout - production (130 lines)
-│   ├── webhook.ts              # ✅ Stripe webhook - PDF + Email integrated (350 lines)
-│   ├── compute-full.ts         # ✅ Full 16D - connected to Python backend (221 lines)
-│   ├── daily-update.ts         # ✅ UV snapshots (379 lines)
-│   ├── history.ts              # ✅ Historical trends (220 lines)
-│   ├── compute.ts              # ✅ Premium 16D (176 lines)
-│   ├── report/[id].ts          # ✅ PDF download from R2 (188 lines)
-│   ├── share.ts                # ⏳ Social sharing (future)
-│   ├── art/[id].ts             # ✅ Sacred art retrieval
-│   └── templates/              # ✅ Email templates
-│       └── report-ready.html   # ✅ Cosmic email design (120 lines)
-│
-├── core/                       # Python backend ✅ DEPLOYED
-│   ├── api.py                  # ✅ FastAPI server (450 lines, port 5660)
-│   ├── frc_16d_full_spec.py    # 767 lines - canonical implementation
-│   ├── Dockerfile              # ✅ Production container
-│   ├── docker-compose.yml      # ✅ Container orchestration
-│   ├── deploy.sh               # ✅ Instant deployment script
-│   └── README.md               # ✅ Backend documentation
-│
-├── premium_app/                # PDF generation server ✅ DEPLOYED
-│   ├── app.py                  # ✅ Flask server (550 lines, port 5661)
-│   ├── premium_pdf.py          # ✅ ReportLab generator (1,092 lines!)
-│   ├── historical_figures.py   # ✅ 100+ figure database
-│   └── gemini_images.py        # ✅ AI image generation (optional)
-│
-├── src/
-│   ├── lib/
-│   │   ├── 16d-engine-full.ts  # 600 lines - TypeScript 16D implementation
-│   │   ├── historical-figures.ts # Figure matching database
-│   │   ├── pdf-generator.ts     # ❌ TODO: jsPDF implementation
-│   │   └── ai.ts                # Workers AI wrapper (Stable Diffusion)
-│   │
-│   └── db/
-│       ├── schema.sql           # Phase 1 schema (7 tables)
-│       ├── schema-phase2.sql    # Phase 2 schema (8 tables, 15 total)
-│       └── schema-v2-content.sql # Content system (9 new tables, 24 total)
-│
-├── workers/                     # Cron workers
-│   ├── cron-worker.ts          # Daily content generation (00:00 UTC)
-│   └── wrangler.toml           # Cron configuration (GEMINI_API_KEY required)
-│
-├── docs/                        # Comprehensive documentation
-│   ├── PRODUCTION-READY.md      # ⭐⭐ GO-LIVE GUIDE (complete!)
-│   ├── CONTENT-STRATEGY-2026.md # ⭐⭐ Multi-language content strategy (467 lines)
-│   ├── INTEGRATION-COMPLETE.md  # ⭐ Backend + PDF + Email deployed
-│   ├── BACKEND-DEPLOYMENT.md    # ⭐ Python backend on port 5660
-│   ├── PROJECT-STATUS-UPDATED.md # 97% complete status
-│   ├── FINAL-STATUS.md          # Phase 0-5 complete
-│   ├── PRODUCT-STATUS.md        # Product manager overview
-│   ├── 16D-IMPLEMENTATION-SPEC.md # Full math specification (500+ lines)
-│   ├── 16D-QUICK-REFERENCE.md   # Developer quick reference
-│   ├── PHASE-2-COMPLETE.md      # Phase 2 summary
-│   └── FRC-16D-002-ASTROLOGY.md # Astrological mapping protocol
-│
-├── DEPLOYMENT-SUCCESS.md        # Deployment status & verification
-├── wrangler.toml                # Cloudflare Pages configuration
-├── package.json                 # Dependencies (TypeScript, etc.)
-└── .github/workflows/
-    └── deploy.yml               # Auto-deployment on push to main
+GET /admin?key=YOUR_ADMIN_KEY
 ```
 
-**Total:** 17,500+ lines of production code across 5 languages (TypeScript, Python, SQL, HTML, JSON)
+Features:
+- Queue stats (pending, processing, completed, failed)
+- Content stats by language and type
+- Recent content table
+- Action buttons (Seed Queue, Generate Batch)
+- Auto-refresh every 30 seconds
 
-**Production Services:**
-- ✅ Frontend: https://therealmofpatterns.com (custom domain live!)
-- ✅ Python Backend: http://5.161.216.149:5660 (Docker, auto-restart)
-- ✅ PDF Server: http://5.161.216.149:5661 (Flask, 1,092 lines)
-- ✅ Cloudflare Pages: https://therealmofpatterns.pages.dev (deployed)
+---
+
+## Environment Variables
+
+### Required Secrets (Cloudflare Pages)
+
+```bash
+# Admin
+ADMIN_KEY=your-secret-admin-key
+
+# Gemini API Keys (11 for rotation)
+GEMINI_API_KEY=AIza...
+GEMINI_API_KEY_2=AIza...
+GEMINI_API_KEY_3=AIza...
+# ... up to GEMINI_API_KEY_11
+
+# Stripe
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Python Backend
+PYTHON_BACKEND_URL=http://5.161.216.149:5660
+
+# Optional
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+```
+
+### Set Secrets
+
+```bash
+wrangler pages secret put ADMIN_KEY --project-name therealmofpatterns
+wrangler pages secret put GEMINI_API_KEY --project-name therealmofpatterns
+# etc.
+```
 
 ---
 
@@ -403,17 +299,11 @@ npm install
 # Login to Cloudflare
 wrangler login
 
-# Create D1 database
-wrangler d1 create therealmofpatterns-db
-
-# Run migrations
-wrangler d1 execute therealmofpatterns-db --file=src/db/schema.sql
-
 # Start dev server
 npm run dev
 ```
 
-### Deployment
+### Deploy
 
 ```bash
 # Deploy to Cloudflare Pages
@@ -422,148 +312,140 @@ npm run deploy
 
 Or push to `main` branch — GitHub Actions handles deployment automatically.
 
----
-
-## Environment Variables
-
-Set these in Cloudflare Pages dashboard or `wrangler.toml`:
+### Seed Content Queue
 
 ```bash
-# Stripe
-STRIPE_SECRET_KEY=sk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-STRIPE_PUBLISHABLE_KEY=pk_live_...
+# Seed all content types for English
+curl -X POST "https://therealmofpatterns.pages.dev/api/queue/seed" \
+  -H "X-Admin-Key: YOUR_ADMIN_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"languages": ["en"], "content_types": ["dimension_guide"]}'
 
-# AI Content Generation
-GEMINI_API_KEY=AIza...  # Required for multi-language content generation
-
-# Social Media (optional)
-TWITTER_API_KEY=...
-TWITTER_API_SECRET=...
-TELEGRAM_BOT_TOKEN=...
-DISCORD_WEBHOOK_URL=...
+# Generate batch
+curl -X POST "https://therealmofpatterns.pages.dev/api/generate-batch" \
+  -H "X-Admin-Key: YOUR_ADMIN_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"batch_size": 10}'
 ```
 
 ---
 
-## API Endpoints
+## Project Structure
 
-### Public (No Auth Required)
-
-| Method | Endpoint | Status | Description |
-|--------|----------|--------|-------------|
-| POST | `/api/preview` | ✅ WORKING | Free 8D preview + top 3 matches |
-| GET | `/api/weather` | ✅ WORKING | Current cosmic weather (transits) |
-| POST | `/api/checkout` | ✅ TEST MODE | Create Stripe payment session |
-| POST | `/api/webhook` | ✅ TEST MODE | Stripe webhook (payment completion) |
-| POST | `/api/compute-full` | ⚠️ MOCK DATA | Full 16D profile (needs Python backend) |
-| GET | `/api/history` | ✅ WORKING | Historical UV trends (30 days default) |
-
-### Protected (Requires Session Token)
-
-| Method | Endpoint | Status | Description |
-|--------|----------|--------|-------------|
-| POST | `/api/compute` | ⚠️ PARTIAL | Premium 16D computation |
-| GET | `/api/report/[id]` | ❌ STUB | Download PDF report |
-| POST | `/api/share` | ❌ STUB | Share to social media |
-| GET | `/api/art/[id]` | ✅ WORKING | Retrieve sacred art from R2 |
-
-### Admin (Requires Admin Key)
-
-| Method | Endpoint | Status | Description |
-|--------|----------|--------|-------------|
-| POST | `/api/daily-update` | ⚠️ MOCK DATA | Automated UV snapshots (cron-triggered) |
-
-**Legend:**
-- ✅ WORKING - Fully functional
-- ⚠️ MOCK DATA - Working logic, returns sample data (needs Python backend)
-- ⚠️ PARTIAL - Partially implemented
-- ❌ STUB - Placeholder only
-
-See [docs/PRODUCT-STATUS.md](docs/PRODUCT-STATUS.md) for implementation status details.
+```
+therealmofpatterns/
+├── public/                      # Static frontend
+│   ├── index.html              # Landing page
+│   ├── dashboard.html          # 16D dashboard
+│   └── cosmic-weather.html     # Multi-language weather
+│
+├── functions/                   # Cloudflare Pages Functions
+│   ├── api/
+│   │   ├── preview.ts          # Free 8D preview
+│   │   ├── queue.ts            # Queue management (seed, stats, next, complete)
+│   │   ├── generate-batch.ts   # Gemini content generation (900+ lines)
+│   │   ├── daily-update.ts     # Daily weather + UV snapshots (800+ lines)
+│   │   ├── quality-check.ts    # Content validation + retry
+│   │   ├── sitemap-analytics.ts # Sitemap + analytics
+│   │   ├── checkout.ts         # Stripe checkout
+│   │   └── webhook.ts          # Stripe webhook
+│   ├── admin/
+│   │   └── index.ts            # CMS admin dashboard (728 lines)
+│   ├── sitemap.xml.ts          # Dynamic sitemap generator
+│   └── [lang]/
+│       └── cosmic-weather/[date].ts # Localized weather pages
+│
+├── workers/
+│   └── cron-worker.ts          # Scheduled jobs (4 daily triggers)
+│
+├── src/
+│   ├── db/
+│   │   ├── schema-cms.sql      # CMS tables (queue, content, analytics)
+│   │   └── schema-v2-content.sql # User + subscription tables
+│   ├── cms/
+│   │   ├── content-types.ts    # Content type definitions
+│   │   └── gemini-prompts.ts   # AI prompt templates
+│   └── types/
+│       └── index.ts            # TypeScript types (Env, etc.)
+│
+├── content/
+│   ├── voices/                 # 6 language voice configs
+│   ├── historical-astrology.json # 5,000-year timeline
+│   └── jungian-mapping.json    # 16D archetype integration
+│
+├── core/                       # Python backend
+│   ├── api.py                  # FastAPI server (port 5660)
+│   ├── frc_16d_full_spec.py    # 16D implementation
+│   └── Dockerfile              # Production container
+│
+├── premium_app/                # PDF generation
+│   ├── app.py                  # Flask server (port 5661)
+│   └── premium_pdf.py          # ReportLab generator (1,092 lines)
+│
+├── docs/                       # Documentation
+│   ├── PRODUCTION-READY.md
+│   ├── CONTENT-STRATEGY-2026.md
+│   ├── 16D-IMPLEMENTATION-SPEC.md
+│   └── ...
+│
+├── wrangler.toml               # Cloudflare Pages config
+├── wrangler.cron.toml          # Cron worker config
+└── package.json
+```
 
 ---
 
-## The Math
+## The 16 Dimensions
 
-**Full 16D Universal Vector:**
-```
-U₁₆ = [μ₁, μ₂, μ₃, μ₄, μ₅, μ₆, μ₇, μ₈, μₜ₁, μₜ₂, μₜ₃, μₜ₄, μₜ₅, μₜ₆, μₜ₇, μₜ₈]
-     └─────── Inner Octave (Karma) ──────┘ └──────── Outer Octave (Dharma) ───────┘
-```
+### Inner Octave (Karma - Natal Chart)
 
-**Inner Octave (Natal Chart):**
-```
-μᵢ = Σⱼ (Ωⱼ · ωhouse · a(θⱼ) · Wⱼᵢ · sign_mod)
+| Mu | Symbol | Name | Question |
+|----|--------|------|----------|
+| μ₁ | P | Phase | Who am I becoming? |
+| μ₂ | E | Existence | What grounds me? |
+| μ₃ | μ | Cognition | How do I understand? |
+| μ₄ | V | Value | What do I treasure? |
+| μ₅ | N | Expansion | Where am I growing? |
+| μ₆ | Δ | Action | What am I doing? |
+| μ₇ | R | Relation | Who do I love? |
+| μ₈ | Φ | Field | What witnesses? |
 
-Where:
-- Ωⱼ = planet importance [2.0, 2.0, 1.5, ...] (10 planets)
-- ωhouse = house weight (angular 1.5x, succedent 1.2x, cadent 1.0x)
-- a(θ) = (cos(θ) + 1) / 2  (activation function)
-- Wⱼᵢ = 10×8 weight matrix (planets → dimensions)
-- sign_mod = element modulation (Fire/Water/Air/Earth)
+### Outer Octave (Dharma - Current Transits)
 
-Normalized: μᵢ / max(μ) → [0, 1] with highest dimension = 1.0
-```
-
-**Outer Octave (Transits + Vedic Dasha):**
-```
-μₜᵢ = 0.5 · U_transit + 0.5 · U_vedic
-
-U_transit = Western planetary transits (current positions)
-U_vedic = Vedic Vimshottari Dasha (70% Mahadasha + 30% Antardasha)
-```
-
-**Key Metrics:**
-
-**κ (Kappa) - Coupling Coefficient:**
-```
-κ = aspect_based_calculation(natal_planets, transits)
-Range: [-1, 1] (negative = challenging, positive = harmonious)
-```
-
-**RU - Resonance Units:**
-```
-RU = α · W · |κ̄| · C · 35
-
-Where:
-- α = (Mars + Sun) × Jupiter (astrological strength proxy)
-- W = ||U₁₆|| (witness magnitude, L2 norm)
-- κ̄ = mean coupling coefficient
-- C = 1 / (1 + variance(U₁₆)) (coherence)
-Range: [0, 100]
-```
-
-**Elder Attractor (Enlightenment State):**
-```
-Requirements:
-- κ̄ > 0.85
-- RU > 45
-- W > 2.5
-- Duration: 48 hours sustained
-```
-
-**Failure Modes:**
-- **Healthy:** Balanced, no dominant failing
-- **Collapse:** Low energy across all dimensions
-- **Inversion:** Negative coupling dominance
-- **Dissociation:** High variance, low coherence
-- **Dispersion:** Low resonance despite activity
-
-See full specification:
-- [docs/16D-IMPLEMENTATION-SPEC.md](docs/16D-IMPLEMENTATION-SPEC.md)
-- [docs/16D-QUICK-REFERENCE.md](docs/16D-QUICK-REFERENCE.md)
-- [docs/FRC-16D-002-ASTROLOGY.md](docs/FRC-16D-002-ASTROLOGY.md)
+| Muₜ | Symbol | Name | Description |
+|-----|--------|------|-------------|
+| μₜ₁ | Pₜ | Phase (Transit) | Current becoming |
+| μₜ₂ | Eₜ | Existence (Transit) | Present ground |
+| μₜ₃ | μₜ | Cognition (Transit) | Available understanding |
+| μₜ₄ | Vₜ | Value (Transit) | Emerging treasures |
+| μₜ₅ | Nₜ | Expansion (Transit) | Growth opportunities |
+| μₜ₆ | Δₜ | Action (Transit) | Action windows |
+| μₜ₇ | Rₜ | Relation (Transit) | Relationship currents |
+| μₜ₈ | Φₜ | Field (Transit) | Witnessing field |
 
 ---
 
-## Workers AI Models
+## Product Tiers
 
-| Task | Model | Usage |
-|------|-------|-------|
-| Report Text | `@cf/meta/llama-3.1-8b-instruct` | Personalized insights |
-| Sacred Art | `@cf/stabilityai/stable-diffusion-xl-base-1.0` | Unique imagery |
-| Embeddings | `@cf/baai/bge-base-en-v1.5` | Figure matching |
+### Free Preview ($0)
+- Dominant dimension
+- Primary archetype match
+- Top 3 historical figure matches
+- Basic 8D vector (Inner Octave only)
+
+### Premium Report ($497)
+- 40+ page luxury PDF
+- Full 16D Universal Vector
+- 10+ historical figure matches
+- MBTI/Enneagram mapping
+- Elder Attractor analysis
+- Automated email delivery
+
+### Living Vector Subscription ($19/month)
+- Daily UV updates
+- Unlimited threshold alerts
+- 365-day historical trends
+- Elder milestone tracking
 
 ---
 
@@ -577,15 +459,6 @@ See full specification:
 The Realm of Patterns doesn't tell you who you are.
 It shows you the shape you're starting from.
 The journey is yours.
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
 
 ---
 
