@@ -146,7 +146,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     for (const item of queueItems) {
       // Mark as processing
-      await updateQueueStatus(env.DB, item.id, 'generating');
+      await updateQueueStatus(env.DB, item.id, 'processing');
 
       try {
         // Load voice config for language
@@ -262,10 +262,10 @@ async function getQueueItems(
 async function updateQueueStatus(
   db: D1Database,
   id: string,
-  status: 'pending' | 'generating' | 'completed' | 'failed',
+  status: 'pending' | 'processing' | 'completed' | 'failed',
   errorMessage?: string
 ): Promise<void> {
-  if (status === 'generating') {
+  if (status === 'processing') {
     await db.prepare(`
       UPDATE content_queue
       SET status = ?, started_at = ?, attempts = COALESCE(attempts, 0) + 1
@@ -293,24 +293,25 @@ async function logGenerationStats(
   tokensUsed: number
 ): Promise<void> {
   const today = new Date().toISOString().split('T')[0];
+  const apiKeySuffix = 'batch-gen'; // Identifier for batch generation
 
   try {
+    const id = crypto.randomUUID();
     await db.prepare(`
-      INSERT INTO generation_stats (date, pages_generated, errors, tokens_used, created_at)
-      VALUES (?, ?, ?, ?, ?)
-      ON CONFLICT(date) DO UPDATE SET
-        pages_generated = pages_generated + ?,
-        errors = errors + ?,
-        tokens_used = tokens_used + ?
+      INSERT INTO generation_stats (id, date, api_key_suffix, pages_generated, errors, tokens_used, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(date, api_key_suffix) DO UPDATE SET
+        pages_generated = pages_generated + excluded.pages_generated,
+        errors = errors + excluded.errors,
+        tokens_used = tokens_used + excluded.tokens_used
     `).bind(
+      id,
       today,
+      apiKeySuffix,
       generated,
       failed,
       tokensUsed,
-      new Date().toISOString(),
-      generated,
-      failed,
-      tokensUsed
+      new Date().toISOString()
     ).run();
   } catch (error) {
     console.error('[STATS] Failed to log generation stats:', error);
@@ -801,24 +802,30 @@ async function publishContent(
   language: SupportedLanguage,
   content: GeneratedContent
 ): Promise<void> {
-  const id = `${contentType}-${content.slug.replace(/\//g, '-')}-${Date.now()}`;
+  const id = crypto.randomUUID();
+  const canonicalSlug = content.slug.split('/').slice(1).join('/'); // Remove language prefix
 
   await db.prepare(`
-    INSERT OR REPLACE INTO cosmic_content (
-      id, language_code, content_type, slug, title, meta_description,
-      content_blocks, schema_markup, status, published_at, created_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT OR REPLACE INTO cms_cosmic_content (
+      id, slug, canonical_slug, content_type, language, title, meta_description,
+      hero_content, content_blocks, faqs, schema_markup, quality_score, word_count,
+      published, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     id,
-    language,
-    contentType,
     content.slug,
+    canonicalSlug,
+    contentType,
+    language,
     content.title,
     content.meta_description,
+    content.content_blocks[0]?.content || '', // Hero content from first block
     JSON.stringify(content.content_blocks),
+    JSON.stringify(content.faqs || []),
     JSON.stringify(content.schema_markup),
-    'published',
-    new Date().toISOString(),
+    content.quality_score,
+    content.word_count,
+    1, // published = true
     new Date().toISOString(),
     new Date().toISOString()
   ).run();
