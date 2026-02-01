@@ -240,19 +240,117 @@ Always return valid JSON matching the requested schema. Be precise with structur
 
 
 # ============================================
-# Gemini Client
+# Gemini Client with Key Rotation
 # ============================================
 
+class GeminiKeyRotator:
+    """Manages rotation across multiple Gemini API keys for higher daily limits."""
+
+    def __init__(self):
+        self.keys: List[str] = []
+        self.current_index = 0
+        self.usage_counts: Dict[str, int] = {}
+        self.error_counts: Dict[str, int] = {}
+
+        # Load all available keys
+        self._load_keys()
+
+    def _load_keys(self) -> None:
+        """Load API keys from environment variables."""
+        # Primary key
+        if key := os.environ.get('GEMINI_API_KEY'):
+            self.keys.append(key)
+
+        # Additional numbered keys (GEMINI_API_KEY_2 through GEMINI_API_KEY_10)
+        for i in range(2, 11):
+            if key := os.environ.get(f'GEMINI_API_KEY_{i}'):
+                self.keys.append(key)
+
+        if not self.keys:
+            raise ValueError("No GEMINI_API_KEY environment variables found")
+
+        logger.info(f"Loaded {len(self.keys)} Gemini API keys for rotation")
+
+        # Initialize usage tracking
+        for key in self.keys:
+            key_id = key[-8:]  # Last 8 chars for identification
+            self.usage_counts[key_id] = 0
+            self.error_counts[key_id] = 0
+
+    def get_next_key(self) -> str:
+        """Get the next available API key using round-robin rotation."""
+        if not self.keys:
+            raise ValueError("No API keys available")
+
+        # Skip keys with high error counts
+        attempts = 0
+        while attempts < len(self.keys):
+            key = self.keys[self.current_index]
+            key_id = key[-8:]
+
+            # Rotate to next key
+            self.current_index = (self.current_index + 1) % len(self.keys)
+
+            # Skip if this key has too many errors (likely exhausted quota)
+            if self.error_counts[key_id] >= 3:
+                attempts += 1
+                continue
+
+            self.usage_counts[key_id] += 1
+            return key
+
+        # All keys exhausted, try first key anyway
+        key = self.keys[0]
+        self.usage_counts[key[-8:]] += 1
+        return key
+
+    def report_error(self, key: str) -> None:
+        """Report an error for a specific key."""
+        key_id = key[-8:]
+        if key_id in self.error_counts:
+            self.error_counts[key_id] += 1
+            logger.warning(f"API key ...{key_id} error count: {self.error_counts[key_id]}")
+
+    def reset_errors(self) -> None:
+        """Reset error counts (call at start of new day)."""
+        for key_id in self.error_counts:
+            self.error_counts[key_id] = 0
+
+    def get_stats(self) -> Dict[str, Any]:
+        """Get usage statistics."""
+        return {
+            'total_keys': len(self.keys),
+            'usage': self.usage_counts,
+            'errors': self.error_counts
+        }
+
+
 class GeminiClient:
-    """Client for Gemini 2.5 Flash API."""
+    """Client for Gemini API with key rotation and image generation."""
 
     def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or os.environ.get('GEMINI_API_KEY')
-        if not self.api_key:
-            raise ValueError("GEMINI_API_KEY environment variable required")
+        # If single key provided, use it; otherwise use key rotator
+        if api_key:
+            self._single_key = api_key
+            self._rotator = None
+        else:
+            self._single_key = None
+            self._rotator = GeminiKeyRotator()
 
-        self.model = 'gemini-2.5-flash'  # Stable version (or 'gemini-3-flash-preview' for latest)
+        self.model = 'gemini-3-flash-preview'  # Best model: 1M context, thinking support
+        self.image_model = 'gemini-2.0-flash-exp'  # Image generation (experimental)
         self.base_url = 'https://generativelanguage.googleapis.com/v1beta'
+
+    def _get_key(self) -> str:
+        """Get an API key (rotated or single)."""
+        if self._single_key:
+            return self._single_key
+        return self._rotator.get_next_key()
+
+    def _report_error(self, key: str) -> None:
+        """Report an API error for quota tracking."""
+        if self._rotator:
+            self._rotator.report_error(key)
 
     def generate(
         self,
@@ -260,9 +358,10 @@ class GeminiClient:
         temperature: float = 0.7,
         max_tokens: int = 8192
     ) -> Dict[str, Any]:
-        """Generate content from Gemini API."""
+        """Generate text content from Gemini API."""
         import requests
 
+        api_key = self._get_key()
         url = f"{self.base_url}/models/{self.model}:generateContent"
 
         headers = {
@@ -281,13 +380,14 @@ class GeminiClient:
         }
 
         response = requests.post(
-            f"{url}?key={self.api_key}",
+            f"{url}?key={api_key}",
             headers=headers,
             json=data,
             timeout=120
         )
 
         if response.status_code != 200:
+            self._report_error(api_key)
             raise Exception(f"Gemini API error: {response.status_code} - {response.text}")
 
         result = response.json()
@@ -301,6 +401,89 @@ class GeminiClient:
             return {'content': content, 'tokens': tokens}
         except (KeyError, json.JSONDecodeError) as e:
             raise Exception(f"Failed to parse Gemini response: {e}")
+
+    def generate_image(
+        self,
+        prompt: str,
+        aspect_ratio: str = "1:1",
+        style: str = "cosmic mystical sacred geometry"
+    ) -> Optional[Dict[str, Any]]:
+        """Generate image using Gemini's native image generation.
+
+        Args:
+            prompt: Text description of the image to generate
+            aspect_ratio: Image aspect ratio (1:1, 16:9, 9:16, 4:3, 3:4)
+            style: Style keywords to append to prompt
+
+        Returns:
+            Dict with 'image_data' (base64) and 'mime_type', or None on failure
+        """
+        import requests
+        import base64
+
+        api_key = self._get_key()
+
+        # Use Gemini 2.0 Flash experimental for image generation
+        url = f"{self.base_url}/models/{self.image_model}:generateContent"
+
+        # Enhance prompt with style
+        full_prompt = f"""Generate an image: {prompt}
+
+Style: {style}
+Aspect Ratio: {aspect_ratio}
+
+Create a visually stunning, high-quality image suitable for a spiritual/cosmic platform."""
+
+        headers = {
+            'Content-Type': 'application/json',
+        }
+
+        data = {
+            'contents': [{
+                'parts': [{'text': full_prompt}]
+            }],
+            'generationConfig': {
+                'responseModalities': ['image', 'text'],
+                'temperature': 1.0
+            }
+        }
+
+        try:
+            response = requests.post(
+                f"{url}?key={api_key}",
+                headers=headers,
+                json=data,
+                timeout=180
+            )
+
+            if response.status_code != 200:
+                self._report_error(api_key)
+                logger.error(f"Image generation failed: {response.status_code} - {response.text}")
+                return None
+
+            result = response.json()
+
+            # Look for image data in response
+            for candidate in result.get('candidates', []):
+                for part in candidate.get('content', {}).get('parts', []):
+                    if 'inlineData' in part:
+                        return {
+                            'image_data': part['inlineData']['data'],
+                            'mime_type': part['inlineData'].get('mimeType', 'image/png')
+                        }
+
+            logger.warning("No image data in response")
+            return None
+
+        except Exception as e:
+            logger.error(f"Image generation error: {e}")
+            return None
+
+    def get_rotation_stats(self) -> Optional[Dict[str, Any]]:
+        """Get key rotation statistics."""
+        if self._rotator:
+            return self._rotator.get_stats()
+        return None
 
 
 # ============================================
@@ -793,6 +976,15 @@ Return ONLY valid JSON.
 # Content Generator
 # ============================================
 
+@dataclass
+class ImageResult:
+    """Result from image generation."""
+    success: bool
+    image_data: Optional[str] = None  # Base64 encoded
+    mime_type: str = 'image/png'
+    error: Optional[str] = None
+
+
 class ContentGenerator:
     """Main content generation orchestrator."""
 
@@ -803,6 +995,80 @@ class ContentGenerator:
     def set_voice(self, voice: VoiceConfig) -> None:
         """Set the voice configuration."""
         self.voice = voice
+
+    def generate_image(
+        self,
+        content_type: ContentType,
+        params: Dict[str, Any]
+    ) -> ImageResult:
+        """Generate an image for the given content type."""
+        try:
+            # Build image prompt based on content type
+            if content_type == ContentType.DAILY_WEATHER:
+                prompt = build_cosmic_weather_image_prompt(
+                    date=params.get('date', datetime.now().strftime('%Y-%m-%d')),
+                    dominant_dimension=params.get('dominant_dimension', 'phase'),
+                    theme=params.get('theme', 'Cosmic Alignment')
+                )
+            elif content_type == ContentType.DIMENSION_GUIDE:
+                prompt = build_dimension_image_prompt(
+                    dimension=params.get('dimension', 'phase')
+                )
+            elif content_type in (ContentType.HISTORICAL_FIGURE, ContentType.ARCHETYPE_PROFILE):
+                prompt = build_archetype_image_prompt(
+                    figure_name=params.get('name', 'Unknown'),
+                    dominant_dimensions=params.get('dominant_dimensions', ['phase', 'field'])
+                )
+            else:
+                # Generic cosmic image
+                prompt = """Abstract cosmic sacred geometry scene.
+                Deep space with flowing energy patterns, subtle mandalas,
+                ethereal light. Mystical, contemplative, beautiful.
+                No text in the image."""
+
+            # Generate image
+            result = self.client.generate_image(prompt)
+
+            if result:
+                return ImageResult(
+                    success=True,
+                    image_data=result['image_data'],
+                    mime_type=result['mime_type']
+                )
+            else:
+                return ImageResult(
+                    success=False,
+                    error="Image generation returned no data"
+                )
+
+        except Exception as e:
+            logger.error(f"Image generation failed: {e}")
+            return ImageResult(success=False, error=str(e))
+
+    def generate_with_image(
+        self,
+        request: GenerationRequest,
+        include_image: bool = True
+    ) -> tuple[GenerationResult, Optional[ImageResult]]:
+        """Generate content and optionally an accompanying image."""
+        # Generate text content first
+        text_result = self.generate(request)
+
+        image_result = None
+        if include_image and text_result.success:
+            # Extract info from generated content for image prompt
+            content = text_result.content or {}
+            image_params = dict(request.params)
+
+            # Add generated content info to image params
+            if request.content_type == ContentType.DAILY_WEATHER:
+                image_params['theme'] = content.get('theme', 'Cosmic Flow')
+                dominant = content.get('dominant', {})
+                image_params['dominant_dimension'] = dominant.get('dimension', 'phase')
+
+            image_result = self.generate_image(request.content_type, image_params)
+
+        return text_result, image_result
 
     def generate(self, request: GenerationRequest) -> GenerationResult:
         """Generate content based on request."""
@@ -970,6 +1236,66 @@ class ContentGenerator:
 
 
 # ============================================
+# Image Generation Prompts
+# ============================================
+
+def build_cosmic_weather_image_prompt(
+    date: str,
+    dominant_dimension: str,
+    theme: str
+) -> str:
+    """Build prompt for daily cosmic weather image."""
+    dim_data = MU_DIMENSIONS.get(dominant_dimension, MU_DIMENSIONS['phase'])
+    return f"""A mystical cosmic scene representing the energy of {date}.
+
+Theme: "{theme}"
+Dominant energy: {dim_data['name']} ({dim_data['planet']})
+Color palette: {dim_data['color']}, deep space blues, stellar golds
+
+Style: Sacred geometry meets cosmic art. Ethereal, luminous, spiritually evocative.
+Elements: Planetary symbols, constellation patterns, flowing energy waves, subtle mandalas.
+Mood: Contemplative, inspiring, transcendent.
+
+No text or words in the image."""
+
+
+def build_dimension_image_prompt(dimension: str) -> str:
+    """Build prompt for dimension guide image."""
+    dim_data = MU_DIMENSIONS.get(dimension, MU_DIMENSIONS['phase'])
+    return f"""Abstract cosmic representation of the {dim_data['name']} dimension.
+
+Planet: {dim_data['planet']} ({dim_data['planet_symbol']})
+Element: {dim_data['element']}
+Domain: {dim_data['domain']}
+Primary color: {dim_data['color']}
+
+Style: Sacred geometry, ethereal cosmic art, luminous.
+Include subtle planetary symbols and flowing energy patterns.
+Mood: {dim_data['keywords'][0]}, transcendent, powerful yet peaceful.
+
+No text or words in the image."""
+
+
+def build_archetype_image_prompt(
+    figure_name: str,
+    dominant_dimensions: List[str]
+) -> str:
+    """Build prompt for historical figure/archetype image."""
+    colors = [MU_DIMENSIONS[d]['color'] for d in dominant_dimensions if d in MU_DIMENSIONS]
+    return f"""Abstract spiritual portrait representing the cosmic essence of {figure_name}.
+
+Dominant energies: {', '.join(dominant_dimensions)}
+Color palette: {', '.join(colors)}, cosmic purples, ethereal whites
+
+Style: Ethereal, symbolic, sacred geometry elements.
+Not a literal portrait - abstract representation of their cosmic pattern.
+Include subtle mandalas, energy patterns, celestial elements.
+Mood: Wise, timeless, luminous.
+
+No text, no literal face, abstract symbolic only."""
+
+
+# ============================================
 # CLI Interface
 # ============================================
 
@@ -1013,7 +1339,25 @@ def main():
     parser.add_argument('--topic', type=str, help='Blog post topic')
     parser.add_argument('--keywords', type=str, help='Comma-separated keywords')
 
+    # Image generation options
+    parser.add_argument('--with-image', action='store_true', help='Generate accompanying image')
+    parser.add_argument('--image-only', action='store_true', help='Generate only an image')
+    parser.add_argument('--image-output', type=str, help='Output path for image file')
+
+    # Stats
+    parser.add_argument('--stats', action='store_true', help='Show API key rotation stats')
+
     args = parser.parse_args()
+
+    # Handle stats request
+    if args.stats:
+        generator = ContentGenerator()
+        stats = generator.client.get_rotation_stats()
+        if stats:
+            print(json.dumps(stats, indent=2))
+        else:
+            print("Single key mode - no rotation stats")
+        sys.exit(0)
 
     # Build params based on content type
     params: Dict[str, Any] = {}
@@ -1076,11 +1420,43 @@ def main():
         params=params
     )
 
-    # Generate content
+    generator = ContentGenerator()
+
+    # Handle image-only mode
+    if args.image_only:
+        logger.info(f"Generating image for {content_type.value}...")
+        image_result = generator.generate_image(content_type, params)
+
+        if not image_result.success:
+            logger.error(f"Image generation failed: {image_result.error}")
+            sys.exit(1)
+
+        # Save image
+        if args.image_output and image_result.image_data:
+            import base64
+            image_path = Path(args.image_output)
+            image_path.parent.mkdir(parents=True, exist_ok=True)
+            image_bytes = base64.b64decode(image_result.image_data)
+            image_path.write_bytes(image_bytes)
+            logger.info(f"Image saved to {args.image_output}")
+        else:
+            # Output base64 as JSON
+            print(json.dumps({
+                'success': True,
+                'image_data': image_result.image_data,
+                'mime_type': image_result.mime_type
+            }))
+
+        sys.exit(0)
+
+    # Generate content (with optional image)
     logger.info(f"Generating {content_type.value} content in {args.lang}...")
 
-    generator = ContentGenerator()
-    result = generator.generate(request)
+    if args.with_image:
+        result, image_result = generator.generate_with_image(request, include_image=True)
+    else:
+        result = generator.generate(request)
+        image_result = None
 
     if not result.success:
         logger.error(f"Generation failed: {result.error}")
@@ -1099,6 +1475,24 @@ def main():
         }
     }
 
+    # Add image data if generated
+    if image_result and image_result.success:
+        output_data['image'] = {
+            'generated': True,
+            'mime_type': image_result.mime_type
+        }
+        # Save image if path provided
+        if args.image_output and image_result.image_data:
+            import base64
+            image_path = Path(args.image_output)
+            image_path.parent.mkdir(parents=True, exist_ok=True)
+            image_bytes = base64.b64decode(image_result.image_data)
+            image_path.write_bytes(image_bytes)
+            output_data['image']['saved_to'] = args.image_output
+            logger.info(f"Image saved to {args.image_output}")
+        elif image_result.image_data:
+            output_data['image']['data'] = image_result.image_data
+
     output_json = json.dumps(output_data, indent=2, ensure_ascii=False)
 
     if args.output:
@@ -1110,6 +1504,11 @@ def main():
         print(output_json)
 
     logger.info(f"Generated in {result.generation_time_ms}ms, {result.tokens_used} tokens")
+
+    # Show rotation stats if available
+    stats = generator.client.get_rotation_stats()
+    if stats:
+        logger.info(f"API key rotation: {stats['total_keys']} keys, usage: {stats['usage']}")
 
 
 if __name__ == '__main__':

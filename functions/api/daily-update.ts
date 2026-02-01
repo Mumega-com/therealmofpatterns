@@ -90,6 +90,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (!body.skip_content) {
       console.log(`[DAILY] Generating cosmic weather content for ${targetDate}...`);
 
+      // Initialize key rotator for multiple API keys
+      const keyRotator = new GeminiKeyRotator(env);
+
       for (const lang of languagesToGenerate) {
         try {
           // Check if content already exists for this date/language
@@ -104,8 +107,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             continue;
           }
 
-          // Generate content using Gemini
-          const content = await generateCosmicWeatherContent(env, targetDate, lang);
+          // Generate content using Gemini with key rotation
+          const content = await generateCosmicWeatherContent(env, targetDate, lang, keyRotator);
 
           if (content) {
             // Store in D1
@@ -214,12 +217,13 @@ interface CosmicWeatherContent {
 }
 
 /**
- * Generate cosmic weather content using Gemini API
+ * Generate cosmic weather content using Gemini API with key rotation
  */
 async function generateCosmicWeatherContent(
   env: Env,
   date: string,
-  language: SupportedLanguage
+  language: SupportedLanguage,
+  keyRotator: GeminiKeyRotator
 ): Promise<CosmicWeatherContent | null> {
   // Get the 8 Mu vector for this date (mock for now, integrate with Python later)
   const vector = generateDailyVector(date);
@@ -240,8 +244,11 @@ async function generateCosmicWeatherContent(
   const prompt = buildDailyWeatherPrompt(date, vector, dominant, language, voice);
 
   try {
-    // Call Gemini API
-    const response = await callGeminiAPI(env.GEMINI_API_KEY, prompt);
+    // Get rotated API key
+    const apiKey = keyRotator.getNextKey();
+
+    // Call Gemini API with rotated key
+    const response = await callGeminiAPI(apiKey, prompt, keyRotator);
 
     if (!response) {
       console.error(`[GEMINI] No response for ${language}`);
@@ -401,13 +408,64 @@ Return ONLY valid JSON, no markdown code blocks.`;
 }
 
 /**
- * Call Gemini API
+ * API Key Rotator - cycles through multiple Gemini keys for higher daily limits
+ */
+class GeminiKeyRotator {
+  private keys: string[] = [];
+  private currentIndex = 0;
+  private errorCounts: Map<string, number> = new Map();
+
+  constructor(env: Env) {
+    // Load all available keys
+    if (env.GEMINI_API_KEY) this.keys.push(env.GEMINI_API_KEY);
+    if ((env as any).GEMINI_API_KEY_2) this.keys.push((env as any).GEMINI_API_KEY_2);
+    if ((env as any).GEMINI_API_KEY_3) this.keys.push((env as any).GEMINI_API_KEY_3);
+    if ((env as any).GEMINI_API_KEY_4) this.keys.push((env as any).GEMINI_API_KEY_4);
+    if ((env as any).GEMINI_API_KEY_5) this.keys.push((env as any).GEMINI_API_KEY_5);
+    if ((env as any).GEMINI_API_KEY_6) this.keys.push((env as any).GEMINI_API_KEY_6);
+
+    console.log(`[GEMINI] Loaded ${this.keys.length} API keys for rotation`);
+  }
+
+  getNextKey(): string {
+    if (this.keys.length === 0) {
+      throw new Error('No Gemini API keys configured');
+    }
+
+    // Skip keys with too many errors
+    let attempts = 0;
+    while (attempts < this.keys.length) {
+      const key = this.keys[this.currentIndex];
+      this.currentIndex = (this.currentIndex + 1) % this.keys.length;
+
+      const errors = this.errorCounts.get(key) || 0;
+      if (errors < 3) {
+        return key;
+      }
+      attempts++;
+    }
+
+    // All keys exhausted, return first anyway
+    return this.keys[0];
+  }
+
+  reportError(key: string): void {
+    const current = this.errorCounts.get(key) || 0;
+    this.errorCounts.set(key, current + 1);
+    console.warn(`[GEMINI] Key error count: ${current + 1}`);
+  }
+}
+
+/**
+ * Call Gemini API with key rotation
  */
 async function callGeminiAPI(
   apiKey: string,
-  prompt: string
+  prompt: string,
+  keyRotator?: GeminiKeyRotator
 ): Promise<any | null> {
-  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  // Use Gemini 3 Flash - best model with 1M context and thinking support
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent';
 
   try {
     const response = await fetch(`${url}?key=${apiKey}`, {
@@ -426,6 +484,11 @@ async function callGeminiAPI(
     if (!response.ok) {
       const error = await response.text();
       console.error(`[GEMINI] API error ${response.status}:`, error);
+
+      // Report error for key rotation
+      if (keyRotator) {
+        keyRotator.reportError(apiKey);
+      }
       return null;
     }
 
@@ -433,6 +496,9 @@ async function callGeminiAPI(
     return result;
   } catch (error) {
     console.error('[GEMINI] Fetch error:', error);
+    if (keyRotator) {
+      keyRotator.reportError(apiKey);
+    }
     return null;
   }
 }
