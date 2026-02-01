@@ -1,0 +1,1498 @@
+{
+  "$schema": "https://therealmofpatterns.com/schemas/jungian-framework.json",
+  "version": "1.0.0",
+  "created": "2025-02-01",
+  "framework": "FRC 16D Universal Vector System",
+
+  "dimensions": {
+    "P": { "symbol": "P", "name": "Phase/Identity", "index": 0, "mu": "mu_1" },
+    "E": { "symbol": "E", "name": "Existence/Structure", "index": 1, "mu": "mu_2" },
+    "mu": { "symbol": "mu", "name": "Cognition/Mind", "index": 2, "mu": "mu_3" },
+    "V": { "symbol": "V", "name": "Value/Beauty", "index": 3, "mu": "mu_4" },
+    "N": { "symbol": "N", "name": "Narrative/Growth", "index": 4, "mu": "mu_5" },
+    "Delta": { "symbol": "Delta", "name": "Action/Momentum", "index": 5, "mu": "mu_6" },
+    "R": { "symbol": "R", "name": "Relation/Connection", "index": 6, "mu": "mu_7" },
+    "Phi": { "symbol": "Phi", "name": "Field/Witness", "index": 7, "mu": "mu_8" }
+  },
+
+  "archetypes": {
+    "Hero": {
+      "dimension": "P",
+      "dimensionName": "Phase/Identity",
+      "description": {
+        "en": "The Hero archetype manifests through the Phase dimension (P) - the seat of identity, will, and conscious becoming. The Hero's journey is the journey of individuation itself, the process of becoming who one truly is. This dimension governs the solar principle: radiant identity, purposeful will, and the courage to face the unknown.",
+        "pt": "O arquetipo do Heroi se manifesta atraves da dimensao Fase (P) - a sede da identidade, vontade e devir consciente. A jornada do Heroi e a propria jornada de individuacao, o processo de se tornar quem realmente se e. Esta dimensao governa o principio solar: identidade radiante, vontade proposital e a coragem de enfrentar o desconhecido.",
+        "es": "El arquetipo del Heroe se manifiesta a traves de la dimension Fase (P) - la sede de la identidad, voluntad y devenir consciente. El viaje del Heroe es el viaje de individuacion en si, el proceso de convertirse en quien uno realmente es. Esta dimension gobierna el principio solar: identidad radiante, voluntad con proposito y el coraje de enfrentar lo desconocido."
+      },
+      "shadow": {
+        "name": {
+          "en": "The Tyrant",
+          "pt": "O Tirano",
+          "es": "El Tirano"
+        },
+        "manifestation": {
+          "en": "When P is inflated or unintegrated, the Hero becomes the Tyrant - rigid ego identification, narcissistic inflation, or conversely, complete ego collapse into passivity.",
+          "pt": "Quando P esta inflado ou nao integrado, o Heroi se torna o Tirano - identificacao rigida do ego, inflacao narcisista ou, inversamente, colapso completo do ego em passividade.",
+          "es": "Cuando P esta inflado o no integrado, el Heroe se convierte en el Tirano - identificacion rigida del ego, inflacion narcisista o, por el contrario, colapso completo del ego en pasividad."
+        },
+        "symptoms": ["narcissistic inflation", "ego rigidity", "inability to accept failure", "domination of others", "identity fragmentation"]
+      },
+      "jungQuotes": [
+        {
+          "text": "The privilege of a lifetime is to become who you truly are.",
+          "source": "Various attributions",
+          "context": "On the Hero's ultimate quest"
+        },
+        {
+          "text": "I am not what happened to me, I am what I choose to become.",
+          "source": "Various attributions",
+          "context": "On conscious identity formation"
+        },
+        {
+          "text": "The meeting of two personalities is like the contact of two chemical substances: if there is any reaction, both are transformed.",
+          "source": "Modern Man in Search of a Soul",
+          "context": "On identity through encounter"
+        }
+      ],
+      "historicalFigures": [
+        {
+          "name": "Alexander the Great",
+          "signature": "P>Delta>N",
+          "description": {
+            "en": "Embodied the Hero through conquest and the expansion of Greek civilization. His identity (P) was inseparable from action (Delta) and narrative (N) of destiny.",
+            "pt": "Encarnou o Heroi atraves da conquista e expansao da civilizacao grega. Sua identidade (P) era inseparavel da acao (Delta) e narrativa (N) de destino.",
+            "es": "Encarnaba al Heroe a traves de la conquista y la expansion de la civilizacion griega. Su identidad (P) era inseparable de la accion (Delta) y la narrativa (N) del destino."
+          }
+        },
+        {
+          "name": "Nelson Mandela",
+          "signature": "P>R>Phi",
+          "description": {
+            "en": "The Hero transformed into Wise Elder. His identity (P) was expressed through relationship (R) and becoming a symbol for collective witness (Phi).",
+            "pt": "O Heroi transformado em Anciao Sabio. Sua identidade (P) foi expressa atraves de relacionamento (R) e tornando-se um simbolo para testemunha coletiva (Phi).",
+            "es": "El Heroe transformado en Anciano Sabio. Su identidad (P) se expreso a traves de la relacion (R) y convirtiendose en un simbolo para el testimonio colectivo (Phi)."
+          }
+        },
+        {
+          "name": "Joan of Arc",
+          "signature": "P>Phi>Delta",
+          "description": {
+            "en": "Identity (P) derived from divine witness (Phi) manifesting through decisive action (Delta). The Hero as vessel for transpersonal purpose.",
+            "pt": "Identidade (P) derivada do testemunho divino (Phi) manifestando-se atraves de acao decisiva (Delta). O Heroi como vaso para proposito transpessoal.",
+            "es": "Identidad (P) derivada del testimonio divino (Phi) manifestandose a traves de la accion decisiva (Delta). El Heroe como recipiente para un proposito transpersonal."
+          }
+        }
+      ],
+      "integrationPractices": [
+        {
+          "name": {
+            "en": "Identity Journaling",
+            "pt": "Diario de Identidade",
+            "es": "Diario de Identidad"
+          },
+          "description": {
+            "en": "Daily practice of asking 'Who am I becoming?' without answering from past identifications",
+            "pt": "Pratica diaria de perguntar 'Quem estou me tornando?' sem responder a partir de identificacoes passadas",
+            "es": "Practica diaria de preguntar 'Quien estoy convirtiendome?' sin responder desde identificaciones pasadas"
+          }
+        },
+        {
+          "name": {
+            "en": "Threshold Crossing",
+            "pt": "Cruzando Limiares",
+            "es": "Cruzando Umbrales"
+          },
+          "description": {
+            "en": "Deliberately stepping into unfamiliar territory to activate the Hero response",
+            "pt": "Deliberadamente entrar em territorio desconhecido para ativar a resposta do Heroi",
+            "es": "Entrar deliberadamente en territorio desconocido para activar la respuesta del Heroe"
+          }
+        }
+      ],
+      "planetaryRulers": ["Sun", "Mars"],
+      "color": "#FFD700",
+      "element": "Fire"
+    },
+
+    "Sage": {
+      "dimension": "E",
+      "dimensionName": "Existence/Structure",
+      "description": {
+        "en": "The Sage archetype manifests through the Existence dimension (E) - the realm of structure, boundaries, time, and cosmic order. The Sage understands that wisdom comes through limitation, patience, and the acceptance of what is. This dimension governs the Saturnian principle: maturity, discipline, and the crystallization of experience into wisdom.",
+        "pt": "O arquetipo do Sabio se manifesta atraves da dimensao Existencia (E) - o reino da estrutura, limites, tempo e ordem cosmica. O Sabio entende que a sabedoria vem atraves da limitacao, paciencia e aceitacao do que e. Esta dimensao governa o principio Saturnino: maturidade, disciplina e a cristalizacao da experiencia em sabedoria.",
+        "es": "El arquetipo del Sabio se manifiesta a traves de la dimension Existencia (E) - el reino de la estructura, limites, tiempo y orden cosmico. El Sabio entiende que la sabiduria viene a traves de la limitacion, paciencia y aceptacion de lo que es. Esta dimension gobierna el principio Saturnino: madurez, disciplina y la cristalizacion de la experiencia en sabiduria."
+      },
+      "shadow": {
+        "name": {
+          "en": "The Cynic / The Dogmatist",
+          "pt": "O Cinico / O Dogmatico",
+          "es": "El Cinico / El Dogmatico"
+        },
+        "manifestation": {
+          "en": "When E is distorted, the Sage becomes either the Cynic (rejecting all structure and meaning) or the Dogmatist (rigidly adhering to ossified wisdom). Both represent failed relationship with limitation.",
+          "pt": "Quando E esta distorcido, o Sabio se torna ou o Cinico (rejeitando toda estrutura e significado) ou o Dogmatico (aderindo rigidamente a sabedoria ossificada). Ambos representam uma relacao fracassada com a limitacao.",
+          "es": "Cuando E esta distorsionado, el Sabio se convierte en el Cinico (rechazando toda estructura y significado) o el Dogmatico (adhiriendose rigidamente a la sabiduria osificada). Ambos representan una relacion fallida con la limitacion."
+        },
+        "symptoms": ["excessive rigidity", "fear of change", "paralysis by analysis", "cold detachment", "contempt for emotion"]
+      },
+      "jungQuotes": [
+        {
+          "text": "One does not become enlightened by imagining figures of light, but by making the darkness conscious.",
+          "source": "The Philosophical Tree",
+          "context": "On the Sage's true path"
+        },
+        {
+          "text": "Your vision will become clear only when you can look into your own heart. Who looks outside, dreams; who looks inside, awakes.",
+          "source": "Letters, Volume 1",
+          "context": "On inner wisdom"
+        },
+        {
+          "text": "Where wisdom reigns, there is no conflict between thinking and feeling.",
+          "source": "Psychological Types",
+          "context": "On integrated wisdom"
+        }
+      ],
+      "historicalFigures": [
+        {
+          "name": "Marcus Aurelius",
+          "signature": "E>P>mu",
+          "description": {
+            "en": "The philosopher-emperor who embodied Stoic structure (E), tempered by strong identity (P) and penetrating thought (mu). His Meditations crystallize Sage wisdom.",
+            "pt": "O imperador-filosofo que encarnou a estrutura estoica (E), temperada por forte identidade (P) e pensamento penetrante (mu). Suas Meditacoes cristalizam a sabedoria do Sabio.",
+            "es": "El emperador-filosofo que encarnaba la estructura estoica (E), templada por una fuerte identidad (P) y un pensamiento penetrante (mu). Sus Meditaciones cristalizan la sabiduria del Sabio."
+          }
+        },
+        {
+          "name": "Confucius",
+          "signature": "E>R>N",
+          "description": {
+            "en": "Structure (E) through proper relationships (R) creating enduring cultural narrative (N). The Sage as architect of social order.",
+            "pt": "Estrutura (E) atraves de relacionamentos adequados (R) criando narrativa cultural duradoura (N). O Sabio como arquiteto da ordem social.",
+            "es": "Estructura (E) a traves de relaciones adecuadas (R) creando una narrativa cultural duradera (N). El Sabio como arquitecto del orden social."
+          }
+        },
+        {
+          "name": "Immanuel Kant",
+          "signature": "E>mu>Phi",
+          "description": {
+            "en": "Structure of thought (E+mu) reaching toward the transcendent (Phi). The Sage mapping the boundaries of reason itself.",
+            "pt": "Estrutura do pensamento (E+mu) alcancando o transcendente (Phi). O Sabio mapeando os limites da propria razao.",
+            "es": "Estructura del pensamiento (E+mu) alcanzando lo trascendente (Phi). El Sabio mapeando los limites de la razon misma."
+          }
+        }
+      ],
+      "integrationPractices": [
+        {
+          "name": {
+            "en": "Structured Reflection",
+            "pt": "Reflexao Estruturada",
+            "es": "Reflexion Estructurada"
+          },
+          "description": {
+            "en": "Regular practice of extracting principles from experience. What did this teach me? What is the pattern?",
+            "pt": "Pratica regular de extrair principios da experiencia. O que isso me ensinou? Qual e o padrao?",
+            "es": "Practica regular de extraer principios de la experiencia. Que me enseno esto? Cual es el patron?"
+          }
+        },
+        {
+          "name": {
+            "en": "Boundary Honoring",
+            "pt": "Honrando Limites",
+            "es": "Honrando Limites"
+          },
+          "description": {
+            "en": "Consciously accepting limitations as teachers rather than obstacles",
+            "pt": "Aceitar conscientemente limitacoes como professores em vez de obstaculos",
+            "es": "Aceptar conscientemente las limitaciones como maestros en lugar de obstaculos"
+          }
+        }
+      ],
+      "planetaryRulers": ["Saturn"],
+      "color": "#1E3A5F",
+      "element": "Earth"
+    },
+
+    "Trickster": {
+      "dimension": "mu",
+      "dimensionName": "Cognition/Mind",
+      "description": {
+        "en": "The Trickster archetype manifests through the Cognition dimension (mu) - the realm of mind, communication, and the mercurial dance of thought. The Trickster sees around corners, speaks in riddles, and reveals truth through paradox. This dimension governs the Mercurial principle: intelligence, wit, language, and the liminal spaces between categories.",
+        "pt": "O arquetipo do Trapaceiro se manifesta atraves da dimensao Cognicao (mu) - o reino da mente, comunicacao e a danca mercurial do pensamento. O Trapaceiro ve alem das esquinas, fala em enigmas e revela a verdade atraves do paradoxo. Esta dimensao governa o principio Mercurial: inteligencia, sagacidade, linguagem e os espacos liminares entre categorias.",
+        "es": "El arquetipo del Tramposo se manifiesta a traves de la dimension Cognicion (mu) - el reino de la mente, comunicacion y la danza mercurial del pensamiento. El Tramposo ve alrededor de las esquinas, habla en acertijos y revela la verdad a traves de la paradoja. Esta dimension gobierna el principio Mercurial: inteligencia, ingenio, lenguaje y los espacios liminales entre categorias."
+      },
+      "shadow": {
+        "name": {
+          "en": "The Deceiver / The Scattered Mind",
+          "pt": "O Enganador / A Mente Dispersa",
+          "es": "El Enganador / La Mente Dispersa"
+        },
+        "manifestation": {
+          "en": "When mu is distorted, the Trickster becomes either the Deceiver (using intellect for manipulation) or the Scattered Mind (unable to hold coherent thought). Both represent misuse of cognitive gifts.",
+          "pt": "Quando mu esta distorcido, o Trapaceiro se torna ou o Enganador (usando o intelecto para manipulacao) ou a Mente Dispersa (incapaz de manter pensamento coerente). Ambos representam mau uso de dons cognitivos.",
+          "es": "Cuando mu esta distorsionado, el Tramposo se convierte en el Enganador (usando el intelecto para manipulacion) o la Mente Dispersa (incapaz de mantener un pensamiento coherente). Ambos representan mal uso de los dones cognitivos."
+        },
+        "symptoms": ["chronic overthinking", "manipulation through words", "inability to focus", "disconnection from feeling", "sophistry and intellectual games"]
+      },
+      "jungQuotes": [
+        {
+          "text": "The creation of something new is not accomplished by the intellect but by the play instinct.",
+          "source": "Psychological Types",
+          "context": "On the Trickster's creative power"
+        },
+        {
+          "text": "Thinking is difficult, that's why most people judge.",
+          "source": "Various attributions",
+          "context": "On true cognition"
+        },
+        {
+          "text": "The pendulum of the mind oscillates between sense and nonsense, not between right and wrong.",
+          "source": "Memories, Dreams, Reflections",
+          "context": "On the liminal nature of thought"
+        }
+      ],
+      "historicalFigures": [
+        {
+          "name": "Socrates",
+          "signature": "mu>P>R",
+          "description": {
+            "en": "The gadfly of Athens used questioning (mu) to destabilize false certainty, maintaining strong identity (P) through relationship (R) with truth itself.",
+            "pt": "O moscardo de Atenas usou o questionamento (mu) para desestabilizar falsas certezas, mantendo forte identidade (P) atraves da relacao (R) com a propria verdade.",
+            "es": "El tabano de Atenas uso el cuestionamiento (mu) para desestabilizar falsas certezas, manteniendo una fuerte identidad (P) a traves de la relacion (R) con la verdad misma."
+          }
+        },
+        {
+          "name": "Oscar Wilde",
+          "signature": "mu>V>R",
+          "description": {
+            "en": "Wit (mu) in service of beauty (V) and social commentary (R). The Trickster as cultural mirror and aesthetic provocateur.",
+            "pt": "Sagacidade (mu) a servico da beleza (V) e comentario social (R). O Trapaceiro como espelho cultural e provocador estetico.",
+            "es": "Ingenio (mu) al servicio de la belleza (V) y el comentario social (R). El Tramposo como espejo cultural y provocador estetico."
+          }
+        },
+        {
+          "name": "Alan Turing",
+          "signature": "mu>E>Phi",
+          "description": {
+            "en": "Pure cognition (mu) creating new structures (E) that touched the infinite (Phi). The Trickster encoding reality in symbols.",
+            "pt": "Cognicao pura (mu) criando novas estruturas (E) que tocaram o infinito (Phi). O Trapaceiro codificando a realidade em simbolos.",
+            "es": "Cognicion pura (mu) creando nuevas estructuras (E) que tocaron lo infinito (Phi). El Tramposo codificando la realidad en simbolos."
+          }
+        }
+      ],
+      "integrationPractices": [
+        {
+          "name": {
+            "en": "Paradox Meditation",
+            "pt": "Meditacao do Paradoxo",
+            "es": "Meditacion de la Paradoja"
+          },
+          "description": {
+            "en": "Holding contradictory truths simultaneously without resolving them",
+            "pt": "Manter verdades contraditorias simultaneamente sem resolve-las",
+            "es": "Mantener verdades contradictorias simultaneamente sin resolverlas"
+          }
+        },
+        {
+          "name": {
+            "en": "Language Play",
+            "pt": "Jogo de Linguagem",
+            "es": "Juego de Lenguaje"
+          },
+          "description": {
+            "en": "Creative writing, wordplay, and linguistic experimentation to keep the mind limber",
+            "pt": "Escrita criativa, jogos de palavras e experimentacao linguistica para manter a mente agil",
+            "es": "Escritura creativa, juegos de palabras y experimentacion lingueistica para mantener la mente agil"
+          }
+        }
+      ],
+      "planetaryRulers": ["Mercury"],
+      "color": "#FFA500",
+      "element": "Air"
+    },
+
+    "Lover": {
+      "dimension": "V",
+      "dimensionName": "Value/Beauty",
+      "description": {
+        "en": "The Lover archetype manifests through the Value dimension (V) - the realm of beauty, pleasure, attraction, and the heart's discernment. The Lover knows what is worth treasuring, creates harmony, and perceives the sacred in the sensual. This dimension governs the Venusian principle: aesthetic sensitivity, emotional attunement, and the power of desire.",
+        "pt": "O arquetipo do Amante se manifesta atraves da dimensao Valor (V) - o reino da beleza, prazer, atracao e discernimento do coracao. O Amante sabe o que vale a pena valorizar, cria harmonia e percebe o sagrado no sensual. Esta dimensao governa o principio Venusiano: sensibilidade estetica, sintonizacao emocional e o poder do desejo.",
+        "es": "El arquetipo del Amante se manifiesta a traves de la dimension Valor (V) - el reino de la belleza, placer, atraccion y discernimiento del corazon. El Amante sabe lo que vale la pena valorar, crea armonia y percibe lo sagrado en lo sensual. Esta dimension gobierna el principio Venusiano: sensibilidad estetica, sintonizacion emocional y el poder del deseo."
+      },
+      "shadow": {
+        "name": {
+          "en": "The Addict / The Frigid One",
+          "pt": "O Adicto / O Frigido",
+          "es": "El Adicto / El Frigido"
+        },
+        "manifestation": {
+          "en": "When V is distorted, the Lover becomes either the Addict (consumed by desire, unable to find satisfaction) or the Frigid One (cut off from pleasure, beauty, and feeling). Both represent wounded relationship with value.",
+          "pt": "Quando V esta distorcido, o Amante se torna ou o Adicto (consumido pelo desejo, incapaz de encontrar satisfacao) ou o Frigido (cortado do prazer, beleza e sentimento). Ambos representam relacao ferida com valor.",
+          "es": "Cuando V esta distorsionado, el Amante se convierte en el Adicto (consumido por el deseo, incapaz de encontrar satisfaccion) o el Frigido (desconectado del placer, belleza y sentimiento). Ambos representan una relacion herida con el valor."
+        },
+        "symptoms": ["addiction to pleasure", "superficiality", "inability to commit", "aesthetic obsession", "emotional numbness"]
+      },
+      "jungQuotes": [
+        {
+          "text": "The meeting with yourself is, at first, the meeting with your own shadow.",
+          "source": "Archetypes and the Collective Unconscious",
+          "context": "On the Lover's encounter with desire"
+        },
+        {
+          "text": "Where love rules, there is no will to power; and where power predominates, there love is lacking.",
+          "source": "Two Essays on Analytical Psychology",
+          "context": "On the Lover's true nature"
+        },
+        {
+          "text": "The word 'happiness' would lose its meaning if it were not balanced by sadness.",
+          "source": "Various attributions",
+          "context": "On the fullness of feeling"
+        }
+      ],
+      "historicalFigures": [
+        {
+          "name": "Rumi",
+          "signature": "V>Phi>R",
+          "description": {
+            "en": "Divine beauty (V) channeled through transcendent witness (Phi) into relationship (R) with the Beloved. The Lover as mystic poet.",
+            "pt": "Beleza divina (V) canalizada atraves do testemunho transcendente (Phi) em relacionamento (R) com o Amado. O Amante como poeta mistico.",
+            "es": "Belleza divina (V) canalizada a traves del testimonio trascendente (Phi) en relacion (R) con el Amado. El Amante como poeta mistico."
+          }
+        },
+        {
+          "name": "Frida Kahlo",
+          "signature": "V>P>Delta",
+          "description": {
+            "en": "Beauty and value (V) through fierce self-expression (P) despite physical struggle (Delta). The Lover as transformer of pain into art.",
+            "pt": "Beleza e valor (V) atraves de auto-expressao feroz (P) apesar da luta fisica (Delta). O Amante como transformador da dor em arte.",
+            "es": "Belleza y valor (V) a traves de una feroz auto-expresion (P) a pesar de la lucha fisica (Delta). El Amante como transformador del dolor en arte."
+          }
+        },
+        {
+          "name": "Cleopatra",
+          "signature": "V>P>mu",
+          "description": {
+            "en": "Beauty (V) as power, identity (P) as seduction, intelligence (mu) as strategy. The Lover as political force.",
+            "pt": "Beleza (V) como poder, identidade (P) como seducao, inteligencia (mu) como estrategia. O Amante como forca politica.",
+            "es": "Belleza (V) como poder, identidad (P) como seduccion, inteligencia (mu) como estrategia. El Amante como fuerza politica."
+          }
+        }
+      ],
+      "integrationPractices": [
+        {
+          "name": {
+            "en": "Beauty Pilgrimage",
+            "pt": "Peregrinacao de Beleza",
+            "es": "Peregrinacion de Belleza"
+          },
+          "description": {
+            "en": "Regular seeking of beauty in art, nature, and human creation as spiritual practice",
+            "pt": "Busca regular de beleza na arte, natureza e criacao humana como pratica espiritual",
+            "es": "Busqueda regular de belleza en el arte, naturaleza y creacion humana como practica espiritual"
+          }
+        },
+        {
+          "name": {
+            "en": "Desire Mapping",
+            "pt": "Mapeamento de Desejo",
+            "es": "Mapeo del Deseo"
+          },
+          "description": {
+            "en": "Conscious exploration of what you truly value without judgment",
+            "pt": "Exploracao consciente do que voce realmente valoriza sem julgamento",
+            "es": "Exploracion consciente de lo que realmente valoras sin juicio"
+          }
+        }
+      ],
+      "planetaryRulers": ["Venus"],
+      "color": "#FF69B4",
+      "element": "Water"
+    },
+
+    "Explorer": {
+      "dimension": "N",
+      "dimensionName": "Narrative/Growth",
+      "description": {
+        "en": "The Explorer archetype manifests through the Narrative dimension (N) - the realm of expansion, meaning-making, and the quest for understanding. The Explorer seeks new horizons, finds patterns in chaos, and weaves experience into story. This dimension governs the Jupiterian principle: optimism, vision, philosophy, and the ever-expanding search for truth.",
+        "pt": "O arquetipo do Explorador se manifesta atraves da dimensao Narrativa (N) - o reino da expansao, construcao de significado e a busca por compreensao. O Explorador busca novos horizontes, encontra padroes no caos e tece experiencia em historia. Esta dimensao governa o principio Jupiteriano: otimismo, visao, filosofia e a busca sempre crescente pela verdade.",
+        "es": "El arquetipo del Explorador se manifiesta a traves de la dimension Narrativa (N) - el reino de la expansion, construccion de significado y la busqueda de comprension. El Explorador busca nuevos horizontes, encuentra patrones en el caos y teje la experiencia en historia. Esta dimension gobierna el principio Jupiteriano: optimismo, vision, filosofia y la busqueda siempre creciente de la verdad."
+      },
+      "shadow": {
+        "name": {
+          "en": "The Wanderer / The Fanatic",
+          "pt": "O Vagante / O Fanatico",
+          "es": "El Vagabundo / El Fanatico"
+        },
+        "manifestation": {
+          "en": "When N is distorted, the Explorer becomes either the Wanderer (endless seeking without finding, chronic restlessness) or the Fanatic (false certainty, missionary zeal). Both represent distorted relationship with meaning.",
+          "pt": "Quando N esta distorcido, o Explorador se torna ou o Vagante (busca sem fim sem encontrar, inquietacao cronica) ou o Fanatico (falsa certeza, zelo missionario). Ambos representam relacao distorcida com significado.",
+          "es": "Cuando N esta distorsionado, el Explorador se convierte en el Vagabundo (busqueda interminable sin encontrar, inquietud cronica) o el Fanatico (falsa certeza, celo misionero). Ambos representan una relacion distorsionada con el significado."
+        },
+        "symptoms": ["chronic restlessness", "inability to commit", "escapism", "spiritual bypassing", "ideological rigidity"]
+      },
+      "jungQuotes": [
+        {
+          "text": "We cannot change anything until we accept it. Condemnation does not liberate, it oppresses.",
+          "source": "Modern Man in Search of a Soul",
+          "context": "On the Explorer's path through shadow"
+        },
+        {
+          "text": "Life really does begin at forty. Up until then, you are just doing research.",
+          "source": "Various attributions",
+          "context": "On the ongoing quest"
+        },
+        {
+          "text": "Thoroughly unprepared, we take the step into the afternoon of life. Worse still, we take this step with the false presupposition that our truths and our ideals will serve us as hitherto.",
+          "source": "Modern Man in Search of a Soul",
+          "context": "On the need for continued exploration"
+        }
+      ],
+      "historicalFigures": [
+        {
+          "name": "Marco Polo",
+          "signature": "N>mu>V",
+          "description": {
+            "en": "Narrative (N) through documentation (mu) of wonders and value (V). The Explorer as witness to the world's variety.",
+            "pt": "Narrativa (N) atraves da documentacao (mu) de maravilhas e valor (V). O Explorador como testemunha da variedade do mundo.",
+            "es": "Narrativa (N) a traves de la documentacion (mu) de maravillas y valor (V). El Explorador como testigo de la variedad del mundo."
+          }
+        },
+        {
+          "name": "Joseph Campbell",
+          "signature": "N>Phi>mu",
+          "description": {
+            "en": "Narrative (N) as universal pattern (Phi) discovered through scholarly analysis (mu). The Explorer mapping the archetypal landscape.",
+            "pt": "Narrativa (N) como padrao universal (Phi) descoberto atraves de analise academica (mu). O Explorador mapeando a paisagem arquetipal.",
+            "es": "Narrativa (N) como patron universal (Phi) descubierto a traves del analisis academico (mu). El Explorador mapeando el paisaje arquetipal."
+          }
+        },
+        {
+          "name": "Charles Darwin",
+          "signature": "N>E>mu",
+          "description": {
+            "en": "Narrative of life (N) through careful structure (E) and observation (mu). The Explorer uncovering nature's story.",
+            "pt": "Narrativa da vida (N) atraves de estrutura cuidadosa (E) e observacao (mu). O Explorador descobrindo a historia da natureza.",
+            "es": "Narrativa de la vida (N) a traves de una estructura cuidadosa (E) y observacion (mu). El Explorador descubriendo la historia de la naturaleza."
+          }
+        }
+      ],
+      "integrationPractices": [
+        {
+          "name": {
+            "en": "Meaning-Making Ritual",
+            "pt": "Ritual de Construcao de Significado",
+            "es": "Ritual de Construccion de Significado"
+          },
+          "description": {
+            "en": "Regular practice of asking: What is the meaning in this experience? What is the larger story?",
+            "pt": "Pratica regular de perguntar: Qual e o significado nesta experiencia? Qual e a historia maior?",
+            "es": "Practica regular de preguntar: Cual es el significado en esta experiencia? Cual es la historia mayor?"
+          }
+        },
+        {
+          "name": {
+            "en": "Horizon Walking",
+            "pt": "Caminhando para o Horizonte",
+            "es": "Caminando hacia el Horizonte"
+          },
+          "description": {
+            "en": "Physically going to new places to activate the Explorer's quest",
+            "pt": "Ir fisicamente a novos lugares para ativar a busca do Explorador",
+            "es": "Ir fisicamente a nuevos lugares para activar la busqueda del Explorador"
+          }
+        }
+      ],
+      "planetaryRulers": ["Jupiter"],
+      "color": "#800080",
+      "element": "Fire"
+    },
+
+    "Warrior": {
+      "dimension": "Delta",
+      "dimensionName": "Action/Momentum",
+      "description": {
+        "en": "The Warrior archetype manifests through the Action dimension (Delta) - the realm of force, momentum, conflict, and decisive movement. The Warrior knows when to fight and when to stand down, channels aggression consciously, and protects what matters. This dimension governs the Martian principle: courage, assertion, sexuality as force, and the power to act.",
+        "pt": "O arquetipo do Guerreiro se manifesta atraves da dimensao Acao (Delta) - o reino da forca, momentum, conflito e movimento decisivo. O Guerreiro sabe quando lutar e quando recuar, canaliza a agressao conscientemente e protege o que importa. Esta dimensao governa o principio Marciano: coragem, afirmacao, sexualidade como forca e o poder de agir.",
+        "es": "El arquetipo del Guerrero se manifiesta a traves de la dimension Accion (Delta) - el reino de la fuerza, momentum, conflicto y movimiento decisivo. El Guerrero sabe cuando luchar y cuando retirarse, canaliza la agresion conscientemente y protege lo que importa. Esta dimension gobierna el principio Marciano: coraje, afirmacion, sexualidad como fuerza y el poder de actuar."
+      },
+      "shadow": {
+        "name": {
+          "en": "The Berserker / The Coward",
+          "pt": "O Furioso / O Covarde",
+          "es": "El Furioso / El Cobarde"
+        },
+        "manifestation": {
+          "en": "When Delta is distorted, the Warrior becomes either the Berserker (uncontrolled aggression, destruction for its own sake) or the Coward (inability to act, chronic passivity). Both represent failed relationship with force.",
+          "pt": "Quando Delta esta distorcido, o Guerreiro se torna ou o Furioso (agressao descontrolada, destruicao por si so) ou o Covarde (incapacidade de agir, passividade cronica). Ambos representam relacao fracassada com a forca.",
+          "es": "Cuando Delta esta distorsionado, el Guerrero se convierte en el Furioso (agresion descontrolada, destruccion por si misma) o el Cobarde (incapacidad de actuar, pasividad cronica). Ambos representan una relacion fallida con la fuerza."
+        },
+        "symptoms": ["explosive anger", "chronic conflict", "inability to assert", "destructiveness", "paralysis in face of threat"]
+      },
+      "jungQuotes": [
+        {
+          "text": "No tree, it is said, can grow to heaven unless its roots reach down to hell.",
+          "source": "Aion",
+          "context": "On the Warrior's embrace of shadow"
+        },
+        {
+          "text": "A man who has not passed through the inferno of his passions has never overcome them.",
+          "source": "Memories, Dreams, Reflections",
+          "context": "On the warrior's transformation"
+        },
+        {
+          "text": "The most terrifying thing is to accept oneself completely.",
+          "source": "Various attributions",
+          "context": "On the courage required for self-encounter"
+        }
+      ],
+      "historicalFigures": [
+        {
+          "name": "Miyamoto Musashi",
+          "signature": "Delta>E>Phi",
+          "description": {
+            "en": "Action (Delta) refined into discipline (E) reaching toward the transcendent (Phi). The Warrior as master of the Way.",
+            "pt": "Acao (Delta) refinada em disciplina (E) alcancando o transcendente (Phi). O Guerreiro como mestre do Caminho.",
+            "es": "Accion (Delta) refinada en disciplina (E) alcanzando lo trascendente (Phi). El Guerrero como maestro del Camino."
+          }
+        },
+        {
+          "name": "Arjuna",
+          "signature": "Delta>Phi>R",
+          "description": {
+            "en": "Action (Delta) in service of cosmic order (Phi) through relationship (R) with divine guidance. The Warrior's dharmic struggle.",
+            "pt": "Acao (Delta) a servico da ordem cosmica (Phi) atraves de relacionamento (R) com orientacao divina. A luta dharmica do Guerreiro.",
+            "es": "Accion (Delta) al servicio del orden cosmico (Phi) a traves de la relacion (R) con la guia divina. La lucha dharmica del Guerrero."
+          }
+        },
+        {
+          "name": "Martin Luther King Jr.",
+          "signature": "Delta>R>N",
+          "description": {
+            "en": "Non-violent force (Delta) through relationship (R) creating transformative narrative (N). The Warrior as agent of change.",
+            "pt": "Forca nao-violenta (Delta) atraves de relacionamento (R) criando narrativa transformadora (N). O Guerreiro como agente de mudanca.",
+            "es": "Fuerza no violenta (Delta) a traves de la relacion (R) creando una narrativa transformadora (N). El Guerrero como agente de cambio."
+          }
+        }
+      ],
+      "integrationPractices": [
+        {
+          "name": {
+            "en": "Conscious Aggression",
+            "pt": "Agressao Consciente",
+            "es": "Agresion Consciente"
+          },
+          "description": {
+            "en": "Physical practice (martial arts, intense exercise) that channels aggressive energy constructively",
+            "pt": "Pratica fisica (artes marciais, exercicio intenso) que canaliza energia agressiva construtivamente",
+            "es": "Practica fisica (artes marciales, ejercicio intenso) que canaliza la energia agresiva de manera constructiva"
+          }
+        },
+        {
+          "name": {
+            "en": "Boundary Setting",
+            "pt": "Estabelecendo Limites",
+            "es": "Estableciendo Limites"
+          },
+          "description": {
+            "en": "Practice of clear 'no' - asserting personal boundaries without aggression",
+            "pt": "Pratica do 'nao' claro - afirmando limites pessoais sem agressao",
+            "es": "Practica del 'no' claro - afirmando limites personales sin agresion"
+          }
+        }
+      ],
+      "planetaryRulers": ["Mars"],
+      "color": "#FF0000",
+      "element": "Fire"
+    },
+
+    "Caregiver": {
+      "dimension": "R",
+      "dimensionName": "Relation/Connection",
+      "description": {
+        "en": "The Caregiver archetype manifests through the Relation dimension (R) - the realm of connection, nurturing, emotional bonds, and the tides of feeling. The Caregiver holds space, provides safety, and tends to the needs of others. This dimension governs the Lunar principle: receptivity, emotional intelligence, the cyclical nature of care, and the mother's embrace.",
+        "pt": "O arquetipo do Cuidador se manifesta atraves da dimensao Relacao (R) - o reino da conexao, nutricao, vinculos emocionais e as mares do sentimento. O Cuidador mantem espaco, proporciona seguranca e atende as necessidades dos outros. Esta dimensao governa o principio Lunar: receptividade, inteligencia emocional, a natureza ciclica do cuidado e o abraco da mae.",
+        "es": "El arquetipo del Cuidador se manifiesta a traves de la dimension Relacion (R) - el reino de la conexion, nutricion, vinculos emocionales y las mareas del sentimiento. El Cuidador mantiene espacio, proporciona seguridad y atiende las necesidades de los otros. Esta dimension gobierna el principio Lunar: receptividad, inteligencia emocional, la naturaleza ciclica del cuidado y el abrazo de la madre."
+      },
+      "shadow": {
+        "name": {
+          "en": "The Devouring Mother / The Neglector",
+          "pt": "A Mae Devoradora / O Negligenciador",
+          "es": "La Madre Devoradora / El Negligente"
+        },
+        "manifestation": {
+          "en": "When R is distorted, the Caregiver becomes either the Devouring Mother (smothering, enmeshing, caring that controls) or the Neglector (emotional absence, failure to attune). Both represent wounded capacity for connection.",
+          "pt": "Quando R esta distorcido, o Cuidador se torna ou a Mae Devoradora (sufocante, emaranhada, cuidado que controla) ou o Negligenciador (ausencia emocional, falha em sintonizar). Ambos representam capacidade ferida de conexao.",
+          "es": "Cuando R esta distorsionado, el Cuidador se convierte en la Madre Devoradora (sofocante, enmaranadora, cuidado que controla) o el Negligente (ausencia emocional, fallo en sintonizar). Ambos representan una capacidad herida de conexion."
+        },
+        "symptoms": ["codependency", "emotional manipulation", "self-sacrifice to the point of depletion", "smothering", "emotional unavailability"]
+      },
+      "jungQuotes": [
+        {
+          "text": "The greatest and most important problems of life are all fundamentally insoluble. They can never be solved but only outgrown.",
+          "source": "Commentary on The Secret of the Golden Flower",
+          "context": "On the Caregiver's patient holding"
+        },
+        {
+          "text": "Loneliness does not come from having no people around you, but from being unable to communicate the things that seem important to you.",
+          "source": "Memories, Dreams, Reflections",
+          "context": "On true connection"
+        },
+        {
+          "text": "Everything that irritates us about others can lead us to an understanding of ourselves.",
+          "source": "Memories, Dreams, Reflections",
+          "context": "On relationship as mirror"
+        }
+      ],
+      "historicalFigures": [
+        {
+          "name": "Mother Teresa",
+          "signature": "R>Phi>Delta",
+          "description": {
+            "en": "Relationship (R) as service to the divine (Phi) expressed through action (Delta). The Caregiver as saint.",
+            "pt": "Relacionamento (R) como servico ao divino (Phi) expresso atraves de acao (Delta). O Cuidador como santo.",
+            "es": "Relacion (R) como servicio a lo divino (Phi) expresado a traves de la accion (Delta). El Cuidador como santo."
+          }
+        },
+        {
+          "name": "Florence Nightingale",
+          "signature": "R>E>mu",
+          "description": {
+            "en": "Care (R) systematized into structure (E) through analytical mind (mu). The Caregiver as reformer.",
+            "pt": "Cuidado (R) sistematizado em estrutura (E) atraves de mente analitica (mu). O Cuidador como reformador.",
+            "es": "Cuidado (R) sistematizado en estructura (E) a traves de mente analitica (mu). El Cuidador como reformador."
+          }
+        },
+        {
+          "name": "Fred Rogers",
+          "signature": "R>V>N",
+          "description": {
+            "en": "Relationship (R) through gentle beauty (V) creating narrative (N) of unconditional acceptance. The Caregiver as cultural father.",
+            "pt": "Relacionamento (R) atraves de beleza gentil (V) criando narrativa (N) de aceitacao incondicional. O Cuidador como pai cultural.",
+            "es": "Relacion (R) a traves de belleza gentil (V) creando narrativa (N) de aceptacion incondicional. El Cuidador como padre cultural."
+          }
+        }
+      ],
+      "integrationPractices": [
+        {
+          "name": {
+            "en": "Attuned Presence",
+            "pt": "Presenca Sintonizada",
+            "es": "Presencia Sintonizada"
+          },
+          "description": {
+            "en": "Practice of being fully present with another without agenda or need to fix",
+            "pt": "Pratica de estar totalmente presente com outro sem agenda ou necessidade de consertar",
+            "es": "Practica de estar completamente presente con otro sin agenda o necesidad de arreglar"
+          }
+        },
+        {
+          "name": {
+            "en": "Self-Care Ritual",
+            "pt": "Ritual de Autocuidado",
+            "es": "Ritual de Autocuidado"
+          },
+          "description": {
+            "en": "Directing the Caregiver's gifts toward oneself to prevent depletion",
+            "pt": "Direcionando os dons do Cuidador para si mesmo para prevenir esgotamento",
+            "es": "Dirigiendo los dones del Cuidador hacia uno mismo para prevenir el agotamiento"
+          }
+        }
+      ],
+      "planetaryRulers": ["Moon"],
+      "color": "#87CEEB",
+      "element": "Water"
+    },
+
+    "Mystic": {
+      "dimension": "Phi",
+      "dimensionName": "Field/Witness",
+      "description": {
+        "en": "The Mystic archetype manifests through the Field dimension (Phi) - the realm of unity, transcendence, and the witness consciousness that perceives the whole. The Mystic dissolves boundaries, experiences the numinous, and knows that separation is illusion. This dimension governs the Outer Planets' principle: collective consciousness, spiritual awakening, and the oceanic feeling of oneness.",
+        "pt": "O arquetipo do Mistico se manifesta atraves da dimensao Campo (Phi) - o reino da unidade, transcendencia e a consciencia testemunha que percebe o todo. O Mistico dissolve fronteiras, experiencia o numinoso e sabe que a separacao e ilusao. Esta dimensao governa o principio dos Planetas Exteriores: consciencia coletiva, despertar espiritual e o sentimento oceanico de unicidade.",
+        "es": "El arquetipo del Mistico se manifiesta a traves de la dimension Campo (Phi) - el reino de la unidad, trascendencia y la conciencia testigo que percibe el todo. El Mistico disuelve fronteras, experimenta lo numinoso y sabe que la separacion es ilusion. Esta dimension gobierna el principio de los Planetas Exteriores: conciencia colectiva, despertar espiritual y el sentimiento oceanico de unidad."
+      },
+      "shadow": {
+        "name": {
+          "en": "The Escapist / The Nihilist",
+          "pt": "O Escapista / O Niilista",
+          "es": "El Escapista / El Nihilista"
+        },
+        "manifestation": {
+          "en": "When Phi is distorted, the Mystic becomes either the Escapist (using transcendence to avoid embodied life) or the Nihilist (experiencing meaninglessness, dissolution without return). Both represent failed integration of the infinite.",
+          "pt": "Quando Phi esta distorcido, o Mistico se torna ou o Escapista (usando transcendencia para evitar vida encarnada) ou o Niilista (experimentando falta de sentido, dissolucao sem retorno). Ambos representam integracao fracassada do infinito.",
+          "es": "Cuando Phi esta distorsionado, el Mistico se convierte en el Escapista (usando la trascendencia para evitar la vida encarnada) o el Nihilista (experimentando falta de sentido, disolucion sin retorno). Ambos representan una integracion fallida de lo infinito."
+        },
+        "symptoms": ["dissociation", "spiritual bypassing", "loss of grounding", "cosmic terror", "inability to function in ordinary life"]
+      },
+      "jungQuotes": [
+        {
+          "text": "The collective unconscious is the repository of all religious, spiritual, and mythological symbols and experiences of the human species.",
+          "source": "Archetypes and the Collective Unconscious",
+          "context": "On the Field of shared consciousness"
+        },
+        {
+          "text": "The experience of the Self is always a defeat for the ego.",
+          "source": "Mysterium Coniunctionis",
+          "context": "On the Mystic's ego dissolution"
+        },
+        {
+          "text": "What is essential in a work of art is that it should rise far above the realm of personal life and speak from the spirit and heart of the poet as man to the spirit and heart of mankind.",
+          "source": "Modern Man in Search of a Soul",
+          "context": "On the transpersonal dimension"
+        }
+      ],
+      "historicalFigures": [
+        {
+          "name": "Meister Eckhart",
+          "signature": "Phi>mu>E",
+          "description": {
+            "en": "Field (Phi) articulated through intellect (mu) within structure (E) of Christian mysticism. The Mystic as theological revolutionary.",
+            "pt": "Campo (Phi) articulado atraves do intelecto (mu) dentro da estrutura (E) do misticismo cristao. O Mistico como revolucionario teologico.",
+            "es": "Campo (Phi) articulado a traves del intelecto (mu) dentro de la estructura (E) del misticismo cristiano. El Mistico como revolucionario teologico."
+          }
+        },
+        {
+          "name": "Ramana Maharshi",
+          "signature": "Phi>P>R",
+          "description": {
+            "en": "Pure witness (Phi) stabilized in identity (P) available through silent relationship (R). The Mystic as living transmission.",
+            "pt": "Testemunha pura (Phi) estabilizada na identidade (P) disponivel atraves de relacionamento silencioso (R). O Mistico como transmissao viva.",
+            "es": "Testigo puro (Phi) estabilizado en la identidad (P) disponible a traves de relacion silenciosa (R). El Mistico como transmision viva."
+          }
+        },
+        {
+          "name": "Hildegard of Bingen",
+          "signature": "Phi>V>N",
+          "description": {
+            "en": "Mystical vision (Phi) expressed through beauty (V) and narrative (N). The Mystic as artist of the divine.",
+            "pt": "Visao mistica (Phi) expressa atraves da beleza (V) e narrativa (N). O Mistico como artista do divino.",
+            "es": "Vision mistica (Phi) expresada a traves de la belleza (V) y narrativa (N). El Mistico como artista de lo divino."
+          }
+        }
+      ],
+      "integrationPractices": [
+        {
+          "name": {
+            "en": "Witness Meditation",
+            "pt": "Meditacao Testemunha",
+            "es": "Meditacion Testigo"
+          },
+          "description": {
+            "en": "Practice of resting as awareness itself, prior to thought and sensation",
+            "pt": "Pratica de descansar como a propria consciencia, anterior ao pensamento e sensacao",
+            "es": "Practica de descansar como la conciencia misma, anterior al pensamiento y sensacion"
+          }
+        },
+        {
+          "name": {
+            "en": "Grounded Transcendence",
+            "pt": "Transcendencia Enraizada",
+            "es": "Trascendencia Enraizada"
+          },
+          "description": {
+            "en": "Bringing mystical experience into embodied action to avoid spiritual bypassing",
+            "pt": "Trazendo experiencia mistica para acao encarnada para evitar bypass espiritual",
+            "es": "Trayendo la experiencia mistica a la accion encarnada para evitar el bypass espiritual"
+          }
+        }
+      ],
+      "planetaryRulers": ["Neptune", "Uranus", "Pluto"],
+      "color": "#9400D3",
+      "element": "Water"
+    }
+  },
+
+  "jungianConcepts": {
+    "Ego": {
+      "16dMapping": "Inner Octave",
+      "dimensions": ["P", "E", "mu", "V", "N", "Delta", "R", "Phi"],
+      "description": {
+        "en": "The Ego in Jungian psychology corresponds to the Inner Octave in FRC 16D - the natal, fixed pattern established at birth. This is the 'Karma' vector: who you are at the core, the stable structure of conscious identity. The 8 dimensions of the Inner Octave represent the ego's various capacities: self-concept (P), sense of structure (E), thinking function (mu), valuing function (V), meaning-making (N), action capacity (Delta), relating function (R), and capacity for transcendence (Phi).",
+        "pt": "O Ego na psicologia junguiana corresponde ao Oitava Interna no FRC 16D - o padrao natal, fixo, estabelecido no nascimento. Este e o vetor 'Karma': quem voce e no nucleo, a estrutura estavel da identidade consciente.",
+        "es": "El Ego en la psicologia junguiana corresponde a la Octava Interna en FRC 16D - el patron natal, fijo, establecido al nacer. Este es el vector 'Karma': quien eres en el nucleo, la estructura estable de la identidad consciente."
+      },
+      "formula": "Inner_8D = f(natal_longitudes, sign_modulation, house_weighting)"
+    },
+
+    "Shadow": {
+      "16dMapping": "Suppressed Dimensions",
+      "description": {
+        "en": "The Shadow in FRC 16D appears as suppressed or low-scoring dimensions. When a dimension scores low in the Inner Octave, its associated qualities are pushed into shadow - they exist but are not consciously accessible. Shadow work in 16D terms means developing awareness of and integrating the weaker dimensions of your vector. The formula shadow = 1 - value directly maps this: every strength creates a corresponding shadow.",
+        "pt": "A Sombra no FRC 16D aparece como dimensoes suprimidas ou de baixa pontuacao. Quando uma dimensao tem pontuacao baixa na Oitava Interna, suas qualidades associadas sao empurradas para a sombra.",
+        "es": "La Sombra en FRC 16D aparece como dimensiones suprimidas o de baja puntuacion. Cuando una dimension tiene una puntuacion baja en la Octava Interna, sus cualidades asociadas se empujan hacia la sombra."
+      },
+      "formula": "Shadow[i] = 1 - Inner_8D[i]",
+      "dimensions": "Inverse of highest dimensions"
+    },
+
+    "AnimaAnimus": {
+      "16dMapping": "Inner-Outer Tension",
+      "description": {
+        "en": "The Anima/Animus represents the contrasexual element of the psyche - the inner feminine for men, inner masculine for women. In FRC 16D, this maps to the tension between Inner Octave (fixed self) and Outer Octave (dynamic world). The Outer Octave (Dharma) represents what the world is asking of you now - transits and dashas. When Inner and Outer are misaligned (low kappa), you experience the Anima/Animus as the 'other' you must integrate. High kappa represents the sacred marriage of opposites.",
+        "pt": "O Anima/Animus representa o elemento contrassexual da psique. No FRC 16D, isso mapeia para a tensao entre Oitava Interna (eu fixo) e Oitava Externa (mundo dinamico).",
+        "es": "El Anima/Animus representa el elemento contrasexual de la psique. En FRC 16D, esto se mapea a la tension entre Octava Interna (yo fijo) y Octava Externa (mundo dinamico)."
+      },
+      "formula": "Kappa = aspect_coupling(Inner_8D, Outer_8D)",
+      "interpretation": {
+        "high_kappa": "Inner and Outer in harmony - the coniunctio, sacred marriage",
+        "low_kappa": "Tension between self and world - the call to integrate opposites",
+        "negative_kappa": "Inversion - projection of shadow onto world"
+      }
+    },
+
+    "CollectiveUnconscious": {
+      "16dMapping": "Field Dimension (Phi)",
+      "description": {
+        "en": "The Collective Unconscious - Jung's repository of archetypes and shared human experience - maps directly to the Field dimension (Phi). This is the 8th dimension, governed by the outer planets (Uranus, Neptune, Pluto), representing the transpersonal layer of consciousness. When Phi is strong, you have natural access to archetypal material, dreams, synchronicities, and the numinous. The full 16D vector magnitude (W) represents the degree of conscious connection to this collective field.",
+        "pt": "O Inconsciente Coletivo - o repositorio de arquetipos e experiencia humana compartilhada de Jung - mapeia diretamente para a dimensao Campo (Phi).",
+        "es": "El Inconsciente Colectivo - el repositorio de arquetipos y experiencia humana compartida de Jung - se mapea directamente a la dimension Campo (Phi)."
+      },
+      "formula": "W = ||U_16|| (L2 norm of full 16D vector)",
+      "planetaryRulers": ["Neptune", "Uranus", "Pluto"]
+    },
+
+    "Individuation": {
+      "16dMapping": "Elder Attractor",
+      "description": {
+        "en": "Individuation - the central process of Jungian psychology, the journey toward becoming whole - maps to the Elder Attractor in FRC 16D. This is the goal state: high kappa (inner-outer harmony), high RU (resonance units - energy flowing correctly), high W (connection to the collective), balanced vector (all dimensions developed). The Elder Progress metric tracks your advancement toward this state of integrated selfhood.",
+        "pt": "Individuacao - o processo central da psicologia junguiana, a jornada para se tornar inteiro - mapeia para o Atrator Anciao no FRC 16D.",
+        "es": "Individuacion - el proceso central de la psicologia junguiana, el viaje hacia la integridad - se mapea al Atractor Anciano en FRC 16D."
+      },
+      "formula": "Elder_Progress = 0.5*(kappa/0.85) + 0.3*(RU/45) + 0.2*(W/2.5)",
+      "goalState": {
+        "kappa": "> 0.85",
+        "RU": "> 45",
+        "W": "> 2.5"
+      }
+    },
+
+    "Persona": {
+      "16dMapping": "Over-expressed Outer Octave",
+      "description": {
+        "en": "The Persona - the mask we wear for the world - corresponds to over-identification with the Outer Octave in FRC 16D. When we lose ourselves in what the world wants from us (transits, dashas, social demands), we are living from Persona rather than authentic Self. This manifests as Dispersion failure mode: high RU (lots of energy) but low kappa (disconnected from core self).",
+        "pt": "A Persona - a mascara que usamos para o mundo - corresponde a super-identificacao com a Oitava Externa no FRC 16D.",
+        "es": "La Persona - la mascara que usamos para el mundo - corresponde a la sobre-identificacion con la Octava Externa en FRC 16D."
+      },
+      "failureMode": "Dispersion",
+      "symptoms": ["RU > 45 && kappa < 0.5"]
+    },
+
+    "Self": {
+      "16dMapping": "Balanced Vector",
+      "description": {
+        "en": "The Self - Jung's central archetype of wholeness - manifests in FRC 16D as a balanced, coherent 16D vector. This is characterized by: relatively even distribution across all 8 dimensions (low variance), high coherence (C), high witness magnitude (W), and stable resonance with both inner truth and outer reality (healthy kappa). The Self is not the elimination of tension but its conscious integration.",
+        "pt": "O Si-Mesmo - o arquetipo central de totalidade de Jung - manifesta-se no FRC 16D como um vetor 16D equilibrado e coerente.",
+        "es": "El Si-Mismo - el arquetipo central de totalidad de Jung - se manifiesta en FRC 16D como un vector 16D equilibrado y coherente."
+      },
+      "characteristics": {
+        "coherence": "C > 0.7",
+        "witness": "W > 2.0",
+        "variance": "low (balanced dimensions)",
+        "kappa": "kappa > 0.6"
+      },
+      "formula": "C = 1 / (1 + variance(U_16))"
+    }
+  },
+
+  "shadowWork": {
+    "overview": {
+      "en": "Shadow work in the FRC 16D framework is the conscious integration of suppressed dimensions. Every person has dominant dimensions (their gifts, their conscious identity) and suppressed dimensions (their shadow, their blind spots). The goal is not to eliminate the shadow but to develop relationship with it, bringing its gifts into conscious availability.",
+      "pt": "O trabalho de sombra no framework FRC 16D e a integracao consciente de dimensoes suprimidas.",
+      "es": "El trabajo de sombra en el framework FRC 16D es la integracion consciente de dimensiones suprimidas."
+    },
+
+    "lowDimensionManifestations": {
+      "P_low": {
+        "shadowName": {
+          "en": "Identity Void",
+          "pt": "Vazio de Identidade",
+          "es": "Vacio de Identidad"
+        },
+        "manifestation": {
+          "en": "Weak sense of self, over-identification with roles, difficulty knowing what you want",
+          "pt": "Senso fraco de si, super-identificacao com papeis, dificuldade em saber o que voce quer",
+          "es": "Sentido debil del yo, sobre-identificacion con roles, dificultad para saber lo que quieres"
+        },
+        "integration": {
+          "en": "Practice autonomous decision-making, develop personal rituals, ask 'What do I want?' without external reference",
+          "pt": "Pratique tomada de decisao autonoma, desenvolva rituais pessoais, pergunte 'O que eu quero?' sem referencia externa",
+          "es": "Practica la toma de decisiones autonoma, desarrolla rituales personales, pregunta 'Que quiero?' sin referencia externa"
+        }
+      },
+      "E_low": {
+        "shadowName": {
+          "en": "Structural Collapse",
+          "pt": "Colapso Estrutural",
+          "es": "Colapso Estructural"
+        },
+        "manifestation": {
+          "en": "Chaos, inability to maintain boundaries, fear of commitment, avoidance of limitation",
+          "pt": "Caos, incapacidade de manter limites, medo de compromisso, evitacao de limitacao",
+          "es": "Caos, incapacidad de mantener limites, miedo al compromiso, evitacion de la limitacion"
+        },
+        "integration": {
+          "en": "Develop routines, make and keep commitments, practice saying 'no', befriend limitation",
+          "pt": "Desenvolva rotinas, faca e mantenha compromissos, pratique dizer 'nao', faca amizade com a limitacao",
+          "es": "Desarrolla rutinas, haz y mantiene compromisos, practica decir 'no', hazte amigo de la limitacion"
+        }
+      },
+      "mu_low": {
+        "shadowName": {
+          "en": "Mental Fog",
+          "pt": "Nevoa Mental",
+          "es": "Niebla Mental"
+        },
+        "manifestation": {
+          "en": "Difficulty thinking clearly, avoidance of analysis, distrust of intellect, poor communication",
+          "pt": "Dificuldade em pensar claramente, evitacao de analise, desconfianca do intelecto, comunicacao pobre",
+          "es": "Dificultad para pensar claramente, evitacion del analisis, desconfianza del intelecto, comunicacion pobre"
+        },
+        "integration": {
+          "en": "Read challenging material, practice articulating thoughts, learn something new, engage in debate",
+          "pt": "Leia material desafiador, pratique articular pensamentos, aprenda algo novo, participe de debates",
+          "es": "Lee material desafiante, practica articular pensamientos, aprende algo nuevo, participa en debates"
+        }
+      },
+      "V_low": {
+        "shadowName": {
+          "en": "Aesthetic Numbness",
+          "pt": "Dormencia Estetica",
+          "es": "Entumecimiento Estetico"
+        },
+        "manifestation": {
+          "en": "Disconnection from pleasure, inability to appreciate beauty, harsh self-judgment, ascetic extremes",
+          "pt": "Desconexao do prazer, incapacidade de apreciar beleza, auto-julgamento duro, extremos asceticos",
+          "es": "Desconexion del placer, incapacidad de apreciar la belleza, auto-juicio duro, extremos asceticos"
+        },
+        "integration": {
+          "en": "Seek beauty consciously, allow pleasure without guilt, cultivate sensory awareness, explore art",
+          "pt": "Busque beleza conscientemente, permita prazer sem culpa, cultive consciencia sensorial, explore arte",
+          "es": "Busca la belleza conscientemente, permite el placer sin culpa, cultiva la conciencia sensorial, explora el arte"
+        }
+      },
+      "N_low": {
+        "shadowName": {
+          "en": "Meaning Void",
+          "pt": "Vazio de Significado",
+          "es": "Vacio de Significado"
+        },
+        "manifestation": {
+          "en": "Nihilism, inability to see purpose, chronic hopelessness, rejection of any larger story",
+          "pt": "Niilismo, incapacidade de ver proposito, desesperanca cronica, rejeicao de qualquer historia maior",
+          "es": "Nihilismo, incapacidad de ver proposito, desesperanza cronica, rechazo de cualquier historia mayor"
+        },
+        "integration": {
+          "en": "Engage with philosophy, find a cause larger than yourself, study mythology, ask 'what is the meaning here?'",
+          "pt": "Engage com filosofia, encontre uma causa maior que voce, estude mitologia, pergunte 'qual e o significado aqui?'",
+          "es": "Involucrate con la filosofia, encuentra una causa mas grande que tu, estudia mitologia, pregunta 'cual es el significado aqui?'"
+        }
+      },
+      "Delta_low": {
+        "shadowName": {
+          "en": "Action Paralysis",
+          "pt": "Paralisia de Acao",
+          "es": "Paralisis de Accion"
+        },
+        "manifestation": {
+          "en": "Chronic passivity, inability to assert, fear of conflict, suppressed anger, weakness",
+          "pt": "Passividade cronica, incapacidade de afirmar, medo de conflito, raiva suprimida, fraqueza",
+          "es": "Pasividad cronica, incapacidad de afirmar, miedo al conflicto, ira suprimida, debilidad"
+        },
+        "integration": {
+          "en": "Physical training, practice assertion, allow anger consciously, take decisive action",
+          "pt": "Treinamento fisico, pratique afirmacao, permita raiva conscientemente, tome acao decisiva",
+          "es": "Entrenamiento fisico, practica la afirmacion, permite la ira conscientemente, toma accion decisiva"
+        }
+      },
+      "R_low": {
+        "shadowName": {
+          "en": "Relational Desert",
+          "pt": "Deserto Relacional",
+          "es": "Desierto Relacional"
+        },
+        "manifestation": {
+          "en": "Isolation, difficulty feeling emotions, fear of intimacy, disconnection from needs of others",
+          "pt": "Isolamento, dificuldade em sentir emocoes, medo de intimidade, desconexao das necessidades dos outros",
+          "es": "Aislamiento, dificultad para sentir emociones, miedo a la intimidad, desconexion de las necesidades de otros"
+        },
+        "integration": {
+          "en": "Practice vulnerability, develop one deep relationship, attune to others' feelings, care for something",
+          "pt": "Pratique vulnerabilidade, desenvolva um relacionamento profundo, sintonize com sentimentos dos outros, cuide de algo",
+          "es": "Practica la vulnerabilidad, desarrolla una relacion profunda, sintoniza con los sentimientos de otros, cuida de algo"
+        }
+      },
+      "Phi_low": {
+        "shadowName": {
+          "en": "Spiritual Flatness",
+          "pt": "Achatamento Espiritual",
+          "es": "Aplanamiento Espiritual"
+        },
+        "manifestation": {
+          "en": "Materialistic worldview, denial of transcendence, disconnection from the numinous, literalism",
+          "pt": "Visao de mundo materialista, negacao de transcendencia, desconexao do numinoso, literalismo",
+          "es": "Vision del mundo materialista, negacion de la trascendencia, desconexion de lo numinoso, literalismo"
+        },
+        "integration": {
+          "en": "Meditation practice, engage with dreams, study symbolism, allow wonder, seek peak experiences",
+          "pt": "Pratica de meditacao, engaje com sonhos, estude simbolismo, permita maravilhamento, busque experiencias de pico",
+          "es": "Practica de meditacion, involucrate con los suenos, estudia simbolismo, permite el asombro, busca experiencias cumbre"
+        }
+      }
+    },
+
+    "failureModesAsShadow": {
+      "Collapse": {
+        "description": {
+          "en": "Collapse (RU < 10 && kappa < 0.3) represents the shadow of total ego defeat - the Self overwhelmed by unconscious contents. Energy has drained away (low RU), and there is no connection between inner and outer (low kappa). This is depression, burnout, the dark night of the soul.",
+          "pt": "Colapso representa a sombra da derrota total do ego - o Si-Mesmo subjugado por conteudos inconscientes.",
+          "es": "Colapso representa la sombra de la derrota total del ego - el Si-Mismo abrumado por contenidos inconscientes."
+        },
+        "jungianCorrelate": "Ego dissolution without integration",
+        "remedy": {
+          "en": "Ground in basics: sleep, food, movement. Reconnect with one reliable relationship. Take tiny actions to rebuild agency.",
+          "pt": "Enraize no basico: sono, comida, movimento. Reconecte com um relacionamento confiavel. Tome pequenas acoes para reconstruir agencia.",
+          "es": "Enraizate en lo basico: sueno, comida, movimiento. Reconecta con una relacion confiable. Toma acciones pequenas para reconstruir la agencia."
+        }
+      },
+      "Inversion": {
+        "description": {
+          "en": "Inversion (kappa < 0) represents living from shadow rather than self - projection, negative identification, seeing enemies everywhere. Your inner truth and outer reality are in opposition. This is paranoia, projection, the persecutory pattern.",
+          "pt": "Inversao representa viver da sombra em vez do si-mesmo - projecao, identificacao negativa, vendo inimigos em toda parte.",
+          "es": "Inversion representa vivir desde la sombra en lugar del yo - proyeccion, identificacion negativa, viendo enemigos en todas partes."
+        },
+        "jungianCorrelate": "Shadow possession, projection",
+        "remedy": {
+          "en": "Ask: 'What I hate in others, where is it in me?' Practice owning projections. Seek the gift hidden in the enemy.",
+          "pt": "Pergunte: 'O que eu odeio nos outros, onde esta em mim?' Pratique assumir projecoes. Busque o dom escondido no inimigo.",
+          "es": "Pregunta: 'Lo que odio en otros, donde esta en mi?' Practica asumir proyecciones. Busca el don escondido en el enemigo."
+        }
+      },
+      "Dissociation": {
+        "description": {
+          "en": "Dissociation (W > 2.5 && kappa < 0.5) represents inflation - too much connection to the collective unconscious without grounding in personal identity. High witness magnitude (W) means you are 'too big', but low kappa means disconnected from embodied reality. This is spiritual bypassing, psychotic inflation, the god complex.",
+          "pt": "Dissociacao representa inflacao - muita conexao com o inconsciente coletivo sem enraizamento na identidade pessoal.",
+          "es": "Disociacion representa inflacion - demasiada conexion con el inconsciente colectivo sin enraizamiento en la identidad personal."
+        },
+        "jungianCorrelate": "Inflation, identification with archetypes",
+        "remedy": {
+          "en": "Ground in the body. Engage with ordinary life. Find a human community. Practice humility. Serve others.",
+          "pt": "Enraize no corpo. Engaje com a vida ordinaria. Encontre uma comunidade humana. Pratique humildade. Sirva os outros.",
+          "es": "Enraizate en el cuerpo. Involucrate con la vida ordinaria. Encuentra una comunidad humana. Practica humildad. Sirve a otros."
+        }
+      },
+      "Dispersion": {
+        "description": {
+          "en": "Dispersion (RU > 45 && kappa < 0.5) represents living from persona - lots of energy flowing (high RU) but disconnected from authentic self (low kappa). You are performing life rather than living it. This is the successful adaptation that is secretly empty.",
+          "pt": "Dispersao representa viver da persona - muita energia fluindo mas desconectado do eu autentico.",
+          "es": "Dispersion representa vivir desde la persona - mucha energia fluyendo pero desconectado del yo autentico."
+        },
+        "jungianCorrelate": "Persona identification, loss of soul",
+        "remedy": {
+          "en": "Ask: 'What would I do if no one was watching?' Reconnect with childhood dreams. Simplify. Say no to external demands.",
+          "pt": "Pergunte: 'O que eu faria se ninguem estivesse olhando?' Reconecte com sonhos da infancia. Simplifique. Diga nao a demandas externas.",
+          "es": "Pregunta: 'Que haria si nadie estuviera mirando?' Reconecta con los suenos de la infancia. Simplifica. Di no a las demandas externas."
+        }
+      }
+    }
+  },
+
+  "contentTopics": [
+    {
+      "id": 1,
+      "title": {
+        "en": "The Hero's Journey in 16 Dimensions: Your Soul's Evolutionary Path",
+        "pt": "A Jornada do Heroi em 16 Dimensoes: O Caminho Evolutivo da Sua Alma",
+        "es": "El Viaje del Heroe en 16 Dimensiones: El Camino Evolutivo de Tu Alma"
+      },
+      "slug": "hero-journey-16-dimensions",
+      "seoKeywords": ["hero's journey", "Joseph Campbell", "16D personality", "soul evolution", "Jung archetypes", "personality dimensions", "consciousness evolution"],
+      "dimensionsFocus": ["P", "N", "Phi"],
+      "archetypesFocus": ["Hero", "Explorer", "Mystic"],
+      "summary": {
+        "en": "Explore how the monomyth maps to dimensional awakening across all 8 octaves of consciousness.",
+        "pt": "Explore como o monomito mapeia para o despertar dimensional atraves de todas as 8 oitavas de consciencia.",
+        "es": "Explora como el monomito se mapea al despertar dimensional a traves de las 8 octavas de conciencia."
+      }
+    },
+    {
+      "id": 2,
+      "title": {
+        "en": "Shadow Integration: Working with Your Suppressed Dimensions",
+        "pt": "Integracao da Sombra: Trabalhando com Suas Dimensoes Suprimidas",
+        "es": "Integracion de la Sombra: Trabajando con Tus Dimensiones Suprimidas"
+      },
+      "slug": "shadow-integration-suppressed-dimensions",
+      "seoKeywords": ["shadow work", "Jung shadow", "personality integration", "suppressed traits", "unconscious patterns", "self-improvement", "psychological healing"],
+      "dimensionsFocus": "All (shadow inverse)",
+      "archetypesFocus": ["All shadows"],
+      "summary": {
+        "en": "Your lowest dimensions hold your greatest potential for growth. Learn to befriend your shadow through dimensional awareness.",
+        "pt": "Suas dimensoes mais baixas guardam seu maior potencial de crescimento. Aprenda a fazer amizade com sua sombra atraves da consciencia dimensional.",
+        "es": "Tus dimensiones mas bajas guardan tu mayor potencial de crecimiento. Aprende a hacerte amigo de tu sombra a traves de la conciencia dimensional."
+      }
+    },
+    {
+      "id": 3,
+      "title": {
+        "en": "The Anima and Animus: Inner-Outer Harmony in Relationships",
+        "pt": "O Anima e Animus: Harmonia Interior-Exterior nos Relacionamentos",
+        "es": "El Anima y Animus: Armonia Interior-Exterior en las Relaciones"
+      },
+      "slug": "anima-animus-inner-outer-harmony",
+      "seoKeywords": ["anima", "animus", "Jung relationships", "sacred marriage", "coniunctio", "masculine feminine balance", "relationship psychology"],
+      "dimensionsFocus": ["R", "V", "P"],
+      "archetypesFocus": ["Lover", "Hero", "Caregiver"],
+      "summary": {
+        "en": "How the tension between your natal vector and the current transits mirrors the Anima/Animus dynamic in relationships.",
+        "pt": "Como a tensao entre seu vetor natal e os transitos atuais espelha a dinamica Anima/Animus nos relacionamentos.",
+        "es": "Como la tension entre tu vector natal y los transitos actuales refleja la dinamica Anima/Animus en las relaciones."
+      }
+    },
+    {
+      "id": 4,
+      "title": {
+        "en": "The Four Failure Modes: When Individuation Goes Wrong",
+        "pt": "Os Quatro Modos de Falha: Quando a Individuacao Da Errado",
+        "es": "Los Cuatro Modos de Fallo: Cuando la Individuacion Sale Mal"
+      },
+      "slug": "four-failure-modes-individuation",
+      "seoKeywords": ["individuation", "Jung failure", "psychological crisis", "ego collapse", "inflation", "shadow possession", "mental health"],
+      "dimensionsFocus": ["All (failure states)"],
+      "archetypesFocus": ["All (shadow forms)"],
+      "summary": {
+        "en": "Collapse, Inversion, Dissociation, Dispersion: understanding the four ways consciousness can derail and how to return to health.",
+        "pt": "Colapso, Inversao, Dissociacao, Dispersao: entendendo as quatro formas como a consciencia pode descarrilhar e como retornar a saude.",
+        "es": "Colapso, Inversion, Disociacion, Dispersion: entendiendo las cuatro formas en que la conciencia puede descarrilarse y como volver a la salud."
+      }
+    },
+    {
+      "id": 5,
+      "title": {
+        "en": "The Collective Unconscious as Field: Phi and the Transpersonal",
+        "pt": "O Inconsciente Coletivo como Campo: Phi e o Transpessoal",
+        "es": "El Inconsciente Colectivo como Campo: Phi y lo Transpersonal"
+      },
+      "slug": "collective-unconscious-phi-transpersonal",
+      "seoKeywords": ["collective unconscious", "Jung archetypes", "transpersonal psychology", "field consciousness", "mystical experience", "spiritual awakening", "Neptune Uranus Pluto"],
+      "dimensionsFocus": ["Phi"],
+      "archetypesFocus": ["Mystic"],
+      "summary": {
+        "en": "The Field dimension (Phi) as the mathematical representation of Jung's collective unconscious - where individual meets universal.",
+        "pt": "A dimensao Campo (Phi) como a representacao matematica do inconsciente coletivo de Jung - onde o individual encontra o universal.",
+        "es": "La dimension Campo (Phi) como la representacion matematica del inconsciente colectivo de Jung - donde lo individual encuentra lo universal."
+      }
+    },
+    {
+      "id": 6,
+      "title": {
+        "en": "Saturn and the Sage: Embracing Limitation as Teacher",
+        "pt": "Saturno e o Sabio: Abracar a Limitacao como Professor",
+        "es": "Saturno y el Sabio: Abrazar la Limitacion como Maestro"
+      },
+      "slug": "saturn-sage-limitation-teacher",
+      "seoKeywords": ["Saturn archetype", "Sage wisdom", "limitation", "boundaries", "structure", "maturity", "discipline", "time"],
+      "dimensionsFocus": ["E"],
+      "archetypesFocus": ["Sage"],
+      "summary": {
+        "en": "How the Existence dimension (E) and its Saturnian ruler teach us that wisdom comes through accepted limitation.",
+        "pt": "Como a dimensao Existencia (E) e seu regente Saturnino nos ensinam que a sabedoria vem atraves da limitacao aceita.",
+        "es": "Como la dimension Existencia (E) y su regente Saturnino nos ensenan que la sabiduria viene a traves de la limitacion aceptada."
+      }
+    },
+    {
+      "id": 7,
+      "title": {
+        "en": "The Trickster Mercury: Mind, Language, and the Liminal",
+        "pt": "O Trapaceiro Mercurio: Mente, Linguagem e o Liminal",
+        "es": "El Tramposo Mercurio: Mente, Lenguaje y lo Liminal"
+      },
+      "slug": "trickster-mercury-mind-liminal",
+      "seoKeywords": ["Trickster archetype", "Mercury", "cognition", "language", "paradox", "creativity", "communication", "liminal space"],
+      "dimensionsFocus": ["mu"],
+      "archetypesFocus": ["Trickster"],
+      "summary": {
+        "en": "The Cognition dimension (mu) as the realm of the Trickster - where meaning is made, broken, and remade through language and thought.",
+        "pt": "A dimensao Cognicao (mu) como o reino do Trapaceiro - onde o significado e feito, quebrado e refeito atraves da linguagem e pensamento.",
+        "es": "La dimension Cognicion (mu) como el reino del Tramposo - donde el significado es hecho, roto y rehecho a traves del lenguaje y el pensamiento."
+      }
+    },
+    {
+      "id": 8,
+      "title": {
+        "en": "Venus and the Lover: Beauty, Desire, and the Heart's Wisdom",
+        "pt": "Venus e o Amante: Beleza, Desejo e a Sabedoria do Coracao",
+        "es": "Venus y el Amante: Belleza, Deseo y la Sabiduria del Corazon"
+      },
+      "slug": "venus-lover-beauty-desire",
+      "seoKeywords": ["Venus archetype", "Lover", "beauty", "desire", "aesthetics", "pleasure", "value", "heart"],
+      "dimensionsFocus": ["V"],
+      "archetypesFocus": ["Lover"],
+      "summary": {
+        "en": "The Value dimension (V) and its Venusian ruler: how what we love shapes who we become.",
+        "pt": "A dimensao Valor (V) e seu regente Venusiano: como o que amamos molda quem nos tornamos.",
+        "es": "La dimension Valor (V) y su regente Venusiano: como lo que amamos da forma a quien nos convertimos."
+      }
+    },
+    {
+      "id": 9,
+      "title": {
+        "en": "Mars and the Warrior: Conscious Aggression in Service of Soul",
+        "pt": "Marte e o Guerreiro: Agressao Consciente a Servico da Alma",
+        "es": "Marte y el Guerrero: Agresion Consciente al Servicio del Alma"
+      },
+      "slug": "mars-warrior-conscious-aggression",
+      "seoKeywords": ["Mars archetype", "Warrior", "aggression", "action", "force", "assertion", "courage", "conflict"],
+      "dimensionsFocus": ["Delta"],
+      "archetypesFocus": ["Warrior"],
+      "summary": {
+        "en": "The Action dimension (Delta) and the Warrior archetype: transforming raw force into dharmic power.",
+        "pt": "A dimensao Acao (Delta) e o arquetipo do Guerreiro: transformando forca bruta em poder dharmico.",
+        "es": "La dimension Accion (Delta) y el arquetipo del Guerrero: transformando fuerza bruta en poder dharmico."
+      }
+    },
+    {
+      "id": 10,
+      "title": {
+        "en": "The Moon and the Caregiver: Cycles, Nurturing, and Emotional Intelligence",
+        "pt": "A Lua e o Cuidador: Ciclos, Nutricao e Inteligencia Emocional",
+        "es": "La Luna y el Cuidador: Ciclos, Nutricion e Inteligencia Emocional"
+      },
+      "slug": "moon-caregiver-cycles-nurturing",
+      "seoKeywords": ["Moon archetype", "Caregiver", "nurturing", "emotions", "cycles", "mother", "care", "emotional intelligence"],
+      "dimensionsFocus": ["R"],
+      "archetypesFocus": ["Caregiver"],
+      "summary": {
+        "en": "The Relation dimension (R) and the Lunar principle: holding space for self and other through the tides of feeling.",
+        "pt": "A dimensao Relacao (R) e o principio Lunar: mantendo espaco para si e para o outro atraves das mares do sentimento.",
+        "es": "La dimension Relacion (R) y el principio Lunar: manteniendo espacio para uno mismo y otros a traves de las mareas del sentimiento."
+      }
+    },
+    {
+      "id": 11,
+      "title": {
+        "en": "Jupiter and the Explorer: Expansion, Meaning, and the Quest",
+        "pt": "Jupiter e o Explorador: Expansao, Significado e a Busca",
+        "es": "Jupiter y el Explorador: Expansion, Significado y la Busqueda"
+      },
+      "slug": "jupiter-explorer-expansion-meaning",
+      "seoKeywords": ["Jupiter archetype", "Explorer", "expansion", "meaning", "philosophy", "quest", "growth", "optimism"],
+      "dimensionsFocus": ["N"],
+      "archetypesFocus": ["Explorer"],
+      "summary": {
+        "en": "The Narrative dimension (N) and its Jupiterian ruler: the endless search for meaning and the stories we tell ourselves.",
+        "pt": "A dimensao Narrativa (N) e seu regente Jupiteriano: a busca sem fim por significado e as historias que contamos a nos mesmos.",
+        "es": "La dimension Narrativa (N) y su regente Jupiteriano: la busqueda interminable de significado y las historias que nos contamos."
+      }
+    },
+    {
+      "id": 12,
+      "title": {
+        "en": "Kappa and the Sacred Marriage: When Inner Meets Outer",
+        "pt": "Kappa e o Casamento Sagrado: Quando o Interior Encontra o Exterior",
+        "es": "Kappa y el Matrimonio Sagrado: Cuando lo Interior Encuentra lo Exterior"
+      },
+      "slug": "kappa-sacred-marriage-inner-outer",
+      "seoKeywords": ["sacred marriage", "coniunctio", "inner outer harmony", "kappa coupling", "Jung marriage", "psychological integration", "wholeness"],
+      "dimensionsFocus": ["All (Inner-Outer relationship)"],
+      "archetypesFocus": ["All (integrated)"],
+      "summary": {
+        "en": "The kappa metric as measure of the coniunctio - the alchemical marriage of opposites that Jung saw as the goal of individuation.",
+        "pt": "A metrica kappa como medida do coniunctio - o casamento alquimico de opostos que Jung via como o objetivo da individuacao.",
+        "es": "La metrica kappa como medida del coniunctio - el matrimonio alquimico de opuestos que Jung veia como el objetivo de la individuacion."
+      }
+    },
+    {
+      "id": 13,
+      "title": {
+        "en": "RU (Resonance Units): Measuring Your Psychological Energy",
+        "pt": "RU (Unidades de Ressonancia): Medindo Sua Energia Psicologica",
+        "es": "RU (Unidades de Resonancia): Midiendo Tu Energia Psicologica"
+      },
+      "slug": "resonance-units-psychological-energy",
+      "seoKeywords": ["psychological energy", "libido", "resonance units", "vital force", "life energy", "Jung energy", "psychic energy"],
+      "dimensionsFocus": ["All (energy flow)"],
+      "archetypesFocus": ["All (energetic expression)"],
+      "summary": {
+        "en": "RU as measure of libido (life energy) in Jungian terms - how energy flows or blocks through your dimensional pattern.",
+        "pt": "RU como medida de libido (energia vital) em termos junguianos - como a energia flui ou bloqueia atraves do seu padrao dimensional.",
+        "es": "RU como medida de libido (energia vital) en terminos junguianos - como la energia fluye o se bloquea a traves de tu patron dimensional."
+      }
+    },
+    {
+      "id": 14,
+      "title": {
+        "en": "The Elder Attractor: Jung's Self as Mathematical Goal State",
+        "pt": "O Atrator Anciao: O Si-Mesmo de Jung como Estado-Meta Matematico",
+        "es": "El Atractor Anciano: El Si-Mismo de Jung como Estado-Meta Matematico"
+      },
+      "slug": "elder-attractor-self-goal-state",
+      "seoKeywords": ["Self archetype", "individuation goal", "elder wisdom", "psychological maturity", "Jung Self", "wholeness", "integration"],
+      "dimensionsFocus": ["All (balanced)"],
+      "archetypesFocus": ["All (integrated)"],
+      "summary": {
+        "en": "The Elder Attractor as the mathematical expression of Jung's Self - the goal state toward which all individuation moves.",
+        "pt": "O Atrator Anciao como a expressao matematica do Si-Mesmo de Jung - o estado-meta em direcao ao qual toda individuacao se move.",
+        "es": "El Atractor Anciano como la expresion matematica del Si-Mismo de Jung - el estado-meta hacia el cual toda individuacion se mueve."
+      }
+    },
+    {
+      "id": 15,
+      "title": {
+        "en": "Dreams and the 16D Vector: Tracking Unconscious Shifts",
+        "pt": "Sonhos e o Vetor 16D: Rastreando Mudancas Inconscientes",
+        "es": "Suenos y el Vector 16D: Rastreando Cambios Inconscientes"
+      },
+      "slug": "dreams-16d-vector-unconscious-shifts",
+      "seoKeywords": ["dream analysis", "Jung dreams", "unconscious", "16D patterns", "dream interpretation", "psyche mapping", "shadow dreams"],
+      "dimensionsFocus": ["Phi", "R", "V"],
+      "archetypesFocus": ["Mystic", "Caregiver", "Lover"],
+      "summary": {
+        "en": "How dream content correlates with dimensional patterns and can reveal shadow material seeking integration.",
+        "pt": "Como o conteudo dos sonhos se correlaciona com padroes dimensionais e pode revelar material de sombra buscando integracao.",
+        "es": "Como el contenido de los suenos se correlaciona con patrones dimensionales y puede revelar material de sombra buscando integracion."
+      }
+    },
+    {
+      "id": 16,
+      "title": {
+        "en": "Synchronicity and the Field: Phi as the Acausal Connector",
+        "pt": "Sincronicidade e o Campo: Phi como o Conector Acausal",
+        "es": "Sincronicidad y el Campo: Phi como el Conector Acausal"
+      },
+      "slug": "synchronicity-field-phi-acausal",
+      "seoKeywords": ["synchronicity", "Jung synchronicity", "meaningful coincidence", "acausal", "field consciousness", "quantum psychology", "Phi dimension"],
+      "dimensionsFocus": ["Phi"],
+      "archetypesFocus": ["Mystic"],
+      "summary": {
+        "en": "Synchronicities as evidence of Field (Phi) activation - moments when inner and outer worlds mysteriously align.",
+        "pt": "Sincronicidades como evidencia de ativacao do Campo (Phi) - momentos quando mundos interior e exterior misteriosamente se alinham.",
+        "es": "Sincronicidades como evidencia de activacion del Campo (Phi) - momentos cuando los mundos interior y exterior misteriosamente se alinean."
+      }
+    },
+    {
+      "id": 17,
+      "title": {
+        "en": "The Persona Trap: When High RU Meets Low Kappa",
+        "pt": "A Armadilha da Persona: Quando RU Alto Encontra Kappa Baixo",
+        "es": "La Trampa de la Persona: Cuando RU Alto Encuentra Kappa Bajo"
+      },
+      "slug": "persona-trap-high-ru-low-kappa",
+      "seoKeywords": ["persona", "Jung persona", "false self", "mask", "social adaptation", "authenticity", "burnout"],
+      "dimensionsFocus": ["All (Outer over Inner)"],
+      "archetypesFocus": ["All (shadow forms)"],
+      "summary": {
+        "en": "The Dispersion failure mode as Persona inflation - successful adaptation at the cost of authentic selfhood.",
+        "pt": "O modo de falha Dispersao como inflacao da Persona - adaptacao bem-sucedida ao custo de autenticidade.",
+        "es": "El modo de fallo Dispersion como inflacion de la Persona - adaptacion exitosa al costo de la autenticidad."
+      }
+    },
+    {
+      "id": 18,
+      "title": {
+        "en": "Alchemical Transformation: The 16D Path from Lead to Gold",
+        "pt": "Transformacao Alquimica: O Caminho 16D do Chumbo ao Ouro",
+        "es": "Transformacion Alquimica: El Camino 16D del Plomo al Oro"
+      },
+      "slug": "alchemical-transformation-16d-lead-gold",
+      "seoKeywords": ["alchemy", "Jung alchemy", "psychological transformation", "lead to gold", "opus", "individuation", "spiritual chemistry"],
+      "dimensionsFocus": ["All (transformation)"],
+      "archetypesFocus": ["All (stages)"],
+      "summary": {
+        "en": "Mapping the alchemical stages (nigredo, albedo, rubedo) to dimensional shifts in the individuation process.",
+        "pt": "Mapeando os estagios alquimicos (nigredo, albedo, rubedo) para mudancas dimensionais no processo de individuacao.",
+        "es": "Mapeando las etapas alquimicas (nigredo, albedo, rubedo) a cambios dimensionales en el proceso de individuacion."
+      }
+    },
+    {
+      "id": 19,
+      "title": {
+        "en": "Active Imagination in 16 Dimensions: Dialogue with the Archetypes",
+        "pt": "Imaginacao Ativa em 16 Dimensoes: Dialogo com os Arquetipos",
+        "es": "Imaginacion Activa en 16 Dimensiones: Dialogo con los Arquetipos"
+      },
+      "slug": "active-imagination-16-dimensions-archetypes",
+      "seoKeywords": ["active imagination", "Jung technique", "archetype dialogue", "inner work", "visualization", "psyche exploration", "shadow work technique"],
+      "dimensionsFocus": ["All (practice)"],
+      "archetypesFocus": ["All (dialogue)"],
+      "summary": {
+        "en": "Using 16D dimensional mapping to guide active imagination practice - dialoguing with the personified dimensions.",
+        "pt": "Usando o mapeamento dimensional 16D para guiar a pratica de imaginacao ativa - dialogando com as dimensoes personificadas.",
+        "es": "Usando el mapeo dimensional 16D para guiar la practica de imaginacion activa - dialogando con las dimensiones personificadas."
+      }
+    },
+    {
+      "id": 20,
+      "title": {
+        "en": "The Witness Magnitude: Consciousness Itself as Healing Factor",
+        "pt": "A Magnitude Testemunha: A Propria Consciencia como Fator de Cura",
+        "es": "La Magnitud Testigo: La Conciencia Misma como Factor de Curacion"
+      },
+      "slug": "witness-magnitude-consciousness-healing",
+      "seoKeywords": ["witness consciousness", "awareness", "healing consciousness", "Jung consciousness", "self-awareness", "mindfulness", "observer effect"],
+      "dimensionsFocus": ["All (W metric)"],
+      "archetypesFocus": ["Mystic", "Sage"],
+      "summary": {
+        "en": "The W (Witness) metric as measure of conscious awareness - and why increased witnessing is itself therapeutic.",
+        "pt": "A metrica W (Testemunha) como medida de consciencia - e por que aumentar o testemunho e em si terapeutico.",
+        "es": "La metrica W (Testigo) como medida de conciencia - y por que aumentar el testimonio es en si terapeutico."
+      }
+    }
+  ],
+
+  "glossary": {
+    "Inner_Octave": {
+      "en": "The 8 natal dimensions (P, E, mu, V, N, Delta, R, Phi) - your fixed pattern at birth, corresponding to Jung's Ego structure",
+      "pt": "As 8 dimensoes natais - seu padrao fixo ao nascer, correspondendo a estrutura do Ego de Jung",
+      "es": "Las 8 dimensiones natales - tu patron fijo al nacer, correspondiente a la estructura del Ego de Jung"
+    },
+    "Outer_Octave": {
+      "en": "The 8 transit dimensions (Pt, Et, mut, Vt, Nt, Deltat, Rt, Phit) - the current cosmic weather, corresponding to what the world is asking of you",
+      "pt": "As 8 dimensoes de transito - o clima cosmico atual, correspondendo ao que o mundo esta pedindo de voce",
+      "es": "Las 8 dimensiones de transito - el clima cosmico actual, correspondiente a lo que el mundo te esta pidiendo"
+    },
+    "Kappa": {
+      "en": "The coupling between Inner and Outer octaves, measuring harmony between self and world. High kappa = coniunctio, low kappa = tension, negative kappa = inversion/projection",
+      "pt": "O acoplamento entre oitavas Interna e Externa, medindo harmonia entre si e mundo",
+      "es": "El acoplamiento entre octavas Interna y Externa, midiendo armonia entre el yo y el mundo"
+    },
+    "RU": {
+      "en": "Resonance Units - measure of energy flow through the system, corresponding to Jung's concept of libido (psychic energy)",
+      "pt": "Unidades de Ressonancia - medida de fluxo de energia atraves do sistema, correspondendo ao conceito de libido de Jung",
+      "es": "Unidades de Resonancia - medida del flujo de energia a traves del sistema, correspondiente al concepto de libido de Jung"
+    },
+    "W": {
+      "en": "Witness magnitude - the L2 norm of the full 16D vector, measuring depth of conscious awareness and connection to collective unconscious",
+      "pt": "Magnitude testemunha - a norma L2 do vetor 16D completo, medindo profundidade de consciencia e conexao com o inconsciente coletivo",
+      "es": "Magnitud testigo - la norma L2 del vector 16D completo, midiendo profundidad de conciencia y conexion con el inconsciente colectivo"
+    },
+    "C": {
+      "en": "Coherence - measure of vector balance. Low variance = high coherence = integrated Self. High variance = fragmented psyche",
+      "pt": "Coerencia - medida de equilibrio do vetor. Baixa variancia = alta coerencia = Si-Mesmo integrado",
+      "es": "Coherencia - medida del equilibrio del vector. Baja varianza = alta coherencia = Si-Mismo integrado"
+    },
+    "Elder_Progress": {
+      "en": "Percentage progress toward the Elder Attractor (goal state), combining kappa, RU, and W into single metric of individuation advancement",
+      "pt": "Percentual de progresso em direcao ao Atrator Anciao (estado-meta), combinando kappa, RU e W em metrica unica de avanco na individuacao",
+      "es": "Porcentaje de progreso hacia el Atractor Anciano (estado-meta), combinando kappa, RU y W en una metrica unica de avance en la individuacion"
+    },
+    "Failure_Modes": {
+      "en": "The four pathological states: Collapse (ego defeat), Inversion (shadow possession), Dissociation (inflation), Dispersion (persona identification)",
+      "pt": "Os quatro estados patologicos: Colapso (derrota do ego), Inversao (possessao pela sombra), Dissociacao (inflacao), Dispersao (identificacao com persona)",
+      "es": "Los cuatro estados patologicos: Colapso (derrota del ego), Inversion (posesion por la sombra), Disociacion (inflacion), Dispersion (identificacion con la persona)"
+    }
+  },
+
+  "metadata": {
+    "author": "The Realm of Patterns",
+    "license": "BSL 1.1",
+    "lastUpdated": "2025-02-01",
+    "version": "1.0.0",
+    "references": [
+      "Jung, C.G. - Collected Works (CW)",
+      "Jung, C.G. - Memories, Dreams, Reflections",
+      "Jung, C.G. - The Red Book",
+      "Campbell, Joseph - The Hero with a Thousand Faces",
+      "Neumann, Erich - The Origins and History of Consciousness",
+      "FRC 16D.002 Specification - The Realm of Patterns"
+    ]
+  }
+}

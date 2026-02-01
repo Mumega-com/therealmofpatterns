@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Cosmic Weather | 16D Universal Vector | The Realm of Patterns</title>
+    <meta name="description" content="Today's cosmic weather: Vedic + Western astrology unified through the 16D framework. Daily insights for your journey.">
+
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="Daily Cosmic Weather - 16D Universal Vector">
+    <meta property="og:description" content="Unified Vedic + Western astrology insights for today. Discover the collective field.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://therealmofpatterns.com/cosmic-weather">
+    <meta property="og:image" content="https://therealmofpatterns.com/images/cosmic-weather-og.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Daily Cosmic Weather - 16D Universal Vector">
+    <meta name="twitter:description" content="Unified Vedic + Western astrology insights for today.">
+
+    <!-- Schema.org Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Daily Cosmic Weather",
+        "description": "Vedic + Western astrology unified through 16D framework",
+        "author": {
+            "@type": "Organization",
+            "name": "The Realm of Patterns"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "The Realm of Patterns"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --cosmic-gold: #d4af37;
+            --cosmic-purple: #6b21a8;
+            --cosmic-deep: #0a0a1a;
+            --cosmic-nebula: #1a1a2e;
+            --cosmic-text: #e8e6e3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, var(--cosmic-deep) 0%, var(--cosmic-nebula) 100%);
+            color: var(--cosmic-text);
+            min-height: 100vh;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+
+        .header { text-align: center; margin-bottom: 3rem; }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--cosmic-gold), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .date { color: var(--cosmic-gold); font-size: 1.2rem; opacity: 0.9; }
+
+        .language-selector {
+            display: flex; justify-content: center; gap: 0.5rem;
+            margin-bottom: 2rem; flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem; border: 1px solid var(--cosmic-gold);
+            background: transparent; color: var(--cosmic-gold);
+            border-radius: 20px; cursor: pointer; font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: var(--cosmic-gold); color: var(--cosmic-deep);
+        }
+
+        .weather-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+        }
+
+        .dominant-dimension { text-align: center; margin-bottom: 2rem; }
+        .dimension-symbol { font-size: 4rem; color: var(--cosmic-gold); }
+        .dimension-name { font-size: 1.5rem; color: var(--cosmic-gold); margin-top: 0.5rem; }
+        .dimension-meaning { color: var(--cosmic-text); opacity: 0.8; margin-top: 0.25rem; }
+
+        .vector-display {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 1rem; margin: 2rem 0;
+        }
+
+        .dimension-item {
+            text-align: center; padding: 1rem;
+            background: rgba(255, 255, 255, 0.03); border-radius: 8px;
+        }
+
+        .dim-label { font-size: 0.85rem; color: var(--cosmic-gold); margin-bottom: 0.25rem; }
+        .dim-value { font-size: 1.2rem; font-weight: 600; }
+
+        .dim-bar {
+            height: 4px; background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px; margin-top: 0.5rem; overflow: hidden;
+        }
+
+        .dim-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cosmic-purple), var(--cosmic-gold));
+            border-radius: 2px;
+        }
+
+        .insights { margin-top: 2rem; }
+        .insight-section { margin-bottom: 1.5rem; }
+
+        .insight-title {
+            color: var(--cosmic-gold); font-size: 1.1rem;
+            margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;
+        }
+
+        .insight-content { line-height: 1.7; opacity: 0.9; }
+
+        .fusion-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: linear-gradient(135deg, var(--cosmic-purple), var(--cosmic-gold));
+            padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; margin-bottom: 1rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, rgba(107, 33, 168, 0.3), rgba(212, 175, 55, 0.2));
+            border: 1px solid var(--cosmic-gold); border-radius: 16px;
+            padding: 2rem; text-align: center; margin: 2rem 0;
+        }
+
+        .cta-title { font-size: 1.5rem; color: var(--cosmic-gold); margin-bottom: 0.5rem; }
+        .cta-subtitle { opacity: 0.8; margin-bottom: 1.5rem; }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--cosmic-gold) 0%, #b8941f 100%);
+            color: var(--cosmic-deep); padding: 1rem 2rem; border-radius: 30px;
+            text-decoration: none; font-weight: 600; font-size: 1.1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .email-capture {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px; padding: 1.5rem; margin: 2rem 0;
+        }
+
+        .email-capture h3 { color: var(--cosmic-gold); margin-bottom: 0.5rem; }
+        .email-capture p { opacity: 0.8; margin-bottom: 1rem; font-size: 0.95rem; }
+
+        .email-form { display: flex; gap: 0.5rem; }
+
+        .email-input {
+            flex: 1; padding: 0.75rem 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px; color: var(--cosmic-text); font-size: 1rem;
+        }
+
+        .email-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+
+        .email-submit {
+            background: var(--cosmic-gold); color: var(--cosmic-deep);
+            border: none; padding: 0.75rem 1.5rem; border-radius: 8px;
+            cursor: pointer; font-weight: 600; transition: opacity 0.3s ease;
+        }
+
+        .email-submit:hover { opacity: 0.9; }
+
+        .historical-link { text-align: center; margin: 2rem 0; }
+        .historical-link a { color: var(--cosmic-gold); text-decoration: underline; }
+
+        footer { text-align: center; padding: 2rem; opacity: 0.6; font-size: 0.9rem; }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.8rem; }
+            .vector-display { grid-template-columns: repeat(2, 1fr); }
+            .email-form { flex-direction: column; }
+        }
+
+        .loading { text-align: center; padding: 3rem; }
+
+        .loading-spinner {
+            width: 40px; height: 40px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top-color: var(--cosmic-gold);
+            border-radius: 50%; animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .success-message { color: var(--cosmic-gold); padding: 1rem; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Daily Cosmic Weather</h1>
+            <p class="date" id="current-date"></p>
+            <div class="fusion-badge">
+                <span>Vedic</span>
+                <span>+</span>
+                <span>Western</span>
+                <span>= 16D</span>
+            </div>
+        </header>
+
+        <div class="language-selector">
+            <button class="lang-btn active" data-lang="en">English</button>
+            <button class="lang-btn" data-lang="pt-br">Portugues (BR)</button>
+            <button class="lang-btn" data-lang="pt-pt">Portugues (PT)</button>
+            <button class="lang-btn" data-lang="es-mx">Espanol (MX)</button>
+            <button class="lang-btn" data-lang="es-ar">Espanol (AR)</button>
+            <button class="lang-btn" data-lang="es-es">Espanol (ES)</button>
+        </div>
+
+        <div class="weather-card" id="weather-content">
+            <!-- Weather content loaded via template -->
+        </div>
+
+        <div class="email-capture">
+            <h3>Get Daily Cosmic Weather in Your Inbox</h3>
+            <p>Receive personalized Vedic + Western insights every morning. Free forever.</p>
+            <form class="email-form" id="subscribe-form">
+                <input type="email" class="email-input" placeholder="your@email.com" required>
+                <button type="submit" class="email-submit">Subscribe</button>
+            </form>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">Discover Your Personal 16D Vector</h2>
+            <p class="cta-subtitle">Get your complete cosmic identity - Vedic + Western + Jungian unified</p>
+            <a href="/" class="cta-button">Calculate Your Pattern - Free Preview</a>
+        </div>
+
+        <div class="historical-link">
+            <p>View <a href="/history">past 30 days of cosmic weather</a></p>
+        </div>
+
+        <footer>
+            <p>The Realm of Patterns - Unified Vedic + Western Astrology</p>
+            <p>16D Universal Vector Framework</p>
+        </footer>
+    </div>
+
+    <!-- Weather Template -->
+    <template id="weather-template">
+        <div class="dominant-dimension">
+            <div class="dimension-symbol" data-field="symbol"></div>
+            <div class="dimension-name" data-field="name"></div>
+            <div class="dimension-meaning" data-field="meaning"></div>
+        </div>
+        <div class="vector-display" data-field="vector-grid"></div>
+        <div class="insights">
+            <div class="insight-section">
+                <h3 class="insight-title">Today's Cosmic Climate</h3>
+                <p class="insight-content" data-field="climate"></p>
+            </div>
+            <div class="insight-section">
+                <h3 class="insight-title">Vedic Perspective</h3>
+                <p class="insight-content" data-field="vedic"></p>
+            </div>
+            <div class="insight-section">
+                <h3 class="insight-title">Western Transits</h3>
+                <p class="insight-content" data-field="western"></p>
+            </div>
+            <div class="insight-section">
+                <h3 class="insight-title">Practical Guidance</h3>
+                <p class="insight-content" data-field="guidance"></p>
+            </div>
+        </div>
+    </template>
+
+    <!-- Dimension Item Template -->
+    <template id="dimension-template">
+        <div class="dimension-item">
+            <div class="dim-label" data-field="label"></div>
+            <div class="dim-value" data-field="value"></div>
+            <div class="dim-bar">
+                <div class="dim-bar-fill" data-field="bar"></div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Set current date
+        const dateEl = document.getElementById('current-date');
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateEl.textContent = today.toLocaleDateString('en-US', options);
+
+        // Dimension data
+        const dimensions = {
+            P: { name: 'Phase', meaning: 'Will & Identity', symbol: 'P' },
+            E: { name: 'Existence', meaning: 'Structure & Form', symbol: 'E' },
+            mu: { name: 'Cognition', meaning: 'Mind & Understanding', symbol: 'μ' },
+            V: { name: 'Value', meaning: 'Beauty & Harmony', symbol: 'V' },
+            N: { name: 'Expansion', meaning: 'Growth & Meaning', symbol: 'N' },
+            Delta: { name: 'Action', meaning: 'Force & Transformation', symbol: 'Δ' },
+            R: { name: 'Relation', meaning: 'Connection & Care', symbol: 'R' },
+            Phi: { name: 'Field', meaning: 'Unity & Witness', symbol: 'Φ' }
+        };
+
+        const dimOrder = ['P', 'E', 'mu', 'V', 'N', 'Delta', 'R', 'Phi'];
+
+        const insights = {
+            P: 'asserting your identity and taking initiative. Set intentions.',
+            E: 'building structure and creating lasting foundations.',
+            mu: 'learning, communication, and expanding your understanding.',
+            V: 'appreciating beauty, nurturing relationships, and finding harmony.',
+            N: 'exploration, growth, and seeking meaning beyond the familiar.',
+            Delta: 'taking action, making changes, and transforming what no longer serves.',
+            R: 'connection, care, and deepening bonds with others.',
+            Phi: 'contemplation, unity consciousness, and witnessing the larger pattern.'
+        };
+
+        const guidance = {
+            P: 'Start that project you have been postponing. Your willpower is amplified.',
+            E: 'Organize your space. Create systems. Build something that will last.',
+            mu: 'Journal your thoughts. Have meaningful conversations. Learn something new.',
+            V: 'Create art. Express love. Notice beauty in small things.',
+            N: 'Plan a journey. Read philosophy. Question your assumptions.',
+            Delta: 'Exercise. Clear clutter. End what needs ending. Act decisively.',
+            R: 'Reach out to someone. Listen deeply. Nurture your connections.',
+            Phi: 'Meditate. Observe without judgment. Feel the interconnection of all things.'
+        };
+
+        // Render weather using templates (safe DOM methods)
+        function renderWeather(data) {
+            const container = document.getElementById('weather-content');
+            const template = document.getElementById('weather-template');
+            const clone = template.content.cloneNode(true);
+
+            const dominantIdx = data.dominant_index || 0;
+            const dominantKey = dimOrder[dominantIdx];
+            const dominant = dimensions[dominantKey];
+            const vector = data.vector || [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5];
+
+            // Set dominant dimension
+            clone.querySelector('[data-field="symbol"]').textContent = dominant.symbol;
+            clone.querySelector('[data-field="name"]').textContent = dominant.name;
+            clone.querySelector('[data-field="meaning"]').textContent = dominant.meaning;
+
+            // Build vector grid
+            const vectorGrid = clone.querySelector('[data-field="vector-grid"]');
+            const dimTemplate = document.getElementById('dimension-template');
+
+            dimOrder.forEach((key, i) => {
+                const dim = dimensions[key];
+                const value = vector[i] || 0.5;
+                const dimClone = dimTemplate.content.cloneNode(true);
+
+                dimClone.querySelector('[data-field="label"]').textContent = dim.symbol + ' ' + dim.name;
+                dimClone.querySelector('[data-field="value"]').textContent = (value * 100).toFixed(0) + '%';
+                dimClone.querySelector('[data-field="bar"]').style.width = (value * 100) + '%';
+
+                vectorGrid.appendChild(dimClone);
+            });
+
+            // Set insights
+            clone.querySelector('[data-field="climate"]').textContent =
+                'Today the collective field emphasizes ' + dominant.name + ' (' + dominant.meaning + '). This is a day for ' + insights[dominantKey];
+
+            clone.querySelector('[data-field="vedic"]').textContent =
+                'The current Dasha period supports inner reflection. Honor the rhythm of Vedic timing today.';
+
+            clone.querySelector('[data-field="western"]').textContent =
+                'Western planetary transits show dynamic aspects today. The Sun illuminates themes of self-expression and purpose.';
+
+            clone.querySelector('[data-field="guidance"]').textContent = guidance[dominantKey];
+
+            // Clear and append
+            container.textContent = '';
+            container.appendChild(clone);
+        }
+
+        // Show loading state
+        function showLoading() {
+            const container = document.getElementById('weather-content');
+            container.textContent = '';
+
+            const loading = document.createElement('div');
+            loading.className = 'loading';
+
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            loading.appendChild(spinner);
+
+            const text = document.createElement('p');
+            text.textContent = 'Loading today\'s cosmic weather...';
+            loading.appendChild(text);
+
+            container.appendChild(loading);
+        }
+
+        // Fetch weather
+        async function fetchWeather() {
+            showLoading();
+            try {
+                const response = await fetch('/api/weather');
+                if (!response.ok) throw new Error('Failed to fetch');
+                const data = await response.json();
+                renderWeather(data);
+            } catch (error) {
+                console.error('Error:', error);
+                renderWeather({ dominant_index: 7, vector: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.8] });
+            }
+        }
+
+        // Language switching
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Email subscription
+        document.getElementById('subscribe-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('input').value;
+            const form = e.target;
+
+            const success = document.createElement('p');
+            success.className = 'success-message';
+            success.textContent = 'Subscribed! Check your inbox.';
+
+            form.parentNode.replaceChild(success, form);
+        });
+
+        // Initialize
+        fetchWeather();
+    </script>
+</body>
+</html>

@@ -1,8 +1,14 @@
 /**
- * Cloudflare Cron Trigger Handler
+ * Cloudflare Pages Functions Scheduled Handler
  * Runs daily at 00:00 UTC
  *
- * Triggers daily UV snapshot updates for all subscribed users
+ * Triggers:
+ * - Cosmic weather content generation for 6 languages
+ * - UV snapshot updates for subscribed users
+ * - Notification queue processing
+ *
+ * Note: For Pages projects, this is triggered via the separate cron worker
+ * or configured in Cloudflare Dashboard > Pages > Settings > Functions > Cron Triggers
  */
 
 import { Env } from '../src/types';
@@ -11,10 +17,13 @@ export const onRequest: PagesFunction<Env, never, { scheduledTime: number }> = a
   const { env } = context;
 
   try {
-    console.log('[CRON] Starting daily UV update job...');
+    console.log('[CRON] Starting daily update job...');
+
+    // Use APP_URL from env or default to pages.dev
+    const appUrl = env.APP_URL || 'https://therealmofpatterns.pages.dev';
 
     // Call the daily-update API endpoint
-    const response = await fetch('https://therealmofpatterns.pages.dev/api/daily-update', {
+    const response = await fetch(`${appUrl}/api/daily-update`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -23,14 +32,19 @@ export const onRequest: PagesFunction<Env, never, { scheduledTime: number }> = a
       body: JSON.stringify({})
     });
 
-    const result = await response.json();
+    const result = await response.json() as any;
 
     console.log('[CRON] Daily update completed:', result);
 
     return new Response(JSON.stringify({
       success: true,
-      message: 'Daily UV update job completed',
-      result
+      message: 'Daily update job completed',
+      content_generated: result.content_generated || 0,
+      languages_completed: result.languages_completed || [],
+      users_updated: result.users_updated || 0,
+      snapshots_created: result.snapshots_created || 0,
+      notifications_queued: result.notifications_queued || 0,
+      errors: result.errors || 0
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
@@ -51,7 +65,9 @@ export const onRequest: PagesFunction<Env, never, { scheduledTime: number }> = a
 
 // Export for Cloudflare Workers cron syntax
 export async function scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
+  const startTime = Date.now();
   console.log('[CRON] Scheduled event triggered at:', new Date(event.scheduledTime).toISOString());
+  console.log('[CRON] Cron pattern:', event.cron);
 
   try {
     // Call daily-update endpoint
@@ -66,8 +82,17 @@ export async function scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionC
       body: JSON.stringify({})
     });
 
-    const result = await response.json();
-    console.log('[CRON] Update result:', result);
+    const result = await response.json() as any;
+    const duration = Date.now() - startTime;
+
+    console.log('[CRON] Update result:', {
+      duration: `${duration}ms`,
+      content_generated: result.content_generated,
+      languages: result.languages_completed,
+      users_updated: result.users_updated,
+      snapshots: result.snapshots_created,
+      errors: result.errors
+    });
 
     // Process notification queue (send emails/SMS)
     await processNotificationQueue(env);

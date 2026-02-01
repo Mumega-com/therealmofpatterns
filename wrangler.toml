@@ -72,7 +72,21 @@ local_protocol = "http"
 # STRIPE_SECRET_KEY
 # STRIPE_WEBHOOK_SECRET
 # STRIPE_PUBLISHABLE_KEY
+# GEMINI_API_KEY (required for content generation)
+# ADMIN_KEY (for manual cron triggers)
 # TWITTER_BEARER_TOKEN (optional)
 # TELEGRAM_BOT_TOKEN (optional)
 # DISCORD_WEBHOOK_URL (optional)
-# ADMIN_KEY (for manual cron triggers)
+
+# ============================================
+# Cron Worker (separate deployment)
+# ============================================
+# For scheduled content generation, deploy the cron worker:
+#   wrangler deploy workers/cron-worker.ts --name therealmofpatterns-cron
+#
+# Configure cron schedule in Cloudflare Dashboard:
+#   Workers > therealmofpatterns-cron > Triggers > Cron Triggers
+#   Add: "0 0 * * *" (Daily at 00:00 UTC)
+#
+# Or for Pages Functions, configure via Dashboard:
+#   Pages > therealmofpatterns > Settings > Functions > Cron Triggers

@@ -1,5 +1,17 @@
 # Cron Worker Configuration
 # Separate worker for handling scheduled tasks
+#
+# Features:
+# - Generates cosmic weather content for 6 languages
+# - Updates UV snapshots for subscribed users
+# - Processes notification queue
+#
+# Deploy:
+#   cd workers && wrangler deploy
+#
+# Set secrets:
+#   wrangler secret put ADMIN_KEY --name therealmofpatterns-cron
+#   wrangler secret put DISCORD_WEBHOOK_URL --name therealmofpatterns-cron  (optional)
 
 name = "therealmofpatterns-cron"
 main = "cron-worker.ts"
@@ -13,5 +25,6 @@ crons = ["0 0 * * *"]
 [vars]
 PAGES_URL = "https://therealmofpatterns.pages.dev"
 
-# Secrets (set via: wrangler secret put ADMIN_KEY --name therealmofpatterns-cron)
-# ADMIN_KEY
+# Secrets (set via wrangler secret put --name therealmofpatterns-cron):
+# ADMIN_KEY - Required: authenticates requests to /api/daily-update
+# DISCORD_WEBHOOK_URL - Optional: for failure alerts

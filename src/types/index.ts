@@ -174,6 +174,8 @@ export interface Env {
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET: string;
   STRIPE_PUBLISHABLE_KEY: string;
+  GEMINI_API_KEY: string;
+  ADMIN_KEY: string;
   TWITTER_BEARER_TOKEN?: string;
   TELEGRAM_BOT_TOKEN?: string;
   DISCORD_WEBHOOK_URL?: string;

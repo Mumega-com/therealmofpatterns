@@ -1,17 +1,42 @@
 /**
  * POST /api/daily-update
- * Trigger daily UV snapshot updates for subscribed users
+ * Trigger daily UV snapshot updates AND cosmic weather content generation
  *
  * Called by:
  * 1. Cloudflare Cron (scheduled daily at 00:00 UTC)
  * 2. Manual trigger from admin dashboard
+ *
+ * Features:
+ * - UV snapshots for subscribed users
+ * - Cosmic weather content for 6 languages (en, pt-br, pt-pt, es-mx, es-ar, es-es)
+ * - Threshold alerts and Elder milestone tracking
  */
 
 import { Env } from '../../src/types';
 
+// Supported languages for content generation
+const SUPPORTED_LANGUAGES = ['en', 'pt-br', 'pt-pt', 'es-mx', 'es-ar', 'es-es'] as const;
+type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
+
+// 8 Mu Dimensions metadata
+const MU_DIMENSIONS: Record<string, { symbol: string; name: string; planet: string }> = {
+  phase: { symbol: 'P', name: 'Phase', planet: 'Sun' },
+  existence: { symbol: 'E', name: 'Existence', planet: 'Saturn' },
+  cognition: { symbol: 'mu', name: 'Cognition', planet: 'Mercury' },
+  value: { symbol: 'V', name: 'Value', planet: 'Venus' },
+  expansion: { symbol: 'N', name: 'Expansion', planet: 'Jupiter' },
+  action: { symbol: 'Delta', name: 'Delta/Action', planet: 'Mars' },
+  relation: { symbol: 'R', name: 'Relation', planet: 'Moon' },
+  field: { symbol: 'Phi', name: 'Field', planet: 'Neptune' }
+};
+
 interface RequestBody {
   admin_key?: string; // Required for manual trigger
   user_email_hash?: string; // Optional: update specific user only
+  skip_users?: boolean; // Skip user updates, only generate content
+  skip_content?: boolean; // Skip content generation, only update users
+  languages?: SupportedLanguage[]; // Optional: specific languages to generate
+  date?: string; // Optional: specific date (YYYY-MM-DD), defaults to today
 }
 
 interface DailyUpdateResponse {
@@ -19,6 +44,8 @@ interface DailyUpdateResponse {
   users_updated: number;
   snapshots_created: number;
   notifications_queued: number;
+  content_generated: number;
+  languages_completed: string[];
   errors: number;
   error?: {
     code: string;
@@ -47,60 +74,107 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       }
     }
 
-    // Get list of users to update
-    const usersToUpdate = await getUsersForUpdate(env.DB, body.user_email_hash);
+    // Get target date (default to today UTC)
+    const targetDate = body.date || new Date().toISOString().split('T')[0];
+    const languagesToGenerate = body.languages || [...SUPPORTED_LANGUAGES];
 
-    if (usersToUpdate.length === 0) {
-      return jsonResponse({
-        success: true,
-        users_updated: 0,
-        snapshots_created: 0,
-        notifications_queued: 0,
-        errors: 0
-      });
-    }
-
-    // Process each user
     let snapshotsCreated = 0;
     let notificationsQueued = 0;
+    let contentGenerated = 0;
+    const languagesCompleted: string[] = [];
     let errors = 0;
 
-    for (const user of usersToUpdate) {
-      try {
-        // Compute today's UV snapshot
-        const snapshot = await computeUserSnapshot(env, user);
+    // ============================================
+    // Part 1: Generate Cosmic Weather Content
+    // ============================================
+    if (!body.skip_content) {
+      console.log(`[DAILY] Generating cosmic weather content for ${targetDate}...`);
 
-        if (snapshot) {
-          snapshotsCreated++;
+      for (const lang of languagesToGenerate) {
+        try {
+          // Check if content already exists for this date/language
+          const existing = await env.DB.prepare(`
+            SELECT id FROM cosmic_weather_content
+            WHERE date = ? AND language_code = ?
+          `).bind(targetDate, lang).first();
 
-          // Check for threshold alerts
-          const alertsTriggered = await checkThresholdAlerts(env.DB, user.email_hash, snapshot);
-
-          // Queue notification if needed
-          const shouldNotify = user.email_notifications &&
-            (alertsTriggered > 0 || shouldSendDailyUpdate(user));
-
-          if (shouldNotify) {
-            await queueNotification(env.DB, user.email_hash, snapshot, alertsTriggered);
-            notificationsQueued++;
+          if (existing) {
+            console.log(`[DAILY] Content already exists for ${targetDate}/${lang}, skipping`);
+            languagesCompleted.push(lang);
+            continue;
           }
 
-          // Check for Elder milestones
-          await checkElderMilestones(env.DB, user.email_hash, snapshot);
+          // Generate content using Gemini
+          const content = await generateCosmicWeatherContent(env, targetDate, lang);
+
+          if (content) {
+            // Store in D1
+            await storeCosmicWeatherContent(env.DB, targetDate, lang, content);
+            contentGenerated++;
+            languagesCompleted.push(lang);
+            console.log(`[DAILY] Generated content for ${targetDate}/${lang}`);
+          }
+        } catch (error) {
+          console.error(`[DAILY] Error generating content for ${lang}:`, error);
+          errors++;
         }
-      } catch (error) {
-        console.error(`Error updating user ${user.email_hash}:`, error);
-        errors++;
+      }
+    }
+
+    // ============================================
+    // Part 2: Update User UV Snapshots
+    // ============================================
+    let usersUpdated = 0;
+
+    if (!body.skip_users) {
+      const usersToUpdate = await getUsersForUpdate(env.DB, body.user_email_hash);
+
+      if (usersToUpdate.length > 0) {
+        console.log(`[DAILY] Updating ${usersToUpdate.length} user snapshots...`);
+
+        for (const user of usersToUpdate) {
+          try {
+            // Compute today's UV snapshot
+            const snapshot = await computeUserSnapshot(env, user);
+
+            if (snapshot) {
+              snapshotsCreated++;
+
+              // Check for threshold alerts
+              const alertsTriggered = await checkThresholdAlerts(env.DB, user.email_hash, snapshot);
+
+              // Queue notification if needed
+              const shouldNotify = user.email_notifications &&
+                (alertsTriggered > 0 || shouldSendDailyUpdate(user));
+
+              if (shouldNotify) {
+                await queueNotification(env.DB, user.email_hash, snapshot, alertsTriggered);
+                notificationsQueued++;
+              }
+
+              // Check for Elder milestones
+              await checkElderMilestones(env.DB, user.email_hash, snapshot);
+            }
+          } catch (error) {
+            console.error(`Error updating user ${user.email_hash}:`, error);
+            errors++;
+          }
+        }
+        usersUpdated = usersToUpdate.length;
       }
     }
 
     const response: DailyUpdateResponse = {
       success: true,
-      users_updated: usersToUpdate.length,
+      users_updated: usersUpdated,
       snapshots_created: snapshotsCreated,
       notifications_queued: notificationsQueued,
+      content_generated: contentGenerated,
+      languages_completed: languagesCompleted,
       errors
     };
+
+    console.log(`[DAILY] Completed: ${contentGenerated} content, ${snapshotsCreated} snapshots, ${errors} errors`);
 
     return jsonResponse(response);
 
@@ -111,7 +185,321 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 };
 
 // ============================================
-// Helper Functions
+// Cosmic Weather Content Generation
+// ============================================
+
+interface CosmicWeatherContent {
+  title: string;
+  summary: string;
+  detailed_content: {
+    overview: string;
+    morning_focus: string;
+    afternoon_energy: string;
+    evening_reflection: string;
+    daily_question: string;
+    practical_suggestions: string[];
+    caution: string;
+    affirmation: string;
+  };
+  vedic_insights: string;
+  western_insights: string;
+  practical_guidance: string;
+  vector: number[];
+  dominant: {
+    dimension: string;
+    symbol: string;
+    name: string;
+    value: number;
+  };
+}
+
+/**
+ * Generate cosmic weather content using Gemini API
+ */
+async function generateCosmicWeatherContent(
+  env: Env,
+  date: string,
+  language: SupportedLanguage
+): Promise<CosmicWeatherContent | null> {
+  // Get the 8 Mu vector for this date (mock for now, integrate with Python later)
+  const vector = generateDailyVector(date);
+  const dominantIdx = vector.indexOf(Math.max(...vector));
+  const dimKeys = Object.keys(MU_DIMENSIONS);
+  const dominantKey = dimKeys[dominantIdx];
+  const dominant = {
+    dimension: dominantKey,
+    symbol: MU_DIMENSIONS[dominantKey].symbol,
+    name: MU_DIMENSIONS[dominantKey].name,
+    value: vector[dominantIdx]
+  };
+
+  // Get voice configuration for this language
+  const voice = await getVoiceConfig(env.DB, language);
+
+  // Build prompt
+  const prompt = buildDailyWeatherPrompt(date, vector, dominant, language, voice);
+
+  try {
+    // Call Gemini API
+    const response = await callGeminiAPI(env.GEMINI_API_KEY, prompt);
+
+    if (!response) {
+      console.error(`[GEMINI] No response for ${language}`);
+      return null;
+    }
+
+    // Parse and validate response
+    const content = parseGeminiResponse(response);
+
+    return {
+      title: content.theme || `Cosmic Weather - ${date}`,
+      summary: content.overview?.substring(0, 500) || '',
+      detailed_content: {
+        overview: content.overview || '',
+        morning_focus: content.morning_focus || '',
+        afternoon_energy: content.afternoon_energy || '',
+        evening_reflection: content.evening_reflection || '',
+        daily_question: content.daily_question || '',
+        practical_suggestions: content.practical_suggestions || [],
+        caution: content.caution || '',
+        affirmation: content.affirmation || ''
+      },
+      vedic_insights: content.vedic_insights || '',
+      western_insights: content.western_insights || '',
+      practical_guidance: content.practical_guidance || '',
+      vector,
+      dominant
+    };
+  } catch (error) {
+    console.error(`[GEMINI] Error generating content:`, error);
+    return null;
+  }
+}
+
+/**
+ * Generate a deterministic 8D vector based on date
+ * Uses a simple hash-based approach for consistency
+ */
+function generateDailyVector(date: string): number[] {
+  // Simple seeded random based on date string
+  const seed = date.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+  const vector: number[] = [];
+  for (let i = 0; i < 8; i++) {
+    // Generate pseudo-random values between 0.2 and 0.95
+    const hash = Math.sin(seed * (i + 1) * 9973) * 10000;
+    const value = 0.2 + (Math.abs(hash) % 7500) / 10000;
+    vector.push(Math.round(value * 1000) / 1000);
+  }
+
+  return vector;
+}
+
+/**
+ * Get voice configuration from database
+ */
+async function getVoiceConfig(
+  db: D1Database,
+  language: SupportedLanguage
+): Promise<{ name: string; tone: string; style: string }> {
+  try {
+    const result = await db.prepare(`
+      SELECT voice_name, tone, style FROM content_voices WHERE language_code = ?
+    `).bind(language).first();
+
+    if (result) {
+      return {
+        name: result.voice_name as string,
+        tone: result.tone as string || 'warm, insightful',
+        style: result.style as string || 'clear, poetic but grounded'
+      };
+    }
+  } catch (error) {
+    console.error(`[VOICE] Error fetching voice config:`, error);
+  }
+
+  // Default voice
+  return {
+    name: 'Pattern Guide',
+    tone: 'warm, insightful, poetic without being flowery',
+    style: 'grounded mysticism, invitational not prescriptive'
+  };
+}
+
+/**
+ * Build prompt for daily cosmic weather
+ */
+function buildDailyWeatherPrompt(
+  date: string,
+  vector: number[],
+  dominant: { dimension: string; symbol: string; name: string; value: number },
+  language: SupportedLanguage,
+  voice: { name: string; tone: string; style: string }
+): string {
+  const languageNames: Record<SupportedLanguage, string> = {
+    'en': 'English',
+    'pt-br': 'Brazilian Portuguese',
+    'pt-pt': 'European Portuguese',
+    'es-mx': 'Mexican Spanish',
+    'es-ar': 'Argentine Spanish',
+    'es-es': 'Castilian Spanish'
+  };
+
+  return `You are a content generator for "The Realm of Patterns," a platform that bridges ancient wisdom traditions with modern psychology through the FRC 16D framework.
+
+## Core Concepts
+
+### The 8 Mu Dimensions (Inner Octave)
+1. Phase (P) - Sun - Identity, Will, Direction
+2. Existence (E) - Saturn - Structure, Stability, Form
+3. Cognition (mu) - Mercury - Thought, Communication
+4. Value (V) - Venus - Beauty, Worth, Harmony
+5. Expansion (N) - Jupiter - Growth, Meaning
+6. Delta/Action (Delta) - Mars - Will, Drive
+7. Relation (R) - Moon - Connection, Emotion
+8. Field (Phi) - Neptune - Presence, Transcendence
+
+### Key Principles
+- Describe patterns, not predictions
+- Empower self-understanding, not dependency
+- Use "resonance" not "compatibility"
+- Speak of "tendencies" not "destinies"
+
+## Writing Voice: ${voice.name}
+Tone: ${voice.tone}
+Style: ${voice.style}
+
+## Task: Generate Daily Cosmic Weather
+
+**Date:** ${date}
+**Language:** ${languageNames[language]}
+**Current 8 Mu Vector:** [${vector.map(v => v.toFixed(3)).join(', ')}]
+**Dominant Dimension:** ${dominant.name} (${dominant.symbol}) at ${(dominant.value * 100).toFixed(1)}%
+
+## Generate JSON matching this structure:
+
+{
+  "theme": "2-4 word theme",
+  "overview": "2-3 paragraph overview (150-200 words)",
+  "dimension_highlights": [
+    {"dimension": "...", "value": 0.0, "guidance": "1-2 sentences"}
+  ],
+  "morning_focus": "2-3 sentences for morning energy",
+  "afternoon_energy": "2-3 sentences for afternoon activities",
+  "evening_reflection": "2-3 sentences for evening wind-down",
+  "daily_question": "One contemplative question for self-reflection",
+  "practical_suggestions": ["3-5 actionable items for the day"],
+  "caution": "What to watch for today (1-2 sentences)",
+  "affirmation": "Daily affirmation aligned with the dominant dimension",
+  "vedic_insights": "1-2 paragraphs on Vedic/Jyotish perspective (100-150 words)",
+  "western_insights": "1-2 paragraphs on Western astrological perspective (100-150 words)",
+  "practical_guidance": "Synthesis of both traditions into practical wisdom (100-150 words)"
+}
+
+If language is not English, translate all content naturally into ${languageNames[language]}.
+Return ONLY valid JSON, no markdown code blocks.`;
+}
+
+/**
+ * Call Gemini API
+ */
+async function callGeminiAPI(
+  apiKey: string,
+  prompt: string
+): Promise<any | null> {
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+
+  try {
+    const response = await fetch(`${url}?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 4096,
+          responseMimeType: 'application/json'
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error(`[GEMINI] API error ${response.status}:`, error);
+      return null;
+    }
+
+    const result = await response.json() as any;
+    return result;
+  } catch (error) {
+    console.error('[GEMINI] Fetch error:', error);
+    return null;
+  }
+}
+
+/**
+ * Parse Gemini API response
+ */
+function parseGeminiResponse(response: any): any {
+  try {
+    const text = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) {
+      console.error('[GEMINI] No text in response');
+      return {};
+    }
+
+    // Clean up potential markdown code blocks
+    let cleanText = text.trim();
+    if (cleanText.startsWith('```json')) {
+      cleanText = cleanText.slice(7);
+    }
+    if (cleanText.startsWith('```')) {
+      cleanText = cleanText.slice(3);
+    }
+    if (cleanText.endsWith('```')) {
+      cleanText = cleanText.slice(0, -3);
+    }
+
+    return JSON.parse(cleanText.trim());
+  } catch (error) {
+    console.error('[GEMINI] Parse error:', error);
+    return {};
+  }
+}
+
+/**
+ * Store cosmic weather content in D1
+ */
+async function storeCosmicWeatherContent(
+  db: D1Database,
+  date: string,
+  language: SupportedLanguage,
+  content: CosmicWeatherContent
+): Promise<void> {
+  const id = `${date}-${language}`;
+
+  await db.prepare(`
+    INSERT OR REPLACE INTO cosmic_weather_content (
+      id, date, language_code, title, summary,
+      detailed_content, vedic_insights, western_insights, practical_guidance,
+      created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).bind(
+    id,
+    date,
+    language,
+    content.title,
+    content.summary,
+    JSON.stringify(content.detailed_content),
+    content.vedic_insights,
+    content.western_insights,
+    content.practical_guidance,
+    new Date().toISOString()
+  ).run();
+}
+
+// ============================================
+// User Snapshot Functions
 // ============================================
 
 async function getUsersForUpdate(
@@ -212,11 +600,12 @@ async function checkThresholdAlerts(
   let triggered = 0;
 
   for (const alert of alerts) {
-    const metricValue = snapshot[alert.metric];
+    const metric = alert.metric as string;
+    const metricValue = snapshot[metric as keyof typeof snapshot] as number;
     const shouldTrigger = evaluateCondition(
       metricValue,
-      alert.condition,
-      alert.threshold_value
+      alert.condition as string,
+      alert.threshold_value as number
     );
 
     if (shouldTrigger) {
@@ -227,7 +616,7 @@ async function checkThresholdAlerts(
         UPDATE threshold_alerts
         SET last_triggered_at = ?, trigger_count = trigger_count + 1
         WHERE id = ?
-      `).bind(new Date().toISOString(), alert.id).run();
+      `).bind(new Date().toISOString(), alert.id as string).run();
     }
   }
 
@@ -370,6 +759,8 @@ function errorResponse(code: string, message: string, status: number): Response 
     users_updated: 0,
     snapshots_created: 0,
     notifications_queued: 0,
+    content_generated: 0,
+    languages_completed: [],
     errors: 0,
     error: { code, message }
   }), {
