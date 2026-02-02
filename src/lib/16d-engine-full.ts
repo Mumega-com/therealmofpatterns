@@ -5,7 +5,7 @@
  * Matches core/frc_16d_full_spec.py specification
  */
 
-import { Vector8D, Vector16D, BirthData } from '../types';
+import { Vector8D, Vector16D } from '../types';
 
 // ============================================
 // Constants
@@ -32,10 +32,6 @@ const OMEGA: number[] = [2.0, 2.0, 1.5, 1.5, 1.5, 1.0, 1.0, 0.7, 0.7, 0.7];
 
 // Dimension names
 const DIM_NAMES = ['P', 'E', 'μ', 'V', 'N', 'Δ', 'R', 'Φ'];
-const PLANET_NAMES = [
-  'Sun', 'Moon', 'Mercury', 'Venus', 'Mars',
-  'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'
-];
 const SIGNS = [
   'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'

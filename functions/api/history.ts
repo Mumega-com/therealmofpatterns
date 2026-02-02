@@ -114,7 +114,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     }
 
     // Extract requested metrics
-    const requestedMetrics = params.metrics.split(',').map(m => m.trim());
+    const requestedMetrics = (params.metrics ?? 'kappa_bar,RU,elder_progress').split(',').map(m => m.trim());
     const trends = requestedMetrics.map(metric => {
       const data = snapshots.map(s => ({
         date: (s.timestamp as string).split('T')[0],
@@ -137,7 +137,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       SELECT * FROM user_analytics WHERE user_email_hash = ?
     `).bind(params.email_hash).first();
 
-    const failureModeDistribution = analytics ? {
+    const failureModeDistribution: Record<string, number> = analytics ? {
       Collapse: analytics.collapse_count as number,
       Inversion: analytics.inversion_count as number,
       Dissociation: analytics.dissociation_count as number,

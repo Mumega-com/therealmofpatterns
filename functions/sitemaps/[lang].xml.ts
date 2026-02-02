@@ -97,7 +97,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }
 
   const lang = langParam;
-  const hreflangCode = SUPPORTED_LANGUAGES[lang];
 
   try {
     // Check cache first
@@ -135,7 +134,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     `).bind(lang, MAX_URLS).all<ContentRow>();
 
     // Generate XML sitemap
-    const xml = generateLanguageSitemapXml(results || [], lang, hreflangCode);
+    const xml = generateLanguageSitemapXml(results || [], lang);
 
     // Cache for 1 hour
     await env.CACHE.put(cacheKey, xml, { expirationTtl: 3600 });
@@ -180,8 +179,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
  */
 function generateLanguageSitemapXml(
   rows: ContentRow[],
-  lang: string,
-  hreflangCode: string
+  lang: string
 ): string {
   const today = new Date().toISOString().split('T')[0];
   const langPrefix = lang === 'en' ? '' : `/${lang}`;
@@ -198,7 +196,7 @@ function generateLanguageSitemapXml(
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-${generateHreflangAlternates('', lang)}
+${generateHreflangAlternates('')}
   </url>
 `;
 
@@ -229,14 +227,14 @@ ${generateHreflangAlternates('', lang)}
         const hreflangMap = JSON.parse(row.hreflang_map) as Record<string, string>;
         hreflangXml = generateHreflangFromMap(hreflangMap, row.slug, lang);
       } catch {
-        hreflangXml = generateHreflangAlternates(row.canonical_slug || extractPathFromSlug(row.slug), lang);
+        hreflangXml = generateHreflangAlternates(row.canonical_slug || extractPathFromSlug(row.slug));
       }
     } else if (row.canonical_slug) {
       // Use canonical_slug to generate alternates
-      hreflangXml = generateHreflangAlternates(row.canonical_slug, lang);
+      hreflangXml = generateHreflangAlternates(row.canonical_slug);
     } else {
       // Extract path portion and generate alternates
-      hreflangXml = generateHreflangAlternates(extractPathFromSlug(row.slug), lang);
+      hreflangXml = generateHreflangAlternates(extractPathFromSlug(row.slug));
     }
 
     xml += `  <url>
@@ -273,7 +271,7 @@ function extractPathFromSlug(slug: string): string {
  * Generate hreflang alternates for all supported languages
  * Uses the canonical_slug to build URLs for each language
  */
-function generateHreflangAlternates(canonicalPath: string, currentLang: string): string {
+function generateHreflangAlternates(canonicalPath: string): string {
   let links = '';
 
   // Localized slug patterns based on content path

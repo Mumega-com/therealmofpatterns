@@ -64,7 +64,7 @@ export const onRequest: PagesFunction<Env, never, { scheduledTime: number }> = a
 };
 
 // Export for Cloudflare Workers cron syntax
-export async function scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
+export async function scheduled(event: ScheduledEvent, env: Env, _ctx: ExecutionContext) {
   const startTime = Date.now();
   console.log('[CRON] Scheduled event triggered at:', new Date(event.scheduledTime).toISOString());
   console.log('[CRON] Cron pattern:', event.cron);

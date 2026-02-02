@@ -4,15 +4,13 @@
  */
 
 import { Env, WeatherResponse, ErrorResponse } from '../../src/types';
-import { approximateLongitudes, compute8D, getDominant, DIMENSION_METADATA } from '../../src/lib/16d-engine';
+import { approximateLongitudes, compute8D, getDominant } from '../../src/lib/16d-engine';
 
 // Zodiac signs for position interpretation
 const ZODIAC_SIGNS = [
   'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
 ];
-
-const PLANETS = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { env } = context;

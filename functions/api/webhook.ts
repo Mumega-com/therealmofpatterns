@@ -70,7 +70,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
 async function handleCheckoutCompleted(event: StripeEvent, env: Env): Promise<void> {
   const session = event.data.object;
-  const { order_id, product_id, birth_data: birthDataStr, customer_name } = session.metadata;
+  const { order_id, birth_data: birthDataStr } = session.metadata;
 
   // Update order status
   await env.DB.prepare(`
@@ -172,7 +172,7 @@ async function generateReport(
     });
 
     if (pdfResponse.ok) {
-      const result = await pdfResponse.json();
+      const result = (await pdfResponse.json()) as { pdf_url: string };
 
       // Fetch the generated PDF
       const pdfFile = await fetch(`http://5.161.216.149:5661${result.pdf_url}`)
@@ -425,6 +425,6 @@ async function sendReportEmail(
     throw new Error(`Resend error: ${errorText}`);
   }
 
-  const result = await emailResponse.json();
-  console.log(`Email sent via Resend: ${result.id}`);
+  const result = (await emailResponse.json()) as { id?: string };
+  console.log(`Email sent via Resend: ${result.id ?? 'unknown'}`);
 }

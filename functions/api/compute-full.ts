@@ -54,6 +54,26 @@ interface Full16DResponse {
   };
 }
 
+interface Backend16DResponse {
+  inner_8d: number[];
+  outer_8d: number[];
+  u_16: number[];
+  kappa_bar: number;
+  kappa_dims: number[];
+  RU: number;
+  W: number;
+  C: number;
+  dominant: {
+    index: number;
+    symbol: string;
+    value: number;
+    name: string;
+  };
+  failure_mode: string;
+  elder_progress: number;
+  timestamp: string;
+}
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
@@ -94,7 +114,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         throw new Error(`Backend returned ${backendResponse.status}`);
       }
 
-      const backendData = await backendResponse.json();
+      const backendData = (await backendResponse.json()) as Backend16DResponse;
 
       // Map backend response to our format
       profile = {

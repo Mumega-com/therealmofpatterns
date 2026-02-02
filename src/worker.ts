@@ -3,7 +3,7 @@
  * Serves static assets from R2 and handles API routes
  */
 
-import { Env, BirthData, PreviewResponse, ErrorResponse, HistoricalFigure, FigureMatch } from './types';
+import { Env, BirthData, PreviewResponse, ErrorResponse, HistoricalFigure, FigureMatch, StripeCheckoutSession } from './types';
 import { computeFromBirthData, getDominant, cosineResonance, getDimensionTeaser } from './lib/16d-engine';
 
 // Static file mapping
@@ -274,7 +274,7 @@ async function handleWebhook(request: Request, env: Env): Promise<Response> {
 
   // Handle checkout.session.completed
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.Checkout.Session;
+    const session = event.data.object as { customer_email?: string | null; metadata?: Record<string, string> };
     const { product_id, birth_data } = session.metadata || {};
 
     if (product_id && birth_data) {
@@ -430,7 +430,7 @@ async function findBestMatch(db: D1Database, userVector: number[]): Promise<Figu
   }
 }
 
-async function generateArt(env: Env, reportId: string, vector: number[]): Promise<void> {
+async function generateArt(env: Env, reportId: string, _vector: number[]): Promise<void> {
   const prompt = `cosmic mandala representing identity vector, sacred geometry,
     fractal patterns, divine light emanating from center,
     consciousness visualization, ethereal, mystical, 4k, highly detailed`;
@@ -478,7 +478,7 @@ class Stripe {
 
   checkout = {
     sessions: {
-      create: async (params: any) => {
+      create: async (params: any): Promise<StripeCheckoutSession> => {
         const body = new URLSearchParams();
         body.append('mode', params.mode);
         params.payment_method_types.forEach((t: string) => body.append('payment_method_types[]', t));
@@ -501,13 +501,13 @@ class Stripe {
           },
           body,
         });
-        return response.json();
+        return (await response.json()) as StripeCheckoutSession;
       },
     },
   };
 
   webhooks = {
-    constructEvent: (payload: string, signature: string, secret: string): Stripe.Event => {
+    constructEvent: (payload: string, signature: string, _secret: string): Stripe.Event => {
       // Simplified webhook verification
       const parts = signature.split(',');
       const timestamp = parts.find(p => p.startsWith('t='))?.split('=')[1];

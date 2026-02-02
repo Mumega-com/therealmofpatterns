@@ -122,13 +122,16 @@ https://therealmofpatterns.pages.dev
 
   // Convert to ArrayBuffer (in production, use actual PDF generation)
   const encoder = new TextEncoder();
-  return encoder.encode(pdfContent).buffer;
+  const bytes = encoder.encode(pdfContent);
+  const out = new Uint8Array(bytes.byteLength);
+  out.set(bytes);
+  return out.buffer;
 }
 
 async function generateInsights(
   env: Env,
   vector: number[],
-  matches: { name: string; resonance: number; quote: string }[]
+  _matches: { name: string; resonance: number; quote: string }[]
 ): Promise<string> {
   try {
     const prompt = `You are a cosmic identity guide. Based on this 8D identity vector: [${vector.map(v => v.toFixed(2)).join(', ')}],
@@ -138,7 +141,7 @@ async function generateInsights(
     The highest value indicates the dominant dimension. Write a 2-paragraph personalized insight about this person's
     cosmic signature and their potential for growth. Be specific and meaningful. Do not use generic language.`;
 
-    const result = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+    const result = await env.AI.run('@cf/meta/llama-3.1-8b-instruct' as any, {
       prompt,
       max_tokens: 500,
     });
