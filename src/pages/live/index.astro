@@ -526,8 +526,8 @@ const today = new Date().toLocaleDateString('en-US', {
   };
 
   function connect() {
-    // WebSocket URL - update to actual deployment URL
-    const wsUrl = `wss://cosmic-channel.therealmofpatterns.workers.dev/ws`;
+    // WebSocket URL - deployed Cosmic Channel worker
+    const wsUrl = `wss://cosmic-channel.weathered-scene-2272.workers.dev/ws`;
 
     try {
       ws = new WebSocket(wsUrl);

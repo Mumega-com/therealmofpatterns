@@ -2,30 +2,17 @@
 name = "cosmic-channel"
 main = "src/worker/cosmic-channel.ts"
 compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
 
 # Durable Objects for WebSocket state management
 [[durable_objects.bindings]]
 name = "COSMIC_CHANNEL"
 class_name = "CosmicChannelDO"
 
+# SQLite-backed Durable Objects (required for free tier)
 [[migrations]]
 tag = "v1"
-new_classes = ["CosmicChannelDO"]
-
-# KV for scene caching
-[[kv_namespaces]]
-binding = "SCENE_CACHE"
-id = "your-kv-namespace-id"  # Replace with actual KV namespace ID
-
-# Environment variables (secrets set via wrangler secret)
-# - GEMINI_API_KEY
-# - GEMINI_API_KEY_2
-# etc.
+new_sqlite_classes = ["CosmicChannelDO"]
 
 [vars]
 ENVIRONMENT = "production"
-
-# Routes
-[[routes]]
-pattern = "cosmic.therealmofpatterns.pages.dev/*"
-zone_name = "therealmofpatterns.pages.dev"
