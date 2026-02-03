@@ -1,0 +1,1002 @@
+---
+/**
+ * The Alchemical Theater - Daily Cosmic Opera
+ *
+ * A hermetic theater where each day reveals a new scene
+ * directed by River (The Oracle)
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  buildTheaterScene,
+  STAGE_THEATER_THEMES,
+  HERMETIC_SYMBOLS,
+  type Stage
+} from '../../lib/gemini-theater';
+
+// Get today's data
+const today = new Date();
+const dayOfWeek = today.getDay();
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const dayRulers = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+const planetSymbols = ['☉', '☽', '♂', '☿', '♃', '♀', '♄'];
+
+// Default stage and kappa (will be updated client-side from store)
+const defaultStage: Stage = 'citrinitas';
+const defaultKappa = 0.65;
+
+// Build the scene
+const scene = buildTheaterScene(today, defaultStage, defaultKappa);
+const stageTheme = STAGE_THEATER_THEMES[defaultStage];
+
+// Format date
+const dateStr = today.toLocaleDateString('en-US', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<BaseLayout title="The Alchemical Theater | The Realm of Patterns">
+  <div id="theater-container" class="theater-container" data-stage={defaultStage}>
+    <!-- Background atmosphere -->
+    <div class="theater-atmosphere">
+      <div class="stars"></div>
+      <div class="floating-symbols" id="floating-symbols"></div>
+    </div>
+
+    <!-- Proscenium Arch (Golden Frame) -->
+    <div class="proscenium">
+      <!-- Top ornament -->
+      <div class="arch-top">
+        <div class="arch-ornament left"></div>
+        <div class="arch-crown">
+          <span class="crown-symbol">⊛</span>
+          <span class="crown-text">THE ALCHEMICAL THEATER</span>
+          <span class="crown-symbol">⊛</span>
+        </div>
+        <div class="arch-ornament right"></div>
+      </div>
+
+      <!-- Stage frame -->
+      <div class="stage-frame">
+        <!-- Left curtain -->
+        <div class="curtain curtain-left" id="curtain-left">
+          <div class="curtain-folds"></div>
+          <div class="curtain-tassel"></div>
+        </div>
+
+        <!-- Right curtain -->
+        <div class="curtain curtain-right" id="curtain-right">
+          <div class="curtain-folds"></div>
+          <div class="curtain-tassel"></div>
+        </div>
+
+        <!-- The Stage -->
+        <div class="stage" id="stage">
+          <!-- Scene backdrop -->
+          <div class="scene-backdrop" id="scene-backdrop">
+            <!-- Loading state -->
+            <div class="scene-loading" id="scene-loading">
+              <div class="loading-mandala">
+                <svg viewBox="0 0 100 100" class="mandala-svg">
+                  <circle cx="50" cy="50" r="40" class="mandala-ring ring-1" />
+                  <circle cx="50" cy="50" r="30" class="mandala-ring ring-2" />
+                  <circle cx="50" cy="50" r="20" class="mandala-ring ring-3" />
+                  <text x="50" y="55" text-anchor="middle" class="loading-text">⚗️</text>
+                </svg>
+              </div>
+              <p class="loading-message">Preparing today's revelation...</p>
+            </div>
+
+            <!-- Generated scene image -->
+            <img
+              id="scene-image"
+              class="scene-image hidden"
+              alt="Today's alchemical scene"
+            />
+
+            <!-- Fallback scene (always visible until image loads) -->
+            <div class="fallback-scene" id="fallback-scene">
+              <div class="stage-glow"></div>
+              <div class="central-symbol" id="central-symbol">
+                {stageTheme.symbols[0] === 'skull' ? '💀' :
+                 stageTheme.symbols[0] === 'white rose' ? '🌹' :
+                 stageTheme.symbols[0] === 'sunrise' ? '🌅' :
+                 stageTheme.symbols[0] === "philosopher's stone" ? '💎' : '⚗️'}
+              </div>
+              <div class="archetype-text">{stageTheme.archetype}</div>
+            </div>
+          </div>
+
+          <!-- Scene info overlay -->
+          <div class="scene-info">
+            <div class="act-number">Act {scene.actNumber}</div>
+            <div class="scene-title">{scene.sceneTitle}</div>
+          </div>
+        </div>
+
+        <!-- Stage floor -->
+        <div class="stage-floor">
+          <div class="floor-pattern"></div>
+        </div>
+      </div>
+
+      <!-- Bottom ornament -->
+      <div class="arch-bottom">
+        <div class="arch-base"></div>
+      </div>
+    </div>
+
+    <!-- Orchestra Pit (Energy Indicators) -->
+    <div class="orchestra-pit">
+      <div class="pit-panel">
+        <div class="metric">
+          <span class="metric-symbol">{planetSymbols[dayOfWeek]}</span>
+          <span class="metric-label">{dayRulers[dayOfWeek]}'s Day</span>
+        </div>
+      </div>
+      <div class="pit-panel center">
+        <div class="metric kappa-display">
+          <span class="metric-value" id="kappa-value">{Math.round(defaultKappa * 100)}%</span>
+          <span class="metric-label">Resonance (κ)</span>
+        </div>
+      </div>
+      <div class="pit-panel">
+        <div class="metric">
+          <span class="metric-symbol stage-badge" data-stage={defaultStage} id="stage-badge">
+            {defaultStage === 'nigredo' ? '🌑' :
+             defaultStage === 'albedo' ? '🌕' :
+             defaultStage === 'citrinitas' ? '☀️' : '❤️‍🔥'}
+          </span>
+          <span class="metric-label" id="stage-label">{stageTheme.name}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- River's Narration -->
+    <div class="narration-scroll" id="narration-scroll">
+      <div class="scroll-ornament top">❧</div>
+      <div class="narrator-name">🌊 River speaks...</div>
+      <div class="narration-text" id="narration-text">
+        {scene.riverNarration.split('\n\n').map(para => (
+          <p>{para}</p>
+        ))}
+      </div>
+      <div class="scroll-ornament bottom">❧</div>
+    </div>
+
+    <!-- Date display -->
+    <div class="date-display">
+      <span class="date-text">{dateStr}</span>
+    </div>
+
+    <!-- Enter button (appears after curtains open) -->
+    <a href="/" class="enter-realm-btn hidden" id="enter-btn">
+      Enter The Realm →
+    </a>
+
+    <!-- Generate new scene button (for regeneration) -->
+    <button class="generate-btn" id="generate-btn" title="Generate new scene">
+      ⚗️ Generate Scene
+    </button>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ====== BASE STYLES ====== */
+  .theater-container {
+    position: relative;
+    min-height: 100vh;
+    background: #0a0a0f;
+    overflow: hidden;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: #e8e4dc;
+  }
+
+  /* ====== ATMOSPHERE ====== */
+  .theater-atmosphere {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+      radial-gradient(1px 1px at 40px 70px, rgba(255,215,0,0.8), transparent),
+      radial-gradient(1px 1px at 50px 160px, #fff, transparent),
+      radial-gradient(1px 1px at 90px 40px, rgba(255,215,0,0.6), transparent),
+      radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+      radial-gradient(1px 1px at 160px 120px, rgba(255,215,0,0.7), transparent);
+    background-size: 200px 200px;
+    animation: twinkle 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+
+  .floating-symbols {
+    position: absolute;
+    inset: 0;
+  }
+
+  .floating-symbols span {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.15;
+    animation: float-symbol 20s ease-in-out infinite;
+    color: #d4af37;
+  }
+
+  @keyframes float-symbol {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-20px) rotate(5deg); }
+    50% { transform: translateY(-10px) rotate(-5deg); }
+    75% { transform: translateY(-30px) rotate(3deg); }
+  }
+
+  /* ====== PROSCENIUM ARCH ====== */
+  .proscenium {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .arch-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0;
+  }
+
+  .arch-crown {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 2rem;
+    background: linear-gradient(135deg, #2a1810 0%, #1a0f08 100%);
+    border: 2px solid #d4af37;
+    border-radius: 100px 100px 0 0;
+    box-shadow:
+      0 0 20px rgba(212, 175, 55, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .crown-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #d4af37;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  }
+
+  .crown-symbol {
+    font-size: 1.5rem;
+    color: #d4af37;
+  }
+
+  .arch-ornament {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #d4af37, transparent);
+  }
+
+  /* ====== STAGE FRAME ====== */
+  .stage-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #0f0f1a;
+    border: 4px solid #d4af37;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow:
+      0 0 40px rgba(212, 175, 55, 0.2),
+      inset 0 0 100px rgba(0, 0, 0, 0.8);
+  }
+
+  /* ====== CURTAINS ====== */
+  .curtain {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 55%;
+    z-index: 20;
+    transition: transform 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .curtain-left {
+    left: 0;
+    background: linear-gradient(90deg,
+      #8b0000 0%,
+      #a52a2a 20%,
+      #8b0000 40%,
+      #6b0000 60%,
+      #8b0000 80%,
+      #a52a2a 100%
+    );
+    transform-origin: left center;
+  }
+
+  .curtain-right {
+    right: 0;
+    background: linear-gradient(270deg,
+      #8b0000 0%,
+      #a52a2a 20%,
+      #8b0000 40%,
+      #6b0000 60%,
+      #8b0000 80%,
+      #a52a2a 100%
+    );
+    transform-origin: right center;
+  }
+
+  .curtain-folds {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(0, 0, 0, 0.3) 2px,
+      transparent 4px,
+      rgba(255, 255, 255, 0.05) 20px,
+      transparent 22px
+    );
+  }
+
+  .curtain-tassel {
+    position: absolute;
+    bottom: 20%;
+    width: 30px;
+    height: 80px;
+    background: linear-gradient(180deg, #d4af37, #b8860b);
+    border-radius: 0 0 50% 50%;
+  }
+
+  .curtain-left .curtain-tassel {
+    right: 10px;
+  }
+
+  .curtain-right .curtain-tassel {
+    left: 10px;
+  }
+
+  /* Curtain open animation */
+  .curtains-open .curtain-left {
+    transform: translateX(-95%);
+  }
+
+  .curtains-open .curtain-right {
+    transform: translateX(95%);
+  }
+
+  /* ====== THE STAGE ====== */
+  .stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .scene-backdrop {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Loading state */
+  .scene-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .loading-mandala {
+    width: 120px;
+    height: 120px;
+  }
+
+  .mandala-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mandala-ring {
+    fill: none;
+    stroke: #d4af37;
+    stroke-width: 1;
+  }
+
+  .ring-1 { animation: spin 8s linear infinite; }
+  .ring-2 { animation: spin 6s linear infinite reverse; }
+  .ring-3 { animation: spin 4s linear infinite; }
+
+  @keyframes spin {
+    from { transform-origin: center; transform: rotate(0deg); }
+    to { transform-origin: center; transform: rotate(360deg); }
+  }
+
+  .loading-text {
+    font-size: 2rem;
+    fill: #d4af37;
+  }
+
+  .loading-message {
+    font-size: 1rem;
+    color: #a8a29e;
+    font-style: italic;
+  }
+
+  /* Scene image */
+  .scene-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .scene-image.visible {
+    opacity: 1;
+  }
+
+  .scene-image.hidden {
+    display: none;
+  }
+
+  /* Fallback scene */
+  .fallback-scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, var(--stage-glow, #1a1a2e) 0%, #0a0a0f 100%);
+  }
+
+  .stage-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--stage-glow, rgba(212, 175, 55, 0.2)) 0%, transparent 70%);
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+
+  .central-symbol {
+    font-size: 6rem;
+    z-index: 1;
+    animation: pulse-symbol 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.5));
+  }
+
+  @keyframes pulse-symbol {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .archetype-text {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: #a8a29e;
+    text-align: center;
+    max-width: 80%;
+    z-index: 1;
+  }
+
+  /* Scene info overlay */
+  .scene-info {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 30;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+
+  .act-number {
+    font-size: 0.875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #d4af37;
+  }
+
+  .scene-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+
+  /* ====== STAGE FLOOR ====== */
+  .stage-floor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(180deg, #1a0f08 0%, #2a1810 100%);
+    border-top: 2px solid #d4af37;
+  }
+
+  .floor-pattern {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 60px,
+      rgba(212, 175, 55, 0.1) 60px,
+      rgba(212, 175, 55, 0.1) 62px
+    );
+  }
+
+  /* ====== ORCHESTRA PIT ====== */
+  .orchestra-pit {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .pit-panel {
+    background: linear-gradient(135deg, #1a0f08 0%, #0f0a05 100%);
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .pit-panel.center {
+    min-width: 150px;
+  }
+
+  .metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .metric-symbol {
+    font-size: 1.5rem;
+    color: #d4af37;
+  }
+
+  .metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #d4af37;
+    font-family: 'Geist Mono', monospace;
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a8a29e;
+  }
+
+  .stage-badge {
+    font-size: 2rem;
+  }
+
+  /* ====== NARRATION SCROLL ====== */
+  .narration-scroll {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(26, 15, 8, 0.9) 0%, rgba(15, 10, 5, 0.9) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 4px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+  }
+
+  .narration-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .scroll-ornament {
+    font-size: 1.5rem;
+    color: #d4af37;
+    margin: 0.5rem 0;
+  }
+
+  .narrator-name {
+    font-size: 0.875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #6b9ac4;
+    margin-bottom: 1rem;
+  }
+
+  .narration-text {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #e8e4dc;
+  }
+
+  .narration-text p {
+    margin: 1rem 0;
+  }
+
+  /* ====== DATE DISPLAY ====== */
+  .date-display {
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .date-text {
+    font-size: 0.875rem;
+    letter-spacing: 0.15em;
+    color: #a8a29e;
+  }
+
+  /* ====== BUTTONS ====== */
+  .enter-realm-btn {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 3rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+    color: #0a0a0f;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border-radius: 4px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+  }
+
+  .enter-realm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+  }
+
+  .enter-realm-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .enter-realm-btn.hidden {
+    display: none;
+  }
+
+  .generate-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(26, 15, 8, 0.9);
+    color: #d4af37;
+    border: 1px solid #d4af37;
+    border-radius: 4px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 100;
+  }
+
+  .generate-btn:hover {
+    background: #d4af37;
+    color: #0a0a0f;
+  }
+
+  .generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ====== STAGE-SPECIFIC THEMES ====== */
+  [data-stage="nigredo"] {
+    --stage-glow: #1a1a2e;
+    --stage-accent: #4a5568;
+  }
+
+  [data-stage="albedo"] {
+    --stage-glow: #f0f4f8;
+    --stage-accent: #94a3b8;
+  }
+
+  [data-stage="citrinitas"] {
+    --stage-glow: #fef3c7;
+    --stage-accent: #d97706;
+  }
+
+  [data-stage="rubedo"] {
+    --stage-glow: #fecaca;
+    --stage-accent: #dc2626;
+  }
+
+  /* ====== RESPONSIVE ====== */
+  @media (max-width: 768px) {
+    .crown-text {
+      font-size: 0.875rem;
+      letter-spacing: 0.1em;
+    }
+
+    .orchestra-pit {
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .pit-panel {
+      min-width: 100px;
+      padding: 0.75rem 1rem;
+    }
+
+    .narration-scroll {
+      margin: 1rem;
+      padding: 1.5rem;
+    }
+
+    .central-symbol {
+      font-size: 4rem;
+    }
+
+    .archetype-text {
+      font-size: 1rem;
+    }
+
+    .generate-btn {
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  /* ====== HIDDEN UTILITY ====== */
+  .hidden {
+    display: none !important;
+  }
+</style>
+
+<script>
+  import { $forecast } from '../../stores/forecast';
+  import {
+    buildTheaterScene,
+    STAGE_THEATER_THEMES
+  } from '../../lib/gemini-theater';
+  import type { Stage } from '../../lib/gemini-theater';
+
+  // DOM Elements
+  const container = document.getElementById('theater-container');
+  const curtainLeft = document.getElementById('curtain-left');
+  const curtainRight = document.getElementById('curtain-right');
+  const sceneLoading = document.getElementById('scene-loading');
+  const sceneImage = document.getElementById('scene-image') as HTMLImageElement;
+  const fallbackScene = document.getElementById('fallback-scene');
+  const narrationScroll = document.getElementById('narration-scroll');
+  const narrationText = document.getElementById('narration-text');
+  const enterBtn = document.getElementById('enter-btn');
+  const generateBtn = document.getElementById('generate-btn');
+  const kappaValue = document.getElementById('kappa-value');
+  const stageBadge = document.getElementById('stage-badge');
+  const stageLabel = document.getElementById('stage-label');
+  const centralSymbol = document.getElementById('central-symbol');
+  const floatingSymbols = document.getElementById('floating-symbols');
+
+  // Create floating symbols
+  function createFloatingSymbols() {
+    const symbols = ['☉', '☽', '☿', '♀', '♂', '♃', '♄', '⚗️', '🜂', '🜄', '🜁', '🜃', '⊛'];
+    if (!floatingSymbols) return;
+
+    for (let i = 0; i < 15; i++) {
+      const span = document.createElement('span');
+      span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      span.style.left = `${Math.random() * 100}%`;
+      span.style.top = `${Math.random() * 100}%`;
+      span.style.animationDelay = `${Math.random() * 20}s`;
+      span.style.animationDuration = `${15 + Math.random() * 10}s`;
+      floatingSymbols.appendChild(span);
+    }
+  }
+
+  // Update UI based on forecast
+  function updateFromForecast() {
+    const forecast = $forecast.get();
+    const stage = forecast.stage as Stage;
+    const kappa = forecast.kappa;
+
+    // Update container stage
+    if (container) {
+      container.dataset.stage = stage;
+    }
+
+    // Update metrics display
+    if (kappaValue) {
+      kappaValue.textContent = `${Math.round(kappa * 100)}%`;
+    }
+
+    if (stageBadge && stageLabel) {
+      const stageEmojis: Record<Stage, string> = {
+        nigredo: '🌑',
+        albedo: '🌕',
+        citrinitas: '☀️',
+        rubedo: '❤️‍🔥'
+      };
+      stageBadge.textContent = stageEmojis[stage];
+      stageLabel.textContent = STAGE_THEATER_THEMES[stage].name;
+    }
+
+    // Update central symbol
+    if (centralSymbol) {
+      const symbolMap: Record<Stage, string> = {
+        nigredo: '💀',
+        albedo: '🌹',
+        citrinitas: '🌅',
+        rubedo: '💎'
+      };
+      centralSymbol.textContent = symbolMap[stage];
+    }
+
+    // Update narration
+    const today = new Date();
+    const scene = buildTheaterScene(today, stage, kappa);
+    if (narrationText) {
+      narrationText.innerHTML = scene.riverNarration
+        .split('\n\n')
+        .map(para => `<p>${para}</p>`)
+        .join('');
+    }
+  }
+
+  // Open curtains animation
+  function openCurtains() {
+    setTimeout(() => {
+      container?.classList.add('curtains-open');
+
+      // Show narration after curtains open
+      setTimeout(() => {
+        narrationScroll?.classList.add('visible');
+      }, 2000);
+
+      // Show enter button
+      setTimeout(() => {
+        enterBtn?.classList.remove('hidden');
+        enterBtn?.classList.add('visible');
+      }, 3000);
+    }, 1000);
+  }
+
+  // Generate scene with Gemini via server-side API
+  async function generateScene() {
+    if (!generateBtn) return;
+
+    generateBtn.disabled = true;
+    generateBtn.textContent = '⏳ Generating...';
+
+    const forecast = $forecast.get();
+    const stage = forecast.stage as Stage;
+    const kappa = forecast.kappa;
+    const today = new Date();
+    const dateStr = today.toISOString().split('T')[0];
+
+    // Check localStorage cache first
+    const cacheKey = `theater-scene-${dateStr}`;
+    const cached = localStorage.getItem(cacheKey);
+
+    if (cached) {
+      showImage(cached);
+      generateBtn.disabled = false;
+      generateBtn.textContent = '⚗️ Generate Scene';
+      return;
+    }
+
+    try {
+      // Call server-side API (keeps API keys secure)
+      const response = await fetch('/api/generate-scene', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          stage,
+          kappa,
+          date: dateStr
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`API error: ${response.status} - ${error}`);
+      }
+
+      const data = await response.json();
+      const imageData = data.imageData;
+
+      // Cache the result locally
+      localStorage.setItem(cacheKey, imageData);
+
+      showImage(imageData);
+    } catch (error) {
+      console.error('Failed to generate scene:', error);
+      // Show error state
+      if (generateBtn) {
+        generateBtn.textContent = '❌ Error - Retry';
+      }
+    } finally {
+      generateBtn.disabled = false;
+      if (generateBtn.textContent !== '❌ Error - Retry') {
+        generateBtn.textContent = '⚗️ Generate Scene';
+      }
+    }
+  }
+
+  function showImage(imageData: string) {
+    if (!sceneImage || !fallbackScene || !sceneLoading) return;
+
+    sceneImage.src = imageData;
+    sceneImage.classList.remove('hidden');
+    sceneLoading.classList.add('hidden');
+
+    sceneImage.onload = () => {
+      sceneImage.classList.add('visible');
+      fallbackScene.style.opacity = '0';
+    };
+  }
+
+  // Initialize
+  function init() {
+    createFloatingSymbols();
+    updateFromForecast();
+
+    // Subscribe to forecast changes
+    $forecast.subscribe(updateFromForecast);
+
+    // Open curtains on load
+    openCurtains();
+
+    // Generate button click
+    generateBtn?.addEventListener('click', generateScene);
+
+    // Check for cached scene
+    const today = new Date();
+    const cacheKey = `theater-scene-${today.toISOString().split('T')[0]}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      showImage(cached);
+    }
+  }
+
+  // Run on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
