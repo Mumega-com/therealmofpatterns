@@ -1,4 +1,5 @@
 # Cosmic Channel - Cloudflare Worker Configuration
+# Automated Alchemical Theater - runs like a mechanical clock
 name = "cosmic-channel"
 main = "src/worker/cosmic-channel.ts"
 compatibility_date = "2024-01-01"
@@ -13,6 +14,14 @@ class_name = "CosmicChannelDO"
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["CosmicChannelDO"]
+
+# KV namespace for scene storage (persistent across worker restarts)
+[[kv_namespaces]]
+binding = "SCENE_CACHE"
+id = "4f874a65c2334d718c8cace164e6fff2"
+
+# Note: Using Durable Object alarms instead of cron triggers
+# (Free tier limited to 5 cron triggers total across all workers)
 
 [vars]
 ENVIRONMENT = "production"
