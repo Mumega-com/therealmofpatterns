@@ -13,12 +13,6 @@ interface Env {
   GEMINI_API_KEY_3?: string;
   GEMINI_API_KEY_4?: string;
   GEMINI_API_KEY_5?: string;
-  GEMINI_API_KEY_6?: string;
-  GEMINI_API_KEY_7?: string;
-  GEMINI_API_KEY_8?: string;
-  GEMINI_API_KEY_9?: string;
-  GEMINI_API_KEY_10?: string;
-  SCENE_CACHE?: KVNamespace;
 }
 
 interface RequestBody {
@@ -28,7 +22,7 @@ interface RequestBody {
 }
 
 // Stage theater themes
-const STAGE_THEATER_THEMES = {
+const STAGE_THEATER_THEMES: Record<string, any> = {
   nigredo: {
     name: 'Nigredo',
     title: 'The Dark Night',
@@ -69,10 +63,10 @@ const STAGE_THEATER_THEMES = {
     archetype: 'The Lovers united as One',
     stageLight: '#fecaca'
   }
-} as const;
+};
 
 // Day themes based on planetary rulers
-const DAY_THEMES = {
+const DAY_THEMES: Record<number, any> = {
   0: { ruler: 'sun', theme: 'solar radiance', color: 'gold' },
   1: { ruler: 'moon', theme: 'lunar reflection', color: 'silver' },
   2: { ruler: 'mars', theme: 'martial courage', color: 'crimson' },
@@ -80,16 +74,16 @@ const DAY_THEMES = {
   4: { ruler: 'jupiter', theme: 'jovial expansion', color: 'royal blue' },
   5: { ruler: 'venus', theme: 'venusian harmony', color: 'rose' },
   6: { ruler: 'saturn', theme: 'saturnine depth', color: 'lead gray' }
-} as const;
+};
 
 function buildTheaterPrompt(
-  stage: keyof typeof STAGE_THEATER_THEMES,
+  stage: string,
   kappa: number,
   dayOfWeek: number,
   dayOfYear: number
 ): string {
-  const stageTheme = STAGE_THEATER_THEMES[stage];
-  const dayTheme = DAY_THEMES[dayOfWeek as keyof typeof DAY_THEMES];
+  const stageTheme = STAGE_THEATER_THEMES[stage] || STAGE_THEATER_THEMES.citrinitas;
+  const dayTheme = DAY_THEMES[dayOfWeek] || DAY_THEMES[0];
 
   const intensity = kappa > 0.8 ? 'blazing with powerful energy' :
                     kappa > 0.6 ? 'glowing with steady light' :
@@ -132,15 +126,10 @@ function getApiKeys(env: Env): string[] {
     env.GEMINI_API_KEY_3,
     env.GEMINI_API_KEY_4,
     env.GEMINI_API_KEY_5,
-    env.GEMINI_API_KEY_6,
-    env.GEMINI_API_KEY_7,
-    env.GEMINI_API_KEY_8,
-    env.GEMINI_API_KEY_9,
-    env.GEMINI_API_KEY_10,
   ].filter((key): key is string => Boolean(key));
 }
 
-export const onRequestPost: PagesFunction<Env> = async (context) => {
+export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
   const { request, env } = context;
 
   // CORS headers
@@ -163,18 +152,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
-    // Check cache first
-    const cacheKey = `theater-scene-${date}`;
-    if (env.SCENE_CACHE) {
-      const cached = await env.SCENE_CACHE.get(cacheKey);
-      if (cached) {
-        return new Response(JSON.stringify({ imageData: cached, cached: true }), {
-          status: 200,
-          headers,
-        });
-      }
-    }
-
     // Get API keys and select one (round-robin based on day)
     const apiKeys = getApiKeys(env);
     if (apiKeys.length === 0) {
@@ -185,7 +162,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     const dateObj = new Date(date);
-    const dayOfYear = Math.floor((dateObj.getTime() - new Date(dateObj.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+    const startOfYear = new Date(dateObj.getFullYear(), 0, 0);
+    const dayOfYear = Math.floor((dateObj.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
     const keyIndex = dayOfYear % apiKeys.length;
     const apiKey = apiKeys[keyIndex];
 
@@ -238,13 +216,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const imageData = `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
 
-    // Cache the result (24 hours)
-    if (env.SCENE_CACHE) {
-      await env.SCENE_CACHE.put(cacheKey, imageData, {
-        expirationTtl: 86400, // 24 hours
-      });
-    }
-
     return new Response(JSON.stringify({ imageData, cached: false }), {
       status: 200,
       headers,
@@ -257,10 +228,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       headers,
     });
   }
-};
+}
 
 // Handle CORS preflight
-export const onRequestOptions: PagesFunction = async () => {
+export async function onRequestOptions(): Promise<Response> {
   return new Response(null, {
     status: 204,
     headers: {
@@ -269,4 +240,4 @@ export const onRequestOptions: PagesFunction = async () => {
       'Access-Control-Allow-Headers': 'Content-Type',
     },
   });
-};
+}
