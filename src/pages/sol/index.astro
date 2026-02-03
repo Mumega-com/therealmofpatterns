@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Today's Forecast | Sol" description="Your friendly daily guide to navigating energy and focus">
+  <div class="sol-page">
+    <!-- Header -->
+    <header class="sol-header">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-sol-h1 text-sol-text">Hey there! 👋</h1>
+          <p class="text-sol-body text-sol-muted mt-1" id="greeting"></p>
+        </div>
+        <a href="/sol/checkin" class="sol-checkin-btn">
+          <span class="text-xl">📝</span>
+          <span>Quick check-in</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="sol-main">
+      <div class="sol-grid">
+        <!-- Forecast -->
+        <section id="forecast-section">
+          <div id="sol-forecast"></div>
+        </section>
+
+        <!-- Windows -->
+        <section id="windows-section">
+          <div id="sol-windows"></div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="sol-footer">
+      <p class="text-sol-caption text-sol-muted text-center">
+        Made with 💚 to help you have better days
+      </p>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .sol-page {
+    min-height: 100vh;
+    padding: 1.5rem;
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  .sol-header {
+    margin-bottom: 2rem;
+  }
+
+  .sol-checkin-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--sol-accent);
+    color: white;
+    border-radius: 0.75rem;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+
+  .sol-checkin-btn:hover {
+    opacity: 0.9;
+  }
+
+  .sol-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .sol-page {
+      padding: 2rem;
+    }
+
+    .sol-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .sol-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--sol-border);
+  }
+</style>
+
+<script>
+  import { createElement } from 'react';
+  import { createRoot } from 'react-dom/client';
+  import { SolForecast } from '../../components/sol/SolForecast';
+  import { SolWindows } from '../../components/sol/SolWindows';
+  import { setMode } from '../../stores';
+
+  // Set mode to Sol
+  setMode('sol');
+
+  // Set greeting based on time
+  const greetingEl = document.getElementById('greeting');
+  if (greetingEl) {
+    const hour = new Date().getHours();
+    let greeting = "Here's how your day is looking.";
+    if (hour < 12) greeting = "Good morning! Here's your forecast for today.";
+    else if (hour < 17) greeting = "Good afternoon! Here's how your day is going.";
+    else greeting = "Good evening! Here's a snapshot of your day.";
+    greetingEl.textContent = greeting;
+  }
+
+  // Mount React components
+  document.addEventListener('DOMContentLoaded', () => {
+    const forecastEl = document.getElementById('sol-forecast');
+    if (forecastEl) {
+      createRoot(forecastEl).render(createElement(SolForecast));
+    }
+
+    const windowsEl = document.getElementById('sol-windows');
+    if (windowsEl) {
+      createRoot(windowsEl).render(createElement(SolWindows));
+    }
+  });
+</script>

@@ -197,6 +197,9 @@ export interface Env {
 
   // Email service
   RESEND_API_KEY?: string;
+
+  // Pro subscription
+  STRIPE_PRO_PRICE_ID?: string;
 }
 
 // ============================================

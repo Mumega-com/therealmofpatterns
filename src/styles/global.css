@@ -1,0 +1,500 @@
+/* =====================
+   FONTS (must come first)
+   ===================== */
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================
+   CSS CUSTOM PROPERTIES
+   ===================== */
+:root {
+  /* Kasra Mode */
+  --kasra-bg: #0a0a0a;
+  --kasra-surface: #141414;
+  --kasra-border: #2a2a2a;
+  --kasra-text: #e0e0e0;
+  --kasra-muted: #888888;
+  --kasra-accent: #00ff88;
+  --kasra-warning: #ffaa00;
+  --kasra-critical: #ff4444;
+  --font-kasra: 'Geist Mono', 'SF Mono', ui-monospace, monospace;
+
+  /* River Mode - Stage-aware (default: citrinitas) */
+  --river-bg: #1a1812;
+  --river-surface: rgba(255, 255, 255, 0.05);
+  --river-border: rgba(255, 255, 255, 0.1);
+  --river-text: #f0e8d8;
+  --river-muted: rgba(240, 232, 216, 0.6);
+  --river-accent: #d4a854;
+  --river-warning: #ffaa00;
+  --font-river: 'Cormorant Garamond', Georgia, serif;
+
+  /* Sol Mode */
+  --sol-bg: #faf8f5;
+  --sol-surface: #ffffff;
+  --sol-border: #e8e4de;
+  --sol-text: #2a2520;
+  --sol-muted: #8a8580;
+  --sol-accent: #d4a373;
+  --sol-positive: #4ade80;
+  --font-sol: 'Inter', 'SF Pro', system-ui, sans-serif;
+}
+
+/* River stage-specific variables */
+[data-stage="nigredo"] {
+  --river-bg: #0a0a12;
+  --river-accent: #8888aa;
+  --river-text: #c0c0d0;
+}
+
+[data-stage="albedo"] {
+  --river-bg: #1a1a24;
+  --river-accent: #d0d0e0;
+  --river-text: #e8e8f0;
+}
+
+[data-stage="citrinitas"] {
+  --river-bg: #1a1812;
+  --river-accent: #d4a854;
+  --river-text: #f0e8d8;
+}
+
+[data-stage="rubedo"] {
+  --river-bg: #1a1214;
+  --river-accent: #c45050;
+  --river-text: #f0d8d8;
+}
+
+/* Sol dark mode */
+@media (prefers-color-scheme: dark) {
+  [data-mode="sol"][data-theme="system"],
+  [data-mode="sol"].dark {
+    --sol-bg: #1a1815;
+    --sol-surface: #252220;
+    --sol-border: #3a3530;
+    --sol-text: #f5f0ea;
+    --sol-muted: #a09890;
+  }
+}
+
+/* =====================
+   BASE STYLES
+   ===================== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+    transition: background-color 300ms ease-out, color 300ms ease-out;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* =====================
+   KASRA MODE
+   The Architect - Brutalist, data-focused
+   ===================== */
+[data-mode="kasra"] {
+  @apply bg-kasra-bg text-kasra-text;
+  font-family: 'Geist Mono', 'SF Mono', ui-monospace, monospace;
+}
+
+[data-mode="kasra"] h1,
+[data-mode="kasra"] h2,
+[data-mode="kasra"] h3 {
+  @apply font-kasra tracking-tight;
+}
+
+[data-mode="kasra"] .card {
+  @apply bg-kasra-surface border border-kasra-border rounded-kasra;
+}
+
+[data-mode="kasra"] .accent {
+  @apply text-kasra-accent;
+}
+
+[data-mode="kasra"] .gauge {
+  @apply h-2 bg-kasra-border rounded-none;
+}
+
+[data-mode="kasra"] .gauge-fill {
+  @apply h-full bg-kasra-accent transition-none;
+}
+
+/* Kasra typography classes */
+[data-mode="kasra"] .text-kasra-h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+[data-mode="kasra"] .text-kasra-h2 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+[data-mode="kasra"] .text-kasra-data {
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-mode="kasra"] .text-kasra-body {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+[data-mode="kasra"] .text-kasra-caption {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+/* =====================
+   RIVER MODE
+   The Oracle - Poetic, archetypal
+   ===================== */
+[data-mode="river"] {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* River stages - default to Citrinitas */
+[data-mode="river"] {
+  @apply bg-river-citrinitas-bg text-river-citrinitas-text;
+}
+
+[data-mode="river"][data-stage="nigredo"] {
+  @apply bg-river-nigredo-bg text-river-nigredo-text;
+}
+
+[data-mode="river"][data-stage="albedo"] {
+  @apply bg-river-albedo-bg text-river-albedo-text;
+}
+
+[data-mode="river"][data-stage="citrinitas"] {
+  @apply bg-river-citrinitas-bg text-river-citrinitas-text;
+}
+
+[data-mode="river"][data-stage="rubedo"] {
+  @apply bg-river-rubedo-bg text-river-rubedo-text;
+}
+
+[data-mode="river"] h1,
+[data-mode="river"] h2,
+[data-mode="river"] h3 {
+  @apply font-river;
+}
+
+[data-mode="river"] .card {
+  @apply rounded-river shadow-lg;
+  background: linear-gradient(180deg, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
+}
+
+[data-mode="river"] .mandala {
+  @apply animate-breathe;
+}
+
+[data-mode="river"] .prose {
+  @apply text-river-body leading-relaxed;
+}
+
+[data-mode="river"] .quote {
+  @apply text-river-quote italic;
+}
+
+/* River typography classes */
+[data-mode="river"] .river-h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+[data-mode="river"] .river-h2 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  font-weight: 400;
+}
+
+[data-mode="river"] .river-body {
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+[data-mode="river"] .river-caption {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* River card styling */
+[data-mode="river"] .river-card {
+  background: var(--river-surface);
+  border: 1px solid var(--river-border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+[data-mode="river"] .river-card-title {
+  font-size: 1.25rem;
+  color: var(--river-accent);
+  margin-bottom: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+/* River quote */
+[data-mode="river"] .river-quote {
+  border-left: 2px solid var(--river-accent);
+  padding-left: 1rem;
+  font-style: italic;
+}
+
+[data-mode="river"] .river-quote-text {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--river-text);
+}
+
+[data-mode="river"] .river-quote-source {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--river-muted);
+}
+
+/* River insight */
+[data-mode="river"] .river-insight {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--river-surface);
+  border-radius: 0.5rem;
+}
+
+[data-mode="river"] .river-insight-symbol {
+  font-size: 1.5rem;
+}
+
+[data-mode="river"] .river-insight-title {
+  font-size: 1rem;
+  color: var(--river-accent);
+  margin-bottom: 0.25rem;
+}
+
+[data-mode="river"] .river-insight-body {
+  font-size: 0.9375rem;
+  color: var(--river-muted);
+}
+
+/* River divider */
+[data-mode="river"] .river-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+[data-mode="river"] .river-divider-line {
+  flex: 1;
+  height: 1px;
+  background: var(--river-border);
+}
+
+[data-mode="river"] .river-divider-symbol {
+  color: var(--river-accent);
+  opacity: 0.6;
+}
+
+/* Stage glyph */
+[data-mode="river"] .stage-glyph {
+  text-align: center;
+}
+
+[data-mode="river"] .stage-glyph-symbol {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--river-accent);
+}
+
+[data-mode="river"] .stage-glyph-label {
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--river-muted);
+}
+
+/* =====================
+   SOL MODE
+   The Friend - Warm, accessible
+   ===================== */
+[data-mode="sol"] {
+  @apply bg-sol-bg text-sol-text;
+  font-family: 'Inter', 'SF Pro', system-ui, sans-serif;
+}
+
+[data-mode="sol"] h1,
+[data-mode="sol"] h2,
+[data-mode="sol"] h3 {
+  @apply font-sol;
+}
+
+[data-mode="sol"] .card {
+  @apply bg-sol-surface border border-sol-border rounded-sol shadow-sm;
+}
+
+[data-mode="sol"] .accent {
+  @apply text-sol-accent;
+}
+
+[data-mode="sol"] .positive {
+  @apply text-sol-positive;
+}
+
+[data-mode="sol"] .notice {
+  @apply bg-sol-accent/10 border border-sol-accent/30 rounded-sol p-4;
+}
+
+/* Sol typography classes */
+[data-mode="sol"] .text-sol-h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+[data-mode="sol"] .text-sol-h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+[data-mode="sol"] .text-sol-data {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+[data-mode="sol"] .text-sol-body {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+[data-mode="sol"] .text-sol-caption {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Sol dark mode */
+@media (prefers-color-scheme: dark) {
+  [data-mode="sol"][data-theme="system"] {
+    @apply bg-sol-dark-bg text-sol-dark-text;
+  }
+
+  [data-mode="sol"][data-theme="system"] .card {
+    @apply bg-sol-dark-surface border-sol-dark-border;
+  }
+}
+
+/* =====================
+   SHARED COMPONENTS
+   ===================== */
+@layer components {
+  /* Mode toggle */
+  .mode-toggle {
+    @apply flex items-center gap-1 p-1 rounded-lg;
+  }
+
+  .mode-toggle-btn {
+    @apply px-3 py-1.5 rounded-md text-sm font-medium transition-all;
+  }
+
+  .mode-toggle-btn[data-active="true"] {
+    @apply bg-white/10;
+  }
+
+  [data-mode="kasra"] .mode-toggle {
+    @apply bg-kasra-surface border border-kasra-border;
+  }
+
+  [data-mode="river"] .mode-toggle {
+    @apply bg-white/5 backdrop-blur-sm;
+  }
+
+  [data-mode="sol"] .mode-toggle {
+    @apply bg-sol-border;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply px-4 py-2 font-medium transition-all;
+  }
+
+  [data-mode="kasra"] .btn-primary {
+    @apply bg-kasra-accent text-kasra-bg rounded-kasra hover:brightness-110;
+  }
+
+  [data-mode="river"] .btn-primary {
+    @apply bg-white/20 backdrop-blur-sm rounded-river hover:bg-white/30;
+  }
+
+  [data-mode="sol"] .btn-primary {
+    @apply bg-sol-accent text-white rounded-sol hover:brightness-105;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full px-3 py-2 transition-all;
+  }
+
+  [data-mode="kasra"] .input {
+    @apply bg-kasra-surface border border-kasra-border text-kasra-text rounded-kasra focus:border-kasra-accent focus:outline-none;
+  }
+
+  [data-mode="river"] .input {
+    @apply bg-white/5 border border-white/20 rounded-river focus:border-white/40 focus:outline-none;
+  }
+
+  [data-mode="sol"] .input {
+    @apply bg-sol-surface border border-sol-border text-sol-text rounded-sol focus:border-sol-accent focus:outline-none;
+  }
+}
+
+/* =====================
+   UTILITIES
+   ===================== */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-nigredo {
+    background: linear-gradient(180deg, #0a0a12 0%, #1a1a24 100%);
+  }
+
+  .gradient-albedo {
+    background: linear-gradient(180deg, #1a1a24 0%, #2a2a3a 100%);
+  }
+
+  .gradient-citrinitas {
+    background: linear-gradient(180deg, #1a1812 0%, #2a2418 100%);
+  }
+
+  .gradient-rubedo {
+    background: linear-gradient(180deg, #1a1214 0%, #2a1a1c 100%);
+  }
+}

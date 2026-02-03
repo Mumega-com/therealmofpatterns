@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Check-in | Kasra Mode" description="Daily coherence assessment and pattern field analysis">
+  <div class="kasra-checkin-page">
+    <!-- Header -->
+    <header class="kasra-header">
+      <a href="/kasra" class="text-kasra-caption text-kasra-muted hover:text-kasra-text uppercase tracking-wider">
+        ← Back to Dashboard
+      </a>
+      <h1 class="text-kasra-h1 text-kasra-text uppercase tracking-wider mt-4">
+        DAILY CHECK-IN
+      </h1>
+      <p class="text-kasra-body text-kasra-muted mt-2">
+        Assess your current coherence state through a series of calibration questions.
+      </p>
+    </header>
+
+    <!-- Check-in Component -->
+    <main class="kasra-main">
+      <div id="checkin-container" class="max-w-xl mx-auto"></div>
+    </main>
+
+    <!-- Info Footer -->
+    <footer class="kasra-info">
+      <div class="max-w-xl mx-auto">
+        <h3 class="text-kasra-caption text-kasra-muted uppercase tracking-wider mb-2">
+          About Check-ins
+        </h3>
+        <p class="text-kasra-body text-kasra-muted">
+          Regular check-ins help calibrate your personal κ coefficient and detect
+          potential failure modes before they manifest fully. For best results,
+          complete a check-in at the same time each day.
+        </p>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .kasra-checkin-page {
+    min-height: 100vh;
+    padding: 1.5rem;
+    background: var(--kasra-bg);
+    font-family: var(--font-kasra);
+  }
+
+  .kasra-header {
+    max-width: 36rem;
+    margin: 0 auto 2rem;
+  }
+
+  .kasra-main {
+    margin-bottom: 3rem;
+  }
+
+  .kasra-info {
+    padding-top: 2rem;
+    border-top: 1px solid var(--kasra-border);
+  }
+
+  @media (min-width: 768px) {
+    .kasra-checkin-page {
+      padding: 2rem 3rem;
+    }
+  }
+</style>
+
+<script>
+  import { createElement } from 'react';
+  import { createRoot } from 'react-dom/client';
+  import { KasraCheckin } from '../../components/kasra/KasraCheckin';
+  import { setMode } from '../../stores';
+
+  // Set mode to Kasra
+  setMode('kasra');
+
+  // Mount React component
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('checkin-container');
+    if (container) {
+      createRoot(container).render(
+        createElement(KasraCheckin, {
+          onComplete: (results) => {
+            console.log('Check-in complete:', results);
+            // Could store results, send to API, etc.
+          }
+        })
+      );
+    }
+  });
+</script>

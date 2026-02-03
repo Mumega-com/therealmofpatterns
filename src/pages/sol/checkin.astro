@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Quick Check-in | Sol" description="A quick check-in to see how you're doing">
+  <div class="sol-checkin-page">
+    <!-- Header -->
+    <header class="sol-header">
+      <a href="/sol" class="text-sol-caption text-sol-muted hover:text-sol-accent transition-colors">
+        ← Back to dashboard
+      </a>
+      <div class="mt-6 text-center">
+        <span class="text-4xl mb-3 block">📝</span>
+        <h1 class="text-sol-h1 text-sol-text">Quick Check-in</h1>
+        <p class="text-sol-body text-sol-muted mt-2 max-w-md mx-auto">
+          Just a few quick questions to see how you're doing.
+          It takes less than a minute!
+        </p>
+      </div>
+    </header>
+
+    <!-- Check-in Component -->
+    <main class="sol-main">
+      <div id="sol-checkin" class="max-w-md mx-auto"></div>
+    </main>
+
+    <!-- Info Footer -->
+    <footer class="sol-footer">
+      <div class="max-w-md mx-auto text-center">
+        <p class="text-sol-caption text-sol-muted">
+          💡 Tip: Regular check-ins help you notice patterns in how you feel
+          throughout the day. Try checking in at the same time each day!
+        </p>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .sol-checkin-page {
+    min-height: 100vh;
+    padding: 1.5rem;
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  .sol-header {
+    margin-bottom: 2rem;
+  }
+
+  .sol-main {
+    margin-bottom: 3rem;
+  }
+
+  .sol-footer {
+    padding-top: 2rem;
+    border-top: 1px solid var(--sol-border);
+  }
+
+  @media (min-width: 640px) {
+    .sol-checkin-page {
+      padding: 2rem;
+    }
+  }
+</style>
+
+<script>
+  import { createElement } from 'react';
+  import { createRoot } from 'react-dom/client';
+  import { SolCheckin } from '../../components/sol/SolCheckin';
+  import { setMode } from '../../stores';
+
+  // Set mode to Sol
+  setMode('sol');
+
+  // Mount React component
+  document.addEventListener('DOMContentLoaded', () => {
+    const checkinEl = document.getElementById('sol-checkin');
+    if (checkinEl) {
+      createRoot(checkinEl).render(
+        createElement(SolCheckin, {
+          onComplete: (kappa) => {
+            console.log('Check-in complete, kappa:', kappa);
+          }
+        })
+      );
+    }
+  });
+</script>

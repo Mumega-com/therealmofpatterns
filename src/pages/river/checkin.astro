@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Daily Reflection | River Mode" description="A moment of contemplation to know where you stand">
+  <div class="river-checkin-page">
+    <!-- Header -->
+    <header class="river-header">
+      <a href="/river" class="river-caption opacity-50 hover:opacity-100 transition-opacity">
+        ← Return to Reading
+      </a>
+      <div id="stage-glyph" class="my-6"></div>
+      <h1 class="river-h1">Daily Reflection</h1>
+      <p class="river-body italic opacity-70 mt-2 max-w-md mx-auto">
+        Take a moment to turn inward. These questions illuminate the current state
+        of your inner landscape.
+      </p>
+    </header>
+
+    <!-- Check-in Component -->
+    <main class="river-main">
+      <div id="river-checkin" class="max-w-lg mx-auto"></div>
+    </main>
+
+    <!-- Decorative Footer -->
+    <footer class="river-footer">
+      <div class="river-divider">
+        <span class="river-divider-line"></span>
+        <span class="river-divider-symbol">✧</span>
+        <span class="river-divider-line"></span>
+      </div>
+      <p class="river-caption text-center opacity-40 mt-4">
+        "Know thyself" — inscribed at the Temple of Delphi
+      </p>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .river-checkin-page {
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .river-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .river-main {
+    margin-bottom: 4rem;
+  }
+
+  .river-footer {
+    max-width: 20rem;
+    margin: 0 auto;
+  }
+
+  .river-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .river-divider-line {
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.2;
+  }
+
+  .river-divider-symbol {
+    opacity: 0.4;
+  }
+</style>
+
+<script>
+  import { createElement } from 'react';
+  import { createRoot } from 'react-dom/client';
+  import { RiverCheckin } from '../../components/river/RiverCheckin';
+  import { StageGlyph } from '../../components/river/RiverCard';
+  import { setMode } from '../../stores';
+
+  // Set mode to River
+  setMode('river');
+
+  // Mount React components
+  document.addEventListener('DOMContentLoaded', () => {
+    const glyphEl = document.getElementById('stage-glyph');
+    if (glyphEl) {
+      createRoot(glyphEl).render(createElement(StageGlyph));
+    }
+
+    const checkinEl = document.getElementById('river-checkin');
+    if (checkinEl) {
+      createRoot(checkinEl).render(
+        createElement(RiverCheckin, {
+          onComplete: (kappa) => {
+            console.log('Reflection complete, kappa:', kappa);
+          }
+        })
+      );
+    }
+  });
+</script>

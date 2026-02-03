@@ -162,6 +162,111 @@
             color: #666;
         }
 
+        /* How It Works */
+        .how-it-works {
+            padding: 5rem 2rem;
+            background: linear-gradient(180deg, var(--deep-space) 0%, var(--void-blue) 100%);
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--stardust);
+        }
+
+        .how-it-works .section-subtitle {
+            text-align: center;
+            color: rgba(232, 232, 240, 0.6);
+            max-width: 500px;
+            margin: 0 auto 3rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(45, 27, 78, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--stellar-gold);
+            color: var(--deep-space);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 auto 1rem;
+        }
+
+        .step-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--stardust);
+        }
+
+        .step-card p {
+            font-size: 0.9rem;
+            color: rgba(232, 232, 240, 0.6);
+            line-height: 1.5;
+        }
+
+        .how-cta {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .how-cta a {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--stellar-gold);
+            color: var(--deep-space);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .how-cta a:hover {
+            background: #e8c547;
+        }
+
+        @media (max-width: 768px) {
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* Social Proof */
         .social-proof {
             padding: 4rem 2rem;
@@ -855,7 +960,12 @@
 <body>
     <nav>
         <div class="nav-logo">The Realm of Patterns</div>
-        <button class="nav-cta" onclick="openModal('preview')">Free Reading</button>
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <a href="/checkin" style="color: var(--stardust); text-decoration: none; font-size: 0.9rem; opacity: 0.8; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Check-in</a>
+            <a href="/windows" style="color: var(--stardust); text-decoration: none; font-size: 0.9rem; opacity: 0.8; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Optimal Windows</a>
+            <a href="/failure-mode" style="color: var(--stardust); text-decoration: none; font-size: 0.9rem; opacity: 0.8; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Failure Monitor</a>
+            <button class="nav-cta" onclick="openModal('preview')">Free Reading</button>
+        </div>
     </nav>
 
     <section class="hero">
@@ -874,6 +984,43 @@
             </button>
         </div>
         <p class="hero-note">No credit card required for free reading</p>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <p class="section-subtitle">A 2-minute daily ritual that gets smarter the more you use it</p>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-icon">📋</div>
+                <h3>Quick Check-in</h3>
+                <p>Answer 3 questions about your mood, energy, and focus. Takes under 2 minutes.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-icon">🔮</div>
+                <h3>Get Your Forecast</h3>
+                <p>See your coherence level, risk alerts, and what activities will work best today.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-icon">⚠️</div>
+                <h3>Early Warnings</h3>
+                <p>Failure modes detected before they hit. Know when you're heading toward burnout or self-sabotage.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <div class="step-icon">📅</div>
+                <h3>Optimal Windows</h3>
+                <p>Find your best days for launches, hard conversations, or creative work. Timing matters.</p>
+            </div>
+        </div>
+
+        <div class="how-cta">
+            <a href="/onboarding">Start Your Free Check-in →</a>
+        </div>
     </section>
 
     <section class="social-proof">

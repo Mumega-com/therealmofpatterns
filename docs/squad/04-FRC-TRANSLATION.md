@@ -271,9 +271,13 @@ The following FRC concepts are now implemented:
 
 | Engine | File | Status |
 |--------|------|--------|
+| **Diamond Engine** | `src/lib/diamond-engine.ts` | ✅ Complete (Canonical) |
+| Diamond Visualization | `src/components/diamond-visualization.tsx` | ✅ Complete |
 | ARL (Adaptive Resonance Learning) | `src/lib/arl-engine.ts` | ✅ Complete |
 | Shadow Detector | `src/lib/shadow-detector.ts` | ✅ Complete |
-| 16D Vector Computation | `src/lib/16d-engine-full.ts` | ✅ Complete |
+| 16D Vector Computation | `src/lib/16d-engine-full.ts` | ✅ Complete (Legacy) |
+
+**Canonical Reference:** See `docs/squad/34-DIAMOND-ONTOLOGY.md` for the unified 8D octahedral framework.
 
 See `docs/squad/08-ARL-ENGINE.md` and `docs/squad/09-SHADOW-DETECTOR.md` for API details.
 

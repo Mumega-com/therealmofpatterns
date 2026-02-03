@@ -1,0 +1,261 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  // Generate pages for the next 30 days
+  const dates = [];
+  const today = new Date();
+
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(today);
+    date.setDate(date.getDate() + i);
+    const dateStr = date.toISOString().split('T')[0];
+    dates.push({
+      params: { date: dateStr },
+      props: { date: dateStr },
+    });
+  }
+
+  return dates;
+}
+
+interface Props {
+  date: string;
+}
+
+const { date } = Astro.props;
+
+// Parse date for display
+const dateObj = new Date(date);
+const displayDate = dateObj.toLocaleDateString('en-US', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const isToday = date === new Date().toISOString().split('T')[0];
+
+// Navigation helpers
+function getPrevDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  d.setDate(d.getDate() - 1);
+  return `/forecast/${d.toISOString().split('T')[0]}`;
+}
+
+function getNextDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  d.setDate(d.getDate() + 1);
+  return `/forecast/${d.toISOString().split('T')[0]}`;
+}
+
+const prevDate = getPrevDate(date);
+const nextDate = getNextDate(date);
+
+// SEO metadata
+const title = isToday
+  ? `Today's Energy Forecast - ${displayDate}`
+  : `Energy Forecast for ${displayDate}`;
+const description = `Personal energy forecast and optimal activity windows for ${displayDate}. Discover your coherence patterns and best times for focus, creativity, and rest.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="forecast-page">
+    <!-- Header -->
+    <header class="forecast-header">
+      <nav class="forecast-nav">
+        <a href="/" class="opacity-60 hover:opacity-100">← Home</a>
+        <div class="flex gap-4">
+          <a href={prevDate} class="opacity-60 hover:opacity-100">← Previous</a>
+          <a href={nextDate} class="opacity-60 hover:opacity-100">Next →</a>
+        </div>
+      </nav>
+
+      <div class="text-center mt-8">
+        {isToday && <span class="badge mb-2">Today</span>}
+        <h1 class="text-3xl font-semibold mb-2">{displayDate}</h1>
+        <p class="opacity-70">Personal Energy Forecast</p>
+      </div>
+    </header>
+
+    <!-- Main Content - Dynamic based on mode -->
+    <main class="forecast-main">
+      <!-- Kasra View -->
+      <div class="kasra-only">
+        <div id="kasra-forecast"></div>
+      </div>
+
+      <!-- River View -->
+      <div class="river-only">
+        <div id="river-forecast"></div>
+      </div>
+
+      <!-- Sol View -->
+      <div class="sol-only">
+        <div id="sol-forecast"></div>
+      </div>
+    </main>
+
+    <!-- Email Capture -->
+    <section class="forecast-cta">
+      <div id="email-capture"></div>
+    </section>
+
+    <!-- SEO Content -->
+    <section class="forecast-seo">
+      <h2>Understanding Your Energy Forecast</h2>
+      <p>
+        Your daily energy forecast helps you understand the natural rhythms
+        that influence focus, creativity, and wellbeing. By tracking your
+        coherence patterns (κ coefficient), you can identify optimal times
+        for different activities.
+      </p>
+
+      <h3>What is κ (Kappa)?</h3>
+      <p>
+        Kappa (κ) measures the coherence coupling between your personal
+        energy pattern and the current environmental field. Higher κ values
+        indicate greater alignment and typically correlate with improved
+        focus, creativity, and decision-making.
+      </p>
+
+      <h3>Optimal Windows</h3>
+      <p>
+        Throughout each day, your κ value fluctuates. We identify "optimal
+        windows" - periods where your coherence is highest and best suited
+        for specific activities like deep work, creative projects, important
+        conversations, or rest.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .forecast-page {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+
+  .forecast-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  :global([data-mode="kasra"]) .badge {
+    background: var(--kasra-accent);
+    color: var(--kasra-bg);
+  }
+
+  :global([data-mode="river"]) .badge {
+    background: var(--river-accent);
+    color: var(--river-bg);
+  }
+
+  :global([data-mode="sol"]) .badge {
+    background: var(--sol-accent);
+    color: white;
+  }
+
+  .forecast-main {
+    margin: 2rem 0;
+  }
+
+  .forecast-cta {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.1;
+  }
+
+  .forecast-cta > div {
+    opacity: 10; /* Reset opacity for child */
+  }
+
+  .forecast-seo {
+    margin-top: 3rem;
+    opacity: 0.6;
+  }
+
+  .forecast-seo h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .forecast-seo h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .forecast-seo p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+
+  /* Mode visibility */
+  .kasra-only,
+  .river-only,
+  .sol-only {
+    display: none;
+  }
+
+  :global([data-mode="kasra"]) .kasra-only {
+    display: block;
+  }
+
+  :global([data-mode="river"]) .river-only {
+    display: block;
+  }
+
+  :global([data-mode="sol"]) .sol-only {
+    display: block;
+  }
+</style>
+
+<script define:vars={{ date }}>
+  import { createElement } from 'react';
+  import { createRoot } from 'react-dom/client';
+
+  // Dynamic imports based on mode
+  document.addEventListener('DOMContentLoaded', async () => {
+    const mode = document.documentElement.dataset.mode || 'sol';
+
+    // Load appropriate forecast component
+    if (mode === 'kasra') {
+      const { KasraForecast } = await import('../../components/kasra/KasraForecast');
+      const el = document.getElementById('kasra-forecast');
+      if (el) createRoot(el).render(createElement(KasraForecast));
+    } else if (mode === 'river') {
+      const { RiverForecast } = await import('../../components/river/RiverForecast');
+      const el = document.getElementById('river-forecast');
+      if (el) createRoot(el).render(createElement(RiverForecast));
+    } else {
+      const { SolForecast } = await import('../../components/sol/SolForecast');
+      const el = document.getElementById('sol-forecast');
+      if (el) createRoot(el).render(createElement(SolForecast));
+    }
+
+    // Load email capture
+    const { EmailCapture } = await import('../../components/shared/EmailCapture');
+    const captureEl = document.getElementById('email-capture');
+    if (captureEl) {
+      createRoot(captureEl).render(createElement(EmailCapture, { variant: 'card' }));
+    }
+  });
+</script>
+

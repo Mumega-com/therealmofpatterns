@@ -1,0 +1,464 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { stage: 'nigredo' }, props: { stage: 'nigredo' } },
+    { params: { stage: 'albedo' }, props: { stage: 'albedo' } },
+    { params: { stage: 'citrinitas' }, props: { stage: 'citrinitas' } },
+    { params: { stage: 'rubedo' }, props: { stage: 'rubedo' } },
+  ];
+}
+
+interface Props {
+  stage: 'nigredo' | 'albedo' | 'citrinitas' | 'rubedo';
+}
+
+const { stage } = Astro.props;
+
+const stageData = {
+  nigredo: {
+    title: 'Nigredo - The Dark Night',
+    subtitle: 'The Stage of Dissolution',
+    symbol: '☽',
+    color: '#0a0a12',
+    kappaRange: 'κ < 0.25',
+    alchemical: 'The Blackening',
+    element: 'Earth',
+    description: 'Nigredo represents the dark night of the soul, a period of dissolution where old forms break down. It is not a failure but a necessary decomposition that precedes all genuine transformation.',
+    signs: [
+      'Feeling lost or directionless',
+      'Old certainties crumbling',
+      'A sense of heaviness or darkness',
+      'Difficulty finding motivation',
+      'Questioning everything',
+    ],
+    guidance: [
+      'Do not resist the dissolution',
+      'Rest and reduce external demands',
+      'Avoid major decisions',
+      'Trust that this is part of the process',
+      'Practice basic self-care',
+    ],
+    quote: 'The seed must rot in the earth before it can become a tree.',
+    duration: 'Typically 1-7 days, though major life transitions can extend this',
+    kasraView: 'κ coefficient below critical threshold. Field coherence compromised. Recovery protocols recommended.',
+    riverView: 'You walk now through the dark night of the soul, where old forms dissolve into fertile chaos. Do not fear the blackening - it is the womb of all becoming.',
+    solView: "You're going through a tough patch, and that's completely normal. Think of it like composting - things need to break down before new growth can happen. Be extra gentle with yourself.",
+  },
+  albedo: {
+    title: 'Albedo - The Purification',
+    subtitle: 'The Stage of Clarification',
+    symbol: '✧',
+    color: '#1a1a24',
+    kappaRange: '0.25 ≤ κ < 0.50',
+    alchemical: 'The Whitening',
+    element: 'Water',
+    description: 'Albedo is the washing, the clarification that follows dissolution. What was confused now separates into its essential components. Clarity emerges from chaos.',
+    signs: [
+      'Seeing things more clearly',
+      'Distinguishing what matters from what doesn\'t',
+      'A sense of purification or cleansing',
+      'Emotional processing and release',
+      'Growing discernment',
+    ],
+    guidance: [
+      'Reflect on what you\'ve learned',
+      'Let go of what no longer serves',
+      'Practice discernment',
+      'Cleanse your environment',
+      'Journal your insights',
+    ],
+    quote: 'In the washing, we separate the pure from the impure, the essential from the accidental.',
+    duration: 'Variable, typically 3-14 days',
+    kasraView: 'κ recovering from critical levels. Field purification in progress. Maintain monitoring protocols.',
+    riverView: 'The waters begin to clear. What was confused now separates into its essential nature. This is a time of purification and discernment.',
+    solView: "Things are starting to make more sense now. You're sorting through what matters and what doesn't. Good time for reflection and organizing your thoughts.",
+  },
+  citrinitas: {
+    title: 'Citrinitas - The Illumination',
+    subtitle: 'The Stage of Awakening',
+    symbol: '☉',
+    color: '#1a1812',
+    kappaRange: '0.50 ≤ κ < 0.75',
+    alchemical: 'The Yellowing',
+    element: 'Air',
+    description: 'Citrinitas is the dawn, the emergence of the golden light of consciousness. What was purified now begins to shine with its own inner radiance. Wisdom awakens.',
+    signs: [
+      'Increased clarity and insight',
+      'Growing sense of purpose',
+      'Creative inspiration',
+      'Feeling more aligned',
+      'Energy returning',
+    ],
+    guidance: [
+      'Act on your insights',
+      'Share your wisdom',
+      'Take on creative projects',
+      'Make important decisions',
+      'Connect with others',
+    ],
+    quote: 'The sun rises within, illuminating what the moon could only reflect.',
+    duration: 'Can be sustained with practice',
+    kasraView: 'κ within optimal range. Field coherence stable. Green light for complex operations.',
+    riverView: 'The golden dawn rises within you. Illumination spreads through every chamber of your being. This is a time of awakening wisdom.',
+    solView: "You're in a good flow state! Ideas come easily and things feel aligned. Great time for creative work or important conversations.",
+  },
+  rubedo: {
+    title: 'Rubedo - The Integration',
+    subtitle: 'The Stage of Completion',
+    symbol: '♦',
+    color: '#1a1214',
+    kappaRange: 'κ ≥ 0.75',
+    alchemical: 'The Reddening',
+    element: 'Fire',
+    description: 'Rubedo is the final stage, where the work becomes embodied. The insights of citrinitas are integrated into being. The philosopher\'s stone is realized.',
+    signs: [
+      'Deep sense of integration',
+      'Actions aligned with values',
+      'Feeling whole and complete',
+      'Natural authority and presence',
+      'Sustainable high performance',
+    ],
+    guidance: [
+      'Embody your realizations',
+      'Lead and teach others',
+      'Take on significant challenges',
+      'Make lasting commitments',
+      'Celebrate your transformation',
+    ],
+    quote: 'The opus is complete when the alchemist becomes the stone.',
+    duration: 'Periods of rubedo are precious - honor them',
+    kasraView: 'κ at peak levels. Maximum field coherence achieved. All systems nominal.',
+    riverView: 'You stand at the threshold of integration. The red stone forms from all that has been transformed. You are the opus.',
+    solView: "Everything is coming together beautifully. You're operating at your best. This is your moment - take on those big projects!",
+  },
+};
+
+const data = stageData[stage];
+const title = `${data.title} | The Realm of Patterns`;
+const description = `${data.description} Learn about the ${stage} stage and how to navigate it in your personal energy cycle.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="stage-page" data-stage={stage}>
+    <!-- Header -->
+    <header class="stage-header">
+      <nav class="mb-8">
+        <a href="/" class="opacity-60 hover:opacity-100">← Home</a>
+      </nav>
+
+      <div class="stage-hero" style={`background: ${data.color}`}>
+        <span class="stage-symbol">{data.symbol}</span>
+        <h1 class="stage-title">{data.title}</h1>
+        <p class="stage-subtitle">{data.subtitle}</p>
+      </div>
+    </header>
+
+    <!-- Quick Facts -->
+    <section class="stage-facts">
+      <div class="fact">
+        <span class="fact-label">Alchemical Name</span>
+        <span class="fact-value">{data.alchemical}</span>
+      </div>
+      <div class="fact">
+        <span class="fact-label">Element</span>
+        <span class="fact-value">{data.element}</span>
+      </div>
+      <div class="fact">
+        <span class="fact-label">κ Range</span>
+        <span class="fact-value">{data.kappaRange}</span>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="stage-content">
+      <p class="stage-description">{data.description}</p>
+
+      <blockquote class="stage-quote">
+        "{data.quote}"
+      </blockquote>
+
+      <h2>Signs You're in {stage.charAt(0).toUpperCase() + stage.slice(1)}</h2>
+      <ul class="stage-list">
+        {data.signs.map((sign) => <li>{sign}</li>)}
+      </ul>
+
+      <h2>Guidance for This Stage</h2>
+      <ul class="stage-list">
+        {data.guidance.map((item) => <li>{item}</li>)}
+      </ul>
+
+      <h2>Duration</h2>
+      <p>{data.duration}</p>
+    </section>
+
+    <!-- Three Views -->
+    <section class="stage-views">
+      <h2>How Each Voice Sees {stage.charAt(0).toUpperCase() + stage.slice(1)}</h2>
+
+      <div class="view kasra-view">
+        <h3>🔧 Kasra (The Architect)</h3>
+        <p>{data.kasraView}</p>
+      </div>
+
+      <div class="view river-view">
+        <h3>✧ River (The Oracle)</h3>
+        <p>{data.riverView}</p>
+      </div>
+
+      <div class="view sol-view">
+        <h3>☀️ Sol (The Friend)</h3>
+        <p>{data.solView}</p>
+      </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="stage-nav">
+      <h3>Explore Other Stages</h3>
+      <div class="stage-links">
+        <a href="/stage/nigredo" class:list={['stage-link', { active: stage === 'nigredo' }]}>
+          <span>☽</span> Nigredo
+        </a>
+        <a href="/stage/albedo" class:list={['stage-link', { active: stage === 'albedo' }]}>
+          <span>✧</span> Albedo
+        </a>
+        <a href="/stage/citrinitas" class:list={['stage-link', { active: stage === 'citrinitas' }]}>
+          <span>☉</span> Citrinitas
+        </a>
+        <a href="/stage/rubedo" class:list={['stage-link', { active: stage === 'rubedo' }]}>
+          <span>♦</span> Rubedo
+        </a>
+      </div>
+    </nav>
+
+    <!-- CTA -->
+    <section class="stage-cta">
+      <h3>Discover Your Current Stage</h3>
+      <p>Take a quick check-in to see where you are in your personal energy cycle.</p>
+      <div class="cta-buttons">
+        <a href="/sol/checkin" class="btn btn-primary">Start Check-in</a>
+        <a href="/" class="btn opacity-60 hover:opacity-100">Learn More</a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .stage-page {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+
+  .stage-hero {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-radius: 1rem;
+    color: white;
+  }
+
+  .stage-symbol {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .stage-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .stage-subtitle {
+    opacity: 0.8;
+    font-size: 1.125rem;
+  }
+
+  .stage-facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+
+  :global([data-mode="kasra"]) .stage-facts {
+    background: var(--kasra-surface);
+    border: 1px solid var(--kasra-border);
+  }
+
+  :global([data-mode="river"]) .stage-facts {
+    background: var(--river-surface);
+    border: 1px solid var(--river-border);
+  }
+
+  :global([data-mode="sol"]) .stage-facts {
+    background: var(--sol-surface);
+    border: 1px solid var(--sol-border);
+  }
+
+  .fact {
+    text-align: center;
+  }
+
+  .fact-label {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+
+  .fact-value {
+    font-weight: 500;
+  }
+
+  .stage-content {
+    margin: 2rem 0;
+  }
+
+  .stage-description {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .stage-quote {
+    font-size: 1.25rem;
+    font-style: italic;
+    padding: 1.5rem;
+    border-left: 3px solid currentColor;
+    opacity: 0.8;
+    margin: 2rem 0;
+  }
+
+  .stage-content h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .stage-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .stage-list li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .stage-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    opacity: 0.5;
+  }
+
+  .stage-views {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.15;
+  }
+
+  .stage-views h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  .view {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 0.75rem;
+    background: currentColor;
+    opacity: 0.05;
+  }
+
+  .view h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .view p {
+    opacity: 0.8;
+    line-height: 1.6;
+  }
+
+  .stage-nav {
+    margin: 3rem 0;
+  }
+
+  .stage-nav h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .stage-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .stage-link {
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+
+  .stage-link:hover,
+  .stage-link.active {
+    opacity: 1;
+  }
+
+  .stage-link.active {
+    font-weight: 600;
+  }
+
+  .stage-cta {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 1rem;
+  }
+
+  :global([data-mode="kasra"]) .stage-cta {
+    background: var(--kasra-surface);
+  }
+
+  :global([data-mode="river"]) .stage-cta {
+    background: var(--river-surface);
+  }
+
+  :global([data-mode="sol"]) .stage-cta {
+    background: var(--sol-surface);
+  }
+
+  .stage-cta h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .stage-cta p {
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+</style>

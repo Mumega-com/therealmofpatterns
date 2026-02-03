@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  mode?: 'kasra' | 'river' | 'sol';
+  stage?: 'nigredo' | 'albedo' | 'citrinitas' | 'rubedo';
+}
+
+const {
+  title = 'The Realm of Patterns',
+  description = 'Personal energy forecasting based on FRC mathematics',
+  mode = 'sol',
+  stage = 'citrinitas'
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" data-mode={mode} data-stage={stage}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+  </head>
+  <body class="min-h-screen transition-colors duration-300">
+    <slot />
+
+    <script>
+      // Initialize mode from localStorage or default to 'sol'
+      const savedMode = localStorage.getItem('rop_mode') || 'sol';
+      document.documentElement.dataset.mode = savedMode;
+
+      // Keyboard shortcuts for mode switching
+      document.addEventListener('keydown', (e) => {
+        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+        const key = e.key.toLowerCase();
+        if (key === 'k') setMode('kasra');
+        if (key === 'r') setMode('river');
+        if (key === 's') setMode('sol');
+      });
+
+      function setMode(mode: 'kasra' | 'river' | 'sol') {
+        document.documentElement.dataset.mode = mode;
+        localStorage.setItem('rop_mode', mode);
+        window.dispatchEvent(new CustomEvent('modechange', { detail: mode }));
+      }
+
+      // Expose to window for components
+      (window as any).setMode = setMode;
+    </script>
+  </body>
+</html>

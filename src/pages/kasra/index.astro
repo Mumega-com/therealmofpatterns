@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Dashboard | Kasra Mode" description="Real-time pattern field analysis and coherence metrics">
+  <div class="kasra-dashboard">
+    <!-- Header -->
+    <header class="kasra-header">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-kasra-h1 text-kasra-text uppercase tracking-wider">
+            SYSTEM STATUS
+          </h1>
+          <p class="text-kasra-caption text-kasra-muted mt-1">
+            Real-time coherence field analysis
+          </p>
+        </div>
+        <div id="status-badge"></div>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <main class="kasra-grid">
+      <!-- Left Column: Core Metrics -->
+      <section class="kasra-section" id="core-metrics">
+        <div id="forecast-display"></div>
+      </section>
+
+      <!-- Right Column: Details -->
+      <section class="kasra-section" id="detail-panels">
+        <div id="failure-mode"></div>
+        <div id="aspects-display" class="mt-4"></div>
+        <div id="windows-display" class="mt-4"></div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="kasra-footer">
+      <div class="flex items-center justify-between text-kasra-caption text-kasra-muted">
+        <span>κ-ENGINE v0.1.0</span>
+        <span id="timestamp"></span>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .kasra-dashboard {
+    min-height: 100vh;
+    padding: 1rem;
+    background: var(--kasra-bg);
+    font-family: var(--font-kasra);
+  }
+
+  .kasra-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--kasra-border);
+  }
+
+  .kasra-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .kasra-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .kasra-dashboard {
+      padding: 2rem;
+    }
+
+    .kasra-grid {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .kasra-section {
+    min-height: 200px;
+  }
+
+  .kasra-footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--kasra-border);
+  }
+</style>
+
+<script>
+  import { createElement } from 'react';
+  import { createRoot } from 'react-dom/client';
+  import { KasraForecast } from '../../components/kasra/KasraForecast';
+  import { KasraFailureMode, KasraStatusBadge } from '../../components/kasra/KasraFailureMode';
+  import { KasraAspects } from '../../components/kasra/KasraAspects';
+  import { KasraWindows } from '../../components/kasra/KasraWindows';
+  import { setMode } from '../../stores';
+
+  // Set mode to Kasra
+  setMode('kasra');
+
+  // Mount React components
+  document.addEventListener('DOMContentLoaded', () => {
+    // Status Badge
+    const badgeEl = document.getElementById('status-badge');
+    if (badgeEl) {
+      createRoot(badgeEl).render(createElement(KasraStatusBadge));
+    }
+
+    // Forecast Display
+    const forecastEl = document.getElementById('forecast-display');
+    if (forecastEl) {
+      createRoot(forecastEl).render(createElement(KasraForecast));
+    }
+
+    // Failure Mode
+    const failureEl = document.getElementById('failure-mode');
+    if (failureEl) {
+      createRoot(failureEl).render(createElement(KasraFailureMode, { showDetails: true }));
+    }
+
+    // Aspects
+    const aspectsEl = document.getElementById('aspects-display');
+    if (aspectsEl) {
+      createRoot(aspectsEl).render(createElement(KasraAspects));
+    }
+
+    // Windows
+    const windowsEl = document.getElementById('windows-display');
+    if (windowsEl) {
+      createRoot(windowsEl).render(createElement(KasraWindows));
+    }
+
+    // Timestamp
+    const timestampEl = document.getElementById('timestamp');
+    if (timestampEl) {
+      const updateTimestamp = () => {
+        timestampEl.textContent = new Date().toISOString();
+      };
+      updateTimestamp();
+      setInterval(updateTimestamp, 1000);
+    }
+  });
+</script>

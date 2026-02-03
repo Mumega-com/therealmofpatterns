@@ -144,6 +144,16 @@ async function handleAPI(request: Request, env: Env, path: string): Promise<Resp
       return await handleShare(env, id!);
     }
 
+    // POST /api/subscribe - Email list subscription
+    if (path === '/api/subscribe' && request.method === 'POST') {
+      return await handleSubscribe(request, env);
+    }
+
+    // POST /api/create-checkout - Pro subscription checkout
+    if (path === '/api/create-checkout' && request.method === 'POST') {
+      return await handleCreateCheckout(request, env);
+    }
+
     return jsonError('NOT_FOUND', 'Endpoint not found', 404);
   } catch (error) {
     console.error('API error:', error);
@@ -375,6 +385,108 @@ async function handleShare(env: Env, id: string): Promise<Response> {
   });
 }
 
+async function handleSubscribe(request: Request, env: Env): Promise<Response> {
+  const body = await request.json() as { email?: string };
+  const { email } = body;
+
+  // Validate email
+  if (!email || !isValidEmail(email)) {
+    return jsonError('INVALID_EMAIL', 'Please provide a valid email address', 400);
+  }
+
+  try {
+    // Add to Resend audience
+    const response = await fetch('https://api.resend.com/audiences/default/contacts', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        unsubscribed: false,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json() as { message?: string };
+      // Don't fail if already subscribed
+      if (error.message?.includes('already exists')) {
+        return new Response(JSON.stringify({ success: true, message: 'Already subscribed' }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      throw new Error(error.message || 'Failed to subscribe');
+    }
+
+    return new Response(JSON.stringify({ success: true, message: 'Subscribed successfully' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    console.error('Subscribe error:', error);
+    return jsonError('SUBSCRIBE_ERROR', 'Failed to subscribe. Please try again.', 500);
+  }
+}
+
+async function handleCreateCheckout(request: Request, env: Env): Promise<Response> {
+  const body = await request.json() as { priceId?: string; email?: string };
+  const { priceId, email } = body;
+
+  // Map price IDs to Stripe price IDs
+  const priceMap: Record<string, string> = {
+    'price_pro_monthly': env.STRIPE_PRO_PRICE_ID || 'price_1234', // Set in env
+  };
+
+  const stripePriceId = priceMap[priceId || 'price_pro_monthly'];
+  if (!stripePriceId) {
+    return jsonError('INVALID_PRICE', 'Invalid price selected', 400);
+  }
+
+  try {
+    // Create Stripe subscription checkout session
+    const params = new URLSearchParams();
+    params.append('mode', 'subscription');
+    params.append('payment_method_types[]', 'card');
+    params.append('line_items[0][price]', stripePriceId);
+    params.append('line_items[0][quantity]', '1');
+    params.append('success_url', `${env.APP_URL}/success.html?session_id={CHECKOUT_SESSION_ID}&pro=true`);
+    params.append('cancel_url', `${env.APP_URL}/pricing?canceled=true`);
+    params.append('allow_promotion_codes', 'true');
+    if (email) {
+      params.append('customer_email', email);
+    }
+
+    const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${env.STRIPE_SECRET_KEY}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params,
+    });
+
+    const session = await response.json() as { id: string; url: string; error?: { message: string } };
+
+    if (session.error) {
+      throw new Error(session.error.message);
+    }
+
+    return new Response(JSON.stringify({
+      success: true,
+      sessionId: session.id,
+      url: session.url,
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    console.error('Checkout error:', error);
+    return jsonError('CHECKOUT_ERROR', 'Failed to create checkout. Please try again.', 500);
+  }
+}
+
 // ============================================
 // Helper Functions
 // ============================================
@@ -385,6 +497,11 @@ function validateBirthData(data: BirthData): boolean {
   if (!data.month || data.month < 1 || data.month > 12) return false;
   if (!data.day || data.day < 1 || data.day > 31) return false;
   return true;
+}
+
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
 
 async function findBestMatch(db: D1Database, userVector: number[]): Promise<FigureMatch> {

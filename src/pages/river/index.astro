@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Daily Reading | River Mode" description="Your personal oracle for pattern navigation">
+  <div class="river-page">
+    <!-- Header -->
+    <header class="river-header">
+      <div id="stage-glyph" class="mb-4"></div>
+      <h1 class="river-h1">Your Daily Reading</h1>
+      <p class="river-body italic opacity-70 mt-2">
+        The patterns speak to those who listen
+      </p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="river-main">
+      <div class="river-grid">
+        <!-- Left: Forecast -->
+        <section id="forecast-section">
+          <div id="river-forecast"></div>
+        </section>
+
+        <!-- Right: Aspects & Windows -->
+        <section id="detail-section">
+          <div id="river-aspects" class="mb-8"></div>
+          <div id="river-windows"></div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="river-footer">
+      <p class="river-caption text-center opacity-50">
+        "The pattern is not the territory, but a map drawn in starlight."
+      </p>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .river-page {
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .river-header {
+    text-align: center;
+    max-width: 40rem;
+    margin: 0 auto 3rem;
+  }
+
+  .river-main {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .river-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    .river-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .river-footer {
+    max-width: 40rem;
+    margin: 4rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--river-border, rgba(255,255,255,0.1));
+  }
+</style>
+
+<script>
+  import { createElement } from 'react';
+  import { createRoot } from 'react-dom/client';
+  import { RiverForecast } from '../../components/river/RiverForecast';
+  import { RiverAspects } from '../../components/river/RiverAspects';
+  import { RiverWindows } from '../../components/river/RiverWindows';
+  import { StageGlyph } from '../../components/river/RiverCard';
+  import { setMode } from '../../stores';
+
+  // Set mode to River
+  setMode('river');
+
+  // Mount React components
+  document.addEventListener('DOMContentLoaded', () => {
+    const glyphEl = document.getElementById('stage-glyph');
+    if (glyphEl) {
+      createRoot(glyphEl).render(createElement(StageGlyph));
+    }
+
+    const forecastEl = document.getElementById('river-forecast');
+    if (forecastEl) {
+      createRoot(forecastEl).render(createElement(RiverForecast));
+    }
+
+    const aspectsEl = document.getElementById('river-aspects');
+    if (aspectsEl) {
+      createRoot(aspectsEl).render(createElement(RiverAspects));
+    }
+
+    const windowsEl = document.getElementById('river-windows');
+    if (windowsEl) {
+      createRoot(windowsEl).render(createElement(RiverWindows));
+    }
+  });
+</script>

@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Header } from '../components/shared/Header';
+---
+
+<BaseLayout title="The Realm of Patterns - Personal Energy Forecasting">
+  <Header client:load />
+
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Hero Section - Adapts to mode -->
+    <section class="text-center mb-16">
+      <!-- Kasra Hero -->
+      <div class="kasra-only">
+        <h1 class="text-kasra-display mb-4">
+          REALM OF PATTERNS
+        </h1>
+        <p class="text-kasra-body text-kasra-muted max-w-2xl mx-auto">
+          Personal coherence forecasting. Mathematical precision.
+          Track κ, RU, and μ-levels. Predict failure modes.
+          Optimize your windows.
+        </p>
+        <div class="mt-8 space-x-4">
+          <a href="/kasra/checkin" class="btn btn-primary">
+            Begin Check-in →
+          </a>
+          <a href="/kasra" class="btn opacity-60 hover:opacity-100">
+            View Dashboard
+          </a>
+        </div>
+      </div>
+
+      <!-- River Hero -->
+      <div class="river-only">
+        <div class="w-24 h-24 mx-auto mb-8 animate-breathe">
+          <svg viewBox="0 0 100 100" class="w-full h-full opacity-80">
+            <polygon
+              points="50,5 95,50 50,95 5,50"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1"
+            />
+            <polygon
+              points="50,20 80,50 50,80 20,50"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="0.5"
+              opacity="0.6"
+            />
+          </svg>
+        </div>
+        <h1 class="text-river-display mb-6">
+          The Realm of Patterns
+        </h1>
+        <p class="text-river-body max-w-xl mx-auto opacity-90">
+          Where mathematics meets meaning.<br />
+          Discover the patterns that shape your days.
+        </p>
+        <div class="mt-10 space-x-4">
+          <a href="/river/checkin" class="btn btn-primary text-lg">
+            Begin Your Journey
+          </a>
+          <a href="/river" class="btn opacity-60 hover:opacity-100">
+            View Reading
+          </a>
+        </div>
+      </div>
+
+      <!-- Sol Hero -->
+      <div class="sol-only">
+        <h1 class="text-sol-display mb-4">
+          Good to see you.
+        </h1>
+        <p class="text-sol-body text-sol-muted max-w-lg mx-auto">
+          Get a simple, personal forecast for your day.
+          No jargon. Just helpful guidance.
+        </p>
+        <div class="mt-8 space-x-4">
+          <a href="/sol/checkin" class="btn btn-primary">
+            Get Today's Forecast
+          </a>
+          <a href="/sol" class="btn opacity-60 hover:opacity-100">
+            View Dashboard
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="grid gap-6 md:grid-cols-3 mb-16">
+      <!-- Feature 1 -->
+      <div class="card p-6">
+        <div class="kasra-only">
+          <h3 class="text-kasra-h2 mb-2">Daily Metrics</h3>
+          <p class="text-kasra-body text-kasra-muted">
+            Track κ coherence, resonance units, and μ-level in real-time.
+          </p>
+        </div>
+        <div class="river-only">
+          <h3 class="text-river-h2 mb-2">Daily Wisdom</h3>
+          <p class="text-river-body opacity-80">
+            Receive guidance aligned with the day's archetypal energies.
+          </p>
+        </div>
+        <div class="sol-only">
+          <h3 class="text-sol-h2 mb-2">Daily Forecast</h3>
+          <p class="text-sol-body text-sol-muted">
+            Simple insights about what to expect and how to navigate.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="card p-6">
+        <div class="kasra-only">
+          <h3 class="text-kasra-h2 mb-2">Failure Detection</h3>
+          <p class="text-kasra-body text-kasra-muted">
+            Early warning for collapse, inversion, dissociation, dispersion.
+          </p>
+        </div>
+        <div class="river-only">
+          <h3 class="text-river-h2 mb-2">Shadow Work</h3>
+          <p class="text-river-body opacity-80">
+            Gentle alerts when the shadow stirs beneath.
+          </p>
+        </div>
+        <div class="sol-only">
+          <h3 class="text-sol-h2 mb-2">Heads Up</h3>
+          <p class="text-sol-body text-sol-muted">
+            Friendly warnings when things might get tricky.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="card p-6">
+        <div class="kasra-only">
+          <h3 class="text-kasra-h2 mb-2">Optimal Windows</h3>
+          <p class="text-kasra-body text-kasra-muted">
+            Precise time blocks where κ exceeds threshold for activities.
+          </p>
+        </div>
+        <div class="river-only">
+          <h3 class="text-river-h2 mb-2">Sacred Timing</h3>
+          <p class="text-river-body opacity-80">
+            Know when the currents favor action or stillness.
+          </p>
+        </div>
+        <div class="sol-only">
+          <h3 class="text-sol-h2 mb-2">Best Times</h3>
+          <p class="text-sol-body text-sol-muted">
+            Find out when to tackle big things and when to rest.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="text-center py-12 border-t border-current/10">
+      <div class="kasra-only">
+        <p class="text-kasra-body text-kasra-muted mb-4">
+          Data-driven. No mysticism. Just math.
+        </p>
+        <a href="/kasra/checkin" class="btn btn-primary">
+          Start Tracking →
+        </a>
+      </div>
+      <div class="river-only">
+        <p class="text-river-quote mb-6">
+          "Know the pattern. Shape the pattern."
+        </p>
+        <a href="/river/checkin" class="btn btn-primary">
+          Enter the Realm
+        </a>
+      </div>
+      <div class="sol-only">
+        <p class="text-sol-body text-sol-muted mb-4">
+          Takes 30 seconds. Free forever.
+        </p>
+        <a href="/sol/checkin" class="btn btn-primary">
+          Get Your Forecast
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-8 text-center opacity-50 text-sm">
+    <p>The Realm of Patterns &copy; 2026</p>
+    <p class="mt-1">Press K, R, or S to switch modes</p>
+  </footer>
+</BaseLayout>
+
+<style>
+  /* Show/hide based on mode */
+  .kasra-only,
+  .river-only,
+  .sol-only {
+    display: none;
+  }
+
+  :global([data-mode="kasra"]) .kasra-only {
+    display: block;
+  }
+
+  :global([data-mode="river"]) .river-only {
+    display: block;
+  }
+
+  :global([data-mode="sol"]) .sol-only {
+    display: block;
+  }
+</style>
