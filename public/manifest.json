@@ -1,0 +1,41 @@
+{
+  "name": "The Realm of Patterns",
+  "short_name": "RoP",
+  "description": "Personal energy forecasting based on FRC mathematics. Know the pattern. Shape the pattern.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0908",
+  "theme_color": "#d4a854",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/brand/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/brand/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "health", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Quick Check-in",
+      "short_name": "Check-in",
+      "description": "Start a daily check-in",
+      "url": "/sol/checkin",
+      "icons": [{ "src": "/assets/brand/logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Theater",
+      "short_name": "Theater",
+      "description": "Watch the cosmic scene",
+      "url": "/theater",
+      "icons": [{ "src": "/assets/brand/logo.png", "sizes": "96x96" }]
+    }
+  ]
+}

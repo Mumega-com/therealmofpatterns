@@ -858,24 +858,33 @@ export async function fetchContent(
   slug: string
 ): Promise<CosmicContent | null> {
   try {
+    // Build full slug path: {lang}/{type_path}/{slug}
+    const typePaths: Record<string, string> = {
+      'dimension_guide': 'dimension',
+      'historical_figure': 'figure',
+      'jungian_concept': 'jungian',
+    };
+    const typePath = typePaths[contentType] || contentType;
+    const fullSlug = `${langCode}/${typePath}/${slug}`;
+
     // Try KV cache first
-    const cacheKey = `content:${langCode}:${contentType}:${slug}`;
+    const cacheKey = `cms:${fullSlug}`;
     const cached = await env.CACHE.get(cacheKey);
     if (cached) {
       return JSON.parse(cached);
     }
 
-    // Query database
+    // Query CMS database (cms_cosmic_content table)
     const result = await env.DB.prepare(`
-      SELECT * FROM cosmic_content
-      WHERE language_code = ? AND content_type = ? AND slug = ? AND status = 'published'
-    `).bind(langCode, contentType, slug).first();
+      SELECT * FROM cms_cosmic_content
+      WHERE slug = ? AND published = 1
+    `).bind(fullSlug).first();
 
     if (!result) return null;
 
     const content: CosmicContent = {
       id: result.id as string,
-      language_code: result.language_code as string,
+      language_code: result.language as string,
       content_type: result.content_type as string,
       slug: result.slug as string,
       title: result.title as string,
@@ -883,16 +892,11 @@ export async function fetchContent(
       content_blocks: safeParseJSON(result.content_blocks as string, []),
       schema_markup: safeParseJSON(result.schema_markup as string, undefined),
       related_topics: safeParseJSON(result.related_topics as string, []),
-      published_at: result.published_at as string,
+      published_at: result.created_at as string,
     };
 
     // Cache for 1 hour
     await env.CACHE.put(cacheKey, JSON.stringify(content), { expirationTtl: 3600 });
-
-    // Increment view count (fire and forget)
-    env.DB.prepare(`
-      UPDATE cosmic_content SET view_count = view_count + 1 WHERE id = ?
-    `).bind(content.id).run().catch(console.error);
 
     return content;
   } catch (error) {

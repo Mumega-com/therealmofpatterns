@@ -1,0 +1,751 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Subscribe - The Realm of Patterns" description="Choose your practice tier: Witness (free), Pattern-Keeper ($19/mo), or Circle ($49/seat/mo).">
+  <div class="subscribe-page">
+    <div class="subscribe-content">
+      <div class="page-header">
+        <h1>Choose Your Path</h1>
+        <p>Begin your daily practice of pattern awareness</p>
+      </div>
+
+      <div class="plans-grid">
+        <!-- Pattern-Keeper (Individual) -->
+        <div class="plan-card" data-plan="individual">
+          <div class="plan-header">
+            <h2>Pattern-Keeper</h2>
+            <p class="plan-desc">For individual practitioners</p>
+          </div>
+
+          <div class="plan-price">
+            <span class="currency">$</span>
+            <span class="amount">19</span>
+            <span class="period">/month</span>
+          </div>
+
+          <ul class="plan-features">
+            <li>
+              <span class="icon">✦</span>
+              <span>Full 16D analysis with shadow octave</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>Daily check-in practice</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>Personal dashboard with trends</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>Optimal action windows</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>Failure mode early warnings</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>Elder progress tracking</span>
+            </li>
+          </ul>
+
+          <button class="plan-btn" id="individualBtn">
+            <span>Begin Practice</span>
+            <span class="arrow">→</span>
+          </button>
+        </div>
+
+        <!-- Circle (Squad) -->
+        <div class="plan-card featured" data-plan="squad">
+          <div class="featured-badge">Best for Teams</div>
+
+          <div class="plan-header">
+            <h2>Circle</h2>
+            <p class="plan-desc">For coaches, teams & communities</p>
+          </div>
+
+          <div class="plan-price">
+            <span class="currency">$</span>
+            <span class="amount">49</span>
+            <span class="period">/seat/month</span>
+          </div>
+
+          <div class="seats-selector">
+            <label>Team size:</label>
+            <div class="seats-controls">
+              <button class="seats-btn" id="decreaseSeats">−</button>
+              <input type="number" id="seatCount" value="3" min="3" max="50" />
+              <button class="seats-btn" id="increaseSeats">+</button>
+            </div>
+            <div class="seats-total">
+              <span>Total: </span>
+              <span id="totalPrice">$147</span>
+              <span>/month</span>
+            </div>
+          </div>
+
+          <ul class="plan-features">
+            <li>
+              <span class="icon">✦</span>
+              <span>Everything in Pattern-Keeper</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>Shared circle dashboard</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>Group coherence metrics</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>Witness each other's patterns</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>Coach/facilitator tools</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>Optimal meeting times</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span>API access for integrations</span>
+            </li>
+          </ul>
+
+          <button class="plan-btn primary" id="squadBtn">
+            <span>Gather Your Circle</span>
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Email capture for checkout -->
+      <div class="checkout-form" id="checkoutForm" style="display: none;">
+        <div class="form-header">
+          <h3 id="formTitle">Enter your email to continue</h3>
+          <p id="formSubtitle">We'll send your login details after checkout</p>
+        </div>
+
+        <form id="emailForm">
+          <div class="form-field">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+
+          <div class="form-field" id="circleNameField" style="display: none;">
+            <label for="circleName">Circle name</label>
+            <input
+              type="text"
+              id="circleName"
+              name="circleName"
+              placeholder="e.g., Sunrise Collective"
+            />
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <span id="submitText">Continue to Checkout</span>
+            <span class="loading" id="loadingSpinner" style="display: none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" opacity="0.25"/>
+                <path d="M12 2a10 10 0 0 1 10 10" class="spinner"/>
+              </svg>
+            </span>
+          </button>
+        </form>
+
+        <p class="form-note">
+          Secure checkout powered by Stripe.
+          Cancel anytime with one click.
+        </p>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section">
+        <h3>Questions?</h3>
+
+        <div class="faq-item">
+          <h4>What's included in the free tier?</h4>
+          <p>
+            Free users can watch the Cosmic Channel 24/7, get daily personal readings
+            with basic 8D analysis, and see their historical figure resonance.
+            No account required.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>Can I cancel anytime?</h4>
+          <p>
+            Yes, cancel with one click from your dashboard.
+            No contracts, no questions asked.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>What's a "Circle"?</h4>
+          <p>
+            A Circle is a group of people who practice together — coaches with clients,
+            teams, friend groups, or communities. You can witness each other's patterns,
+            track group coherence, and find optimal times to meet.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>Do I need birth data?</h4>
+          <p>
+            Yes, we calculate your pattern from your birth date, time, and location.
+            More precise data = more accurate readings. If you don't know your exact
+            birth time, you can use 12:00 noon as an estimate.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .subscribe-page {
+    --gold: #d4a854;
+    --gold-glow: rgba(212, 168, 84, 0.3);
+    --dark: #0a0908;
+    --dark-surface: #141210;
+    --text: #f0e8d8;
+    --text-muted: rgba(240, 232, 216, 0.6);
+
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 6rem 2rem 4rem;
+  }
+
+  .subscribe-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+  }
+
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .plans-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .plan-card {
+    position: relative;
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.15);
+    padding: 2rem;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .plan-card:hover {
+    border-color: rgba(212, 168, 84, 0.3);
+    transform: translateY(-4px);
+  }
+
+  .plan-card.featured {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, rgba(212, 168, 84, 0.05) 0%, var(--dark-surface) 100%);
+  }
+
+  .plan-card.selected {
+    border-color: var(--gold);
+    box-shadow: 0 0 30px var(--gold-glow);
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.75rem;
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  .plan-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .plan-header h2 {
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .plan-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .plan-price {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(212, 168, 84, 0.1);
+  }
+
+  .plan-price .currency {
+    font-size: 1.5rem;
+    color: var(--gold);
+    vertical-align: top;
+  }
+
+  .plan-price .amount {
+    font-size: 4rem;
+    font-weight: 300;
+    color: var(--gold);
+    font-family: 'Geist Mono', monospace;
+    line-height: 1;
+  }
+
+  .plan-price .period {
+    font-size: 1rem;
+    color: var(--text-muted);
+  }
+
+  .seats-selector {
+    background: rgba(212, 168, 84, 0.05);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .seats-selector label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .seats-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .seats-btn {
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: 1px solid rgba(212, 168, 84, 0.3);
+    color: var(--gold);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .seats-btn:hover {
+    background: rgba(212, 168, 84, 0.1);
+    border-color: var(--gold);
+  }
+
+  .seats-controls input {
+    width: 60px;
+    height: 36px;
+    background: var(--dark);
+    border: 1px solid rgba(212, 168, 84, 0.3);
+    color: var(--gold);
+    font-size: 1.25rem;
+    text-align: center;
+    font-family: 'Geist Mono', monospace;
+  }
+
+  .seats-total {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .seats-total span:nth-child(2) {
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+  }
+
+  .plan-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+
+  .plan-features .icon {
+    color: var(--gold);
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .plan-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid rgba(212, 168, 84, 0.4);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .plan-btn:hover {
+    background: rgba(212, 168, 84, 0.1);
+    border-color: var(--gold);
+  }
+
+  .plan-btn.primary {
+    background: var(--gold);
+    color: var(--dark);
+    border-color: var(--gold);
+  }
+
+  .plan-btn.primary:hover {
+    background: #e5b865;
+    box-shadow: 0 0 20px var(--gold-glow);
+  }
+
+  .plan-btn .arrow {
+    transition: transform 0.3s;
+  }
+
+  .plan-btn:hover .arrow {
+    transform: translateX(4px);
+  }
+
+  /* Checkout Form */
+  .checkout-form {
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    padding: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-header h3 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .form-header p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .form-field {
+    margin-bottom: 1rem;
+  }
+
+  .form-field label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-field input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: var(--dark);
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    color: var(--text);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+  }
+
+  .form-field input::placeholder {
+    color: rgba(240, 232, 216, 0.3);
+  }
+
+  .form-field input:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  .submit-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-family: inherit;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    background: #e5b865;
+    box-shadow: 0 0 20px var(--gold-glow);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .loading svg {
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+  }
+
+  .loading .spinner {
+    stroke-linecap: round;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .form-note {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* FAQ */
+  .faq-section {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(212, 168, 84, 0.1);
+  }
+
+  .faq-section h3 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .faq-item {
+    margin-bottom: 1.5rem;
+  }
+
+  .faq-item h4 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .faq-item p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+</style>
+
+<script>
+  // Get URL params
+  const urlParams = new URLSearchParams(window.location.search);
+  const planParam = urlParams.get('plan');
+
+  // DOM elements
+  const individualBtn = document.getElementById('individualBtn');
+  const squadBtn = document.getElementById('squadBtn');
+  const checkoutForm = document.getElementById('checkoutForm');
+  const circleNameField = document.getElementById('circleNameField');
+  const seatCount = document.getElementById('seatCount') as HTMLInputElement;
+  const totalPrice = document.getElementById('totalPrice');
+  const decreaseSeats = document.getElementById('decreaseSeats');
+  const increaseSeats = document.getElementById('increaseSeats');
+  const emailForm = document.getElementById('emailForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const submitText = document.getElementById('submitText');
+  const loadingSpinner = document.getElementById('loadingSpinner');
+  const formTitle = document.getElementById('formTitle');
+  const formSubtitle = document.getElementById('formSubtitle');
+
+  let selectedPlan: 'individual' | 'squad' | null = null;
+
+  // Auto-select plan from URL
+  if (planParam === 'individual' || planParam === 'squad') {
+    selectPlan(planParam);
+  }
+
+  // Plan selection
+  individualBtn?.addEventListener('click', () => selectPlan('individual'));
+  squadBtn?.addEventListener('click', () => selectPlan('squad'));
+
+  function selectPlan(plan: 'individual' | 'squad') {
+    selectedPlan = plan;
+
+    // Update card styles
+    document.querySelectorAll('.plan-card').forEach(card => {
+      card.classList.remove('selected');
+    });
+    document.querySelector(`[data-plan="${plan}"]`)?.classList.add('selected');
+
+    // Show checkout form
+    if (checkoutForm) {
+      checkoutForm.style.display = 'block';
+
+      // Scroll to form
+      checkoutForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Toggle circle name field
+    if (circleNameField) {
+      circleNameField.style.display = plan === 'squad' ? 'block' : 'none';
+    }
+
+    // Update form title
+    if (formTitle) {
+      formTitle.textContent = plan === 'individual'
+        ? 'Start your Pattern-Keeper practice'
+        : 'Create your Circle';
+    }
+
+    if (formSubtitle) {
+      formSubtitle.textContent = plan === 'individual'
+        ? 'Enter your email to continue to checkout'
+        : `${seatCount?.value || 3} seats at $49/seat = $${parseInt(seatCount?.value || '3') * 49}/month`;
+    }
+  }
+
+  // Seat count controls
+  function updateTotalPrice() {
+    const seats = parseInt(seatCount?.value || '3');
+    const total = seats * 49;
+    if (totalPrice) totalPrice.textContent = `$${total}`;
+    if (formSubtitle && selectedPlan === 'squad') {
+      formSubtitle.textContent = `${seats} seats at $49/seat = $${total}/month`;
+    }
+  }
+
+  decreaseSeats?.addEventListener('click', () => {
+    const current = parseInt(seatCount?.value || '3');
+    if (current > 3 && seatCount) {
+      seatCount.value = (current - 1).toString();
+      updateTotalPrice();
+    }
+  });
+
+  increaseSeats?.addEventListener('click', () => {
+    const current = parseInt(seatCount?.value || '3');
+    if (current < 50 && seatCount) {
+      seatCount.value = (current + 1).toString();
+      updateTotalPrice();
+    }
+  });
+
+  seatCount?.addEventListener('change', () => {
+    let value = parseInt(seatCount.value);
+    if (isNaN(value) || value < 3) value = 3;
+    if (value > 50) value = 50;
+    seatCount.value = value.toString();
+    updateTotalPrice();
+  });
+
+  // Form submission
+  emailForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!selectedPlan) return;
+
+    const email = (document.getElementById('email') as HTMLInputElement)?.value;
+    const circleName = (document.getElementById('circleName') as HTMLInputElement)?.value;
+    const seats = parseInt(seatCount?.value || '3');
+
+    // Show loading
+    if (submitBtn) submitBtn.setAttribute('disabled', 'true');
+    if (submitText) submitText.style.display = 'none';
+    if (loadingSpinner) loadingSpinner.style.display = 'block';
+
+    try {
+      // Create Stripe checkout session
+      const response = await fetch('/api/create-subscription-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          plan: selectedPlan,
+          email,
+          circleName: selectedPlan === 'squad' ? circleName : undefined,
+          seats: selectedPlan === 'squad' ? seats : 1,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        // Redirect to Stripe
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Failed to create checkout');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Something went wrong. Please try again.');
+
+      // Reset button
+      if (submitBtn) submitBtn.removeAttribute('disabled');
+      if (submitText) submitText.style.display = 'block';
+      if (loadingSpinner) loadingSpinner.style.display = 'none';
+    }
+  });
+</script>

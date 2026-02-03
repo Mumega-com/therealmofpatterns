@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@nanostores/react';
-import { $mode } from '../../stores';
+import { $mode, setEmail as saveUserEmail } from '../../stores';
 
 interface EmailCaptureProps {
   variant?: 'inline' | 'card' | 'minimal';
@@ -44,6 +44,9 @@ export function EmailCapture({
       });
 
       if (!res.ok) throw new Error('Failed to subscribe');
+
+      // Save email to user store for persistence
+      saveUserEmail(email);
 
       setStatus('success');
       onSuccess?.(email);

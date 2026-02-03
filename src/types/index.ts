@@ -230,3 +230,85 @@ export const PRODUCTS = {
 } as const;
 
 export type ProductId = keyof typeof PRODUCTS;
+
+// ============================================
+// SaaS Subscription Plans
+// ============================================
+export const SUBSCRIPTION_PLANS = {
+  witness: {
+    name: 'Witness',
+    price_cents: 0,
+    interval: null,
+    description: 'Free tier - Watch the theater, daily readings',
+    features: [
+      'Watch the Cosmic Channel 24/7',
+      'Daily personal reading (8D)',
+      'Basic dimension breakdown',
+      'Historical figure resonance',
+    ],
+  },
+  pattern_keeper: {
+    name: 'Pattern-Keeper',
+    price_cents: 1900, // $19/month
+    interval: 'month' as const,
+    description: 'Individual practice with full features',
+    features: [
+      'Full 16D analysis with shadow octave',
+      'Daily check-in practice',
+      'Personal dashboard with trends',
+      'Optimal action windows (hourly)',
+      'Failure mode early warnings',
+      'Elder progress tracking',
+    ],
+  },
+  circle: {
+    name: 'Circle',
+    price_cents: 4900, // $49/seat/month
+    interval: 'month' as const,
+    per_seat: true,
+    min_seats: 3,
+    description: 'Team plan for coaches, groups, communities',
+    features: [
+      'Everything in Pattern-Keeper',
+      'Shared circle dashboard',
+      'Group coherence metrics',
+      'Witness each other\'s patterns',
+      'Coach/facilitator tools',
+      'Optimal meeting times',
+      'API access for integrations',
+    ],
+  },
+} as const;
+
+export type SubscriptionPlanId = keyof typeof SUBSCRIPTION_PLANS;
+
+// ============================================
+// Circle / Squad Types
+// ============================================
+export interface Circle {
+  id: string;
+  name: string;
+  owner_email_hash: string;
+  created_at: string;
+  max_seats: number;
+  stripe_subscription_id?: string;
+}
+
+export interface CircleMember {
+  id: string;
+  circle_id: string;
+  user_email_hash: string;
+  role: 'owner' | 'facilitator' | 'member';
+  joined_at: string;
+  status: 'active' | 'invited' | 'removed';
+}
+
+export interface CircleInvite {
+  id: string;
+  circle_id: string;
+  email: string;
+  invited_by_hash: string;
+  created_at: string;
+  expires_at: string;
+  accepted_at?: string;
+}

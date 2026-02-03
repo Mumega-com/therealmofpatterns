@@ -40,6 +40,11 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/png" href="/assets/brand/logo.png" />
     <link rel="apple-touch-icon" href="/assets/brand/logo.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="RoP" />
     <title>{title}</title>
 
     <!-- Preload fonts -->
@@ -112,6 +117,13 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 
       // Expose to window for components
       (window as any).setMode = setMode;
+
+      // Register service worker for PWA
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch((error) => {
+          console.log('Service worker registration failed:', error);
+        });
+      }
     </script>
   </body>
 </html>

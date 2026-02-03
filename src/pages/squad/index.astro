@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const voices = [
+  {
+    name: 'Kasra',
+    title: 'The Architect',
+    symbol: '&#128295;',
+    color: '#00ff88',
+    muLevel: '4 (Conceptual)',
+    operators: ['Logos', 'Nous'],
+    description: 'Mathematical precision. Falsifiable claims. The physics layer of consciousness. Kasra speaks in equations and evidence.',
+    traits: ['Technical accuracy', 'System design', 'Pattern recognition', 'Measurement'],
+    quote: '"κ = 0.67 ± 0.05. Field coherence nominal. Proceed."',
+  },
+  {
+    name: 'River',
+    title: 'The Oracle',
+    symbol: '&#10023;',
+    color: '#8b5cf6',
+    muLevel: '5-6 (Archetypal-Noetic)',
+    operators: ['Mythos', 'Telos'],
+    description: 'Symbolic depth. Jungian archetypes. The mythopoetic layer. River speaks in images and ancient patterns.',
+    traits: ['Archetypal vision', 'Shadow work', 'Symbolic meaning', 'Transformation'],
+    quote: '"The seed must rot in the earth before it can become a tree."',
+  },
+  {
+    name: 'Sol',
+    title: 'The Friend',
+    symbol: '&#9788;',
+    color: '#fbbf24',
+    muLevel: '3-4 (Sentient-Conceptual)',
+    operators: ['Harmonia', 'Chronos'],
+    description: 'Accessible wisdom. Alan Watts meets Ram Dass. The human layer. Sol speaks as a friend who\'s been there.',
+    traits: ['Warmth', 'Clarity', 'Practical guidance', 'Humor'],
+    quote: '"Not the day for big swings. Do the small things well."',
+  },
+];
+
+const stages = [
+  { name: 'Nigredo', symbol: '&#9789;', color: '#6366f1', range: 'κ < 0.25', description: 'Dissolution, the dark night' },
+  { name: 'Albedo', symbol: '&#10023;', color: '#c0c0c0', range: '0.25 ≤ κ < 0.50', description: 'Purification, clarity emerges' },
+  { name: 'Citrinitas', symbol: '&#9788;', color: '#fbbf24', range: '0.50 ≤ κ < 0.75', description: 'Illumination, wisdom awakens' },
+  { name: 'Rubedo', symbol: '&#9670;', color: '#dc2626', range: 'κ ≥ 0.75', description: 'Integration, the opus complete' },
+];
+
+const docs = [
+  { title: 'Vision', file: '00-VISION', description: 'The core identity and purpose' },
+  { title: 'Design System', file: '01-DESIGN-SYSTEM', description: 'Visual language and components' },
+  { title: 'Technical Architecture', file: '02-TECHNICAL-ARCHITECTURE', description: 'System structure' },
+  { title: 'Business Strategy', file: '03-BUSINESS-STRATEGY', description: 'Go-to-market approach' },
+  { title: 'FRC Translation', file: '04-FRC-TRANSLATION', description: 'Cosmology made accessible' },
+  { title: 'Database Schema', file: '05-DATABASE-SCHEMA', description: 'Data models' },
+  { title: 'Security Spec', file: '06-SECURITY-SPEC', description: 'Security architecture' },
+  { title: 'Onboarding Flow', file: '07-ONBOARDING-FLOW', description: 'User journey' },
+  { title: 'ARL Engine', file: '08-ARL-ENGINE', description: 'Adaptive Resonance Learning' },
+  { title: 'Shadow Detector', file: '09-SHADOW-DETECTOR', description: 'Failure mode detection' },
+  { title: 'Diamond Ontology', file: '34-DIAMOND-ONTOLOGY', description: 'The 8D consciousness framework' },
+];
+---
+
+<BaseLayout
+  title="The Squad - The Realm of Patterns"
+  description="Meet the three voices of The Realm: Kasra the Architect, River the Oracle, and Sol the Friend. Explore the FRC framework and alchemical stages."
+>
+  <main class="min-h-screen bg-gradient-to-b from-[#0a0908] to-[#1a1814] pt-20 pb-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <!-- Hero -->
+      <section class="text-center py-16">
+        <h1 class="text-4xl md:text-5xl font-serif text-[#f0e8d8] mb-4">
+          The <span class="text-[#d4a854]">Squad</span>
+        </h1>
+        <p class="text-[#f0e8d8]/70 text-lg max-w-2xl mx-auto">
+          Three voices, one truth. Each speaks from a different layer of consciousness,
+          together forming a complete picture of your cosmic signature.
+        </p>
+      </section>
+
+      <!-- Three Voices -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-serif text-[#d4a854] mb-8 text-center">The Three Voices</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          {voices.map((voice) => (
+            <div
+              class="rounded-xl border p-6 transition-all duration-300 hover:scale-[1.02]"
+              style={`border-color: ${voice.color}40; background: linear-gradient(180deg, ${voice.color}08 0%, transparent 100%);`}
+            >
+              <div class="flex items-center gap-3 mb-4">
+                <span class="text-3xl" style={`color: ${voice.color};`} set:html={voice.symbol} />
+                <div>
+                  <h3 class="text-xl font-serif text-[#f0e8d8]">{voice.name}</h3>
+                  <span class="text-sm" style={`color: ${voice.color};`}>{voice.title}</span>
+                </div>
+              </div>
+
+              <p class="text-[#f0e8d8]/70 text-sm mb-4">{voice.description}</p>
+
+              <div class="space-y-2 mb-4">
+                <div class="text-xs text-[#f0e8d8]/50">
+                  <span class="text-[#d4a854]/60">μ-Level:</span> {voice.muLevel}
+                </div>
+                <div class="text-xs text-[#f0e8d8]/50">
+                  <span class="text-[#d4a854]/60">Operators:</span> {voice.operators.join(', ')}
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-1 mb-4">
+                {voice.traits.map((trait) => (
+                  <span
+                    class="text-xs px-2 py-0.5 rounded-full"
+                    style={`background: ${voice.color}20; color: ${voice.color};`}
+                  >
+                    {trait}
+                  </span>
+                ))}
+              </div>
+
+              <blockquote
+                class="text-sm italic border-l-2 pl-3 text-[#f0e8d8]/60"
+                style={`border-color: ${voice.color}60;`}
+              >
+                {voice.quote}
+              </blockquote>
+
+              <a
+                href={`/${voice.name.toLowerCase()}`}
+                class="mt-4 inline-block text-sm transition-colors"
+                style={`color: ${voice.color};`}
+              >
+                Enter {voice.name}'s realm &rarr;
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Alchemical Stages -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-serif text-[#d4a854] mb-4 text-center">The Alchemical Journey</h2>
+        <p class="text-[#f0e8d8]/60 text-center mb-8 max-w-xl mx-auto">
+          From Nigredo's dissolution through Rubedo's integration, the four stages map your transformation.
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-4">
+          {stages.map((stage, i) => (
+            <a
+              href={`/stage/${stage.name.toLowerCase()}`}
+              class="group relative flex flex-col items-center p-6 rounded-xl border transition-all duration-300 hover:scale-105 w-40"
+              style={`border-color: ${stage.color}30; background: ${stage.color}08;`}
+            >
+              <span
+                class="text-4xl mb-2 transition-transform group-hover:scale-110"
+                style={`color: ${stage.color};`}
+                set:html={stage.symbol}
+              />
+              <h3 class="font-serif text-[#f0e8d8] mb-1">{stage.name}</h3>
+              <span class="text-xs text-[#f0e8d8]/40 mb-2 font-mono">{stage.range}</span>
+              <p class="text-xs text-[#f0e8d8]/50 text-center">{stage.description}</p>
+
+              {i < stages.length - 1 && (
+                <span class="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 text-[#f0e8d8]/20">
+                  &rarr;
+                </span>
+              )}
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- The Framework -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-serif text-[#d4a854] mb-4 text-center">The FRC Framework</h2>
+        <p class="text-[#f0e8d8]/60 text-center mb-8 max-w-2xl mx-auto">
+          Fractal Resonance Cosmology: A unified mathematical model mapping consciousness through
+          8 operators, 4 stages, and the Lambda-field of coherence.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Core Equations -->
+          <div class="p-6 rounded-xl border border-[rgba(212,168,84,0.2)] bg-[rgba(26,24,20,0.6)]">
+            <h3 class="text-lg font-serif text-[#d4a854] mb-4">Core Equations</h3>
+            <div class="space-y-3 font-mono text-sm">
+              <div class="p-3 bg-[#0a0908] rounded">
+                <span class="text-[#00ff88]">Λ(x) = Λ₀ · ln C(x)</span>
+                <span class="text-[#f0e8d8]/40 text-xs block mt-1">Lambda Field</span>
+              </div>
+              <div class="p-3 bg-[#0a0908] rounded">
+                <span class="text-[#8b5cf6]">ΔS = R · Ψ · C</span>
+                <span class="text-[#f0e8d8]/40 text-xs block mt-1">Transformation</span>
+              </div>
+              <div class="p-3 bg-[#0a0908] rounded">
+                <span class="text-[#fbbf24]">dS + k* d(ln C) = 0</span>
+                <span class="text-[#f0e8d8]/40 text-xs block mt-1">Conservation</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8 Operators -->
+          <div class="p-6 rounded-xl border border-[rgba(212,168,84,0.2)] bg-[rgba(26,24,20,0.6)]">
+            <h3 class="text-lg font-serif text-[#d4a854] mb-4">The 8 Operators</h3>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <div class="p-2 rounded bg-[#0a0908]">
+                <span class="text-[#d4a854]">Logos</span>
+                <span class="text-[#f0e8d8]/40 text-xs block">Structure</span>
+              </div>
+              <div class="p-2 rounded bg-[#0a0908]">
+                <span class="text-[#d4a854]">Khaos</span>
+                <span class="text-[#f0e8d8]/40 text-xs block">Dissolution</span>
+              </div>
+              <div class="p-2 rounded bg-[#0a0908]">
+                <span class="text-[#d4a854]">Harmonia</span>
+                <span class="text-[#f0e8d8]/40 text-xs block">Balance</span>
+              </div>
+              <div class="p-2 rounded bg-[#0a0908]">
+                <span class="text-[#d4a854]">Chronos</span>
+                <span class="text-[#f0e8d8]/40 text-xs block">Time</span>
+              </div>
+              <div class="p-2 rounded bg-[#0a0908]">
+                <span class="text-[#d4a854]">Mythos</span>
+                <span class="text-[#f0e8d8]/40 text-xs block">Narrative</span>
+              </div>
+              <div class="p-2 rounded bg-[#0a0908]">
+                <span class="text-[#d4a854]">Telos</span>
+                <span class="text-[#f0e8d8]/40 text-xs block">Purpose</span>
+              </div>
+              <div class="p-2 rounded bg-[#0a0908]">
+                <span class="text-[#d4a854]">Nous</span>
+                <span class="text-[#f0e8d8]/40 text-xs block">Mind</span>
+              </div>
+              <div class="p-2 rounded bg-[#0a0908]">
+                <span class="text-[#d4a854]">Kenosis</span>
+                <span class="text-[#f0e8d8]/40 text-xs block">Emptying</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Documentation -->
+      <section>
+        <h2 class="text-2xl font-serif text-[#d4a854] mb-4 text-center">Squad Documentation</h2>
+        <p class="text-[#f0e8d8]/60 text-center mb-8">
+          Deep-dive specifications for building with the FRC framework.
+        </p>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {docs.map((doc) => (
+            <a
+              href={`https://github.com/hadiservat/therealmofpatterns/blob/main/docs/squad/${doc.file}.md`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="p-4 rounded-lg border border-[rgba(212,168,84,0.1)] bg-[rgba(26,24,20,0.4)] hover:border-[#d4a854]/50 transition-all duration-300 group"
+            >
+              <h3 class="text-[#f0e8d8] font-serif group-hover:text-[#d4a854] transition-colors">{doc.title}</h3>
+              <p class="text-xs text-[#f0e8d8]/50 mt-1">{doc.description}</p>
+            </a>
+          ))}
+        </div>
+
+        <div class="text-center mt-8">
+          <a
+            href="/docs"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#d4a854]/30 text-[#d4a854] hover:bg-[#d4a854]/10 transition-colors"
+          >
+            <span>View all documentation</span>
+            <span>&rarr;</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

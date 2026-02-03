@@ -24,6 +24,7 @@ export {
   $user,
   $isOnboarded,
   $hasEmail,
+  $isUserHydrated,
   $innerOctaveArray,
   setEmail,
   setPro,

@@ -44,26 +44,34 @@ const defaultUser: UserState = {
 };
 
 export const $user = map<UserState>(defaultUser);
+export const $isUserHydrated = atom<boolean>(false);
 
-// Initialize from localStorage
+// Initialize from localStorage after hydration to avoid mismatches
 if (typeof window !== 'undefined') {
-  const saved = localStorage.getItem('rop_user');
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      $user.set({ ...defaultUser, ...parsed });
-    } catch (e) {
-      console.error('Failed to parse saved user data');
+  // Defer to avoid hydration mismatches
+  requestAnimationFrame(() => {
+    const saved = localStorage.getItem('rop_user');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        $user.set({ ...defaultUser, ...parsed });
+      } catch (e) {
+        console.error('Failed to parse saved user data');
+      }
     }
-  }
-}
+    $isUserHydrated.set(true);
+  });
 
-// Persist changes to localStorage
-$user.subscribe((user) => {
-  if (typeof window !== 'undefined') {
+  // Persist changes to localStorage (skip initial hydration)
+  let isFirstRun = true;
+  $user.subscribe((user) => {
+    if (isFirstRun) {
+      isFirstRun = false;
+      return;
+    }
     localStorage.setItem('rop_user', JSON.stringify(user));
-  }
-});
+  });
+}
 
 // =====================
 // USER ACTIONS

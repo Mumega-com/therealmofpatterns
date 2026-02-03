@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline | The Realm of Patterns</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background: #0a0908;
+      color: #f0e8d8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+    .symbol {
+      font-size: 4rem;
+      color: #d4a854;
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: rgba(240, 232, 216, 0.6);
+      max-width: 400px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .retry-btn {
+      padding: 0.75rem 2rem;
+      background: #d4a854;
+      color: #0a0908;
+      border: none;
+      font-family: inherit;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .retry-btn:hover {
+      background: #e5b964;
+    }
+  </style>
+</head>
+<body>
+  <div class="symbol">◎</div>
+  <h1>You're Offline</h1>
+  <p>The pattern awaits your return. Connect to the network to continue your journey.</p>
+  <button class="retry-btn" onclick="location.reload()">Try Again</button>
+</body>
+</html>
