@@ -1,0 +1,273 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+// Jungian concept data with 16D mapping
+const JUNGIAN_CONCEPTS: Record<string, {
+  name: string;
+  symbol: string;
+  primaryDimension: string;
+  secondaryDimension: string;
+  summary: string;
+  description: string;
+  dimensionalMapping: string;
+  integration: string;
+  quote: string;
+  quoteAuthor: string;
+}> = {
+  shadow: {
+    name: 'The Shadow',
+    symbol: '◐',
+    primaryDimension: 'Φ (Field)',
+    secondaryDimension: 'P (Phase)',
+    summary: 'The unconscious aspects of personality that the conscious ego does not identify with.',
+    description: 'The Shadow represents everything we have rejected, denied, or repressed about ourselves. It contains not only destructive impulses but also undeveloped positive qualities—creativity, spontaneity, and authentic vitality that we have learned to hide. In the 16D framework, the Shadow correlates with dimensions operating below conscious awareness, particularly where your lowest-scored dimensions reveal what remains in darkness.',
+    dimensionalMapping: 'A strong Phase (P) with weak Field (Φ) suggests shadow material around surrender and non-attachment. Conversely, strong Field with weak Phase indicates shadow around assertion and will. Your least activated dimensions point directly to shadow content waiting to be integrated.',
+    integration: 'Shadow work in the 16D system involves consciously engaging your weakest dimensions. If Relation (R) is your shadow, practice authentic connection. If Action (Δ) is suppressed, reclaim your capacity for decisive movement. Integration increases Kappa (κ) and leads toward wholeness.',
+    quote: 'One does not become enlightened by imagining figures of light, but by making the darkness conscious.',
+    quoteAuthor: 'Carl Jung'
+  },
+  anima: {
+    name: 'Anima',
+    symbol: '☽',
+    primaryDimension: 'R (Relation)',
+    secondaryDimension: 'V (Value)',
+    summary: 'The unconscious feminine aspect within a man\'s psyche, mediating between ego and the collective unconscious.',
+    description: 'The Anima represents the soul-image, carrying qualities typically associated with receptivity, feeling, connection, and beauty. In Jungian psychology, she appears in dreams and projections, guiding toward deeper psychological integration. Within the 16D system, the Anima correlates strongly with the Relation (R) and Value (V) dimensions—the capacity for empathic connection and aesthetic appreciation.',
+    dimensionalMapping: 'High R and V scores indicate conscious access to Anima qualities. If these dimensions are underdeveloped, Anima content may project onto external figures, creating fascination or idealization. The path involves reclaiming these qualities as internal resources rather than seeking them solely in others.',
+    integration: 'Anima integration means developing your capacity for authentic relating, emotional depth, and appreciation of beauty and meaning. This involves strengthening the R and V dimensions through conscious practice—cultivating empathy, engaging with art, and allowing receptive states.',
+    quote: 'The Anima is the archetype of life itself.',
+    quoteAuthor: 'Carl Jung'
+  },
+  animus: {
+    name: 'Animus',
+    symbol: '☉',
+    primaryDimension: 'P (Phase)',
+    secondaryDimension: 'Δ (Action)',
+    summary: 'The unconscious masculine aspect within a woman\'s psyche, representing logos, spirit, and meaning.',
+    description: 'The Animus represents the soul\'s masculine aspect, associated with assertiveness, rationality, meaning-making, and purposeful action. Like the Anima, it can appear in projections and dreams, either as guide or adversary depending on the relationship to these qualities. In 16D terms, the Animus correlates with Phase (P) and Action (Δ)—will, identity, and decisive movement.',
+    dimensionalMapping: 'Strong P and Δ indicate integrated Animus energy—clear purpose and capacity for action. When these dimensions are weak, Animus content may project as attraction to or conflict with assertive external figures. The work involves owning these capacities internally.',
+    integration: 'Integrating the Animus means developing your authentic voice, capacity for logical analysis, and ability to take decisive action. This involves strengthening P and Δ through conscious practice—asserting boundaries, making decisions, and acting on convictions.',
+    quote: 'The Animus gives to woman\'s consciousness a capacity for reflection, deliberation, and self-knowledge.',
+    quoteAuthor: 'Carl Jung'
+  },
+  persona: {
+    name: 'Persona',
+    symbol: '⊙',
+    primaryDimension: 'E (Existence)',
+    secondaryDimension: 'P (Phase)',
+    summary: 'The social mask we present to the world, mediating between the ego and social reality.',
+    description: 'The Persona is the face we show to society—the roles, behaviors, and presentations we adopt for different contexts. It is necessary for social functioning but becomes problematic when identified with too completely. In 16D terms, the Persona relates to Existence (E) and Phase (P)—how we structure our presentation and the identity we project.',
+    dimensionalMapping: 'High E and P often correlate with strong, well-defined Personas. The challenge is maintaining flexibility—using the Persona as a tool rather than mistaking it for the true self. Low E or P may indicate difficulties establishing consistent social presence.',
+    integration: 'Healthy Persona integration means consciously crafting appropriate social faces while remaining connected to authentic self. The goal is flexibility—multiple contextual presentations all grounded in genuine identity rather than rigid roles or chameleon-like fragmentation.',
+    quote: 'The persona is a complicated system of relations between the individual consciousness and society.',
+    quoteAuthor: 'Carl Jung'
+  },
+  self: {
+    name: 'The Self',
+    symbol: '◎',
+    primaryDimension: 'Φ (Field)',
+    secondaryDimension: 'All dimensions unified',
+    summary: 'The archetype of wholeness and the regulating center of the psyche, transcending ego limitations.',
+    description: 'The Self represents the totality of the psyche—conscious and unconscious, personal and collective. It is both the circumference containing all aspects and the center organizing them. In 16D terms, the Self is reflected in Kappa (κ)—the measure of overall integration and coherence across all eight dimensions. The Field (Φ) dimension, representing witness consciousness, most directly points toward the Self.',
+    dimensionalMapping: 'High Kappa indicates Self-realization in progress—dimensions in harmony, contradictions reconciled, authentic center emerging. The Self isn\'t a destination but an ongoing process of integration. Field (Φ) provides the witnessing capacity that allows this integration.',
+    integration: 'Approaching the Self means continuous work on all dimensions, bringing shadow material to light, reconciling opposites, and developing the capacity to hold complexity without fragmentation. It is the goal of individuation—becoming who you truly are.',
+    quote: 'The Self is not only the centre but also the whole circumference which embraces both conscious and unconscious.',
+    quoteAuthor: 'Carl Jung'
+  },
+  individuation: {
+    name: 'Individuation',
+    symbol: '∞',
+    primaryDimension: 'κ (Kappa)',
+    secondaryDimension: 'All dimensions in process',
+    summary: 'The lifelong process of psychological integration and self-realization.',
+    description: 'Individuation is the central concept of Jungian psychology—the process by which a person becomes a psychological individual, a separate, indivisible unity. It involves integrating conscious and unconscious, developing all psychological functions, and realizing the Self. In 16D terms, individuation is the journey toward increasing Kappa (κ)—coherent, balanced development across all eight dimensions.',
+    dimensionalMapping: 'The 16D signature reveals your individuation path. Strongest dimensions show developed capacities; weakest indicate growth edges. The pattern of your vector—its peaks and valleys—is unique terrain only you can traverse.',
+    integration: 'Individuation isn\'t becoming perfect but becoming whole. It means embracing your unique pattern while continuously working on underdeveloped areas. The 16D system provides a map; individuation is walking the territory.',
+    quote: 'Individuation means becoming an in-dividual, and, insofar as individuality embraces our innermost, last, and incomparable uniqueness, it implies becoming one\'s own self.',
+    quoteAuthor: 'Carl Jung'
+  },
+  archetype: {
+    name: 'Archetypes',
+    symbol: '⬡',
+    primaryDimension: 'All dimensions as archetypal',
+    secondaryDimension: 'Collective unconscious',
+    summary: 'Universal patterns of behavior and imagery present in the collective unconscious.',
+    description: 'Archetypes are primordial patterns within the collective unconscious that shape human experience across cultures and eras. They include figures (Hero, Mother, Trickster), events (Birth, Death, Initiation), and motifs (Journey, Transformation). In 16D terms, each dimension can be understood as an archetypal field—P as the Hero archetype, R as the Caregiver, Δ as the Warrior, and so on.',
+    dimensionalMapping: 'P (Phase) = The Hero, The King\nE (Existence) = The Builder, The Sage\nμ (Cognition) = The Messenger, The Trickster\nV (Value) = The Lover, The Artist\nN (Expansion) = The Explorer, The Philosopher\nΔ (Action) = The Warrior, The Revolutionary\nR (Relation) = The Caregiver, The Healer\nΦ (Field) = The Mystic, The Witness',
+    integration: 'Working with archetypes means recognizing which patterns are active in your life and developing conscious relationship with them. Strong dimensions indicate activated archetypes; weak dimensions suggest dormant or shadow archetypes seeking expression.',
+    quote: 'Archetypes are the great decisive forces, they bring about real events, and not our personal reasoning and practical intellect.',
+    quoteAuthor: 'Carl Jung'
+  },
+  complex: {
+    name: 'Complexes',
+    symbol: '⊗',
+    primaryDimension: 'Distorted dimensions',
+    secondaryDimension: 'P (Phase) - ego complex',
+    summary: 'Emotionally charged clusters of ideas and images that act as autonomous forces within the psyche.',
+    description: 'A complex is a core pattern of emotions, memories, and perceptions organized around a common theme—mother complex, inferiority complex, power complex. Complexes form around archetypal cores and carry intense emotional charge. In 16D terms, complexes distort dimensional expression, creating either exaggerated or suppressed activation patterns.',
+    dimensionalMapping: 'A power complex might manifest as distorted P (Phase) and Δ (Action)—either compensatory grandiosity or profound disempowerment. An inferiority complex could suppress E (Existence) and P (Phase). Complexes create the peaks and valleys in your 16D signature beyond what pure constitution would predict.',
+    integration: 'Working with complexes means identifying emotionally charged patterns in your life and tracing them to their origins. Recognition begins dissolving their autonomous power. As complexes integrate, dimensional expression becomes more authentic and less reactive.',
+    quote: 'Everyone knows nowadays that people have complexes. What is not so well known, though far more important theoretically, is that complexes can have us.',
+    quoteAuthor: 'Carl Jung'
+  },
+  projection: {
+    name: 'Projection',
+    symbol: '➜',
+    primaryDimension: 'Weak dimensions projected',
+    secondaryDimension: 'R (Relation) as projection field',
+    summary: 'The unconscious transfer of our own qualities, feelings, or attitudes onto external objects or people.',
+    description: 'Projection is the mechanism by which unconscious contents—especially shadow material—are perceived as external rather than internal. We see in others what we cannot acknowledge in ourselves, whether positive or negative. In 16D terms, our weakest dimensions are most likely to be projected onto others, creating attraction, repulsion, or fascination.',
+    dimensionalMapping: 'If your V (Value) is low, you may be captivated by beautiful, artistic people—projecting your undeveloped aesthetic capacity. If Δ (Action) is weak, you might be drawn to or repelled by highly assertive individuals. The Relation (R) dimension is where projections most commonly play out in interpersonal dynamics.',
+    integration: 'Withdrawing projections means recognizing that what captivates or repels you in others often reflects unintegrated parts of yourself. Ask: "What quality in this person am I unable to see in myself?" Reclaiming projections develops weak dimensions and increases authenticity in relationships.',
+    quote: 'Projections change the world into the replica of one\'s own unknown face.',
+    quoteAuthor: 'Carl Jung'
+  },
+  synchronicity: {
+    name: 'Synchronicity',
+    symbol: '⟳',
+    primaryDimension: 'Φ (Field)',
+    secondaryDimension: 'N (Expansion)',
+    summary: 'Meaningful coincidences that cannot be explained by cause and effect.',
+    description: 'Synchronicity describes events connected by meaning rather than causality—the meaningful coincidence of outer and inner events. Jung saw it as evidence that psyche and world are not entirely separate. In 16D terms, synchronicity relates to the Field (Φ) dimension—the unified ground from which apparent separations arise—and Expansion (N)—the meaning-making capacity that perceives patterns.',
+    dimensionalMapping: 'High Φ (Field) correlates with sensitivity to synchronistic events—awareness of the interconnected nature of reality. High N (Expansion) provides the meaning-making lens that recognizes significance in coincidence. Together, these dimensions open perception to the acausal connecting principle Jung described.',
+    integration: 'Working with synchronicity means developing attention to meaningful coincidence without falling into superstition. It requires balancing μ (Cognition)—rational analysis—with Φ (Field)—intuitive receptivity. Synchronicities often increase during periods of psychological transformation.',
+    quote: 'Synchronicity is an ever present reality for those who have eyes to see.',
+    quoteAuthor: 'Carl Jung'
+  }
+};
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'shadow' }, props: { slug: 'shadow' } },
+    { params: { slug: 'anima' }, props: { slug: 'anima' } },
+    { params: { slug: 'animus' }, props: { slug: 'animus' } },
+    { params: { slug: 'persona' }, props: { slug: 'persona' } },
+    { params: { slug: 'self' }, props: { slug: 'self' } },
+    { params: { slug: 'individuation' }, props: { slug: 'individuation' } },
+    { params: { slug: 'archetype' }, props: { slug: 'archetype' } },
+    { params: { slug: 'complex' }, props: { slug: 'complex' } },
+    { params: { slug: 'projection' }, props: { slug: 'projection' } },
+    { params: { slug: 'synchronicity' }, props: { slug: 'synchronicity' } },
+  ];
+}
+
+const { slug } = Astro.params;
+const concept = JUNGIAN_CONCEPTS[slug];
+
+if (!concept) {
+  return Astro.redirect('/404');
+}
+---
+
+<BaseLayout
+  title={`${concept.name} - Jungian Concepts | The Realm of Patterns`}
+  description={concept.summary}
+>
+  <main class="min-h-screen bg-gradient-to-b from-[#0a0908] to-[#1a1814]">
+    <!-- Hero -->
+    <section class="pt-24 pb-12 px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <a href="/learn" class="inline-block text-[#d4a854]/70 text-sm mb-4 hover:text-[#d4a854]">
+          ← Back to Pattern Library
+        </a>
+        <div class="text-6xl text-[#8b5cf6] mb-4">{concept.symbol}</div>
+        <h1 class="text-4xl md:text-5xl font-serif text-[#f0e8d8] mb-4">
+          {concept.name}
+        </h1>
+        <p class="text-[#f0e8d8]/70 text-lg max-w-2xl mx-auto">
+          {concept.summary}
+        </p>
+        <div class="mt-6 flex justify-center gap-4 flex-wrap">
+          <span class="px-3 py-1 text-sm bg-[rgba(139,92,246,0.1)] text-[#8b5cf6] rounded-full border border-[rgba(139,92,246,0.2)]">
+            Primary: {concept.primaryDimension}
+          </span>
+          <span class="px-3 py-1 text-sm bg-[rgba(212,168,84,0.1)] text-[#d4a854] rounded-full border border-[rgba(212,168,84,0.2)]">
+            Secondary: {concept.secondaryDimension}
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote -->
+    <section class="py-8 px-4">
+      <div class="max-w-2xl mx-auto">
+        <blockquote class="border-l-4 border-[#8b5cf6] pl-6 py-2">
+          <p class="text-xl font-serif text-[#f0e8d8]/80 italic">
+            "{concept.quote}"
+          </p>
+          <cite class="text-[#d4a854] text-sm mt-2 block not-italic">
+            — {concept.quoteAuthor}
+          </cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- Description -->
+    <section class="py-8 px-4">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-serif text-[#d4a854] mb-4">Understanding {concept.name}</h2>
+        <p class="text-[#f0e8d8]/70 leading-relaxed">
+          {concept.description}
+        </p>
+      </div>
+    </section>
+
+    <!-- Dimensional Mapping -->
+    <section class="py-8 px-4">
+      <div class="max-w-3xl mx-auto">
+        <div class="bg-[rgba(139,92,246,0.05)] border border-[rgba(139,92,246,0.15)] rounded-xl p-6">
+          <h2 class="text-xl font-serif text-[#8b5cf6] mb-4 flex items-center gap-2">
+            <span>◎</span>
+            16D Mapping
+          </h2>
+          <p class="text-[#f0e8d8]/70 leading-relaxed whitespace-pre-line">
+            {concept.dimensionalMapping}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Integration -->
+    <section class="py-8 px-4 pb-16">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-serif text-[#d4a854] mb-4">Integration Path</h2>
+        <p class="text-[#f0e8d8]/70 leading-relaxed mb-8">
+          {concept.integration}
+        </p>
+
+        <!-- CTA -->
+        <div class="bg-[rgba(26,24,20,0.6)] border border-[rgba(212,168,84,0.15)] rounded-xl p-6 text-center">
+          <h3 class="text-lg font-serif text-[#f0e8d8] mb-2">
+            Explore your own {concept.name.toLowerCase()} patterns
+          </h3>
+          <p class="text-[#f0e8d8]/60 text-sm mb-4">
+            Take a check-in to see which dimensions hold shadow material for you.
+          </p>
+          <a
+            href="/sol/checkin"
+            class="inline-block px-6 py-2 bg-[#d4a854] text-[#0a0908] rounded-lg font-medium hover:bg-[#e5b964] transition-colors"
+          >
+            Start Check-in
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Concepts -->
+    <section class="py-8 px-4 border-t border-[rgba(212,168,84,0.1)]">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-lg font-serif text-[#d4a854] mb-4 text-center">Related Concepts</h2>
+        <div class="flex flex-wrap justify-center gap-3">
+          {Object.entries(JUNGIAN_CONCEPTS).filter(([key]) => key !== slug).slice(0, 5).map(([key, c]) => (
+            <a
+              href={`/en/jungian/${key}`}
+              class="px-4 py-2 text-sm text-[#f0e8d8]/70 border border-[rgba(139,92,246,0.2)] rounded-full hover:border-[#8b5cf6] hover:text-[#8b5cf6] transition-colors"
+            >
+              {c.symbol} {c.name}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

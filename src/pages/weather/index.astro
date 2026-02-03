@@ -1,0 +1,379 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { approximateLongitudes, compute8D, getDominant } from '../../lib/16d-engine';
+import { DIMENSION_METADATA } from '../../types';
+
+// Compute today's cosmic weather server-side
+const today = new Date();
+const dateKey = today.toISOString().split('T')[0];
+
+const birthData = {
+  year: today.getFullYear(),
+  month: today.getMonth() + 1,
+  day: today.getDate(),
+};
+
+const longitudes = approximateLongitudes(birthData);
+const vector = compute8D(longitudes);
+const dominant = getDominant(vector);
+
+// Get zodiac sign from longitude
+function getZodiacSign(longitude: number): string {
+  const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+                 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+  return signs[Math.floor(longitude / 30) % 12];
+}
+
+const sunSign = getZodiacSign(longitudes[0]);
+const moonSign = getZodiacSign(longitudes[1]);
+
+// Daily descriptions
+const dailyDescriptions: Record<string, string> = {
+  'P': 'Today\'s field emphasizes identity, will, and self-discovery. A powerful day for asserting your truth and taking initiative.',
+  'E': 'The cosmic weather favors building structure and working with material reality. Ground your visions into form.',
+  'μ': 'Communication and learning flow easily today. Share ideas, connect mentally, and stay curious.',
+  'V': 'Beauty and harmony dominate the field. Seek aesthetic experiences and nurture relationships.',
+  'N': 'Expansion energy is strong. Growth, meaning-making, and philosophical exploration are favored.',
+  'Δ': 'Action and movement characterize today\'s field. Channel energy into decisive action.',
+  'R': 'Relational energies are heightened. Nurture connections and practice empathy.',
+  'Φ': 'The witness dimension is activated. Practice presence, meditation, and observing without attachment.',
+};
+
+const formattedDate = today.toLocaleDateString('en-US', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<BaseLayout
+  title={`Cosmic Weather for ${formattedDate} | The Realm of Patterns`}
+  description={`Today's cosmic weather: ${dominant.name} (${dominant.symbol}) dominant. ${dailyDescriptions[dominant.symbol]?.slice(0, 100)}...`}
+>
+  <div class="weather-page">
+    <!-- Hero Section -->
+    <section class="weather-hero">
+      <div class="hero-content">
+        <p class="label">Daily Cosmic Weather</p>
+        <h1 class="date-title">{formattedDate}</h1>
+        <p class="subtitle">The collective field state for today</p>
+      </div>
+    </section>
+
+    <!-- Dominant Dimension -->
+    <section class="dominant-section">
+      <div class="dominant-card">
+        <div class="dominant-symbol">{dominant.symbol}</div>
+        <h2 class="dominant-name">{dominant.name}</h2>
+        <p class="dominant-domain">{DIMENSION_METADATA[dominant.symbol as keyof typeof DIMENSION_METADATA]?.domain}</p>
+        <p class="dominant-description">{dailyDescriptions[dominant.symbol]}</p>
+      </div>
+    </section>
+
+    <!-- 8D Vector Display -->
+    <section class="vector-section">
+      <h3 class="section-title">Today's 8D Field</h3>
+      <div class="vector-grid">
+        {Object.entries(DIMENSION_METADATA).map(([symbol, meta]) => {
+          const index = ['P', 'E', 'μ', 'V', 'N', 'Δ', 'R', 'Φ'].indexOf(symbol);
+          const value = vector[index];
+          const isHigh = value > 0.6;
+          return (
+            <div class={`vector-item ${isHigh ? 'high' : ''}`}>
+              <div class="vector-symbol">{symbol}</div>
+              <div class="vector-bar">
+                <div class="vector-fill" style={`width: ${value * 100}%`}></div>
+              </div>
+              <div class="vector-value">{(value * 100).toFixed(0)}%</div>
+              <div class="vector-name">{meta.name}</div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Planetary Influences -->
+    <section class="influences-section">
+      <h3 class="section-title">Planetary Influences</h3>
+      <div class="influences-grid">
+        <div class="influence-card sun">
+          <div class="influence-icon">☉</div>
+          <div class="influence-body">
+            <div class="influence-planet">Sun in {sunSign}</div>
+            <div class="influence-meaning">Core vitality and conscious direction</div>
+          </div>
+        </div>
+        <div class="influence-card moon">
+          <div class="influence-icon">☽</div>
+          <div class="influence-body">
+            <div class="influence-planet">Moon in {moonSign}</div>
+            <div class="influence-meaning">Emotional currents and intuitive flow</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <h3>Want personalized guidance?</h3>
+      <p>See how today's cosmic weather interacts with your unique 16D signature.</p>
+      <div class="cta-buttons">
+        <a href="/sol/checkin" class="btn btn-primary">Take a Check-in</a>
+        <a href="/subscribe" class="btn btn-secondary">Get Daily Readings</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .weather-page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #0a0908 0%, #1a1814 100%);
+  }
+
+  .weather-hero {
+    text-align: center;
+    padding: 4rem 1.5rem 3rem;
+    background: radial-gradient(ellipse at top, rgba(212, 168, 84, 0.1) 0%, transparent 50%);
+  }
+
+  .label {
+    color: #d4a854;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .date-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: #f0e8d8;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: rgba(240, 232, 216, 0.6);
+  }
+
+  .dominant-section {
+    padding: 0 1.5rem 3rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .dominant-card {
+    text-align: center;
+    padding: 2.5rem;
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    background: rgba(26, 24, 20, 0.6);
+    border-radius: 16px;
+  }
+
+  .dominant-symbol {
+    font-size: 4rem;
+    color: #d4a854;
+    margin-bottom: 0.5rem;
+  }
+
+  .dominant-name {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2rem;
+    color: #f0e8d8;
+    margin-bottom: 0.25rem;
+  }
+
+  .dominant-domain {
+    color: #d4a854;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .dominant-description {
+    color: rgba(240, 232, 216, 0.7);
+    line-height: 1.6;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.5rem;
+    color: #d4a854;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .vector-section {
+    padding: 2rem 1.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .vector-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .vector-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .vector-item {
+    padding: 1rem;
+    border: 1px solid rgba(212, 168, 84, 0.1);
+    background: rgba(26, 24, 20, 0.4);
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .vector-item.high {
+    border-color: rgba(212, 168, 84, 0.3);
+    background: rgba(212, 168, 84, 0.05);
+  }
+
+  .vector-symbol {
+    font-size: 1.5rem;
+    color: #d4a854;
+    margin-bottom: 0.5rem;
+  }
+
+  .vector-bar {
+    height: 4px;
+    background: rgba(212, 168, 84, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+
+  .vector-fill {
+    height: 100%;
+    background: #d4a854;
+    border-radius: 2px;
+  }
+
+  .vector-value {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.875rem;
+    color: #f0e8d8;
+  }
+
+  .vector-name {
+    font-size: 0.75rem;
+    color: rgba(240, 232, 216, 0.5);
+    margin-top: 0.25rem;
+  }
+
+  .influences-section {
+    padding: 2rem 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .influences-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .influences-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .influence-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(212, 168, 84, 0.15);
+    background: rgba(26, 24, 20, 0.4);
+    border-radius: 12px;
+  }
+
+  .influence-card.sun {
+    border-color: rgba(251, 191, 36, 0.2);
+  }
+
+  .influence-card.moon {
+    border-color: rgba(139, 92, 246, 0.2);
+  }
+
+  .influence-icon {
+    font-size: 2rem;
+  }
+
+  .influence-card.sun .influence-icon {
+    color: #fbbf24;
+  }
+
+  .influence-card.moon .influence-icon {
+    color: #8b5cf6;
+  }
+
+  .influence-planet {
+    font-weight: 500;
+    color: #f0e8d8;
+    margin-bottom: 0.25rem;
+  }
+
+  .influence-meaning {
+    font-size: 0.875rem;
+    color: rgba(240, 232, 216, 0.6);
+  }
+
+  .cta-section {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    border-top: 1px solid rgba(212, 168, 84, 0.1);
+    margin-top: 2rem;
+  }
+
+  .cta-section h3 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.5rem;
+    color: #f0e8d8;
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-section p {
+    color: rgba(240, 232, 216, 0.6);
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .btn-primary {
+    background: #d4a854;
+    color: #0a0908;
+  }
+
+  .btn-primary:hover {
+    background: #e5b964;
+  }
+
+  .btn-secondary {
+    border: 1px solid #d4a854;
+    color: #d4a854;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(212, 168, 84, 0.1);
+  }
+</style>

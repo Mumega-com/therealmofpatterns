@@ -1,0 +1,452 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+// Comprehensive dimension data
+const DIMENSIONS: Record<string, {
+  symbol: string;
+  name: string;
+  domain: string;
+  planet: string;
+  planetSymbol: string;
+  element: string;
+  color: string;
+  keywords: string[];
+  summary: string;
+  description: string;
+  highExpression: string;
+  lowExpression: string;
+  shadow: string;
+  development: string[];
+  jungianCorrelates: string[];
+  quote: string;
+  quoteAuthor: string;
+}> = {
+  phase: {
+    symbol: 'P',
+    name: 'Phase',
+    domain: 'Identity, Will',
+    planet: 'Sun',
+    planetSymbol: '☉',
+    element: 'Fire',
+    color: '#fbbf24',
+    keywords: ['Identity', 'Will', 'Purpose', 'Vitality', 'Self-Expression', 'Leadership'],
+    summary: 'The core of identity and conscious will—who you are and what you intend.',
+    description: 'Phase (P) represents the core self, the central organizing principle of consciousness. Like the Sun in our solar system, Phase is the gravitational center around which all other dimensions orbit. It encompasses identity, willpower, life force, and the capacity for self-expression. Phase is not personality but the deeper sense of "I am" that remains constant through all changes.',
+    highExpression: 'Strong Phase manifests as clear identity, natural leadership, vitality, and the ability to express oneself authentically. High-P individuals know who they are and move through the world with purpose. They inspire others not through domination but through the radiance of their being.',
+    lowExpression: 'When Phase is underdeveloped, there may be confusion about identity, difficulty asserting oneself, or a tendency to seek validation externally. Low-P can manifest as feeling invisible, powerless, or disconnected from one\'s core purpose.',
+    shadow: 'The shadow of Phase is the ego\'s inflation—narcissism, tyranny, or the need to be the center of attention. It can also manifest as false modesty or self-abnegation, denying one\'s light.',
+    development: [
+      'Practice making decisions aligned with your values',
+      'Express yourself creatively without seeking approval',
+      'Develop leadership in areas that matter to you',
+      'Cultivate physical vitality through movement and sun exposure',
+      'Learn to be comfortable with being seen'
+    ],
+    jungianCorrelates: ['The Hero archetype', 'Ego development', 'Individuation process'],
+    quote: 'To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.',
+    quoteAuthor: 'Ralph Waldo Emerson'
+  },
+  existence: {
+    symbol: 'E',
+    name: 'Existence',
+    domain: 'Structure, Form',
+    planet: 'Saturn',
+    planetSymbol: '♄',
+    element: 'Earth',
+    color: '#78716c',
+    keywords: ['Structure', 'Discipline', 'Boundaries', 'Time', 'Mastery', 'Responsibility'],
+    summary: 'The capacity to create form, structure, and lasting reality from vision.',
+    description: 'Existence (E) represents the capacity to manifest in the material world—to create structure, establish boundaries, and work with the constraints of time and form. Associated with Saturn, Existence is the architect of reality, transforming potential into actuality through discipline, commitment, and sustained effort.',
+    highExpression: 'Strong Existence manifests as organizational ability, discipline, reliability, and the capacity to build lasting structures—whether businesses, relationships, or creative works. High-E individuals understand that mastery requires time and are willing to pay the price of sustained effort.',
+    lowExpression: 'When Existence is weak, there may be difficulty with commitments, poor boundaries, inability to complete projects, or resistance to structure. Low-E can manifest as scattered energy, avoiding responsibility, or being unable to materialize visions.',
+    shadow: 'The shadow of Existence is rigidity—excessive control, workaholism, or using structure as a prison rather than a scaffold. It can also appear as harsh self-criticism or imposing unrealistic standards on others.',
+    development: [
+      'Commit to long-term projects and see them through',
+      'Establish daily routines and maintain them',
+      'Practice setting and enforcing healthy boundaries',
+      'Learn practical skills that create tangible results',
+      'Embrace appropriate limitations as creative constraints'
+    ],
+    jungianCorrelates: ['The Sage archetype', 'The Father complex', 'Senex energy'],
+    quote: 'We are what we repeatedly do. Excellence, then, is not an act, but a habit.',
+    quoteAuthor: 'Aristotle (via Will Durant)'
+  },
+  cognition: {
+    symbol: 'μ',
+    name: 'Cognition',
+    domain: 'Mind, Communication',
+    planet: 'Mercury',
+    planetSymbol: '☿',
+    element: 'Air',
+    color: '#22d3ee',
+    keywords: ['Thought', 'Communication', 'Learning', 'Curiosity', 'Analysis', 'Connection'],
+    summary: 'The mental faculty—thinking, learning, communicating, and processing information.',
+    description: 'Cognition (μ) represents the mind\'s capacity to think, learn, analyze, and communicate. Associated with Mercury, the messenger of the gods, Cognition governs how we process information, make connections, and share ideas. It is the bridge between inner experience and outer expression, between self and other.',
+    highExpression: 'Strong Cognition manifests as quick thinking, effective communication, intellectual curiosity, and the ability to see patterns and connections. High-μ individuals are natural learners, often multilingual in both literal and metaphorical senses—able to translate between different domains of knowledge.',
+    lowExpression: 'When Cognition is underdeveloped, there may be difficulty expressing thoughts, learning challenges, or feeling mentally scattered. Low-μ can manifest as communication breakdowns, overthinking without action, or difficulty processing complex information.',
+    shadow: 'The shadow of Cognition is trickster energy—manipulation, deception, or using intellect to avoid emotional engagement. It can also appear as excessive rationalization or getting lost in abstraction disconnected from reality.',
+    development: [
+      'Read widely across diverse subjects',
+      'Practice articulating complex ideas simply',
+      'Learn a new language or symbolic system',
+      'Engage in debates that challenge your thinking',
+      'Write regularly to clarify your thoughts'
+    ],
+    jungianCorrelates: ['The Trickster archetype', 'Mercurius', 'Thinking function'],
+    quote: 'The limits of my language mean the limits of my world.',
+    quoteAuthor: 'Ludwig Wittgenstein'
+  },
+  value: {
+    symbol: 'V',
+    name: 'Value',
+    domain: 'Beauty, Harmony',
+    planet: 'Venus',
+    planetSymbol: '♀',
+    element: 'Water',
+    color: '#f472b6',
+    keywords: ['Beauty', 'Harmony', 'Aesthetics', 'Love', 'Pleasure', 'Worth'],
+    summary: 'The sense of beauty, worth, and harmony—what we love and find valuable.',
+    description: 'Value (V) represents the capacity to perceive and create beauty, to appreciate worth, and to seek harmony in relationships and environment. Associated with Venus, Value governs aesthetics, pleasure, love, and the fundamental sense of what matters. It is the dimension that knows what is beautiful without needing to explain why.',
+    highExpression: 'Strong Value manifests as refined aesthetic sensibility, the ability to create beauty, attractiveness (both physical and energetic), and harmonious relationships. High-V individuals often work in creative fields and have a natural gift for making environments and experiences beautiful.',
+    lowExpression: 'When Value is weak, there may be difficulty appreciating beauty, challenges in relationships, or a utilitarian worldview that dismisses aesthetics as superficial. Low-V can manifest as harsh environments, neglected appearance, or inability to receive love and pleasure.',
+    shadow: 'The shadow of Value is vanity, superficiality, or the pursuit of pleasure at the expense of meaning. It can also appear as codependency—sacrificing self for the sake of harmony—or using attractiveness to manipulate.',
+    development: [
+      'Cultivate appreciation for art, music, and nature',
+      'Create beauty in your environment and appearance',
+      'Practice receiving compliments and gifts gracefully',
+      'Develop your sense of taste through exposure to quality',
+      'Notice and acknowledge what you find beautiful'
+    ],
+    jungianCorrelates: ['The Anima archetype', 'Eros', 'Feeling function'],
+    quote: 'Everything has beauty, but not everyone sees it.',
+    quoteAuthor: 'Confucius'
+  },
+  expansion: {
+    symbol: 'N',
+    name: 'Expansion',
+    domain: 'Growth, Meaning',
+    planet: 'Jupiter',
+    planetSymbol: '♃',
+    element: 'Fire',
+    color: '#a78bfa',
+    keywords: ['Growth', 'Meaning', 'Philosophy', 'Adventure', 'Faith', 'Vision'],
+    summary: 'The drive toward growth, meaning-making, and expanding horizons.',
+    description: 'Expansion (N) represents the impulse toward growth, the search for meaning, and the capacity to see the bigger picture. Associated with Jupiter, the largest planet, Expansion governs philosophy, faith, optimism, and the adventurous spirit that seeks to explore beyond current limits. It is the dimension that asks "why?" and "what does it all mean?"',
+    highExpression: 'Strong Expansion manifests as optimism, philosophical depth, ability to inspire others with vision, and a natural inclination toward growth and learning. High-N individuals are often teachers, philosophers, or adventurers—those who expand the boundaries of the known.',
+    lowExpression: 'When Expansion is underdeveloped, there may be a narrow worldview, difficulty finding meaning, or excessive pessimism. Low-N can manifest as fear of change, inability to dream big, or nihilistic tendencies.',
+    shadow: 'The shadow of Expansion is hubris—overreach, excessive optimism, or the guru complex. It can also appear as escapism, using philosophical abstraction to avoid dealing with present reality.',
+    development: [
+      'Travel to places that challenge your worldview',
+      'Study philosophy, religion, or meaning-making systems',
+      'Set goals that seem slightly beyond your reach',
+      'Seek out teachers and mentors',
+      'Practice articulating your personal philosophy'
+    ],
+    jungianCorrelates: ['The Explorer archetype', 'The Wise Old Man', 'Intuition function'],
+    quote: 'He who has a why to live can bear almost any how.',
+    quoteAuthor: 'Friedrich Nietzsche'
+  },
+  action: {
+    symbol: 'Δ',
+    name: 'Action',
+    domain: 'Force, Movement',
+    planet: 'Mars',
+    planetSymbol: '♂',
+    element: 'Fire',
+    color: '#ef4444',
+    keywords: ['Action', 'Courage', 'Energy', 'Competition', 'Assertion', 'Drive'],
+    summary: 'The capacity for decisive action, courage, and directed energy.',
+    description: 'Action (Δ) represents the capacity to act, to assert, to compete, and to direct energy toward goals. Associated with Mars, the warrior planet, Action governs courage, initiative, and the raw drive that overcomes obstacles. It is the dimension that moves—that transforms intention into motion.',
+    highExpression: 'Strong Action manifests as courage, initiative, healthy competitiveness, and the ability to act decisively under pressure. High-Δ individuals are often athletes, entrepreneurs, or leaders who thrive on challenge and aren\'t afraid of conflict.',
+    lowExpression: 'When Action is underdeveloped, there may be passivity, inability to assert boundaries, or avoidance of conflict. Low-Δ can manifest as paralysis by analysis, fear of confrontation, or letting others walk over you.',
+    shadow: 'The shadow of Action is aggression, violence, or recklessness. It can also appear as the need to win at all costs, bullying, or channeling anger destructively.',
+    development: [
+      'Practice physical activities that build strength and coordination',
+      'Set challenging goals and pursue them actively',
+      'Learn to express anger constructively',
+      'Take initiative in situations where you normally wait',
+      'Face fears through calculated risk-taking'
+    ],
+    jungianCorrelates: ['The Warrior archetype', 'Mars/Ares', 'Animus development'],
+    quote: 'The only impossible journey is the one you never begin.',
+    quoteAuthor: 'Tony Robbins'
+  },
+  relation: {
+    symbol: 'R',
+    name: 'Relation',
+    domain: 'Connection, Care',
+    planet: 'Moon',
+    planetSymbol: '☽',
+    element: 'Water',
+    color: '#c4b5fd',
+    keywords: ['Connection', 'Empathy', 'Nurturing', 'Emotion', 'Care', 'Belonging'],
+    summary: 'The capacity for emotional connection, empathy, and nurturing others.',
+    description: 'Relation (R) represents the capacity for emotional connection, empathy, and care. Associated with the Moon, Relation governs our inner emotional life, our ability to nurture and be nurtured, and our sense of belonging. It is the dimension that feels, that bonds, that creates the fabric of human connection.',
+    highExpression: 'Strong Relation manifests as emotional intelligence, nurturing capacity, deep empathy, and the ability to create and maintain meaningful bonds. High-R individuals often work in caregiving roles and create environments where others feel safe and seen.',
+    lowExpression: 'When Relation is weak, there may be difficulty with emotional intimacy, inability to care for self or others, or emotional numbness. Low-R can manifest as isolation, fear of vulnerability, or treating others as objects rather than beings.',
+    shadow: 'The shadow of Relation is smothering, codependency, or using care as control. It can also appear as emotional manipulation, playing the victim, or refusing to let others individuate.',
+    development: [
+      'Practice active listening without trying to fix',
+      'Allow yourself to be vulnerable with trusted others',
+      'Develop nurturing rituals for self and others',
+      'Work with a therapist to process emotional patterns',
+      'Create spaces where emotions are welcome'
+    ],
+    jungianCorrelates: ['The Mother archetype', 'Anima', 'Feeling function'],
+    quote: 'The meeting of two personalities is like the contact of two chemical substances: if there is any reaction, both are transformed.',
+    quoteAuthor: 'Carl Jung'
+  },
+  field: {
+    symbol: 'Φ',
+    name: 'Field',
+    domain: 'Unity, Witness',
+    planet: 'Neptune/Uranus',
+    planetSymbol: '♆',
+    element: 'Spirit',
+    color: '#8b5cf6',
+    keywords: ['Unity', 'Presence', 'Witness', 'Transcendence', 'Intuition', 'Oneness'],
+    summary: 'The witnessing awareness that transcends individual identity and perceives unity.',
+    description: 'Field (Φ) represents the transpersonal dimension—the capacity for presence, witness consciousness, and the direct perception of unity underlying apparent separation. Associated with Neptune and Uranus, Field governs mystical experience, intuition, and the awareness that observes without judgment. It is the dimension that knows we are not merely waves, but the ocean itself.',
+    highExpression: 'Strong Field manifests as natural presence, spiritual insight, the ability to hold space for others, and direct experience of interconnection. High-Φ individuals often work as healers, meditators, or spiritual teachers and can access states of consciousness beyond ordinary waking awareness.',
+    lowExpression: 'When Field is underdeveloped, there may be excessive identification with ego, inability to relax into being, or dismissal of spiritual dimensions. Low-Φ can manifest as spiritual materialism, purely mechanistic worldview, or anxiety about non-being.',
+    shadow: 'The shadow of Field is spiritual bypassing, dissolution into chaos, or losing ground in practical reality. It can also appear as delusions of enlightenment, messiah complexes, or addiction to altered states.',
+    development: [
+      'Establish a regular meditation or contemplation practice',
+      'Spend time in nature without agenda',
+      'Practice being present without doing',
+      'Study mystical traditions from multiple lineages',
+      'Develop sensitivity to subtle energies and intuition'
+    ],
+    jungianCorrelates: ['The Self', 'Collective unconscious', 'Transcendent function'],
+    quote: 'You are not a drop in the ocean. You are the entire ocean in a drop.',
+    quoteAuthor: 'Rumi'
+  }
+};
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'phase' }, props: { slug: 'phase' } },
+    { params: { slug: 'existence' }, props: { slug: 'existence' } },
+    { params: { slug: 'cognition' }, props: { slug: 'cognition' } },
+    { params: { slug: 'value' }, props: { slug: 'value' } },
+    { params: { slug: 'expansion' }, props: { slug: 'expansion' } },
+    { params: { slug: 'action' }, props: { slug: 'action' } },
+    { params: { slug: 'relation' }, props: { slug: 'relation' } },
+    { params: { slug: 'field' }, props: { slug: 'field' } },
+  ];
+}
+
+const { slug } = Astro.params;
+const dimension = DIMENSIONS[slug];
+
+if (!dimension) {
+  return Astro.redirect('/404');
+}
+
+const orderedDimensions = ['phase', 'existence', 'cognition', 'value', 'expansion', 'action', 'relation', 'field'];
+const currentIndex = orderedDimensions.indexOf(slug);
+const prevSlug = currentIndex > 0 ? orderedDimensions[currentIndex - 1] : null;
+const nextSlug = currentIndex < orderedDimensions.length - 1 ? orderedDimensions[currentIndex + 1] : null;
+---
+
+<BaseLayout
+  title={`${dimension.name} (${dimension.symbol}) - Dimension Guide | The Realm of Patterns`}
+  description={dimension.summary}
+>
+  <main class="min-h-screen bg-gradient-to-b from-[#0a0908] to-[#1a1814]">
+    <!-- Hero -->
+    <section class="pt-24 pb-8 px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <a href="/learn" class="inline-block text-[#d4a854]/70 text-sm mb-6 hover:text-[#d4a854]">
+          ← Back to Pattern Library
+        </a>
+
+        <div
+          class="text-7xl mb-4"
+          style={`color: ${dimension.color}`}
+        >
+          {dimension.symbol}
+        </div>
+        <h1 class="text-4xl md:text-5xl font-serif text-[#f0e8d8] mb-2">
+          {dimension.name}
+        </h1>
+        <p class="text-lg mb-4" style={`color: ${dimension.color}`}>
+          {dimension.domain}
+        </p>
+        <p class="text-[#f0e8d8]/70 max-w-xl mx-auto">
+          {dimension.summary}
+        </p>
+
+        <!-- Planet & Element -->
+        <div class="flex justify-center gap-6 mt-6">
+          <div class="text-center">
+            <span class="text-2xl">{dimension.planetSymbol}</span>
+            <p class="text-[#f0e8d8]/50 text-sm">{dimension.planet}</p>
+          </div>
+          <div class="text-center">
+            <span class="text-2xl">
+              {dimension.element === 'Fire' && '🔥'}
+              {dimension.element === 'Water' && '💧'}
+              {dimension.element === 'Air' && '💨'}
+              {dimension.element === 'Earth' && '🌍'}
+              {dimension.element === 'Spirit' && '✨'}
+            </span>
+            <p class="text-[#f0e8d8]/50 text-sm">{dimension.element}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote -->
+    <section class="py-6 px-4">
+      <div class="max-w-2xl mx-auto">
+        <blockquote class="border-l-4 pl-6 py-2" style={`border-color: ${dimension.color}`}>
+          <p class="text-xl font-serif text-[#f0e8d8]/80 italic">
+            "{dimension.quote}"
+          </p>
+          <cite class="text-[#d4a854] text-sm mt-2 block not-italic">
+            — {dimension.quoteAuthor}
+          </cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- Keywords -->
+    <section class="py-6 px-4">
+      <div class="max-w-3xl mx-auto">
+        <div class="flex flex-wrap justify-center gap-2">
+          {dimension.keywords.map(keyword => (
+            <span
+              class="px-3 py-1 rounded-full text-sm border"
+              style={`border-color: ${dimension.color}40; color: ${dimension.color}`}
+            >
+              {keyword}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Description -->
+    <section class="py-8 px-4">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-serif text-[#d4a854] mb-4">Understanding {dimension.name}</h2>
+        <p class="text-[#f0e8d8]/70 leading-relaxed">
+          {dimension.description}
+        </p>
+      </div>
+    </section>
+
+    <!-- High/Low Expression -->
+    <section class="py-8 px-4">
+      <div class="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">
+        <div class="p-6 rounded-xl border border-[rgba(34,197,94,0.2)] bg-[rgba(34,197,94,0.03)]">
+          <h3 class="text-lg font-serif text-[#22c55e] mb-3 flex items-center gap-2">
+            <span>↑</span>
+            High Expression
+          </h3>
+          <p class="text-[#f0e8d8]/70 text-sm leading-relaxed">
+            {dimension.highExpression}
+          </p>
+        </div>
+
+        <div class="p-6 rounded-xl border border-[rgba(239,68,68,0.2)] bg-[rgba(239,68,68,0.03)]">
+          <h3 class="text-lg font-serif text-[#ef4444] mb-3 flex items-center gap-2">
+            <span>↓</span>
+            Low Expression
+          </h3>
+          <p class="text-[#f0e8d8]/70 text-sm leading-relaxed">
+            {dimension.lowExpression}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shadow -->
+    <section class="py-8 px-4">
+      <div class="max-w-3xl mx-auto">
+        <div class="p-6 rounded-xl border border-[rgba(139,92,246,0.2)] bg-[rgba(139,92,246,0.03)]">
+          <h3 class="text-lg font-serif text-[#8b5cf6] mb-3 flex items-center gap-2">
+            <span>◐</span>
+            Shadow Aspect
+          </h3>
+          <p class="text-[#f0e8d8]/70 leading-relaxed">
+            {dimension.shadow}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Development -->
+    <section class="py-8 px-4">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-serif text-[#d4a854] mb-4">Developing {dimension.name}</h2>
+        <ul class="space-y-3">
+          {dimension.development.map((practice, i) => (
+            <li class="flex items-start gap-3">
+              <span class="text-[#d4a854]/60 font-mono text-sm mt-0.5">{String(i + 1).padStart(2, '0')}</span>
+              <span class="text-[#f0e8d8]/70">{practice}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Jungian Correlates -->
+    <section class="py-8 px-4">
+      <div class="max-w-3xl mx-auto">
+        <h3 class="text-lg font-serif text-[#8b5cf6] mb-4">Jungian Correlates</h3>
+        <div class="flex flex-wrap gap-2">
+          {dimension.jungianCorrelates.map(correlate => (
+            <span class="px-3 py-1.5 rounded-lg text-sm bg-[rgba(139,92,246,0.1)] text-[#8b5cf6] border border-[rgba(139,92,246,0.2)]">
+              {correlate}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation -->
+    <section class="py-8 px-4 border-t border-[rgba(212,168,84,0.1)]">
+      <div class="max-w-3xl mx-auto flex justify-between">
+        {prevSlug ? (
+          <a
+            href={`/en/dimension/${prevSlug}`}
+            class="flex items-center gap-2 text-[#f0e8d8]/60 hover:text-[#d4a854] transition-colors"
+          >
+            <span>←</span>
+            <span class="text-lg">{DIMENSIONS[prevSlug].symbol}</span>
+            <span class="text-sm">{DIMENSIONS[prevSlug].name}</span>
+          </a>
+        ) : <div />}
+
+        {nextSlug ? (
+          <a
+            href={`/en/dimension/${nextSlug}`}
+            class="flex items-center gap-2 text-[#f0e8d8]/60 hover:text-[#d4a854] transition-colors"
+          >
+            <span class="text-sm">{DIMENSIONS[nextSlug].name}</span>
+            <span class="text-lg">{DIMENSIONS[nextSlug].symbol}</span>
+            <span>→</span>
+          </a>
+        ) : <div />}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-12 px-4 text-center">
+      <h3 class="text-lg font-serif text-[#f0e8d8] mb-2">
+        Explore your {dimension.name} dimension
+      </h3>
+      <p class="text-[#f0e8d8]/60 text-sm mb-4 max-w-md mx-auto">
+        Take a check-in to discover how {dimension.name} manifests in your current field state.
+      </p>
+      <a
+        href="/sol/checkin"
+        class="inline-block px-6 py-2 bg-[#d4a854] text-[#0a0908] rounded-lg font-medium hover:bg-[#e5b964] transition-colors"
+      >
+        Start Check-in
+      </a>
+    </section>
+  </main>
+</BaseLayout>

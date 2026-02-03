@@ -5,6 +5,7 @@ interface FooterProps {
 const FOOTER_LINKS = {
   explore: [
     { href: '/theater', label: 'Cosmic Theater' },
+    { href: '/weather', label: 'Cosmic Weather' },
     { href: '/sol/checkin', label: 'Daily Check-in' },
     { href: '/learn', label: 'Learn' },
     { href: '/subscribe', label: 'Subscribe' },

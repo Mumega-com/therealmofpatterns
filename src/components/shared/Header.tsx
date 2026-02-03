@@ -65,10 +65,9 @@ export function Header({ className = '', currentLang = 'en', transparent = false
 
           {/* Right Side: Language, Mode, Mobile Menu */}
           <div className="flex items-center gap-2">
-            {/* Language Selector - Desktop */}
-            <div className="hidden sm:block">
-              <LanguageSelector currentLang={currentLang} />
-            </div>
+            {/* Language Selector - Always visible, compact on mobile */}
+            <LanguageSelector currentLang={currentLang} compact className="sm:hidden" />
+            <LanguageSelector currentLang={currentLang} className="hidden sm:block" />
 
             {/* Mode Toggle */}
             <ModeToggle />
