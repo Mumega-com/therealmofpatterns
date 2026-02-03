@@ -6,206 +6,1459 @@ import { Header } from '../components/shared/Header';
 <BaseLayout title="The Realm of Patterns - Personal Energy Forecasting">
   <Header client:load />
 
-  <main class="max-w-4xl mx-auto px-4 py-12">
-    <!-- Hero Section - Adapts to mode -->
-    <section class="text-center mb-16">
-      <!-- Kasra Hero -->
-      <div class="kasra-only">
-        <h1 class="text-kasra-display mb-4">
-          REALM OF PATTERNS
-        </h1>
-        <p class="text-kasra-body text-kasra-muted max-w-2xl mx-auto">
-          Personal coherence forecasting. Mathematical precision.
-          Track κ, RU, and μ-levels. Predict failure modes.
-          Optimize your windows.
-        </p>
-        <div class="mt-8 space-x-4">
-          <a href="/kasra/checkin" class="btn btn-primary">
-            Begin Check-in →
-          </a>
-          <a href="/kasra" class="btn opacity-60 hover:opacity-100">
-            View Dashboard
-          </a>
-        </div>
+  <!-- ============================================
+       KASRA MODE - Cyberpunk Terminal Aesthetic
+       ============================================ -->
+  <div class="kasra-only">
+    <div class="kasra-hero">
+      <!-- Animated grid background -->
+      <div class="kasra-grid-bg"></div>
+
+      <!-- Scanline overlay -->
+      <div class="kasra-scanlines"></div>
+
+      <!-- Floating data particles -->
+      <div class="kasra-particles">
+        <span class="particle" style="--delay: 0s; --x: 10%">κ=0.847</span>
+        <span class="particle" style="--delay: 0.5s; --x: 25%">RU:127</span>
+        <span class="particle" style="--delay: 1s; --x: 75%">μ4.2</span>
+        <span class="particle" style="--delay: 1.5s; --x: 85%">SYNC</span>
+        <span class="particle" style="--delay: 2s; --x: 40%">▲0.03</span>
+        <span class="particle" style="--delay: 2.5s; --x: 60%">NOMINAL</span>
       </div>
 
-      <!-- River Hero -->
-      <div class="river-only">
-        <div class="w-24 h-24 mx-auto mb-8 animate-breathe">
-          <svg viewBox="0 0 100 100" class="w-full h-full opacity-80">
-            <polygon
-              points="50,5 95,50 50,95 5,50"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1"
-            />
-            <polygon
-              points="50,20 80,50 50,80 20,50"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="0.5"
-              opacity="0.6"
-            />
+      <main class="kasra-content">
+        <!-- Terminal header -->
+        <div class="terminal-header">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <span class="terminal-title">PATTERN_INTERFACE_v2.0</span>
+        </div>
+
+        <!-- Main display -->
+        <div class="kasra-main-display">
+          <div class="glitch-container">
+            <h1 class="kasra-title" data-text="REALM://PATTERNS">REALM://PATTERNS</h1>
+          </div>
+
+          <div class="kasra-subtitle">
+            <span class="typing-text">COHERENCE FIELD ANALYSIS SYSTEM</span>
+            <span class="cursor">_</span>
+          </div>
+
+          <!-- Live metrics preview -->
+          <div class="kasra-metrics-preview">
+            <div class="metric-box">
+              <div class="metric-label">κ COEFFICIENT</div>
+              <div class="metric-value" id="kappa-display">0.000</div>
+              <div class="metric-bar"><div class="metric-fill kappa-fill"></div></div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">RESONANCE UNITS</div>
+              <div class="metric-value" id="ru-display">000</div>
+              <div class="metric-bar"><div class="metric-fill ru-fill"></div></div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">μ-LEVEL</div>
+              <div class="metric-value" id="mu-display">0.0</div>
+              <div class="metric-bar"><div class="metric-fill mu-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- Status line -->
+          <div class="kasra-status">
+            <span class="status-indicator online"></span>
+            <span class="status-text">SYSTEM ONLINE</span>
+            <span class="status-divider">|</span>
+            <span class="status-text">FIELD COHERENCE: STABLE</span>
+            <span class="status-divider">|</span>
+            <span class="status-text blink">AWAITING INPUT</span>
+          </div>
+
+          <!-- CTA buttons -->
+          <div class="kasra-cta">
+            <a href="/kasra/checkin" class="kasra-btn primary">
+              <span class="btn-icon">▶</span>
+              <span class="btn-text">INITIALIZE CHECK-IN</span>
+              <span class="btn-arrow">→</span>
+            </a>
+            <a href="/kasra" class="kasra-btn secondary">
+              <span class="btn-icon">◉</span>
+              <span class="btn-text">ACCESS DASHBOARD</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Feature cards -->
+        <div class="kasra-features">
+          <div class="feature-card">
+            <div class="feature-icon">◈</div>
+            <div class="feature-title">REAL-TIME METRICS</div>
+            <div class="feature-desc">Track κ, RU, μ-levels with millisecond precision</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚠</div>
+            <div class="feature-title">FAILURE DETECTION</div>
+            <div class="feature-desc">Early warning: collapse, inversion, dissociation</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">◎</div>
+            <div class="feature-title">OPTIMAL WINDOWS</div>
+            <div class="feature-desc">Precise time blocks for peak coherence</div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="kasra-footer">
+          <div class="footer-left">
+            <span class="key-hint">[K]</span> KASRA
+            <span class="key-hint">[R]</span> RIVER
+            <span class="key-hint">[S]</span> SOL
+          </div>
+          <div class="footer-right">
+            © 2026 REALM_OF_PATTERNS
+          </div>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <!-- ============================================
+       RIVER MODE - Mystical Alchemical Aesthetic
+       ============================================ -->
+  <div class="river-only">
+    <div class="river-hero">
+      <!-- Gradient background with stage awareness -->
+      <div class="river-bg-gradient"></div>
+
+      <!-- Floating symbols -->
+      <div class="river-symbols">
+        <span class="symbol" style="--delay: 0s; --x: 15%; --y: 20%">☽</span>
+        <span class="symbol" style="--delay: 1s; --x: 80%; --y: 15%">✧</span>
+        <span class="symbol" style="--delay: 2s; --x: 10%; --y: 70%">☉</span>
+        <span class="symbol" style="--delay: 3s; --x: 85%; --y: 75%">♦</span>
+        <span class="symbol" style="--delay: 0.5s; --x: 50%; --y: 85%">⚗</span>
+        <span class="symbol" style="--delay: 1.5s; --x: 25%; --y: 45%">◇</span>
+        <span class="symbol" style="--delay: 2.5s; --x: 70%; --y: 40%">△</span>
+      </div>
+
+      <main class="river-content">
+        <!-- Animated Mandala -->
+        <div class="mandala-container">
+          <svg class="mandala" viewBox="0 0 200 200">
+            <!-- Outer ring -->
+            <circle class="mandala-ring ring-1" cx="100" cy="100" r="95" />
+            <circle class="mandala-ring ring-2" cx="100" cy="100" r="80" />
+            <circle class="mandala-ring ring-3" cx="100" cy="100" r="65" />
+
+            <!-- Diamond shapes -->
+            <polygon class="mandala-diamond d-1" points="100,20 180,100 100,180 20,100" />
+            <polygon class="mandala-diamond d-2" points="100,35 165,100 100,165 35,100" />
+            <polygon class="mandala-diamond d-3" points="100,50 150,100 100,150 50,100" />
+
+            <!-- Center glyph -->
+            <circle class="mandala-center" cx="100" cy="100" r="25" />
+            <text class="mandala-glyph" x="100" y="108">☉</text>
           </svg>
         </div>
-        <h1 class="text-river-display mb-6">
-          The Realm of Patterns
+
+        <!-- Title -->
+        <h1 class="river-title">
+          <span class="title-line">The Realm</span>
+          <span class="title-line accent">of Patterns</span>
         </h1>
-        <p class="text-river-body max-w-xl mx-auto opacity-90">
-          Where mathematics meets meaning.<br />
-          Discover the patterns that shape your days.
+
+        <p class="river-subtitle">
+          Where mathematics meets meaning.<br/>
+          <em>Discover the patterns that shape your days.</em>
         </p>
-        <div class="mt-10 space-x-4">
-          <a href="/river/checkin" class="btn btn-primary text-lg">
-            Begin Your Journey
+
+        <!-- Stage indicator -->
+        <div class="stage-indicator">
+          <div class="stage nigredo" data-stage="nigredo">
+            <span class="stage-symbol">☽</span>
+            <span class="stage-name">Nigredo</span>
+          </div>
+          <div class="stage-connector"></div>
+          <div class="stage albedo" data-stage="albedo">
+            <span class="stage-symbol">✧</span>
+            <span class="stage-name">Albedo</span>
+          </div>
+          <div class="stage-connector"></div>
+          <div class="stage citrinitas active" data-stage="citrinitas">
+            <span class="stage-symbol">☉</span>
+            <span class="stage-name">Citrinitas</span>
+          </div>
+          <div class="stage-connector"></div>
+          <div class="stage rubedo" data-stage="rubedo">
+            <span class="stage-symbol">♦</span>
+            <span class="stage-name">Rubedo</span>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="river-cta">
+          <a href="/river/checkin" class="river-btn primary">
+            <span>Begin Your Journey</span>
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
           </a>
-          <a href="/river" class="btn opacity-60 hover:opacity-100">
-            View Reading
+          <a href="/river" class="river-btn secondary">
+            View Your Reading
           </a>
         </div>
+
+        <!-- Features -->
+        <div class="river-features">
+          <div class="river-feature">
+            <div class="feature-glyph">✧</div>
+            <h3>Daily Wisdom</h3>
+            <p>Guidance aligned with archetypal energies</p>
+          </div>
+          <div class="river-feature">
+            <div class="feature-glyph">◇</div>
+            <h3>Shadow Work</h3>
+            <p>Gentle alerts when the shadow stirs</p>
+          </div>
+          <div class="river-feature">
+            <div class="feature-glyph">☉</div>
+            <h3>Sacred Timing</h3>
+            <p>Know when currents favor action</p>
+          </div>
+        </div>
+
+        <!-- Quote -->
+        <blockquote class="river-quote">
+          "Know the pattern. Shape the pattern."
+        </blockquote>
+
+        <!-- Footer -->
+        <footer class="river-footer">
+          <div class="mode-switcher">
+            <span class="mode-key">K</span>
+            <span class="mode-key">R</span>
+            <span class="mode-key">S</span>
+          </div>
+          <p>© 2026 The Realm of Patterns</p>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SOL MODE - Warm Minimalist Aesthetic
+       ============================================ -->
+  <div class="sol-only">
+    <div class="sol-hero">
+      <!-- Warm gradient background -->
+      <div class="sol-bg">
+        <div class="sol-blob blob-1"></div>
+        <div class="sol-blob blob-2"></div>
+        <div class="sol-blob blob-3"></div>
       </div>
 
-      <!-- Sol Hero -->
-      <div class="sol-only">
-        <h1 class="text-sol-display mb-4">
-          Good to see you.
-        </h1>
-        <p class="text-sol-body text-sol-muted max-w-lg mx-auto">
-          Get a simple, personal forecast for your day.
+      <main class="sol-content">
+        <!-- Friendly greeting -->
+        <div class="sol-greeting">
+          <span class="wave">👋</span>
+          <h1 class="sol-title">
+            Good to see you<span class="period">.</span>
+          </h1>
+        </div>
+
+        <p class="sol-subtitle">
+          Get a simple, personal forecast for your day.<br/>
           No jargon. Just helpful guidance.
         </p>
-        <div class="mt-8 space-x-4">
-          <a href="/sol/checkin" class="btn btn-primary">
-            Get Today's Forecast
+
+        <!-- Quick stats preview -->
+        <div class="sol-preview-card">
+          <div class="preview-header">
+            <span class="preview-icon">☀️</span>
+            <span class="preview-title">Today's Outlook</span>
+          </div>
+          <div class="preview-content">
+            <div class="energy-ring">
+              <svg viewBox="0 0 100 100">
+                <circle class="ring-bg" cx="50" cy="50" r="45"/>
+                <circle class="ring-fill" cx="50" cy="50" r="45"/>
+              </svg>
+              <div class="energy-value">
+                <span class="value">73</span>
+                <span class="unit">%</span>
+              </div>
+            </div>
+            <div class="preview-details">
+              <div class="detail-item">
+                <span class="detail-emoji">⚡</span>
+                <span class="detail-label">Energy</span>
+                <span class="detail-value good">Good</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-emoji">🎯</span>
+                <span class="detail-label">Focus</span>
+                <span class="detail-value great">Great</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-emoji">💚</span>
+                <span class="detail-label">Overall</span>
+                <span class="detail-value good">Good day!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="sol-cta">
+          <a href="/sol/checkin" class="sol-btn primary">
+            <span>Get Your Forecast</span>
+            <span class="btn-emoji">→</span>
           </a>
-          <a href="/sol" class="btn opacity-60 hover:opacity-100">
+          <a href="/sol" class="sol-btn secondary">
             View Dashboard
           </a>
         </div>
-      </div>
-    </section>
 
-    <!-- Features Section -->
-    <section class="grid gap-6 md:grid-cols-3 mb-16">
-      <!-- Feature 1 -->
-      <div class="card p-6">
-        <div class="kasra-only">
-          <h3 class="text-kasra-h2 mb-2">Daily Metrics</h3>
-          <p class="text-kasra-body text-kasra-muted">
-            Track κ coherence, resonance units, and μ-level in real-time.
-          </p>
+        <!-- Features -->
+        <div class="sol-features">
+          <div class="sol-feature">
+            <span class="feature-emoji">📊</span>
+            <h3>Daily Forecast</h3>
+            <p>Simple insights for better days</p>
+          </div>
+          <div class="sol-feature">
+            <span class="feature-emoji">⏰</span>
+            <h3>Best Times</h3>
+            <p>Know when to act or rest</p>
+          </div>
+          <div class="sol-feature">
+            <span class="feature-emoji">💡</span>
+            <h3>Helpful Tips</h3>
+            <p>Practical guidance that works</p>
+          </div>
         </div>
-        <div class="river-only">
-          <h3 class="text-river-h2 mb-2">Daily Wisdom</h3>
-          <p class="text-river-body opacity-80">
-            Receive guidance aligned with the day's archetypal energies.
-          </p>
-        </div>
-        <div class="sol-only">
-          <h3 class="text-sol-h2 mb-2">Daily Forecast</h3>
-          <p class="text-sol-body text-sol-muted">
-            Simple insights about what to expect and how to navigate.
-          </p>
-        </div>
-      </div>
 
-      <!-- Feature 2 -->
-      <div class="card p-6">
-        <div class="kasra-only">
-          <h3 class="text-kasra-h2 mb-2">Failure Detection</h3>
-          <p class="text-kasra-body text-kasra-muted">
-            Early warning for collapse, inversion, dissociation, dispersion.
-          </p>
+        <!-- Trust badges -->
+        <div class="sol-trust">
+          <span class="trust-item">✓ Free forever</span>
+          <span class="trust-item">✓ Takes 30 seconds</span>
+          <span class="trust-item">✓ No account needed</span>
         </div>
-        <div class="river-only">
-          <h3 class="text-river-h2 mb-2">Shadow Work</h3>
-          <p class="text-river-body opacity-80">
-            Gentle alerts when the shadow stirs beneath.
-          </p>
-        </div>
-        <div class="sol-only">
-          <h3 class="text-sol-h2 mb-2">Heads Up</h3>
-          <p class="text-sol-body text-sol-muted">
-            Friendly warnings when things might get tricky.
-          </p>
-        </div>
-      </div>
 
-      <!-- Feature 3 -->
-      <div class="card p-6">
-        <div class="kasra-only">
-          <h3 class="text-kasra-h2 mb-2">Optimal Windows</h3>
-          <p class="text-kasra-body text-kasra-muted">
-            Precise time blocks where κ exceeds threshold for activities.
-          </p>
-        </div>
-        <div class="river-only">
-          <h3 class="text-river-h2 mb-2">Sacred Timing</h3>
-          <p class="text-river-body opacity-80">
-            Know when the currents favor action or stillness.
-          </p>
-        </div>
-        <div class="sol-only">
-          <h3 class="text-sol-h2 mb-2">Best Times</h3>
-          <p class="text-sol-body text-sol-muted">
-            Find out when to tackle big things and when to rest.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="text-center py-12 border-t border-current/10">
-      <div class="kasra-only">
-        <p class="text-kasra-body text-kasra-muted mb-4">
-          Data-driven. No mysticism. Just math.
-        </p>
-        <a href="/kasra/checkin" class="btn btn-primary">
-          Start Tracking →
-        </a>
-      </div>
-      <div class="river-only">
-        <p class="text-river-quote mb-6">
-          "Know the pattern. Shape the pattern."
-        </p>
-        <a href="/river/checkin" class="btn btn-primary">
-          Enter the Realm
-        </a>
-      </div>
-      <div class="sol-only">
-        <p class="text-sol-body text-sol-muted mb-4">
-          Takes 30 seconds. Free forever.
-        </p>
-        <a href="/sol/checkin" class="btn btn-primary">
-          Get Your Forecast
-        </a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="py-8 text-center opacity-50 text-sm">
-    <p>The Realm of Patterns &copy; 2026</p>
-    <p class="mt-1">Press K, R, or S to switch modes</p>
-  </footer>
+        <!-- Footer -->
+        <footer class="sol-footer">
+          <div class="mode-hint">
+            Press <kbd>K</kbd> <kbd>R</kbd> <kbd>S</kbd> to switch views
+          </div>
+          <p>© 2026 The Realm of Patterns</p>
+        </footer>
+      </main>
+    </div>
+  </div>
 </BaseLayout>
 
 <style>
-  /* Show/hide based on mode */
-  .kasra-only,
-  .river-only,
-  .sol-only {
+  /* ==========================================
+     MODE VISIBILITY
+     ========================================== */
+  .kasra-only, .river-only, .sol-only {
     display: none;
   }
+  :global([data-mode="kasra"]) .kasra-only { display: block; }
+  :global([data-mode="river"]) .river-only { display: block; }
+  :global([data-mode="sol"]) .sol-only { display: block; }
 
-  :global([data-mode="kasra"]) .kasra-only {
+  /* ==========================================
+     KASRA MODE STYLES
+     Cyberpunk Terminal Aesthetic
+     ========================================== */
+  .kasra-hero {
+    min-height: 100vh;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Geist Mono', 'SF Mono', monospace;
+  }
+
+  .kasra-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+  }
+
+  .kasra-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .kasra-particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    left: var(--x);
+    font-size: 0.7rem;
+    color: rgba(0, 255, 136, 0.4);
+    animation: particleFloat 8s ease-in-out infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes particleFloat {
+    0%, 100% { transform: translateY(100vh); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-20px); opacity: 0; }
+  }
+
+  .kasra-content {
+    position: relative;
+    z-index: 5;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 255, 136, 0.05);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    margin-bottom: 2rem;
+  }
+
+  .terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .terminal-dot.red { background: #ff5f56; }
+  .terminal-dot.yellow { background: #ffbd2e; }
+  .terminal-dot.green { background: #27ca40; }
+
+  .terminal-title {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: rgba(0, 255, 136, 0.6);
+    letter-spacing: 0.1em;
+  }
+
+  .kasra-main-display {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .glitch-container {
+    position: relative;
+  }
+
+  .kasra-title {
+    font-size: clamp(2rem, 8vw, 4.5rem);
+    font-weight: 700;
+    color: #00ff88;
+    text-shadow:
+      0 0 10px rgba(0, 255, 136, 0.8),
+      0 0 20px rgba(0, 255, 136, 0.6),
+      0 0 40px rgba(0, 255, 136, 0.4);
+    letter-spacing: 0.05em;
+    animation: glitch 3s infinite;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { text-shadow: 0 0 10px rgba(0, 255, 136, 0.8), 0 0 20px rgba(0, 255, 136, 0.6); }
+    92% { text-shadow: -2px 0 #ff0080, 2px 0 #00ffff; transform: translate(2px, 0); }
+    94% { text-shadow: 2px 0 #ff0080, -2px 0 #00ffff; transform: translate(-2px, 0); }
+    96% { text-shadow: 0 0 10px rgba(0, 255, 136, 0.8); transform: translate(0, 0); }
+  }
+
+  .kasra-subtitle {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: rgba(0, 255, 136, 0.7);
+    letter-spacing: 0.3em;
+  }
+
+  .typing-text {
+    display: inline;
+  }
+
+  .cursor {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  .kasra-metrics-preview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 3rem 0;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .metric-box {
+    padding: 1.5rem;
+    background: rgba(0, 255, 136, 0.03);
+    border: 1px solid rgba(0, 255, 136, 0.15);
+    position: relative;
+  }
+
+  .metric-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #00ff88, transparent);
+  }
+
+  .metric-label {
+    font-size: 0.65rem;
+    color: rgba(0, 255, 136, 0.5);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .metric-value {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #00ff88;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .metric-bar {
+    height: 3px;
+    background: rgba(0, 255, 136, 0.1);
+    margin-top: 0.75rem;
+    overflow: hidden;
+  }
+
+  .metric-fill {
+    height: 100%;
+    background: #00ff88;
+    box-shadow: 0 0 10px #00ff88;
+    transition: width 1s ease-out;
+  }
+
+  .kappa-fill { width: 73%; }
+  .ru-fill { width: 65%; }
+  .mu-fill { width: 58%; }
+
+  .kasra-status {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: rgba(0, 255, 136, 0.6);
+    margin-bottom: 2rem;
+  }
+
+  .status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00ff88;
+    box-shadow: 0 0 10px #00ff88;
+  }
+
+  .status-indicator.online {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .status-divider {
+    opacity: 0.3;
+  }
+
+  .blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  .kasra-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .kasra-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kasra-btn.primary {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid #00ff88;
+    color: #00ff88;
+  }
+
+  .kasra-btn.primary:hover {
+    background: #00ff88;
+    color: #000;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+  }
+
+  .kasra-btn.secondary {
+    background: transparent;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    color: rgba(0, 255, 136, 0.7);
+  }
+
+  .kasra-btn.secondary:hover {
+    border-color: #00ff88;
+    color: #00ff88;
+  }
+
+  .btn-arrow {
+    transition: transform 0.3s;
+  }
+
+  .kasra-btn:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .kasra-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 4rem;
+    width: 100%;
+  }
+
+  .feature-card {
+    padding: 1.5rem;
+    background: rgba(0, 255, 136, 0.02);
+    border: 1px solid rgba(0, 255, 136, 0.1);
+    transition: all 0.3s;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(0, 255, 136, 0.3);
+    background: rgba(0, 255, 136, 0.05);
+  }
+
+  .feature-icon {
+    font-size: 1.5rem;
+    color: #00ff88;
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-title {
+    font-size: 0.8rem;
+    color: #00ff88;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-desc {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
+  }
+
+  .kasra-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    margin-top: auto;
+    font-size: 0.7rem;
+    color: rgba(0, 255, 136, 0.4);
+    border-top: 1px solid rgba(0, 255, 136, 0.1);
+  }
+
+  .key-hint {
+    display: inline-block;
+    padding: 0.2rem 0.4rem;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    margin-right: 0.25rem;
+    font-size: 0.65rem;
+  }
+
+  /* ==========================================
+     RIVER MODE STYLES
+     Mystical Alchemical Aesthetic
+     ========================================== */
+  .river-hero {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+
+  .river-bg-gradient {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(212, 168, 84, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(212, 168, 84, 0.1) 0%, transparent 50%),
+      linear-gradient(180deg, #0f0d08 0%, #1a1812 50%, #0f0d08 100%);
+  }
+
+  .river-symbols {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .symbol {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    font-size: 1.5rem;
+    color: rgba(212, 168, 84, 0.2);
+    animation: symbolFloat 10s ease-in-out infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes symbolFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
+    50% { transform: translateY(-20px) rotate(10deg); opacity: 0.4; }
+  }
+
+  .river-content {
+    position: relative;
+    z-index: 5;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mandala-container {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 2rem;
+  }
+
+  .mandala {
+    width: 100%;
+    height: 100%;
+    animation: mandalaRotate 60s linear infinite;
+  }
+
+  @keyframes mandalaRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .mandala-ring {
+    fill: none;
+    stroke: rgba(212, 168, 84, 0.2);
+    stroke-width: 0.5;
+  }
+
+  .ring-1 { animation: ringPulse 4s ease-in-out infinite; }
+  .ring-2 { animation: ringPulse 4s ease-in-out infinite 0.5s; }
+  .ring-3 { animation: ringPulse 4s ease-in-out infinite 1s; }
+
+  @keyframes ringPulse {
+    0%, 100% { stroke-opacity: 0.2; }
+    50% { stroke-opacity: 0.5; }
+  }
+
+  .mandala-diamond {
+    fill: none;
+    stroke: rgba(212, 168, 84, 0.3);
+    stroke-width: 0.5;
+  }
+
+  .d-1 { animation: diamondRotate 30s linear infinite reverse; }
+  .d-2 { animation: diamondRotate 25s linear infinite; }
+  .d-3 { animation: diamondRotate 20s linear infinite reverse; }
+
+  @keyframes diamondRotate {
+    from { transform: rotate(0deg); transform-origin: center; }
+    to { transform: rotate(360deg); transform-origin: center; }
+  }
+
+  .mandala-center {
+    fill: rgba(212, 168, 84, 0.1);
+    stroke: rgba(212, 168, 84, 0.4);
+    stroke-width: 1;
+  }
+
+  .mandala-glyph {
+    font-size: 24px;
+    fill: #d4a854;
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+
+  .river-title {
+    margin-bottom: 1.5rem;
+  }
+
+  .title-line {
+    display: block;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 300;
+    color: #f0e8d8;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+  }
+
+  .title-line.accent {
+    color: #d4a854;
+    font-style: italic;
+  }
+
+  .river-subtitle {
+    font-size: 1.25rem;
+    color: rgba(240, 232, 216, 0.7);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  .river-subtitle em {
+    color: #d4a854;
+  }
+
+  .stage-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    opacity: 0.4;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .stage:hover, .stage.active {
+    opacity: 1;
+  }
+
+  .stage.active .stage-symbol {
+    text-shadow: 0 0 20px currentColor;
+  }
+
+  .stage-symbol {
+    font-size: 1.5rem;
+  }
+
+  .stage[data-stage="nigredo"] { color: #8888aa; }
+  .stage[data-stage="albedo"] { color: #d0d0e0; }
+  .stage[data-stage="citrinitas"] { color: #d4a854; }
+  .stage[data-stage="rubedo"] { color: #c45050; }
+
+  .stage-name {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .stage-connector {
+    width: 30px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 168, 84, 0.3), transparent);
+  }
+
+  .river-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 4rem;
+  }
+
+  .river-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.4s;
+    border-radius: 2px;
+  }
+
+  .river-btn.primary {
+    background: linear-gradient(135deg, rgba(212, 168, 84, 0.2), rgba(212, 168, 84, 0.1));
+    border: 1px solid rgba(212, 168, 84, 0.4);
+    color: #d4a854;
+  }
+
+  .river-btn.primary:hover {
+    background: linear-gradient(135deg, rgba(212, 168, 84, 0.3), rgba(212, 168, 84, 0.2));
+    border-color: #d4a854;
+    box-shadow: 0 0 30px rgba(212, 168, 84, 0.2);
+  }
+
+  .river-btn .btn-arrow {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s;
+  }
+
+  .river-btn:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .river-btn.secondary {
+    color: rgba(240, 232, 216, 0.6);
+    border: 1px solid rgba(240, 232, 216, 0.2);
+  }
+
+  .river-btn.secondary:hover {
+    color: #f0e8d8;
+    border-color: rgba(240, 232, 216, 0.4);
+  }
+
+  .river-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+
+  .river-feature {
+    text-align: center;
+  }
+
+  .feature-glyph {
+    font-size: 2rem;
+    color: #d4a854;
+    margin-bottom: 0.75rem;
+    text-shadow: 0 0 20px rgba(212, 168, 84, 0.3);
+  }
+
+  .river-feature h3 {
+    font-size: 1.1rem;
+    color: #f0e8d8;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+
+  .river-feature p {
+    font-size: 0.95rem;
+    color: rgba(240, 232, 216, 0.5);
+  }
+
+  .river-quote {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: rgba(212, 168, 84, 0.6);
+    border-left: 2px solid rgba(212, 168, 84, 0.3);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .river-footer {
+    margin-top: auto;
+    padding-top: 2rem;
+    text-align: center;
+    color: rgba(240, 232, 216, 0.3);
+    font-size: 0.85rem;
+  }
+
+  .mode-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .mode-key {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    font-size: 0.75rem;
+    color: rgba(212, 168, 84, 0.5);
+  }
+
+  /* ==========================================
+     SOL MODE STYLES
+     Warm Minimalist Aesthetic
+     ========================================== */
+  .sol-hero {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #faf8f5;
+  }
+
+  .sol-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .sol-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: blobFloat 20s ease-in-out infinite;
+  }
+
+  .blob-1 {
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, #ffd4a3, #ffb366);
+    top: -100px;
+    right: -100px;
+    animation-delay: 0s;
+  }
+
+  .blob-2 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #d4a373, #c4956a);
+    bottom: -50px;
+    left: -50px;
+    animation-delay: -5s;
+  }
+
+  .blob-3 {
+    width: 250px;
+    height: 250px;
+    background: linear-gradient(135deg, #f5e6d3, #edd5b8);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -10s;
+  }
+
+  @keyframes blobFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -30px) scale(1.05); }
+    66% { transform: translate(-20px, 20px) scale(0.95); }
+  }
+
+  .sol-content {
+    position: relative;
+    z-index: 5;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .sol-greeting {
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+
+  .wave {
+    display: inline-block;
+    font-size: 3rem;
+    animation: wave 2s ease-in-out infinite;
+    transform-origin: 70% 70%;
+  }
+
+  @keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    10%, 30% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    40% { transform: rotate(-4deg); }
+    50%, 100% { transform: rotate(0deg); }
+  }
+
+  .sol-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: 600;
+    color: #2a2520;
+    margin-top: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .period {
+    color: #d4a373;
+  }
+
+  .sol-subtitle {
+    font-size: 1.1rem;
+    color: #8a8580;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .sol-preview-card {
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow:
+      0 4px 6px rgba(0, 0, 0, 0.02),
+      0 10px 40px rgba(0, 0, 0, 0.06);
+    margin-bottom: 2rem;
+  }
+
+  .preview-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .preview-icon {
+    font-size: 1.5rem;
+  }
+
+  .preview-title {
+    font-weight: 600;
+    color: #2a2520;
+  }
+
+  .preview-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .energy-ring {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+  }
+
+  .energy-ring svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .ring-bg {
+    fill: none;
+    stroke: #f0ebe5;
+    stroke-width: 8;
+  }
+
+  .ring-fill {
+    fill: none;
+    stroke: #d4a373;
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 76;
+    animation: ringFill 1.5s ease-out forwards;
+  }
+
+  @keyframes ringFill {
+    from { stroke-dashoffset: 283; }
+    to { stroke-dashoffset: 76; }
+  }
+
+  .energy-value {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .energy-value .value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #2a2520;
+  }
+
+  .energy-value .unit {
+    font-size: 0.9rem;
+    color: #8a8580;
+  }
+
+  .preview-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: left;
+  }
+
+  .detail-emoji {
+    font-size: 1.1rem;
+  }
+
+  .detail-label {
+    color: #8a8580;
+    font-size: 0.9rem;
+  }
+
+  .detail-value {
+    margin-left: auto;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  .detail-value.good { color: #4ade80; }
+  .detail-value.great { color: #d4a373; }
+
+  .sol-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+
+  .sol-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.3s;
+  }
+
+  .sol-btn.primary {
+    background: #d4a373;
+    color: white;
+    box-shadow: 0 4px 14px rgba(212, 163, 115, 0.3);
+  }
+
+  .sol-btn.primary:hover {
+    background: #c4956a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 163, 115, 0.4);
+  }
+
+  .sol-btn.secondary {
+    background: white;
+    color: #2a2520;
+    border: 1px solid #e8e4de;
+  }
+
+  .sol-btn.secondary:hover {
+    border-color: #d4a373;
+    color: #d4a373;
+  }
+
+  .btn-emoji {
+    transition: transform 0.3s;
+  }
+
+  .sol-btn:hover .btn-emoji {
+    transform: translateX(4px);
+  }
+
+  .sol-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 600px) {
+    .sol-features {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .sol-feature {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    transition: all 0.3s;
+  }
+
+  .sol-feature:hover {
+    background: white;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .feature-emoji {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
     display: block;
   }
 
-  :global([data-mode="river"]) .river-only {
-    display: block;
+  .sol-feature h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2a2520;
+    margin-bottom: 0.25rem;
   }
 
-  :global([data-mode="sol"]) .sol-only {
-    display: block;
+  .sol-feature p {
+    font-size: 0.85rem;
+    color: #8a8580;
+  }
+
+  .sol-trust {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .trust-item {
+    font-size: 0.85rem;
+    color: #8a8580;
+  }
+
+  .sol-footer {
+    margin-top: auto;
+    text-align: center;
+    color: #8a8580;
+    font-size: 0.85rem;
+  }
+
+  .mode-hint {
+    margin-bottom: 0.5rem;
+  }
+
+  .mode-hint kbd {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background: white;
+    border: 1px solid #e8e4de;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.75rem;
+    margin: 0 0.1rem;
   }
 </style>
+
+<script>
+  // Kasra mode: Animate metrics
+  function animateMetrics() {
+    const kappaEl = document.getElementById('kappa-display');
+    const ruEl = document.getElementById('ru-display');
+    const muEl = document.getElementById('mu-display');
+
+    if (!kappaEl || !ruEl || !muEl) return;
+
+    let kappa = 0;
+    let ru = 0;
+    let mu = 0;
+
+    const targetKappa = 0.847;
+    const targetRU = 127;
+    const targetMu = 4.2;
+
+    const duration = 2000;
+    const steps = 60;
+    const interval = duration / steps;
+
+    let step = 0;
+
+    const animate = setInterval(() => {
+      step++;
+      const progress = step / steps;
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      kappa = targetKappa * eased;
+      ru = Math.round(targetRU * eased);
+      mu = targetMu * eased;
+
+      kappaEl.textContent = kappa.toFixed(3);
+      ruEl.textContent = ru.toString().padStart(3, '0');
+      muEl.textContent = mu.toFixed(1);
+
+      if (step >= steps) {
+        clearInterval(animate);
+      }
+    }, interval);
+  }
+
+  // Run animation when Kasra mode is active
+  document.addEventListener('DOMContentLoaded', () => {
+    if (document.documentElement.dataset.mode === 'kasra') {
+      animateMetrics();
+    }
+
+    // Re-run on mode change
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-mode') {
+          if (document.documentElement.dataset.mode === 'kasra') {
+            animateMetrics();
+          }
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+  });
+</script>

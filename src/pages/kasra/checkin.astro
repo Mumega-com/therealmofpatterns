@@ -4,36 +4,79 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 <BaseLayout title="Check-in | Kasra Mode" description="Daily coherence assessment and pattern field analysis">
   <div class="kasra-checkin-page">
+    <!-- Animated Background -->
+    <div class="terminal-bg">
+      <div class="grid-lines"></div>
+      <div class="scan-line"></div>
+      <div class="data-rain" id="data-rain"></div>
+    </div>
+
     <!-- Header -->
     <header class="kasra-header">
-      <a href="/kasra" class="text-kasra-caption text-kasra-muted hover:text-kasra-text uppercase tracking-wider">
-        ← Back to Dashboard
+      <div class="terminal-top-bar">
+        <div class="terminal-dots">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green blink"></span>
+        </div>
+        <span class="terminal-title">COHERENCE_ASSESSMENT.exe</span>
+        <span class="terminal-status">▣ ACTIVE</span>
+      </div>
+
+      <a href="/kasra" class="back-link">
+        <span class="back-arrow">←</span>
+        <span class="back-text">RETURN_TO_DASHBOARD</span>
       </a>
-      <h1 class="text-kasra-h1 text-kasra-text uppercase tracking-wider mt-4">
-        DAILY CHECK-IN
-      </h1>
-      <p class="text-kasra-body text-kasra-muted mt-2">
-        Assess your current coherence state through a series of calibration questions.
-      </p>
+
+      <div class="header-content">
+        <h1 class="glitch-title" data-text="DAILY CHECK-IN">DAILY CHECK-IN</h1>
+        <p class="header-desc">
+          <span class="blink-cursor">▶</span> Initializing coherence calibration protocol...
+        </p>
+      </div>
+
+      <!-- Live stats preview -->
+      <div class="live-stats">
+        <div class="stat-item">
+          <span class="stat-label">SESSION</span>
+          <span class="stat-value" id="session-id">0x847F</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">TIME</span>
+          <span class="stat-value" id="current-time">--:--:--</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">STATUS</span>
+          <span class="stat-value status-ready">READY</span>
+        </div>
+      </div>
     </header>
 
     <!-- Check-in Component -->
     <main class="kasra-main">
-      <div id="checkin-container" class="max-w-xl mx-auto"></div>
+      <div id="checkin-container" class="checkin-wrapper"></div>
     </main>
 
     <!-- Info Footer -->
-    <footer class="kasra-info">
-      <div class="max-w-xl mx-auto">
-        <h3 class="text-kasra-caption text-kasra-muted uppercase tracking-wider mb-2">
-          About Check-ins
-        </h3>
-        <p class="text-kasra-body text-kasra-muted">
-          Regular check-ins help calibrate your personal κ coefficient and detect
-          potential failure modes before they manifest fully. For best results,
-          complete a check-in at the same time each day.
-        </p>
+    <footer class="kasra-footer">
+      <div class="footer-grid">
+        <div class="footer-stat">
+          <span class="footer-label">PROTOCOL</span>
+          <span class="footer-value">κ-CALIBRATION v2.4</span>
+        </div>
+        <div class="footer-stat">
+          <span class="footer-label">ACCURACY</span>
+          <span class="footer-value">±0.003 κ</span>
+        </div>
+        <div class="footer-stat">
+          <span class="footer-label">SAMPLES</span>
+          <span class="footer-value">6 DIMENSIONS</span>
+        </div>
       </div>
+      <p class="footer-note">
+        Regular calibrations improve pattern field tracking accuracy.
+        Optimal frequency: 1x daily at consistent intervals.
+      </p>
     </footer>
   </div>
 </BaseLayout>
@@ -41,28 +84,314 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <style>
   .kasra-checkin-page {
     min-height: 100vh;
-    padding: 1.5rem;
-    background: var(--kasra-bg);
-    font-family: var(--font-kasra);
+    padding: 1rem;
+    background: #0a0a0a;
+    font-family: 'Geist Mono', monospace;
+    position: relative;
+    overflow: hidden;
   }
 
+  /* Animated Background */
+  .terminal-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: grid-pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes grid-pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+  }
+
+  .scan-line {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.4), transparent);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    animation: scan 4s linear infinite;
+  }
+
+  @keyframes scan {
+    0% { top: -10%; }
+    100% { top: 110%; }
+  }
+
+  .data-rain {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0.3;
+  }
+
+  .data-rain span {
+    position: absolute;
+    top: -100%;
+    font-size: 10px;
+    color: #00ff88;
+    opacity: 0.6;
+    animation: rain-fall linear infinite;
+  }
+
+  @keyframes rain-fall {
+    0% { top: -10%; opacity: 0.6; }
+    100% { top: 110%; opacity: 0; }
+  }
+
+  /* Header */
   .kasra-header {
-    max-width: 36rem;
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
     margin: 0 auto 2rem;
   }
 
+  .terminal-top-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+    border: 1px solid #00ff88;
+    border-bottom: 2px solid #00ff88;
+    margin-bottom: 1.5rem;
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .dot-red { background: #ff5f56; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green { background: #27ca40; }
+
+  .dot.blink {
+    animation: dot-blink 2s ease-in-out infinite;
+  }
+
+  @keyframes dot-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .terminal-title {
+    flex: 1;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.05em;
+  }
+
+  .terminal-status {
+    font-size: 0.7rem;
+    color: #00ff88;
+    animation: status-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes status-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: #00ff88;
+  }
+
+  .back-arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  .back-link:hover .back-arrow {
+    transform: translateX(-4px);
+  }
+
+  .header-content {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .glitch-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #00ff88;
+    letter-spacing: 0.1em;
+    text-shadow:
+      0 0 10px rgba(0, 255, 136, 0.5),
+      0 0 20px rgba(0, 255, 136, 0.3);
+    position: relative;
+    animation: glitch-text 8s infinite;
+  }
+
+  @keyframes glitch-text {
+    0%, 93%, 100% {
+      text-shadow:
+        0 0 10px rgba(0, 255, 136, 0.5),
+        0 0 20px rgba(0, 255, 136, 0.3);
+    }
+    94% {
+      text-shadow:
+        -2px 0 #ff0040,
+        2px 0 #00d4ff;
+    }
+    95% {
+      text-shadow:
+        2px 0 #ff0040,
+        -2px 0 #00d4ff;
+    }
+    96% {
+      text-shadow:
+        0 0 10px rgba(0, 255, 136, 0.5),
+        0 0 20px rgba(0, 255, 136, 0.3);
+    }
+  }
+
+  .header-desc {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.75rem;
+  }
+
+  .blink-cursor {
+    animation: cursor-blink 1s step-end infinite;
+    margin-right: 0.25rem;
+  }
+
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Live Stats */
+  .live-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #00ff88;
+    border: 1px solid #00ff88;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem;
+    background: #0a0a0a;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-value {
+    font-size: 0.9rem;
+    color: #00ff88;
+    font-weight: 500;
+  }
+
+  .status-ready {
+    animation: status-blink 2s ease-in-out infinite;
+  }
+
+  @keyframes status-blink {
+    0%, 100% { color: #00ff88; }
+    50% { color: #00cc6a; }
+  }
+
+  /* Main */
   .kasra-main {
+    position: relative;
+    z-index: 1;
     margin-bottom: 3rem;
   }
 
-  .kasra-info {
-    padding-top: 2rem;
-    border-top: 1px solid var(--kasra-border);
+  .checkin-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
   }
 
+  /* Footer */
+  .kasra-footer {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0, 255, 136, 0.2);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer-stat {
+    text-align: center;
+  }
+
+  .footer-label {
+    display: block;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+  }
+
+  .footer-value {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .footer-note {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* Responsive */
   @media (min-width: 768px) {
     .kasra-checkin-page {
-      padding: 2rem 3rem;
+      padding: 2rem;
+    }
+
+    .glitch-title {
+      font-size: 2.5rem;
     }
   }
 </style>
@@ -76,15 +405,46 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   // Set mode to Kasra
   setMode('kasra');
 
-  // Mount React component
+  // Create data rain effect
+  function createDataRain() {
+    const container = document.getElementById('data-rain');
+    if (!container) return;
+
+    const chars = '01κμRU▲▼◆◇';
+
+    for (let i = 0; i < 30; i++) {
+      const span = document.createElement('span');
+      span.textContent = chars[Math.floor(Math.random() * chars.length)];
+      span.style.left = `${Math.random() * 100}%`;
+      span.style.animationDuration = `${4 + Math.random() * 6}s`;
+      span.style.animationDelay = `${Math.random() * 5}s`;
+      container.appendChild(span);
+    }
+  }
+
+  // Update live time
+  function updateTime() {
+    const timeEl = document.getElementById('current-time');
+    if (timeEl) {
+      const now = new Date();
+      timeEl.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+    }
+  }
+
+  // Initialize
   document.addEventListener('DOMContentLoaded', () => {
+    createDataRain();
+    updateTime();
+    setInterval(updateTime, 1000);
+
     const container = document.getElementById('checkin-container');
     if (container) {
       createRoot(container).render(
         createElement(KasraCheckin, {
           onComplete: (results) => {
             console.log('Check-in complete:', results);
-            // Could store results, send to API, etc.
+            // Trigger completion animation
+            document.querySelector('.kasra-checkin-page')?.classList.add('completed');
           }
         })
       );

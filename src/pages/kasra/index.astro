@@ -4,41 +4,120 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 <BaseLayout title="Dashboard | Kasra Mode" description="Real-time pattern field analysis and coherence metrics">
   <div class="kasra-dashboard">
+    <!-- Animated Background -->
+    <div class="dashboard-bg">
+      <div class="grid-lines"></div>
+      <div class="scan-line"></div>
+      <div class="data-particles" id="particles"></div>
+    </div>
+
     <!-- Header -->
-    <header class="kasra-header">
-      <div class="flex items-center justify-between">
-        <div>
-          <h1 class="text-kasra-h1 text-kasra-text uppercase tracking-wider">
-            SYSTEM STATUS
-          </h1>
-          <p class="text-kasra-caption text-kasra-muted mt-1">
-            Real-time coherence field analysis
-          </p>
+    <header class="dashboard-header">
+      <div class="header-bar">
+        <div class="header-left">
+          <div class="terminal-window">
+            <div class="terminal-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green pulse"></span>
+            </div>
+            <span class="terminal-title">PATTERN_FIELD_MONITOR</span>
+          </div>
+          <div class="header-info">
+            <h1 class="system-title">SYSTEM STATUS</h1>
+            <p class="system-subtitle">
+              <span class="blink">&#9654;</span> Real-time coherence field analysis
+            </p>
+          </div>
         </div>
-        <div id="status-badge"></div>
+        <div class="header-right">
+          <div id="status-badge"></div>
+          <a href="/kasra/checkin" class="checkin-btn">
+            <span class="btn-icon">&#9881;</span>
+            <span class="btn-text">CALIBRATE</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Live Metrics Bar -->
+      <div class="metrics-bar">
+        <div class="metric-item">
+          <span class="metric-label">UPTIME</span>
+          <span class="metric-value" id="uptime">00:00:00</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">SYNC</span>
+          <span class="metric-value pulse-green">ACTIVE</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">FIELD</span>
+          <span class="metric-value" id="field-status">NOMINAL</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">UTC</span>
+          <span class="metric-value" id="utc-time">--:--</span>
+        </div>
       </div>
     </header>
 
     <!-- Main Dashboard Grid -->
-    <main class="kasra-grid">
-      <!-- Left Column: Core Metrics -->
-      <section class="kasra-section" id="core-metrics">
-        <div id="forecast-display"></div>
-      </section>
+    <main class="dashboard-main">
+      <div class="dashboard-grid">
+        <!-- Left Column: Core Metrics -->
+        <section class="grid-column primary">
+          <div class="panel-header">
+            <span class="panel-icon">&#9673;</span>
+            <span class="panel-title">CORE METRICS</span>
+            <span class="panel-status">LIVE</span>
+          </div>
+          <div class="panel-content" id="forecast-display"></div>
+        </section>
 
-      <!-- Right Column: Details -->
-      <section class="kasra-section" id="detail-panels">
-        <div id="failure-mode"></div>
-        <div id="aspects-display" class="mt-4"></div>
-        <div id="windows-display" class="mt-4"></div>
-      </section>
+        <!-- Right Column: Detail Panels -->
+        <section class="grid-column secondary">
+          <!-- Failure Mode Panel -->
+          <div class="detail-panel">
+            <div class="panel-header">
+              <span class="panel-icon">&#9888;</span>
+              <span class="panel-title">FAILURE DETECTION</span>
+            </div>
+            <div class="panel-content" id="failure-mode"></div>
+          </div>
+
+          <!-- Aspects Panel -->
+          <div class="detail-panel">
+            <div class="panel-header">
+              <span class="panel-icon">&#10038;</span>
+              <span class="panel-title">ASPECT MATRIX</span>
+            </div>
+            <div class="panel-content" id="aspects-display"></div>
+          </div>
+
+          <!-- Windows Panel -->
+          <div class="detail-panel">
+            <div class="panel-header">
+              <span class="panel-icon">&#9201;</span>
+              <span class="panel-title">OPTIMAL WINDOWS</span>
+            </div>
+            <div class="panel-content" id="windows-display"></div>
+          </div>
+        </section>
+      </div>
     </main>
 
     <!-- Footer -->
-    <footer class="kasra-footer">
-      <div class="flex items-center justify-between text-kasra-caption text-kasra-muted">
-        <span>κ-ENGINE v0.1.0</span>
+    <footer class="dashboard-footer">
+      <div class="footer-left">
+        <span class="version">&#954;-ENGINE v2.4.0</span>
+        <span class="separator">|</span>
+        <span class="build">BUILD 847F</span>
+      </div>
+      <div class="footer-center">
         <span id="timestamp"></span>
+      </div>
+      <div class="footer-right">
+        <span class="status-light"></span>
+        <span class="status-text">SYSTEMS OPERATIONAL</span>
       </div>
     </footer>
   </div>
@@ -48,46 +127,362 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .kasra-dashboard {
     min-height: 100vh;
     padding: 1rem;
-    background: var(--kasra-bg);
-    font-family: var(--font-kasra);
+    background: #050508;
+    font-family: 'Geist Mono', monospace;
+    position: relative;
+    overflow-x: hidden;
   }
 
-  .kasra-header {
+  /* Animated Background */
+  .dashboard-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  .scan-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+    animation: scan 6s linear infinite;
+  }
+
+  @keyframes scan {
+    0% { top: -2%; }
+    100% { top: 102%; }
+  }
+
+  .data-particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .data-particles span {
+    position: absolute;
+    font-size: 10px;
+    color: #00ff88;
+    opacity: 0.2;
+    animation: float-up 8s linear infinite;
+  }
+
+  @keyframes float-up {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0.2; }
+    50% { opacity: 0.4; }
+    100% { transform: translateY(-100px) rotate(180deg); opacity: 0; }
+  }
+
+  /* Header */
+  .dashboard-header {
+    position: relative;
+    z-index: 1;
     margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--kasra-border);
   }
 
-  .kasra-grid {
+  .header-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background: linear-gradient(180deg, rgba(0, 255, 136, 0.05) 0%, transparent 100%);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-bottom: 2px solid #00ff88;
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .header-bar {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .terminal-window {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot.red { background: #ff5f56; }
+  .dot.yellow { background: #ffbd2e; }
+  .dot.green { background: #27ca40; }
+
+  .dot.pulse {
+    animation: dot-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes dot-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .terminal-title {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.1em;
+  }
+
+  .system-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #00ff88;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+  }
+
+  .system-subtitle {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.25rem;
+  }
+
+  .blink {
+    animation: blink 1s step-end infinite;
+    margin-right: 0.25rem;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .checkin-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: transparent;
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+  }
+
+  .checkin-btn:hover {
+    background: rgba(0, 255, 136, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+  }
+
+  .btn-icon {
+    font-size: 1rem;
+  }
+
+  /* Metrics Bar */
+  .metrics-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(0, 255, 136, 0.3);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+  }
+
+  @media (min-width: 640px) {
+    .metrics-bar {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem;
+    background: #050508;
+  }
+
+  .metric-label {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.25rem;
+  }
+
+  .metric-value {
+    font-size: 0.85rem;
+    color: #00ff88;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pulse-green {
+    animation: pulse-green 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-green {
+    0%, 100% { color: #00ff88; }
+    50% { color: #00cc6a; }
+  }
+
+  /* Main Dashboard */
+  .dashboard-main {
+    position: relative;
+    z-index: 1;
+  }
+
+  .dashboard-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  @media (min-width: 768px) {
-    .kasra-grid {
-      grid-template-columns: 1fr 1fr;
+  @media (min-width: 1024px) {
+    .dashboard-grid {
+      grid-template-columns: 1.5fr 1fr;
     }
   }
 
+  .grid-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(90deg, rgba(0, 255, 136, 0.1) 0%, transparent 100%);
+    border-left: 2px solid #00ff88;
+    margin-bottom: 0.5rem;
+  }
+
+  .panel-icon {
+    font-size: 0.9rem;
+    color: #00ff88;
+  }
+
+  .panel-title {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.1em;
+    flex: 1;
+  }
+
+  .panel-status {
+    font-size: 0.65rem;
+    color: #00ff88;
+    padding: 0.2rem 0.5rem;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    animation: status-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes status-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  .detail-panel {
+    background: rgba(0, 255, 136, 0.02);
+    border: 1px solid rgba(0, 255, 136, 0.1);
+  }
+
+  .panel-content {
+    padding: 1rem;
+  }
+
+  /* Footer */
+  .dashboard-footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(0, 255, 136, 0.2);
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  @media (min-width: 768px) {
+    .dashboard-footer {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .footer-left, .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .separator {
+    opacity: 0.3;
+  }
+
+  .footer-center {
+    color: #00ff88;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status-light {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00ff88;
+    animation: status-blink 2s ease-in-out infinite;
+  }
+
+  @keyframes status-blink {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px #00ff88; }
+    50% { opacity: 0.5; box-shadow: none; }
+  }
+
+  .status-text {
+    color: #00ff88;
+    letter-spacing: 0.05em;
+  }
+
+  /* Responsive */
   @media (min-width: 1024px) {
     .kasra-dashboard {
-      padding: 2rem;
+      padding: 1.5rem 2rem;
     }
 
-    .kasra-grid {
-      grid-template-columns: 2fr 1fr;
+    .system-title {
+      font-size: 1.75rem;
     }
-  }
-
-  .kasra-section {
-    min-height: 200px;
-  }
-
-  .kasra-footer {
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--kasra-border);
   }
 </style>
 
@@ -103,8 +498,62 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   // Set mode to Kasra
   setMode('kasra');
 
+  // Create floating particles
+  function createParticles() {
+    const container = document.getElementById('particles');
+    if (!container) return;
+
+    const chars = ['0', '1', 'κ', 'μ', 'Δ', '◆', '▲'];
+
+    for (let i = 0; i < 20; i++) {
+      const span = document.createElement('span');
+      span.textContent = chars[Math.floor(Math.random() * chars.length)];
+      span.style.left = `${Math.random() * 100}%`;
+      span.style.animationDuration = `${6 + Math.random() * 8}s`;
+      span.style.animationDelay = `${Math.random() * 8}s`;
+      container.appendChild(span);
+    }
+  }
+
+  // Update timers
+  let startTime = Date.now();
+
+  function updateTimers() {
+    // Uptime
+    const uptimeEl = document.getElementById('uptime');
+    if (uptimeEl) {
+      const elapsed = Date.now() - startTime;
+      const hours = Math.floor(elapsed / 3600000).toString().padStart(2, '0');
+      const mins = Math.floor((elapsed % 3600000) / 60000).toString().padStart(2, '0');
+      const secs = Math.floor((elapsed % 60000) / 1000).toString().padStart(2, '0');
+      uptimeEl.textContent = `${hours}:${mins}:${secs}`;
+    }
+
+    // UTC Time
+    const utcEl = document.getElementById('utc-time');
+    if (utcEl) {
+      const now = new Date();
+      utcEl.textContent = now.toLocaleTimeString('en-US', {
+        hour12: false,
+        timeZone: 'UTC',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // Timestamp
+    const timestampEl = document.getElementById('timestamp');
+    if (timestampEl) {
+      timestampEl.textContent = new Date().toISOString();
+    }
+  }
+
   // Mount React components
   document.addEventListener('DOMContentLoaded', () => {
+    createParticles();
+    updateTimers();
+    setInterval(updateTimers, 1000);
+
     // Status Badge
     const badgeEl = document.getElementById('status-badge');
     if (badgeEl) {
@@ -133,16 +582,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const windowsEl = document.getElementById('windows-display');
     if (windowsEl) {
       createRoot(windowsEl).render(createElement(KasraWindows));
-    }
-
-    // Timestamp
-    const timestampEl = document.getElementById('timestamp');
-    if (timestampEl) {
-      const updateTimestamp = () => {
-        timestampEl.textContent = new Date().toISOString();
-      };
-      updateTimestamp();
-      setInterval(updateTimestamp, 1000);
     }
   });
 </script>

@@ -4,39 +4,101 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 <BaseLayout title="Today's Forecast | Sol" description="Your friendly daily guide to navigating energy and focus">
   <div class="sol-page">
+    <!-- Warm Background -->
+    <div class="warm-bg">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="floating-shapes" id="floating-shapes"></div>
+    </div>
+
     <!-- Header -->
     <header class="sol-header">
-      <div class="flex items-center justify-between mb-6">
-        <div>
-          <h1 class="text-sol-h1 text-sol-text">Hey there! 👋</h1>
-          <p class="text-sol-body text-sol-muted mt-1" id="greeting"></p>
+      <div class="header-content">
+        <div class="greeting-section">
+          <div class="wave-emoji">&#128075;</div>
+          <div class="greeting-text">
+            <h1 class="greeting-title">Hey there!</h1>
+            <p class="greeting-subtitle" id="greeting"></p>
+          </div>
         </div>
-        <a href="/sol/checkin" class="sol-checkin-btn">
-          <span class="text-xl">📝</span>
-          <span>Quick check-in</span>
+
+        <a href="/sol/checkin" class="checkin-btn">
+          <span class="btn-emoji">&#128221;</span>
+          <span class="btn-text">Quick check-in</span>
+          <span class="btn-badge">1 min</span>
         </a>
+      </div>
+
+      <!-- Energy Overview -->
+      <div class="energy-overview">
+        <div class="energy-card">
+          <div class="energy-ring" id="energy-ring">
+            <svg viewBox="0 0 100 100">
+              <circle class="ring-bg" cx="50" cy="50" r="42" />
+              <circle class="ring-fill" cx="50" cy="50" r="42" id="ring-fill" />
+            </svg>
+            <div class="energy-value" id="energy-value">--</div>
+          </div>
+          <div class="energy-info">
+            <span class="energy-label">Today's Energy</span>
+            <span class="energy-status" id="energy-status">Loading...</span>
+          </div>
+        </div>
+
+        <div class="quick-stats">
+          <div class="quick-stat">
+            <span class="stat-emoji">&#127793;</span>
+            <span class="stat-value" id="best-time">Morning</span>
+            <span class="stat-label">Best time today</span>
+          </div>
+          <div class="quick-stat">
+            <span class="stat-emoji">&#10024;</span>
+            <span class="stat-value" id="streak">3 days</span>
+            <span class="stat-label">Check-in streak</span>
+          </div>
+        </div>
       </div>
     </header>
 
     <!-- Main Content -->
     <main class="sol-main">
-      <div class="sol-grid">
-        <!-- Forecast -->
-        <section id="forecast-section">
-          <div id="sol-forecast"></div>
+      <div class="content-grid">
+        <!-- Forecast Section -->
+        <section class="content-card forecast-card">
+          <div class="card-header">
+            <span class="card-emoji">&#127774;</span>
+            <h2 class="card-title">Your Daily Forecast</h2>
+          </div>
+          <div class="card-content" id="sol-forecast"></div>
         </section>
 
-        <!-- Windows -->
-        <section id="windows-section">
-          <div id="sol-windows"></div>
+        <!-- Windows Section -->
+        <section class="content-card windows-card">
+          <div class="card-header">
+            <span class="card-emoji">&#9200;</span>
+            <h2 class="card-title">Best Times Today</h2>
+          </div>
+          <div class="card-content" id="sol-windows"></div>
         </section>
       </div>
+
+      <!-- Tips Section -->
+      <section class="tips-section">
+        <div class="tip-card" id="daily-tip">
+          <span class="tip-emoji">&#128161;</span>
+          <div class="tip-content">
+            <strong>Today's tip:</strong>
+            <span id="tip-text">Focus on your most important task during your peak energy window.</span>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- Footer -->
     <footer class="sol-footer">
-      <p class="text-sol-caption text-sol-muted text-center">
-        Made with 💚 to help you have better days
+      <p class="footer-text">
+        Made with <span class="heart">&#128154;</span> to help you have better days
       </p>
     </footer>
   </div>
@@ -46,50 +108,400 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .sol-page {
     min-height: 100vh;
     padding: 1.5rem;
-    max-width: 64rem;
-    margin: 0 auto;
+    font-family: 'Inter', -apple-system, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+    background: linear-gradient(180deg, #faf8f5 0%, #f5f0e8 100%);
   }
 
+  /* Warm Background */
+  .warm-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: blob-move 20s ease-in-out infinite;
+  }
+
+  .blob-1 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.2) 0%, transparent 70%);
+    top: -100px;
+    right: -50px;
+    animation-delay: 0s;
+  }
+
+  .blob-2 {
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(249, 115, 22, 0.12) 0%, transparent 70%);
+    bottom: 10%;
+    left: -80px;
+    animation-delay: -7s;
+  }
+
+  .blob-3 {
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.08) 0%, transparent 70%);
+    top: 50%;
+    right: 20%;
+    animation-delay: -14s;
+  }
+
+  @keyframes blob-move {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 30px) scale(0.95); }
+  }
+
+  .floating-shapes {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .floating-shapes span {
+    position: absolute;
+    opacity: 0.15;
+    animation: shape-float 15s ease-in-out infinite;
+  }
+
+  @keyframes shape-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(10deg); }
+  }
+
+  /* Header */
   .sol-header {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+  }
+
+  .header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
     margin-bottom: 2rem;
   }
 
-  .sol-checkin-btn {
+  @media (min-width: 640px) {
+    .header-content {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .greeting-section {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background: var(--sol-accent);
+    gap: 1rem;
+  }
+
+  .wave-emoji {
+    font-size: 3rem;
+    animation: wave 2.5s ease-in-out infinite;
+    transform-origin: 70% 70%;
+  }
+
+  @keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    10% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    30% { transform: rotate(14deg); }
+    40% { transform: rotate(-4deg); }
+    50% { transform: rotate(10deg); }
+    60%, 100% { transform: rotate(0deg); }
+  }
+
+  .greeting-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+  }
+
+  .greeting-subtitle {
+    font-size: 1rem;
+    color: #6b7280;
+  }
+
+  .checkin-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
     color: white;
-    border-radius: 0.75rem;
+    text-decoration: none;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .checkin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+  }
+
+  .btn-emoji {
+    font-size: 1.25rem;
+  }
+
+  .btn-badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
     font-weight: 500;
-    transition: opacity 0.2s;
   }
 
-  .sol-checkin-btn:hover {
-    opacity: 0.9;
+  /* Energy Overview */
+  .energy-overview {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   }
 
-  .sol-grid {
+  @media (min-width: 640px) {
+    .energy-overview {
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+    }
+  }
+
+  .energy-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .energy-ring {
+    position: relative;
+    width: 90px;
+    height: 90px;
+  }
+
+  .energy-ring svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .ring-bg {
+    fill: none;
+    stroke: #f3f4f6;
+    stroke-width: 8;
+  }
+
+  .ring-fill {
+    fill: none;
+    stroke: url(#energy-gradient);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 264;
+    stroke-dashoffset: 264;
+    transition: stroke-dashoffset 1.5s ease-out;
+  }
+
+  .energy-value {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  .energy-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .energy-label {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    font-weight: 500;
+  }
+
+  .energy-status {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .quick-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    background: #faf8f5;
+    border-radius: 16px;
+  }
+
+  .stat-emoji {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+  }
+
+  /* Main Content */
+  .sol-main {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .content-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
+  @media (min-width: 768px) {
+    .content-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .content-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .card-emoji {
+    font-size: 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
+
+  /* Tips Section */
+  .tips-section {
+    margin-top: 1.5rem;
+  }
+
+  .tip-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-radius: 16px;
+  }
+
+  .tip-emoji {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .tip-content {
+    font-size: 0.95rem;
+    color: #92400e;
+    line-height: 1.5;
+  }
+
+  .tip-content strong {
+    color: #78350f;
+  }
+
+  /* Footer */
+  .sol-footer {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 3rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .footer-text {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #9ca3af;
+  }
+
+  .heart {
+    display: inline-block;
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+
+  /* Responsive */
   @media (min-width: 768px) {
     .sol-page {
       padding: 2rem;
     }
 
-    .sol-grid {
-      grid-template-columns: 1fr 1fr;
+    .greeting-title {
+      font-size: 2rem;
     }
-  }
 
-  .sol-footer {
-    margin-top: 3rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--sol-border);
+    .energy-ring {
+      width: 100px;
+      height: 100px;
+    }
   }
 </style>
 
@@ -98,14 +510,36 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   import { createRoot } from 'react-dom/client';
   import { SolForecast } from '../../components/sol/SolForecast';
   import { SolWindows } from '../../components/sol/SolWindows';
-  import { setMode } from '../../stores';
+  import { setMode, $forecast } from '../../stores';
 
   // Set mode to Sol
   setMode('sol');
 
+  // Create floating shapes
+  function createFloatingShapes() {
+    const container = document.getElementById('floating-shapes');
+    if (!container) return;
+
+    const shapes = ['&#9733;', '&#9679;', '&#9670;', '&#9675;'];
+
+    for (let i = 0; i < 8; i++) {
+      const span = document.createElement('span');
+      span.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
+      span.style.left = `${Math.random() * 100}%`;
+      span.style.top = `${Math.random() * 100}%`;
+      span.style.fontSize = `${16 + Math.random() * 24}px`;
+      span.style.color = ['#fbbf24', '#f59e0b', '#ec4899', '#8b5cf6'][Math.floor(Math.random() * 4)];
+      span.style.animationDelay = `${Math.random() * 15}s`;
+      span.style.animationDuration = `${12 + Math.random() * 8}s`;
+      container.appendChild(span);
+    }
+  }
+
   // Set greeting based on time
-  const greetingEl = document.getElementById('greeting');
-  if (greetingEl) {
+  function setGreeting() {
+    const greetingEl = document.getElementById('greeting');
+    if (!greetingEl) return;
+
     const hour = new Date().getHours();
     let greeting = "Here's how your day is looking.";
     if (hour < 12) greeting = "Good morning! Here's your forecast for today.";
@@ -114,8 +548,76 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     greetingEl.textContent = greeting;
   }
 
-  // Mount React components
+  // Update energy ring
+  function updateEnergyRing() {
+    const forecast = $forecast.get();
+    const kappa = forecast.kappa || 0.73;
+    const percent = Math.round(kappa * 100);
+
+    // Update value
+    const valueEl = document.getElementById('energy-value');
+    if (valueEl) valueEl.textContent = `${percent}%`;
+
+    // Update ring
+    const ringEl = document.getElementById('ring-fill');
+    if (ringEl) {
+      const offset = 264 - (264 * kappa);
+      ringEl.style.strokeDashoffset = offset.toString();
+    }
+
+    // Update status
+    const statusEl = document.getElementById('energy-status');
+    if (statusEl) {
+      if (kappa >= 0.8) statusEl.textContent = "You're on fire today! &#127775;";
+      else if (kappa >= 0.6) statusEl.textContent = "Good vibes ahead &#128522;";
+      else if (kappa >= 0.4) statusEl.textContent = "A steady day &#128578;";
+      else statusEl.textContent = "Take it easy today &#128588;";
+    }
+  }
+
+  // Daily tips
+  const tips = [
+    "Focus on your most important task during your peak energy window.",
+    "Stay hydrated - it helps maintain focus and energy levels.",
+    "A short walk can help reset your energy in the afternoon.",
+    "Batch similar tasks together to maintain flow state.",
+    "Use low-energy times for routine or administrative tasks.",
+  ];
+
+  function setDailyTip() {
+    const tipEl = document.getElementById('tip-text');
+    if (tipEl) {
+      const dayIndex = new Date().getDate() % tips.length;
+      tipEl.textContent = tips[dayIndex];
+    }
+  }
+
+  // Initialize
   document.addEventListener('DOMContentLoaded', () => {
+    createFloatingShapes();
+    setGreeting();
+    setDailyTip();
+
+    // Add gradient definition for energy ring
+    const svg = document.querySelector('.energy-ring svg');
+    if (svg) {
+      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      defs.innerHTML = `
+        <linearGradient id="energy-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#fbbf24" />
+          <stop offset="100%" style="stop-color:#f59e0b" />
+        </linearGradient>
+      `;
+      svg.insertBefore(defs, svg.firstChild);
+    }
+
+    // Delay energy ring animation
+    setTimeout(updateEnergyRing, 500);
+
+    // Subscribe to forecast changes
+    $forecast.subscribe(updateEnergyRing);
+
+    // Mount React components
     const forecastEl = document.getElementById('sol-forecast');
     if (forecastEl) {
       createRoot(forecastEl).render(createElement(SolForecast));

@@ -3,35 +3,90 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Daily Reflection | River Mode" description="A moment of contemplation to know where you stand">
-  <div class="river-checkin-page">
+  <div class="river-checkin-page" id="river-page">
+    <!-- Mystical Background -->
+    <div class="mystic-bg">
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="gradient-orb orb-3"></div>
+      <div class="floating-symbols" id="floating-symbols"></div>
+      <div class="vignette"></div>
+    </div>
+
     <!-- Header -->
     <header class="river-header">
-      <a href="/river" class="river-caption opacity-50 hover:opacity-100 transition-opacity">
-        ← Return to Reading
+      <a href="/river" class="back-link">
+        <span class="back-arrow">←</span>
+        <span>Return to Reading</span>
       </a>
-      <div id="stage-glyph" class="my-6"></div>
-      <h1 class="river-h1">Daily Reflection</h1>
-      <p class="river-body italic opacity-70 mt-2 max-w-md mx-auto">
-        Take a moment to turn inward. These questions illuminate the current state
-        of your inner landscape.
+
+      <!-- Animated Mandala -->
+      <div class="mandala-container">
+        <svg class="mandala" viewBox="0 0 200 200">
+          <!-- Outer ring -->
+          <circle class="mandala-ring ring-outer" cx="100" cy="100" r="90" />
+          <!-- Middle ring -->
+          <circle class="mandala-ring ring-middle" cx="100" cy="100" r="65" />
+          <!-- Inner ring -->
+          <circle class="mandala-ring ring-inner" cx="100" cy="100" r="40" />
+          <!-- Center -->
+          <circle class="mandala-center" cx="100" cy="100" r="15" />
+          <!-- Rotating elements -->
+          <g class="mandala-petals">
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+              <path
+                d={`M100,100 L${100 + 80 * Math.cos((angle * Math.PI) / 180)},${100 + 80 * Math.sin((angle * Math.PI) / 180)}`}
+                class="petal-line"
+              />
+            ))}
+          </g>
+          <!-- Diamond markers -->
+          <g class="mandala-diamonds">
+            {[0, 60, 120, 180, 240, 300].map((angle) => (
+              <polygon
+                points="100,20 105,30 100,40 95,30"
+                class="diamond"
+                transform={`rotate(${angle} 100 100)`}
+              />
+            ))}
+          </g>
+        </svg>
+      </div>
+
+      <h1 class="page-title">Daily Reflection</h1>
+      <p class="page-subtitle">
+        Take a moment to turn inward. These questions illuminate
+        the current state of your inner landscape.
       </p>
+
+      <!-- Stage indicator -->
+      <div class="stage-indicator">
+        <div class="stage-dot stage-nigredo" title="Nigredo"></div>
+        <div class="stage-connector"></div>
+        <div class="stage-dot stage-albedo" title="Albedo"></div>
+        <div class="stage-connector"></div>
+        <div class="stage-dot stage-citrinitas" title="Citrinitas"></div>
+        <div class="stage-connector"></div>
+        <div class="stage-dot stage-rubedo" title="Rubedo"></div>
+      </div>
     </header>
 
     <!-- Check-in Component -->
     <main class="river-main">
-      <div id="river-checkin" class="max-w-lg mx-auto"></div>
+      <div id="river-checkin" class="checkin-container"></div>
     </main>
 
     <!-- Decorative Footer -->
     <footer class="river-footer">
-      <div class="river-divider">
-        <span class="river-divider-line"></span>
-        <span class="river-divider-symbol">✧</span>
-        <span class="river-divider-line"></span>
+      <div class="divider">
+        <span class="divider-line"></span>
+        <span class="divider-symbol breathing">&#10023;</span>
+        <span class="divider-line"></span>
       </div>
-      <p class="river-caption text-center opacity-40 mt-4">
-        "Know thyself" — inscribed at the Temple of Delphi
-      </p>
+      <blockquote class="wisdom-quote">
+        "Know thyself"
+        <cite>— Inscribed at the Temple of Delphi</cite>
+      </blockquote>
     </footer>
   </div>
 </BaseLayout>
@@ -40,37 +95,366 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .river-checkin-page {
     min-height: 100vh;
     padding: 2rem 1rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    position: relative;
+    overflow: hidden;
+    transition: background 1s ease;
   }
 
+  /* Stage-aware backgrounds */
+  .river-checkin-page {
+    background: linear-gradient(180deg, #1a1a2e 0%, #0d0d15 100%);
+  }
+
+  .river-checkin-page[data-stage="nigredo"] {
+    background: linear-gradient(180deg, #1a1a2e 0%, #0d0d15 100%);
+  }
+
+  .river-checkin-page[data-stage="albedo"] {
+    background: linear-gradient(180deg, #2a2a3e 0%, #1a1a28 100%);
+  }
+
+  .river-checkin-page[data-stage="citrinitas"] {
+    background: linear-gradient(180deg, #2e2a1a 0%, #1a1810 100%);
+  }
+
+  .river-checkin-page[data-stage="rubedo"] {
+    background: linear-gradient(180deg, #2e1a1a 0%, #1a0d0d 100%);
+  }
+
+  /* Mystical Background */
+  .mystic-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: orb-float 20s ease-in-out infinite;
+  }
+
+  .orb-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+    top: -200px;
+    left: -100px;
+    animation-delay: 0s;
+  }
+
+  .orb-2 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    bottom: -100px;
+    right: -100px;
+    animation-delay: -7s;
+  }
+
+  .orb-3 {
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.08) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -14s;
+  }
+
+  @keyframes orb-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -20px) scale(1.05); }
+    50% { transform: translate(-20px, 30px) scale(0.95); }
+    75% { transform: translate(20px, 20px) scale(1.02); }
+  }
+
+  .floating-symbols {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .floating-symbols span {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.1);
+    animation: symbol-float linear infinite;
+  }
+
+  @keyframes symbol-float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.15; }
+    90% { opacity: 0.15; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+  }
+
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.5) 100%);
+  }
+
+  /* Header */
   .river-header {
+    position: relative;
+    z-index: 1;
     text-align: center;
-    margin-bottom: 3rem;
+    max-width: 500px;
+    margin: 0 auto 3rem;
   }
 
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    transition: all 0.4s ease;
+    letter-spacing: 0.02em;
+  }
+
+  .back-link:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .back-arrow {
+    display: inline-block;
+    transition: transform 0.4s ease;
+  }
+
+  .back-link:hover .back-arrow {
+    transform: translateX(-4px);
+  }
+
+  /* Mandala */
+  .mandala-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .mandala {
+    width: 100%;
+    height: 100%;
+    animation: mandala-rotate 60s linear infinite;
+  }
+
+  @keyframes mandala-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .mandala-ring {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.15);
+    stroke-width: 1;
+  }
+
+  .ring-outer {
+    animation: ring-pulse 4s ease-in-out infinite;
+  }
+
+  .ring-middle {
+    animation: ring-pulse 4s ease-in-out infinite 1.3s;
+  }
+
+  .ring-inner {
+    animation: ring-pulse 4s ease-in-out infinite 2.6s;
+  }
+
+  @keyframes ring-pulse {
+    0%, 100% { stroke: rgba(255, 255, 255, 0.15); }
+    50% { stroke: rgba(139, 92, 246, 0.4); }
+  }
+
+  .mandala-center {
+    fill: rgba(139, 92, 246, 0.3);
+    animation: center-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes center-glow {
+    0%, 100% { fill: rgba(139, 92, 246, 0.3); }
+    50% { fill: rgba(139, 92, 246, 0.6); }
+  }
+
+  .petal-line {
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+
+  .diamond {
+    fill: rgba(255, 255, 255, 0.2);
+    animation: diamond-pulse 3s ease-in-out infinite;
+  }
+
+  .mandala-petals {
+    animation: petals-rotate 30s linear infinite reverse;
+  }
+
+  .mandala-diamonds {
+    animation: diamonds-rotate 45s linear infinite;
+  }
+
+  @keyframes petals-rotate {
+    from { transform: rotate(0deg); transform-origin: 100px 100px; }
+    to { transform: rotate(360deg); transform-origin: 100px 100px; }
+  }
+
+  @keyframes diamonds-rotate {
+    from { transform: rotate(0deg); transform-origin: 100px 100px; }
+    to { transform: rotate(360deg); transform-origin: 100px 100px; }
+  }
+
+  @keyframes diamond-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Title */
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.7;
+    font-style: italic;
+    max-width: 400px;
+    margin: 0 auto 1.5rem;
+  }
+
+  /* Stage Indicator */
+  .stage-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-top: 1rem;
+  }
+
+  .stage-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    cursor: help;
+  }
+
+  .stage-nigredo {
+    background: #3a3a5e;
+    box-shadow: 0 0 10px rgba(58, 58, 94, 0.5);
+  }
+
+  .stage-albedo {
+    background: #c0c0c0;
+    box-shadow: 0 0 10px rgba(192, 192, 192, 0.3);
+  }
+
+  .stage-citrinitas {
+    background: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+
+  .stage-rubedo {
+    background: #dc2626;
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.3);
+  }
+
+  .stage-connector {
+    width: 30px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Main */
   .river-main {
+    position: relative;
+    z-index: 1;
     margin-bottom: 4rem;
   }
 
-  .river-footer {
-    max-width: 20rem;
+  .checkin-container {
+    max-width: 500px;
     margin: 0 auto;
   }
 
-  .river-divider {
+  /* Footer */
+  .river-footer {
+    position: relative;
+    z-index: 1;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .divider {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
-  .river-divider-line {
+  .divider-line {
     flex: 1;
     height: 1px;
-    background: currentColor;
-    opacity: 0.2;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   }
 
-  .river-divider-symbol {
-    opacity: 0.4;
+  .divider-symbol {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 1.5rem;
+  }
+
+  .divider-symbol.breathing {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+
+  .wisdom-quote {
+    text-align: center;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+  }
+
+  .wisdom-quote cite {
+    display: block;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    opacity: 0.7;
+    font-style: normal;
+  }
+
+  /* Responsive */
+  @media (min-width: 768px) {
+    .river-checkin-page {
+      padding: 3rem 2rem;
+    }
+
+    .page-title {
+      font-size: 3rem;
+    }
+
+    .mandala-container {
+      width: 150px;
+      height: 150px;
+    }
   }
 </style>
 
@@ -78,18 +462,57 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   import { createElement } from 'react';
   import { createRoot } from 'react-dom/client';
   import { RiverCheckin } from '../../components/river/RiverCheckin';
-  import { StageGlyph } from '../../components/river/RiverCard';
-  import { setMode } from '../../stores';
+  import { setMode, $stage } from '../../stores';
 
   // Set mode to River
   setMode('river');
 
-  // Mount React components
-  document.addEventListener('DOMContentLoaded', () => {
-    const glyphEl = document.getElementById('stage-glyph');
-    if (glyphEl) {
-      createRoot(glyphEl).render(createElement(StageGlyph));
+  // Create floating symbols
+  function createFloatingSymbols() {
+    const container = document.getElementById('floating-symbols');
+    if (!container) return;
+
+    const symbols = ['☿', '☉', '☽', '♃', '♄', '♀', '♂', '⚶', '✧', '◆', '△', '▽'];
+
+    for (let i = 0; i < 15; i++) {
+      const span = document.createElement('span');
+      span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      span.style.left = `${Math.random() * 100}%`;
+      span.style.fontSize = `${12 + Math.random() * 16}px`;
+      span.style.animationDuration = `${15 + Math.random() * 20}s`;
+      span.style.animationDelay = `${Math.random() * 15}s`;
+      container.appendChild(span);
     }
+  }
+
+  // Update stage-based styling
+  function updateStage() {
+    const page = document.getElementById('river-page');
+    if (!page) return;
+
+    const stage = $stage.get();
+    page.setAttribute('data-stage', stage);
+
+    // Highlight current stage dot
+    document.querySelectorAll('.stage-dot').forEach(dot => {
+      dot.style.transform = 'scale(1)';
+      dot.style.boxShadow = dot.style.boxShadow?.replace('0.5', '0.3');
+    });
+
+    const currentDot = document.querySelector(`.stage-${stage}`);
+    if (currentDot) {
+      (currentDot as HTMLElement).style.transform = 'scale(1.5)';
+      (currentDot as HTMLElement).style.boxShadow = (currentDot as HTMLElement).style.boxShadow?.replace('0.3', '0.8') || '';
+    }
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    createFloatingSymbols();
+    updateStage();
+
+    // Subscribe to stage changes
+    $stage.subscribe(updateStage);
 
     const checkinEl = document.getElementById('river-checkin');
     if (checkinEl) {

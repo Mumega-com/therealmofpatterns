@@ -3,37 +3,134 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Daily Reading | River Mode" description="Your personal oracle for pattern navigation">
-  <div class="river-page">
+  <div class="river-page" id="river-page">
+    <!-- Mystical Background -->
+    <div class="mystic-bg">
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="gradient-orb orb-3"></div>
+      <div class="stars" id="stars"></div>
+      <div class="floating-symbols" id="floating-symbols"></div>
+      <div class="vignette"></div>
+    </div>
+
     <!-- Header -->
     <header class="river-header">
-      <div id="stage-glyph" class="mb-4"></div>
-      <h1 class="river-h1">Your Daily Reading</h1>
-      <p class="river-body italic opacity-70 mt-2">
-        The patterns speak to those who listen
-      </p>
+      <!-- Animated Mandala -->
+      <div class="mandala-container">
+        <svg class="mandala" viewBox="0 0 200 200">
+          <defs>
+            <radialGradient id="mandala-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="rgba(139, 92, 246, 0.4)" />
+              <stop offset="100%" stop-color="transparent" />
+            </radialGradient>
+          </defs>
+          <circle class="mandala-glow" cx="100" cy="100" r="95" fill="url(#mandala-glow)" />
+          <circle class="ring ring-1" cx="100" cy="100" r="85" />
+          <circle class="ring ring-2" cx="100" cy="100" r="60" />
+          <circle class="ring ring-3" cx="100" cy="100" r="35" />
+          <g class="petals">
+            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => (
+              <line
+                x1="100"
+                y1="100"
+                x2={100 + 80 * Math.cos((angle * Math.PI) / 180)}
+                y2={100 + 80 * Math.sin((angle * Math.PI) / 180)}
+                class="petal-line"
+              />
+            ))}
+          </g>
+          <g class="diamonds">
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+              <polygon
+                points="100,15 103,25 100,35 97,25"
+                class="diamond"
+                transform={`rotate(${angle} 100 100)`}
+              />
+            ))}
+          </g>
+          <circle class="center" cx="100" cy="100" r="12" />
+        </svg>
+        <div id="stage-glyph" class="stage-glyph-overlay"></div>
+      </div>
+
+      <h1 class="page-title">Your Daily Reading</h1>
+      <p class="page-subtitle">The patterns speak to those who listen</p>
+
+      <!-- Stage Journey -->
+      <div class="stage-journey">
+        <div class="stage-step" data-stage="nigredo">
+          <div class="stage-dot nigredo"></div>
+          <span class="stage-name">Nigredo</span>
+        </div>
+        <div class="stage-connector"></div>
+        <div class="stage-step" data-stage="albedo">
+          <div class="stage-dot albedo"></div>
+          <span class="stage-name">Albedo</span>
+        </div>
+        <div class="stage-connector"></div>
+        <div class="stage-step" data-stage="citrinitas">
+          <div class="stage-dot citrinitas"></div>
+          <span class="stage-name">Citrinitas</span>
+        </div>
+        <div class="stage-connector"></div>
+        <div class="stage-step" data-stage="rubedo">
+          <div class="stage-dot rubedo"></div>
+          <span class="stage-name">Rubedo</span>
+        </div>
+      </div>
+
+      <a href="/river/checkin" class="reflection-btn">
+        <span class="btn-symbol">&#10022;</span>
+        <span>Begin Daily Reflection</span>
+      </a>
     </header>
 
     <!-- Main Content -->
     <main class="river-main">
-      <div class="river-grid">
-        <!-- Left: Forecast -->
-        <section id="forecast-section">
-          <div id="river-forecast"></div>
+      <div class="content-grid">
+        <!-- Forecast Section -->
+        <section class="content-section forecast-section">
+          <div class="section-header">
+            <div class="section-icon">&#9788;</div>
+            <h2 class="section-title">Today's Oracle</h2>
+          </div>
+          <div class="section-content" id="river-forecast"></div>
         </section>
 
-        <!-- Right: Aspects & Windows -->
-        <section id="detail-section">
-          <div id="river-aspects" class="mb-8"></div>
-          <div id="river-windows"></div>
-        </section>
+        <!-- Side Panel -->
+        <aside class="content-section side-panel">
+          <!-- Aspects -->
+          <div class="panel-block">
+            <div class="panel-header">
+              <span class="panel-icon">&#10070;</span>
+              <h3 class="panel-title">Celestial Dance</h3>
+            </div>
+            <div class="panel-content" id="river-aspects"></div>
+          </div>
+
+          <!-- Windows -->
+          <div class="panel-block">
+            <div class="panel-header">
+              <span class="panel-icon">&#9200;</span>
+              <h3 class="panel-title">Sacred Timing</h3>
+            </div>
+            <div class="panel-content" id="river-windows"></div>
+          </div>
+        </aside>
       </div>
     </main>
 
     <!-- Footer -->
     <footer class="river-footer">
-      <p class="river-caption text-center opacity-50">
+      <div class="divider">
+        <span class="divider-line"></span>
+        <span class="divider-symbol breathing">&#10022;</span>
+        <span class="divider-line"></span>
+      </div>
+      <blockquote class="wisdom-quote">
         "The pattern is not the territory, but a map drawn in starlight."
-      </p>
+      </blockquote>
     </footer>
   </div>
 </BaseLayout>
@@ -42,36 +139,445 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .river-page {
     min-height: 100vh;
     padding: 2rem 1rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    position: relative;
+    overflow: hidden;
+    transition: background 1s ease;
+    background: linear-gradient(180deg, #1a1a2e 0%, #0d0d15 100%);
   }
 
+  /* Stage-aware backgrounds */
+  .river-page[data-stage="nigredo"] {
+    background: linear-gradient(180deg, #1a1a2e 0%, #0d0d15 100%);
+  }
+
+  .river-page[data-stage="albedo"] {
+    background: linear-gradient(180deg, #2a2a3e 0%, #1a1a28 100%);
+  }
+
+  .river-page[data-stage="citrinitas"] {
+    background: linear-gradient(180deg, #2e2a1a 0%, #1a1810 100%);
+  }
+
+  .river-page[data-stage="rubedo"] {
+    background: linear-gradient(180deg, #2e1a1a 0%, #1a0d0d 100%);
+  }
+
+  /* Mystical Background */
+  .mystic-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    animation: orb-drift 25s ease-in-out infinite;
+  }
+
+  .orb-1 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
+    top: -200px;
+    left: -100px;
+    animation-delay: 0s;
+  }
+
+  .orb-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+    bottom: -100px;
+    right: -100px;
+    animation-delay: -8s;
+  }
+
+  .orb-3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.06) 0%, transparent 70%);
+    top: 40%;
+    left: 60%;
+    animation-delay: -16s;
+  }
+
+  @keyframes orb-drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(50px, -30px) scale(1.1); }
+    66% { transform: translate(-30px, 50px) scale(0.9); }
+  }
+
+  .stars {
+    position: absolute;
+    inset: 0;
+  }
+
+  .stars span {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 4s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+  }
+
+  .floating-symbols {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .floating-symbols span {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.08);
+    animation: symbol-rise 20s linear infinite;
+  }
+
+  @keyframes symbol-rise {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.1; }
+    90% { opacity: 0.1; }
+    100% { transform: translateY(-100px) rotate(180deg); opacity: 0; }
+  }
+
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  /* Header */
   .river-header {
+    position: relative;
+    z-index: 1;
     text-align: center;
-    max-width: 40rem;
+    max-width: 600px;
     margin: 0 auto 3rem;
   }
 
+  /* Mandala */
+  .mandala-container {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 2rem;
+  }
+
+  .mandala {
+    width: 100%;
+    height: 100%;
+    animation: mandala-rotate 90s linear infinite;
+  }
+
+  @keyframes mandala-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .ring {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 1;
+  }
+
+  .ring-1 { animation: ring-breathe 4s ease-in-out infinite; }
+  .ring-2 { animation: ring-breathe 4s ease-in-out infinite 1.3s; }
+  .ring-3 { animation: ring-breathe 4s ease-in-out infinite 2.6s; }
+
+  @keyframes ring-breathe {
+    0%, 100% { stroke: rgba(255, 255, 255, 0.1); }
+    50% { stroke: rgba(139, 92, 246, 0.3); }
+  }
+
+  .petal-line {
+    stroke: rgba(255, 255, 255, 0.06);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+
+  .diamond {
+    fill: rgba(255, 255, 255, 0.15);
+    animation: diamond-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes diamond-glow {
+    0%, 100% { fill: rgba(255, 255, 255, 0.15); }
+    50% { fill: rgba(139, 92, 246, 0.4); }
+  }
+
+  .center {
+    fill: rgba(139, 92, 246, 0.4);
+    animation: center-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes center-pulse {
+    0%, 100% { fill: rgba(139, 92, 246, 0.4); r: 12; }
+    50% { fill: rgba(139, 92, 246, 0.7); r: 14; }
+  }
+
+  .petals {
+    animation: petals-spin 45s linear infinite reverse;
+    transform-origin: 100px 100px;
+  }
+
+  .diamonds {
+    animation: diamonds-spin 60s linear infinite;
+    transform-origin: 100px 100px;
+  }
+
+  @keyframes petals-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes diamonds-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .stage-glyph-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Title */
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+
+  /* Stage Journey */
+  .stage-journey {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .stage-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.4;
+    transition: all 0.5s ease;
+  }
+
+  .stage-step.active {
+    opacity: 1;
+  }
+
+  .stage-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transition: all 0.5s ease;
+  }
+
+  .stage-dot.nigredo { background: #3a3a5e; }
+  .stage-dot.albedo { background: #c0c0c0; }
+  .stage-dot.citrinitas { background: #ffd700; }
+  .stage-dot.rubedo { background: #dc2626; }
+
+  .stage-step.active .stage-dot {
+    transform: scale(1.4);
+    box-shadow: 0 0 15px currentColor;
+  }
+
+  .stage-name {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.05em;
+  }
+
+  .stage-connector {
+    width: 30px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Reflection Button */
+  .reflection-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    transition: all 0.4s ease;
+  }
+
+  .reflection-btn:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+  }
+
+  .btn-symbol {
+    font-size: 1.25rem;
+    animation: symbol-rotate 8s linear infinite;
+  }
+
+  @keyframes symbol-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Main Content */
   .river-main {
-    max-width: 72rem;
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
     margin: 0 auto;
   }
 
-  .river-grid {
+  .content-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2rem;
   }
 
   @media (min-width: 1024px) {
-    .river-grid {
-      grid-template-columns: 1fr 1fr;
+    .content-grid {
+      grid-template-columns: 1.4fr 1fr;
     }
   }
 
+  .content-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+  }
+
+  .section-header, .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .section-icon, .panel-icon {
+    font-size: 1.25rem;
+    color: rgba(139, 92, 246, 0.7);
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.03em;
+  }
+
+  .panel-title {
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.03em;
+  }
+
+  .section-content, .panel-content {
+    padding: 1.5rem;
+  }
+
+  .side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0;
+  }
+
+  .panel-block {
+    background: rgba(13, 13, 21, 0.5);
+  }
+
+  /* Footer */
   .river-footer {
-    max-width: 40rem;
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
     margin: 4rem auto 0;
-    padding-top: 2rem;
-    border-top: 1px solid var(--river-border, rgba(255,255,255,0.1));
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  }
+
+  .divider-symbol {
+    color: rgba(139, 92, 246, 0.5);
+    font-size: 1.5rem;
+  }
+
+  .divider-symbol.breathing {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  .wisdom-quote {
+    text-align: center;
+    font-size: 1rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* Responsive */
+  @media (min-width: 768px) {
+    .river-page {
+      padding: 3rem 2rem;
+    }
+
+    .page-title {
+      font-size: 3rem;
+    }
+
+    .mandala-container {
+      width: 180px;
+      height: 180px;
+    }
   }
 </style>
 
@@ -82,13 +588,73 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   import { RiverAspects } from '../../components/river/RiverAspects';
   import { RiverWindows } from '../../components/river/RiverWindows';
   import { StageGlyph } from '../../components/river/RiverCard';
-  import { setMode } from '../../stores';
+  import { setMode, $stage } from '../../stores';
 
   // Set mode to River
   setMode('river');
 
-  // Mount React components
+  // Create stars
+  function createStars() {
+    const container = document.getElementById('stars');
+    if (!container) return;
+
+    for (let i = 0; i < 60; i++) {
+      const star = document.createElement('span');
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 4}s`;
+      star.style.animationDuration = `${3 + Math.random() * 3}s`;
+      container.appendChild(star);
+    }
+  }
+
+  // Create floating symbols
+  function createSymbols() {
+    const container = document.getElementById('floating-symbols');
+    if (!container) return;
+
+    const symbols = ['☿', '☉', '☽', '♃', '♄', '♀', '♂', '⚶', '✧', '◆', '△', '▽', '☯'];
+
+    for (let i = 0; i < 12; i++) {
+      const span = document.createElement('span');
+      span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      span.style.left = `${Math.random() * 100}%`;
+      span.style.fontSize = `${14 + Math.random() * 18}px`;
+      span.style.animationDuration = `${18 + Math.random() * 15}s`;
+      span.style.animationDelay = `${Math.random() * 20}s`;
+      container.appendChild(span);
+    }
+  }
+
+  // Update stage-based styling
+  function updateStage() {
+    const page = document.getElementById('river-page');
+    if (!page) return;
+
+    const stage = $stage.get();
+    page.setAttribute('data-stage', stage);
+
+    // Update stage journey
+    document.querySelectorAll('.stage-step').forEach(step => {
+      const stepStage = step.getAttribute('data-stage');
+      if (stepStage === stage) {
+        step.classList.add('active');
+      } else {
+        step.classList.remove('active');
+      }
+    });
+  }
+
+  // Initialize
   document.addEventListener('DOMContentLoaded', () => {
+    createStars();
+    createSymbols();
+    updateStage();
+
+    // Subscribe to stage changes
+    $stage.subscribe(updateStage);
+
+    // Mount React components
     const glyphEl = document.getElementById('stage-glyph');
     if (glyphEl) {
       createRoot(glyphEl).render(createElement(StageGlyph));

@@ -18,14 +18,17 @@ const { stage } = Astro.props;
 
 const stageData = {
   nigredo: {
-    title: 'Nigredo - The Dark Night',
-    subtitle: 'The Stage of Dissolution',
-    symbol: '☽',
-    color: '#0a0a12',
-    kappaRange: 'κ < 0.25',
+    title: 'Nigredo',
+    subtitle: 'The Dark Night of the Soul',
+    symbol: '&#9789;',
+    symbolAlt: '&#127761;',
+    bgGradient: 'linear-gradient(180deg, #0a0a12 0%, #15152a 50%, #0a0a12 100%)',
+    accent: '#6366f1',
+    accentRgb: '99, 102, 241',
+    kappaRange: '&#954; < 0.25',
     alchemical: 'The Blackening',
     element: 'Earth',
-    description: 'Nigredo represents the dark night of the soul, a period of dissolution where old forms break down. It is not a failure but a necessary decomposition that precedes all genuine transformation.',
+    description: 'Nigredo represents the dark night of the soul, a period of dissolution where old forms break down. It is not a failure but a necessary decomposition that precedes all genuine transformation. In the alchemical tradition, this stage is called "the blackening" - the prima materia must first be reduced to its most basic state before it can be reformed.',
     signs: [
       'Feeling lost or directionless',
       'Old certainties crumbling',
@@ -42,19 +45,22 @@ const stageData = {
     ],
     quote: 'The seed must rot in the earth before it can become a tree.',
     duration: 'Typically 1-7 days, though major life transitions can extend this',
-    kasraView: 'κ coefficient below critical threshold. Field coherence compromised. Recovery protocols recommended.',
+    kasraView: '&#954; coefficient below critical threshold. Field coherence compromised. Recovery protocols recommended.',
     riverView: 'You walk now through the dark night of the soul, where old forms dissolve into fertile chaos. Do not fear the blackening - it is the womb of all becoming.',
     solView: "You're going through a tough patch, and that's completely normal. Think of it like composting - things need to break down before new growth can happen. Be extra gentle with yourself.",
   },
   albedo: {
-    title: 'Albedo - The Purification',
-    subtitle: 'The Stage of Clarification',
-    symbol: '✧',
-    color: '#1a1a24',
-    kappaRange: '0.25 ≤ κ < 0.50',
+    title: 'Albedo',
+    subtitle: 'The Purification',
+    symbol: '&#10023;',
+    symbolAlt: '&#9734;',
+    bgGradient: 'linear-gradient(180deg, #1a1a24 0%, #2a2a3e 50%, #1a1a24 100%)',
+    accent: '#c0c0c0',
+    accentRgb: '192, 192, 192',
+    kappaRange: '0.25 &#8804; &#954; < 0.50',
     alchemical: 'The Whitening',
     element: 'Water',
-    description: 'Albedo is the washing, the clarification that follows dissolution. What was confused now separates into its essential components. Clarity emerges from chaos.',
+    description: 'Albedo is the washing, the clarification that follows dissolution. What was confused now separates into its essential components. Clarity emerges from chaos, like dawn light gradually revealing a landscape that was hidden in darkness. This is a time of purification and growing discernment.',
     signs: [
       'Seeing things more clearly',
       'Distinguishing what matters from what doesn\'t',
@@ -71,19 +77,22 @@ const stageData = {
     ],
     quote: 'In the washing, we separate the pure from the impure, the essential from the accidental.',
     duration: 'Variable, typically 3-14 days',
-    kasraView: 'κ recovering from critical levels. Field purification in progress. Maintain monitoring protocols.',
+    kasraView: '&#954; recovering from critical levels. Field purification in progress. Maintain monitoring protocols.',
     riverView: 'The waters begin to clear. What was confused now separates into its essential nature. This is a time of purification and discernment.',
     solView: "Things are starting to make more sense now. You're sorting through what matters and what doesn't. Good time for reflection and organizing your thoughts.",
   },
   citrinitas: {
-    title: 'Citrinitas - The Illumination',
-    subtitle: 'The Stage of Awakening',
-    symbol: '☉',
-    color: '#1a1812',
-    kappaRange: '0.50 ≤ κ < 0.75',
+    title: 'Citrinitas',
+    subtitle: 'The Illumination',
+    symbol: '&#9788;',
+    symbolAlt: '&#127774;',
+    bgGradient: 'linear-gradient(180deg, #1a1812 0%, #2e2a1a 50%, #1a1812 100%)',
+    accent: '#fbbf24',
+    accentRgb: '251, 191, 36',
+    kappaRange: '0.50 &#8804; &#954; < 0.75',
     alchemical: 'The Yellowing',
     element: 'Air',
-    description: 'Citrinitas is the dawn, the emergence of the golden light of consciousness. What was purified now begins to shine with its own inner radiance. Wisdom awakens.',
+    description: 'Citrinitas is the dawn, the emergence of the golden light of consciousness. What was purified now begins to shine with its own inner radiance. Wisdom awakens like the sun rising after a long night. This is when insights crystallize into understanding, and scattered thoughts coalesce into clarity.',
     signs: [
       'Increased clarity and insight',
       'Growing sense of purpose',
@@ -100,19 +109,22 @@ const stageData = {
     ],
     quote: 'The sun rises within, illuminating what the moon could only reflect.',
     duration: 'Can be sustained with practice',
-    kasraView: 'κ within optimal range. Field coherence stable. Green light for complex operations.',
+    kasraView: '&#954; within optimal range. Field coherence stable. Green light for complex operations.',
     riverView: 'The golden dawn rises within you. Illumination spreads through every chamber of your being. This is a time of awakening wisdom.',
     solView: "You're in a good flow state! Ideas come easily and things feel aligned. Great time for creative work or important conversations.",
   },
   rubedo: {
-    title: 'Rubedo - The Integration',
-    subtitle: 'The Stage of Completion',
-    symbol: '♦',
-    color: '#1a1214',
-    kappaRange: 'κ ≥ 0.75',
+    title: 'Rubedo',
+    subtitle: 'The Integration',
+    symbol: '&#9670;',
+    symbolAlt: '&#128293;',
+    bgGradient: 'linear-gradient(180deg, #1a1214 0%, #2e1a1a 50%, #1a1214 100%)',
+    accent: '#dc2626',
+    accentRgb: '220, 38, 38',
+    kappaRange: '&#954; &#8805; 0.75',
     alchemical: 'The Reddening',
     element: 'Fire',
-    description: 'Rubedo is the final stage, where the work becomes embodied. The insights of citrinitas are integrated into being. The philosopher\'s stone is realized.',
+    description: 'Rubedo is the final stage, where the work becomes embodied. The insights of citrinitas are integrated into being. The philosopher\'s stone is realized - not as an external treasure, but as the transformed self. This is the achievement of wholeness, where knowing and being unite.',
     signs: [
       'Deep sense of integration',
       'Actions aligned with values',
@@ -129,7 +141,7 @@ const stageData = {
     ],
     quote: 'The opus is complete when the alchemist becomes the stone.',
     duration: 'Periods of rubedo are precious - honor them',
-    kasraView: 'κ at peak levels. Maximum field coherence achieved. All systems nominal.',
+    kasraView: '&#954; at peak levels. Maximum field coherence achieved. All systems nominal.',
     riverView: 'You stand at the threshold of integration. The red stone forms from all that has been transformed. You are the opus.',
     solView: "Everything is coming together beautifully. You're operating at your best. This is your moment - take on those big projects!",
   },
@@ -137,108 +149,184 @@ const stageData = {
 
 const data = stageData[stage];
 const title = `${data.title} | The Realm of Patterns`;
-const description = `${data.description} Learn about the ${stage} stage and how to navigate it in your personal energy cycle.`;
+const description = `${data.description.substring(0, 150)}...`;
 ---
 
 <BaseLayout title={title} description={description}>
-  <article class="stage-page" data-stage={stage}>
-    <!-- Header -->
-    <header class="stage-header">
-      <nav class="mb-8">
-        <a href="/" class="opacity-60 hover:opacity-100">← Home</a>
-      </nav>
+  <article class="stage-page" data-stage={stage} style={`--accent: ${data.accent}; --accent-rgb: ${data.accentRgb};`}>
+    <!-- Immersive Background -->
+    <div class="stage-bg" style={`background: ${data.bgGradient};`}>
+      <div class="particles" id="particles"></div>
+      <div class="glow-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+      <div class="vignette"></div>
+    </div>
 
-      <div class="stage-hero" style={`background: ${data.color}`}>
-        <span class="stage-symbol">{data.symbol}</span>
+    <!-- Hero Section -->
+    <header class="stage-hero">
+      <a href="/" class="back-link">
+        <span class="back-arrow">&#8592;</span>
+        <span>Return to Realm</span>
+      </a>
+
+      <div class="hero-content">
+        <div class="symbol-container">
+          <span class="main-symbol" set:html={data.symbol} />
+          <div class="symbol-rings">
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+            <div class="ring ring-3"></div>
+          </div>
+        </div>
+
         <h1 class="stage-title">{data.title}</h1>
         <p class="stage-subtitle">{data.subtitle}</p>
+
+        <div class="hero-meta">
+          <span class="meta-item">
+            <span class="meta-label">Element</span>
+            <span class="meta-value">{data.element}</span>
+          </span>
+          <span class="meta-divider"></span>
+          <span class="meta-item">
+            <span class="meta-label">Range</span>
+            <span class="meta-value" set:html={data.kappaRange} />
+          </span>
+          <span class="meta-divider"></span>
+          <span class="meta-item">
+            <span class="meta-label">Alchemical</span>
+            <span class="meta-value">{data.alchemical}</span>
+          </span>
+        </div>
       </div>
     </header>
 
-    <!-- Quick Facts -->
-    <section class="stage-facts">
-      <div class="fact">
-        <span class="fact-label">Alchemical Name</span>
-        <span class="fact-value">{data.alchemical}</span>
-      </div>
-      <div class="fact">
-        <span class="fact-label">Element</span>
-        <span class="fact-value">{data.element}</span>
-      </div>
-      <div class="fact">
-        <span class="fact-label">κ Range</span>
-        <span class="fact-value">{data.kappaRange}</span>
-      </div>
-    </section>
-
     <!-- Main Content -->
-    <section class="stage-content">
-      <p class="stage-description">{data.description}</p>
+    <main class="stage-content">
+      <!-- Introduction -->
+      <section class="content-section intro-section fade-in">
+        <p class="intro-text">{data.description}</p>
+        <blockquote class="stage-quote">
+          <span class="quote-mark">"</span>
+          {data.quote}
+          <span class="quote-mark">"</span>
+        </blockquote>
+      </section>
 
-      <blockquote class="stage-quote">
-        "{data.quote}"
-      </blockquote>
+      <!-- Signs -->
+      <section class="content-section signs-section fade-in">
+        <h2 class="section-title">
+          <span class="title-icon">&#10022;</span>
+          Signs You're in {data.title}
+        </h2>
+        <ul class="signs-list">
+          {data.signs.map((sign, i) => (
+            <li class="sign-item" style={`--delay: ${i * 0.1}s`}>
+              <span class="sign-bullet" set:html={data.symbol} />
+              <span class="sign-text">{sign}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      <h2>Signs You're in {stage.charAt(0).toUpperCase() + stage.slice(1)}</h2>
-      <ul class="stage-list">
-        {data.signs.map((sign) => <li>{sign}</li>)}
-      </ul>
+      <!-- Guidance -->
+      <section class="content-section guidance-section fade-in">
+        <h2 class="section-title">
+          <span class="title-icon">&#10024;</span>
+          Guidance for This Stage
+        </h2>
+        <div class="guidance-grid">
+          {data.guidance.map((item, i) => (
+            <div class="guidance-card" style={`--delay: ${i * 0.1}s`}>
+              <span class="guidance-number">{String(i + 1).padStart(2, '0')}</span>
+              <p class="guidance-text">{item}</p>
+            </div>
+          ))}
+        </div>
+        <div class="duration-note">
+          <span class="duration-icon">&#9200;</span>
+          <p>{data.duration}</p>
+        </div>
+      </section>
 
-      <h2>Guidance for This Stage</h2>
-      <ul class="stage-list">
-        {data.guidance.map((item) => <li>{item}</li>)}
-      </ul>
-
-      <h2>Duration</h2>
-      <p>{data.duration}</p>
-    </section>
-
-    <!-- Three Views -->
-    <section class="stage-views">
-      <h2>How Each Voice Sees {stage.charAt(0).toUpperCase() + stage.slice(1)}</h2>
-
-      <div class="view kasra-view">
-        <h3>🔧 Kasra (The Architect)</h3>
-        <p>{data.kasraView}</p>
-      </div>
-
-      <div class="view river-view">
-        <h3>✧ River (The Oracle)</h3>
-        <p>{data.riverView}</p>
-      </div>
-
-      <div class="view sol-view">
-        <h3>☀️ Sol (The Friend)</h3>
-        <p>{data.solView}</p>
-      </div>
-    </section>
+      <!-- Three Perspectives -->
+      <section class="content-section perspectives-section fade-in">
+        <h2 class="section-title">
+          <span class="title-icon">&#9733;</span>
+          Three Perspectives
+        </h2>
+        <div class="perspectives-grid">
+          <div class="perspective kasra-perspective">
+            <div class="perspective-header">
+              <span class="perspective-icon">&#128295;</span>
+              <h3>Kasra</h3>
+              <span class="perspective-label">The Architect</span>
+            </div>
+            <p set:html={data.kasraView} />
+          </div>
+          <div class="perspective river-perspective">
+            <div class="perspective-header">
+              <span class="perspective-icon">&#10023;</span>
+              <h3>River</h3>
+              <span class="perspective-label">The Oracle</span>
+            </div>
+            <p>{data.riverView}</p>
+          </div>
+          <div class="perspective sol-perspective">
+            <div class="perspective-header">
+              <span class="perspective-icon">&#9788;</span>
+              <h3>Sol</h3>
+              <span class="perspective-label">The Friend</span>
+            </div>
+            <p>{data.solView}</p>
+          </div>
+        </div>
+      </section>
+    </main>
 
     <!-- Navigation -->
-    <nav class="stage-nav">
-      <h3>Explore Other Stages</h3>
-      <div class="stage-links">
-        <a href="/stage/nigredo" class:list={['stage-link', { active: stage === 'nigredo' }]}>
-          <span>☽</span> Nigredo
+    <nav class="stage-nav fade-in">
+      <h3 class="nav-title">Explore the Journey</h3>
+      <div class="journey-path">
+        <a href="/stage/nigredo" class:list={['journey-step', { active: stage === 'nigredo' }]}>
+          <span class="step-symbol">&#9789;</span>
+          <span class="step-name">Nigredo</span>
         </a>
-        <a href="/stage/albedo" class:list={['stage-link', { active: stage === 'albedo' }]}>
-          <span>✧</span> Albedo
+        <div class="journey-connector"></div>
+        <a href="/stage/albedo" class:list={['journey-step', { active: stage === 'albedo' }]}>
+          <span class="step-symbol">&#10023;</span>
+          <span class="step-name">Albedo</span>
         </a>
-        <a href="/stage/citrinitas" class:list={['stage-link', { active: stage === 'citrinitas' }]}>
-          <span>☉</span> Citrinitas
+        <div class="journey-connector"></div>
+        <a href="/stage/citrinitas" class:list={['journey-step', { active: stage === 'citrinitas' }]}>
+          <span class="step-symbol">&#9788;</span>
+          <span class="step-name">Citrinitas</span>
         </a>
-        <a href="/stage/rubedo" class:list={['stage-link', { active: stage === 'rubedo' }]}>
-          <span>♦</span> Rubedo
+        <div class="journey-connector"></div>
+        <a href="/stage/rubedo" class:list={['journey-step', { active: stage === 'rubedo' }]}>
+          <span class="step-symbol">&#9670;</span>
+          <span class="step-name">Rubedo</span>
         </a>
       </div>
     </nav>
 
     <!-- CTA -->
-    <section class="stage-cta">
-      <h3>Discover Your Current Stage</h3>
-      <p>Take a quick check-in to see where you are in your personal energy cycle.</p>
-      <div class="cta-buttons">
-        <a href="/sol/checkin" class="btn btn-primary">Start Check-in</a>
-        <a href="/" class="btn opacity-60 hover:opacity-100">Learn More</a>
+    <section class="stage-cta fade-in">
+      <div class="cta-content">
+        <h3>Discover Your Current Stage</h3>
+        <p>Take a quick check-in to see where you are in your personal energy cycle.</p>
+        <div class="cta-buttons">
+          <a href="/sol/checkin" class="cta-btn primary">
+            <span>&#128221;</span>
+            Start Check-in
+          </a>
+          <a href="/" class="cta-btn secondary">
+            Explore More
+          </a>
+        </div>
       </div>
     </section>
   </article>
@@ -246,219 +334,655 @@ const description = `${data.description} Learn about the ${stage} stage and how 
 
 <style>
   .stage-page {
-    max-width: 48rem;
-    margin: 0 auto;
-    padding: 1.5rem;
+    min-height: 100vh;
+    position: relative;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: rgba(255, 255, 255, 0.9);
   }
 
+  /* Background */
+  .stage-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .particles span {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: particle-float 10s ease-in-out infinite;
+  }
+
+  @keyframes particle-float {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+    50% { transform: translateY(-50px) translateX(20px); opacity: 0.6; }
+  }
+
+  .glow-orbs {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    animation: orb-drift 20s ease-in-out infinite;
+  }
+
+  .orb-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.15) 0%, transparent 70%);
+    top: -150px;
+    left: -100px;
+  }
+
+  .orb-2 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.1) 0%, transparent 70%);
+    bottom: 20%;
+    right: -100px;
+    animation-delay: -7s;
+  }
+
+  .orb-3 {
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.08) 0%, transparent 70%);
+    top: 60%;
+    left: 30%;
+    animation-delay: -14s;
+  }
+
+  @keyframes orb-drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(40px, -30px) scale(1.1); }
+    66% { transform: translate(-30px, 40px) scale(0.9); }
+  }
+
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 20%, rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  /* Hero */
   .stage-hero {
-    text-align: center;
-    padding: 3rem 2rem;
-    border-radius: 1rem;
-    color: white;
+    position: relative;
+    z-index: 1;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
   }
 
-  .stage-symbol {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 1rem;
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    transition: color 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  .back-arrow {
+    transition: transform 0.3s ease;
+  }
+
+  .back-link:hover .back-arrow {
+    transform: translateX(-4px);
+  }
+
+  .hero-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .symbol-container {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin-bottom: 2rem;
+  }
+
+  .main-symbol {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    color: var(--accent);
+    text-shadow: 0 0 40px rgba(var(--accent-rgb), 0.5);
+    animation: symbol-pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes symbol-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); text-shadow: 0 0 40px rgba(var(--accent-rgb), 0.5); }
+    50% { transform: translate(-50%, -50%) scale(1.1); text-shadow: 0 0 60px rgba(var(--accent-rgb), 0.8); }
+  }
+
+  .symbol-rings {
+    position: absolute;
+    inset: 0;
+    animation: rings-rotate 30s linear infinite;
+  }
+
+  @keyframes rings-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .ring {
+    position: absolute;
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .ring-1 { width: 100%; height: 100%; animation: ring-pulse 4s ease-in-out infinite; }
+  .ring-2 { width: 75%; height: 75%; animation: ring-pulse 4s ease-in-out infinite 1s; }
+  .ring-3 { width: 50%; height: 50%; animation: ring-pulse 4s ease-in-out infinite 2s; }
+
+  @keyframes ring-pulse {
+    0%, 100% { border-color: rgba(var(--accent-rgb), 0.2); }
+    50% { border-color: rgba(var(--accent-rgb), 0.5); }
   }
 
   .stage-title {
-    font-size: 2rem;
-    font-weight: 600;
+    font-size: 3.5rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(var(--accent-rgb), 0.3);
   }
 
   .stage-subtitle {
-    opacity: 0.8;
-    font-size: 1.125rem;
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+    margin-bottom: 2rem;
   }
 
-  .stage-facts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin: 2rem 0;
-    padding: 1.5rem;
-    border-radius: 0.75rem;
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  :global([data-mode="kasra"]) .stage-facts {
-    background: var(--kasra-surface);
-    border: 1px solid var(--kasra-border);
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
   }
 
-  :global([data-mode="river"]) .stage-facts {
-    background: var(--river-surface);
-    border: 1px solid var(--river-border);
-  }
-
-  :global([data-mode="sol"]) .stage-facts {
-    background: var(--sol-surface);
-    border: 1px solid var(--sol-border);
-  }
-
-  .fact {
-    text-align: center;
-  }
-
-  .fact-label {
-    display: block;
-    font-size: 0.75rem;
-    opacity: 0.6;
+  .meta-label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.25rem;
+    letter-spacing: 0.1em;
   }
 
-  .fact-value {
-    font-weight: 500;
+  .meta-value {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
   }
 
+  .meta-divider {
+    width: 1px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Content */
   .stage-content {
-    margin: 2rem 0;
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
 
-  .stage-description {
-    font-size: 1.125rem;
-    line-height: 1.8;
+  .content-section {
+    margin-bottom: 4rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .content-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .intro-text {
+    font-size: 1.2rem;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.8);
     margin-bottom: 2rem;
   }
 
   .stage-quote {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-style: italic;
-    padding: 1.5rem;
-    border-left: 3px solid currentColor;
-    opacity: 0.8;
-    margin: 2rem 0;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 2rem;
+    border-left: 3px solid var(--accent);
+    background: rgba(var(--accent-rgb), 0.05);
+    margin: 0;
   }
 
-  .stage-content h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+  .quote-mark {
+    color: var(--accent);
+    font-size: 2rem;
+    line-height: 1;
   }
 
-  .stage-list {
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .title-icon {
+    color: var(--accent);
+  }
+
+  /* Signs */
+  .signs-list {
     list-style: none;
     padding: 0;
+    margin: 0;
   }
 
-  .stage-list li {
-    padding: 0.5rem 0;
-    padding-left: 1.5rem;
-    position: relative;
+  .sign-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slide-in 0.5s ease forwards;
+    animation-delay: var(--delay);
   }
 
-  .stage-list li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    opacity: 0.5;
+  .visible .sign-item {
+    opacity: 1;
+    transform: translateX(0);
   }
 
-  .stage-views {
-    margin: 3rem 0;
-    padding: 2rem 0;
-    border-top: 1px solid currentColor;
-    border-bottom: 1px solid currentColor;
-    opacity: 0.15;
+  @keyframes slide-in {
+    to { opacity: 1; transform: translateX(0); }
   }
 
-  .stage-views h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
+  .sign-bullet {
+    color: var(--accent);
+    font-size: 1rem;
+    opacity: 0.6;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
   }
 
-  .view {
+  .sign-text {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+  }
+
+  /* Guidance */
+  .guidance-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .guidance-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .guidance-card {
     padding: 1.5rem;
-    margin-bottom: 1rem;
-    border-radius: 0.75rem;
-    background: currentColor;
-    opacity: 0.05;
+    background: rgba(var(--accent-rgb), 0.05);
+    border: 1px solid rgba(var(--accent-rgb), 0.1);
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-up 0.5s ease forwards;
+    animation-delay: var(--delay);
   }
 
-  .view h3 {
-    font-size: 1rem;
-    font-weight: 600;
+  .visible .guidance-card {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @keyframes fade-up {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .guidance-number {
+    font-size: 0.8rem;
+    color: var(--accent);
+    opacity: 0.6;
+    display: block;
     margin-bottom: 0.5rem;
+    font-family: 'Geist Mono', monospace;
   }
 
-  .view p {
-    opacity: 0.8;
-    line-height: 1.6;
-  }
-
-  .stage-nav {
-    margin: 3rem 0;
-  }
-
-  .stage-nav h3 {
+  .guidance-text {
     font-size: 1rem;
-    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .duration-note {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+  }
+
+  .duration-icon {
+    font-size: 1.25rem;
+    color: var(--accent);
+  }
+
+  .duration-note p {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    font-style: italic;
+  }
+
+  /* Perspectives */
+  .perspectives-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .perspective {
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .kasra-perspective {
+    background: rgba(0, 255, 136, 0.03);
+    border-color: rgba(0, 255, 136, 0.2);
+  }
+
+  .river-perspective {
+    background: rgba(139, 92, 246, 0.03);
+    border-color: rgba(139, 92, 246, 0.2);
+  }
+
+  .sol-perspective {
+    background: rgba(251, 191, 36, 0.03);
+    border-color: rgba(251, 191, 36, 0.2);
+  }
+
+  .perspective-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     margin-bottom: 1rem;
+  }
+
+  .perspective-icon {
+    font-size: 1.25rem;
+  }
+
+  .kasra-perspective .perspective-icon { color: #00ff88; }
+  .river-perspective .perspective-icon { color: #8b5cf6; }
+  .sol-perspective .perspective-icon { color: #fbbf24; }
+
+  .perspective-header h3 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .perspective-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-left: auto;
+  }
+
+  .perspective p {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Navigation */
+  .stage-nav {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 4rem auto;
+    padding: 0 1.5rem;
     text-align: center;
   }
 
-  .stage-links {
+  .nav-title {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+
+  .journey-path {
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
     flex-wrap: wrap;
   }
 
-  .stage-link {
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.5rem;
-    opacity: 0.6;
-    transition: opacity 0.2s;
+  .journey-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
   }
 
-  .stage-link:hover,
-  .stage-link.active {
-    opacity: 1;
+  .journey-step:hover,
+  .journey-step.active {
+    color: var(--accent);
   }
 
-  .stage-link.active {
-    font-weight: 600;
+  .step-symbol {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
   }
 
+  .journey-step:hover .step-symbol,
+  .journey-step.active .step-symbol {
+    transform: scale(1.2);
+  }
+
+  .step-name {
+    font-size: 0.85rem;
+  }
+
+  .journey-connector {
+    width: 30px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* CTA */
   .stage-cta {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 0 auto 4rem;
+    padding: 0 1.5rem;
+  }
+
+  .cta-content {
     text-align: center;
-    padding: 2rem;
-    border-radius: 1rem;
+    padding: 2.5rem;
+    background: rgba(var(--accent-rgb), 0.05);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    border-radius: 16px;
   }
 
-  :global([data-mode="kasra"]) .stage-cta {
-    background: var(--kasra-surface);
-  }
-
-  :global([data-mode="river"]) .stage-cta {
-    background: var(--river-surface);
-  }
-
-  :global([data-mode="sol"]) .stage-cta {
-    background: var(--sol-surface);
-  }
-
-  .stage-cta h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
+  .cta-content h3 {
+    font-size: 1.5rem;
+    font-weight: 400;
     margin-bottom: 0.5rem;
   }
 
-  .stage-cta p {
-    opacity: 0.7;
+  .cta-content p {
+    color: rgba(255, 255, 255, 0.6);
     margin-bottom: 1.5rem;
   }
 
   .cta-buttons {
     display: flex;
-    justify-content: center;
     gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .cta-btn.primary {
+    background: var(--accent);
+    color: #0a0a12;
+    font-weight: 500;
+  }
+
+  .cta-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.4);
+  }
+
+  .cta-btn.secondary {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .cta-btn.secondary:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 1);
+  }
+
+  /* Responsive */
+  @media (min-width: 768px) {
+    .stage-title {
+      font-size: 4.5rem;
+    }
+
+    .stage-subtitle {
+      font-size: 1.5rem;
+    }
+
+    .symbol-container {
+      width: 180px;
+      height: 180px;
+    }
+
+    .main-symbol {
+      font-size: 5rem;
+    }
   }
 </style>
+
+<script>
+  // Create particles
+  function createParticles() {
+    const container = document.getElementById('particles');
+    if (!container) return;
+
+    for (let i = 0; i < 30; i++) {
+      const particle = document.createElement('span');
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 10}s`;
+      particle.style.animationDuration = `${8 + Math.random() * 6}s`;
+      container.appendChild(particle);
+    }
+  }
+
+  // Intersection Observer for fade-in animations
+  function setupScrollAnimations() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    document.querySelectorAll('.fade-in').forEach(el => {
+      observer.observe(el);
+    });
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    createParticles();
+    setupScrollAnimations();
+
+    // Trigger hero animation
+    document.querySelector('.stage-hero')?.classList.add('loaded');
+  });
+</script>

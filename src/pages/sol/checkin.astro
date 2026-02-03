@@ -4,35 +4,66 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 <BaseLayout title="Quick Check-in | Sol" description="A quick check-in to see how you're doing">
   <div class="sol-checkin-page">
+    <!-- Warm Background -->
+    <div class="warm-bg">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="sparkles" id="sparkles"></div>
+    </div>
+
     <!-- Header -->
     <header class="sol-header">
-      <a href="/sol" class="text-sol-caption text-sol-muted hover:text-sol-accent transition-colors">
-        ← Back to dashboard
+      <a href="/sol" class="back-link">
+        <span class="back-arrow">&#8592;</span>
+        <span>Back to dashboard</span>
       </a>
-      <div class="mt-6 text-center">
-        <span class="text-4xl mb-3 block">📝</span>
-        <h1 class="text-sol-h1 text-sol-text">Quick Check-in</h1>
-        <p class="text-sol-body text-sol-muted mt-2 max-w-md mx-auto">
+
+      <div class="header-content">
+        <div class="emoji-container">
+          <span class="main-emoji bouncing">&#128221;</span>
+          <span class="sparkle sparkle-1">&#10024;</span>
+          <span class="sparkle sparkle-2">&#10024;</span>
+          <span class="sparkle sparkle-3">&#10024;</span>
+        </div>
+        <h1 class="page-title">Quick Check-in</h1>
+        <p class="page-subtitle">
           Just a few quick questions to see how you're doing.
-          It takes less than a minute!
+          <br />It takes less than a minute!
         </p>
+      </div>
+
+      <!-- Progress preview -->
+      <div class="progress-preview">
+        <div class="progress-dots">
+          <span class="progress-dot active"></span>
+          <span class="progress-dot"></span>
+          <span class="progress-dot"></span>
+          <span class="progress-dot"></span>
+          <span class="progress-dot"></span>
+        </div>
+        <span class="progress-label">5 quick questions</span>
       </div>
     </header>
 
     <!-- Check-in Component -->
     <main class="sol-main">
-      <div id="sol-checkin" class="max-w-md mx-auto"></div>
+      <div id="sol-checkin" class="checkin-container"></div>
     </main>
 
     <!-- Info Footer -->
     <footer class="sol-footer">
-      <div class="max-w-md mx-auto text-center">
-        <p class="text-sol-caption text-sol-muted">
-          💡 Tip: Regular check-ins help you notice patterns in how you feel
+      <div class="footer-card">
+        <span class="footer-icon">&#128161;</span>
+        <p class="footer-tip">
+          <strong>Tip:</strong> Regular check-ins help you notice patterns in how you feel
           throughout the day. Try checking in at the same time each day!
         </p>
       </div>
     </footer>
+
+    <!-- Confetti container -->
+    <div id="confetti-container" class="confetti-container"></div>
   </div>
 </BaseLayout>
 
@@ -40,26 +71,291 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .sol-checkin-page {
     min-height: 100vh;
     padding: 1.5rem;
-    max-width: 48rem;
-    margin: 0 auto;
+    font-family: 'Inter', -apple-system, sans-serif;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #faf8f5 0%, #f5f0e8 100%);
   }
 
+  /* Warm Background */
+  .warm-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.5;
+    animation: blob-float 15s ease-in-out infinite;
+  }
+
+  .blob-1 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, transparent 70%);
+    top: -100px;
+    right: -50px;
+    animation-delay: 0s;
+  }
+
+  .blob-2 {
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
+    bottom: 20%;
+    left: -50px;
+    animation-delay: -5s;
+  }
+
+  .blob-3 {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
+    bottom: -50px;
+    right: 20%;
+    animation-delay: -10s;
+  }
+
+  @keyframes blob-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(20px, -30px) scale(1.1); }
+    50% { transform: translate(-30px, 20px) scale(0.9); }
+    75% { transform: translate(30px, 30px) scale(1.05); }
+  }
+
+  .sparkles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .sparkles span {
+    position: absolute;
+    color: #fbbf24;
+    opacity: 0;
+    animation: sparkle-float 4s ease-in-out infinite;
+  }
+
+  @keyframes sparkle-float {
+    0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+    50% { opacity: 0.8; transform: scale(1) rotate(180deg); }
+  }
+
+  /* Header */
   .sol-header {
-    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    text-align: center;
   }
 
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #9ca3af;
+    text-decoration: none;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: #d4a373;
+  }
+
+  .back-arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  .back-link:hover .back-arrow {
+    transform: translateX(-4px);
+  }
+
+  .header-content {
+    margin-bottom: 1.5rem;
+  }
+
+  .emoji-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .main-emoji {
+    font-size: 4rem;
+    display: block;
+  }
+
+  .main-emoji.bouncing {
+    animation: gentle-bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes gentle-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .sparkle {
+    position: absolute;
+    font-size: 1rem;
+    opacity: 0;
+    animation: sparkle-pop 3s ease-in-out infinite;
+  }
+
+  .sparkle-1 { top: -5px; right: -10px; animation-delay: 0s; }
+  .sparkle-2 { bottom: 0; left: -15px; animation-delay: 1s; }
+  .sparkle-3 { top: 50%; right: -20px; animation-delay: 2s; }
+
+  @keyframes sparkle-pop {
+    0%, 80%, 100% { opacity: 0; transform: scale(0.5); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  .page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+
+  /* Progress Preview */
+  .progress-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .progress-dots {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .progress-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    transition: all 0.3s ease;
+  }
+
+  .progress-dot.active {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+  }
+
+  .progress-label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* Main */
   .sol-main {
+    position: relative;
+    z-index: 1;
     margin-bottom: 3rem;
   }
 
-  .sol-footer {
-    padding-top: 2rem;
-    border-top: 1px solid var(--sol-border);
+  .checkin-container {
+    max-width: 500px;
+    margin: 0 auto;
   }
 
+  /* Footer */
+  .sol-footer {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .footer-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #f3f4f6;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .footer-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .footer-tip {
+    font-size: 0.875rem;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .footer-tip strong {
+    color: #374151;
+  }
+
+  /* Confetti */
+  .confetti-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    overflow: hidden;
+  }
+
+  .confetti-container .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+  }
+
+  .confetti-container.active .confetti {
+    animation: confetti-fall 3s ease-out forwards;
+  }
+
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-100px) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  /* Responsive */
   @media (min-width: 640px) {
     .sol-checkin-page {
       padding: 2rem;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+    }
+
+    .main-emoji {
+      font-size: 5rem;
     }
   }
 </style>
@@ -73,14 +369,71 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   // Set mode to Sol
   setMode('sol');
 
-  // Mount React component
+  // Create sparkle effects
+  function createSparkles() {
+    const container = document.getElementById('sparkles');
+    if (!container) return;
+
+    for (let i = 0; i < 12; i++) {
+      const span = document.createElement('span');
+      span.textContent = ['✨', '⭐', '💫', '✦'][Math.floor(Math.random() * 4)];
+      span.style.left = `${10 + Math.random() * 80}%`;
+      span.style.top = `${10 + Math.random() * 80}%`;
+      span.style.fontSize = `${10 + Math.random() * 14}px`;
+      span.style.animationDelay = `${Math.random() * 4}s`;
+      container.appendChild(span);
+    }
+  }
+
+  // Confetti explosion on completion
+  function triggerConfetti() {
+    const container = document.getElementById('confetti-container');
+    if (!container) return;
+
+    container.innerHTML = '';
+    const colors = ['#fbbf24', '#f59e0b', '#ec4899', '#8b5cf6', '#10b981', '#3b82f6'];
+
+    for (let i = 0; i < 50; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = `${Math.random() * 100}%`;
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+      confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+      confetti.style.animationDuration = `${2 + Math.random() * 2}s`;
+      container.appendChild(confetti);
+    }
+
+    container.classList.add('active');
+
+    setTimeout(() => {
+      container.classList.remove('active');
+    }, 4000);
+  }
+
+  // Update progress dots
+  function updateProgressDots(current: number, total: number) {
+    const dots = document.querySelectorAll('.progress-dot');
+    dots.forEach((dot, i) => {
+      if (i < current) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+  }
+
+  // Initialize
   document.addEventListener('DOMContentLoaded', () => {
+    createSparkles();
+
     const checkinEl = document.getElementById('sol-checkin');
     if (checkinEl) {
       createRoot(checkinEl).render(
         createElement(SolCheckin, {
           onComplete: (kappa) => {
             console.log('Check-in complete, kappa:', kappa);
+            triggerConfetti();
           }
         })
       );
