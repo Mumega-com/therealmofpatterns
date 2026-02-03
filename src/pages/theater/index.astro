@@ -43,6 +43,67 @@ const dateStr = today.toLocaleDateString('en-US', {
     <div class="theater-atmosphere">
       <div class="stars"></div>
       <div class="floating-symbols" id="floating-symbols"></div>
+      <div class="particle-field" id="particle-field"></div>
+    </div>
+
+    <!-- Clockwork Gears (corners) -->
+    <div class="clockwork-gears">
+      <div class="gear gear-tl">
+        <svg viewBox="0 0 100 100" class="gear-svg">
+          <circle cx="50" cy="50" r="35" class="gear-body"/>
+          <circle cx="50" cy="50" r="15" class="gear-center"/>
+          <g class="gear-teeth">
+            <rect x="45" y="5" width="10" height="15" rx="2"/>
+            <rect x="45" y="80" width="10" height="15" rx="2"/>
+            <rect x="5" y="45" width="15" height="10" rx="2"/>
+            <rect x="80" y="45" width="15" height="10" rx="2"/>
+            <rect x="15" y="15" width="10" height="12" rx="2" transform="rotate(45 20 21)"/>
+            <rect x="75" y="15" width="10" height="12" rx="2" transform="rotate(-45 80 21)"/>
+            <rect x="15" y="73" width="10" height="12" rx="2" transform="rotate(-45 20 79)"/>
+            <rect x="75" y="73" width="10" height="12" rx="2" transform="rotate(45 80 79)"/>
+          </g>
+        </svg>
+      </div>
+      <div class="gear gear-tr">
+        <svg viewBox="0 0 100 100" class="gear-svg">
+          <circle cx="50" cy="50" r="35" class="gear-body"/>
+          <circle cx="50" cy="50" r="15" class="gear-center"/>
+          <g class="gear-teeth">
+            <rect x="45" y="5" width="10" height="15" rx="2"/>
+            <rect x="45" y="80" width="10" height="15" rx="2"/>
+            <rect x="5" y="45" width="15" height="10" rx="2"/>
+            <rect x="80" y="45" width="15" height="10" rx="2"/>
+            <rect x="15" y="15" width="10" height="12" rx="2" transform="rotate(45 20 21)"/>
+            <rect x="75" y="15" width="10" height="12" rx="2" transform="rotate(-45 80 21)"/>
+            <rect x="15" y="73" width="10" height="12" rx="2" transform="rotate(-45 20 79)"/>
+            <rect x="75" y="73" width="10" height="12" rx="2" transform="rotate(45 80 79)"/>
+          </g>
+        </svg>
+      </div>
+      <div class="gear gear-bl">
+        <svg viewBox="0 0 100 100" class="gear-svg">
+          <circle cx="50" cy="50" r="25" class="gear-body"/>
+          <circle cx="50" cy="50" r="10" class="gear-center"/>
+          <g class="gear-teeth">
+            <rect x="46" y="10" width="8" height="12" rx="2"/>
+            <rect x="46" y="78" width="8" height="12" rx="2"/>
+            <rect x="10" y="46" width="12" height="8" rx="2"/>
+            <rect x="78" y="46" width="12" height="8" rx="2"/>
+          </g>
+        </svg>
+      </div>
+      <div class="gear gear-br">
+        <svg viewBox="0 0 100 100" class="gear-svg">
+          <circle cx="50" cy="50" r="25" class="gear-body"/>
+          <circle cx="50" cy="50" r="10" class="gear-center"/>
+          <g class="gear-teeth">
+            <rect x="46" y="10" width="8" height="12" rx="2"/>
+            <rect x="46" y="78" width="8" height="12" rx="2"/>
+            <rect x="10" y="46" width="12" height="8" rx="2"/>
+            <rect x="78" y="46" width="12" height="8" rx="2"/>
+          </g>
+        </svg>
+      </div>
     </div>
 
     <!-- Proscenium Arch (Golden Frame) -->
@@ -235,10 +296,247 @@ const dateStr = today.toLocaleDateString('en-US', {
   }
 
   @keyframes float-symbol {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    25% { transform: translateY(-20px) rotate(5deg); }
-    50% { transform: translateY(-10px) rotate(-5deg); }
-    75% { transform: translateY(-30px) rotate(3deg); }
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.15; }
+    25% { transform: translateY(-20px) rotate(5deg); opacity: 0.25; }
+    50% { transform: translateY(-10px) rotate(-5deg); opacity: 0.15; }
+    75% { transform: translateY(-30px) rotate(3deg); opacity: 0.3; }
+  }
+
+  /* ====== CLOCKWORK GEARS ====== */
+  .clockwork-gears {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .gear {
+    position: absolute;
+    opacity: 0.15;
+  }
+
+  .gear-tl {
+    top: -30px;
+    left: -30px;
+    width: 120px;
+    height: 120px;
+    animation: rotate-gear 30s linear infinite;
+  }
+
+  .gear-tr {
+    top: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    animation: rotate-gear-reverse 25s linear infinite;
+  }
+
+  .gear-bl {
+    bottom: 80px;
+    left: -15px;
+    width: 80px;
+    height: 80px;
+    animation: rotate-gear 20s linear infinite;
+  }
+
+  .gear-br {
+    bottom: 60px;
+    right: -15px;
+    width: 90px;
+    height: 90px;
+    animation: rotate-gear-reverse 22s linear infinite;
+  }
+
+  .gear-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .gear-body {
+    fill: none;
+    stroke: #d4af37;
+    stroke-width: 2;
+  }
+
+  .gear-center {
+    fill: #d4af37;
+    opacity: 0.3;
+  }
+
+  .gear-teeth rect {
+    fill: #d4af37;
+  }
+
+  @keyframes rotate-gear {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes rotate-gear-reverse {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
+  }
+
+  /* ====== PARTICLE FIELD ====== */
+  .particle-field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #d4af37, transparent);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particle-float 8s ease-in-out infinite;
+  }
+
+  @keyframes particle-float {
+    0% {
+      opacity: 0;
+      transform: translateY(100vh) scale(0);
+    }
+    10% {
+      opacity: 0.8;
+      transform: translateY(80vh) scale(1);
+    }
+    90% {
+      opacity: 0.3;
+      transform: translateY(10vh) scale(0.5);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(0) scale(0);
+    }
+  }
+
+  /* ====== CURTAIN BREATHING ====== */
+  .curtain {
+    animation: curtain-breathe 6s ease-in-out infinite;
+  }
+
+  .curtains-open .curtain-left {
+    animation: curtain-breathe-open-left 6s ease-in-out infinite;
+  }
+
+  .curtains-open .curtain-right {
+    animation: curtain-breathe-open-right 6s ease-in-out infinite;
+  }
+
+  @keyframes curtain-breathe {
+    0%, 100% { transform: scaleX(1); }
+    50% { transform: scaleX(1.02); }
+  }
+
+  @keyframes curtain-breathe-open-left {
+    0%, 100% { transform: translateX(-95%) scaleX(1); }
+    50% { transform: translateX(-95%) scaleX(1.03); }
+  }
+
+  @keyframes curtain-breathe-open-right {
+    0%, 100% { transform: translateX(95%) scaleX(1); }
+    50% { transform: translateX(95%) scaleX(1.03); }
+  }
+
+  /* ====== CENTRAL SYMBOL AURA ====== */
+  .central-symbol {
+    position: relative;
+    animation: symbol-pulse 4s ease-in-out infinite;
+  }
+
+  .central-symbol::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.3), transparent 70%);
+    border-radius: 50%;
+    animation: aura-pulse 3s ease-in-out infinite;
+    z-index: -1;
+  }
+
+  @keyframes symbol-pulse {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.05); filter: brightness(1.2); }
+  }
+
+  @keyframes aura-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.3); opacity: 0.8; }
+  }
+
+  /* ====== STAGE GLOW ANIMATION ====== */
+  .stage-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+    animation: stage-glow-pulse 5s ease-in-out infinite;
+  }
+
+  @keyframes stage-glow-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  /* ====== TASSEL SWING ====== */
+  .curtain-tassel {
+    animation: tassel-swing 4s ease-in-out infinite;
+    transform-origin: top center;
+  }
+
+  .curtain-left .curtain-tassel {
+    animation-delay: -1s;
+  }
+
+  @keyframes tassel-swing {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(3deg); }
+    75% { transform: rotate(-3deg); }
+  }
+
+  /* ====== SCENE IMAGE SUBTLE MOVEMENT ====== */
+  .scene-image.visible {
+    animation: scene-drift 30s ease-in-out infinite;
+  }
+
+  @keyframes scene-drift {
+    0%, 100% { transform: scale(1) translate(0, 0); }
+    25% { transform: scale(1.02) translate(-0.5%, -0.3%); }
+    50% { transform: scale(1.01) translate(0.3%, 0.2%); }
+    75% { transform: scale(1.02) translate(0.2%, -0.2%); }
+  }
+
+  /* ====== ARCH CROWN GLOW ====== */
+  .arch-crown {
+    animation: crown-glow 4s ease-in-out infinite;
+  }
+
+  @keyframes crown-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+    50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
+  }
+
+  /* ====== LOADING MANDALA ENHANCED ====== */
+  .mandala-ring {
+    fill: none;
+    stroke: #d4af37;
+    stroke-width: 1;
+  }
+
+  .ring-1 { animation: mandala-spin 8s linear infinite; }
+  .ring-2 { animation: mandala-spin-reverse 6s linear infinite; }
+  .ring-3 { animation: mandala-spin 4s linear infinite; }
+
+  @keyframes mandala-spin {
+    from { transform: rotate(0deg); transform-origin: 50px 50px; }
+    to { transform: rotate(360deg); transform-origin: 50px 50px; }
+  }
+
+  @keyframes mandala-spin-reverse {
+    from { transform: rotate(360deg); transform-origin: 50px 50px; }
+    to { transform: rotate(0deg); transform-origin: 50px 50px; }
   }
 
   /* ====== PROSCENIUM ARCH ====== */
@@ -812,18 +1110,89 @@ const dateStr = today.toLocaleDateString('en-US', {
 
   // Create floating symbols
   function createFloatingSymbols() {
-    const symbols = ['☉', '☽', '☿', '♀', '♂', '♃', '♄', '⚗️', '🜂', '🜄', '🜁', '🜃', '⊛'];
+    const symbols = ['☉', '☽', '☿', '♀', '♂', '♃', '♄', '⚗️', '🜂', '🜄', '🜁', '🜃', '⊛', '✧', '✦', '◈'];
     if (!floatingSymbols) return;
 
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 25; i++) {
       const span = document.createElement('span');
       span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
       span.style.left = `${Math.random() * 100}%`;
       span.style.top = `${Math.random() * 100}%`;
       span.style.animationDelay = `${Math.random() * 20}s`;
       span.style.animationDuration = `${15 + Math.random() * 10}s`;
+      span.style.fontSize = `${1 + Math.random() * 1.5}rem`;
       floatingSymbols.appendChild(span);
     }
+  }
+
+  // Create floating particles (golden motes rising)
+  function createParticles() {
+    const particleField = document.getElementById('particle-field');
+    if (!particleField) return;
+
+    for (let i = 0; i < 40; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 8}s`;
+      particle.style.animationDuration = `${6 + Math.random() * 6}s`;
+      const size = 2 + Math.random() * 4;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particleField.appendChild(particle);
+    }
+  }
+
+  // Parallax effect on mouse move
+  function initParallax() {
+    const sceneImage = document.getElementById('scene-image') as HTMLImageElement;
+    const gears = document.querySelectorAll('.gear');
+    let rafId: number;
+
+    document.addEventListener('mousemove', (e) => {
+      if (rafId) cancelAnimationFrame(rafId);
+
+      rafId = requestAnimationFrame(() => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 2;
+        const y = (e.clientY / window.innerHeight - 0.5) * 2;
+
+        if (sceneImage?.classList.contains('visible')) {
+          sceneImage.style.transform = `scale(1.02) translate(${x * 8}px, ${y * 8}px)`;
+        }
+
+        if (centralSymbol) {
+          centralSymbol.style.transform = `translate(${x * 15}px, ${y * 15}px)`;
+        }
+
+        gears.forEach((gear, i) => {
+          const el = gear as HTMLElement;
+          const factor = (i % 2 === 0) ? 1 : -1;
+          const currentTransform = el.style.transform || '';
+          // Preserve rotation, add translation
+          el.style.marginLeft = `${x * 5 * factor}px`;
+          el.style.marginTop = `${y * 5 * factor}px`;
+        });
+      });
+    });
+  }
+
+  // Fetch current scene from Cosmic Channel (already generated hourly - FREE)
+  async function fetchCurrentScene() {
+    try {
+      const response = await fetch('https://cosmic-channel.weathered-scene-2272.workers.dev/scene', {
+        signal: AbortSignal.timeout(5000)
+      });
+      if (!response.ok) return null;
+
+      const scene = await response.json();
+      if (scene.imageData && !scene.error) {
+        console.log('🎭 Loaded scene from Cosmic Channel:', scene.id, scene.stage);
+        return scene;
+      }
+    } catch (e) {
+      console.log('Cosmic Channel unavailable, using fallback');
+    }
+    return null;
   }
 
   // Update UI based on forecast
@@ -971,8 +1340,10 @@ const dateStr = today.toLocaleDateString('en-US', {
   }
 
   // Initialize
-  function init() {
+  async function init() {
     createFloatingSymbols();
+    createParticles();
+    initParallax();
     updateFromForecast();
 
     // Subscribe to forecast changes
@@ -984,12 +1355,26 @@ const dateStr = today.toLocaleDateString('en-US', {
     // Generate button click
     generateBtn?.addEventListener('click', generateScene);
 
-    // Check for cached scene
+    // Check for cached scene first
     const today = new Date();
     const cacheKey = `theater-scene-${today.toISOString().split('T')[0]}`;
     const cached = localStorage.getItem(cacheKey);
+
     if (cached) {
       showImage(cached);
+    } else {
+      // Try to fetch current scene from Cosmic Channel (FREE - already generated)
+      const cosmicScene = await fetchCurrentScene();
+      if (cosmicScene?.imageData) {
+        showImage(cosmicScene.imageData);
+        // Cache it locally
+        localStorage.setItem(cacheKey, cosmicScene.imageData);
+
+        // Update narration if available
+        if (cosmicScene.narration && narrationText) {
+          narrationText.innerHTML = `<p>${cosmicScene.narration}</p>`;
+        }
+      }
     }
   }
 
