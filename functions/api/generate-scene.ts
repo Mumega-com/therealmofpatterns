@@ -13,6 +13,12 @@ interface Env {
   GEMINI_API_KEY_3?: string;
   GEMINI_API_KEY_4?: string;
   GEMINI_API_KEY_5?: string;
+  GEMINI_API_KEY_6?: string;
+  GEMINI_API_KEY_7?: string;
+  GEMINI_API_KEY_8?: string;
+  GEMINI_API_KEY_9?: string;
+  GEMINI_API_KEY_10?: string;
+  GEMINI_API_KEY_11?: string;
 }
 
 interface RequestBody {
@@ -126,7 +132,68 @@ function getApiKeys(env: Env): string[] {
     env.GEMINI_API_KEY_3,
     env.GEMINI_API_KEY_4,
     env.GEMINI_API_KEY_5,
+    env.GEMINI_API_KEY_6,
+    env.GEMINI_API_KEY_7,
+    env.GEMINI_API_KEY_8,
+    env.GEMINI_API_KEY_9,
+    env.GEMINI_API_KEY_10,
+    env.GEMINI_API_KEY_11,
   ].filter((key): key is string => Boolean(key));
+}
+
+// Smart key rotation with retry on rate limit
+async function callGeminiWithRotation(
+  prompt: string,
+  apiKeys: string[],
+  startIndex: number
+): Promise<{ success: boolean; data?: any; error?: string; keyUsed?: number }> {
+  const maxRetries = Math.min(apiKeys.length, 5); // Try up to 5 different keys
+
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const keyIndex = (startIndex + attempt) % apiKeys.length;
+    const apiKey = apiKeys[keyIndex];
+
+    try {
+      const response = await fetch(
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateImages',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey,
+          },
+          body: JSON.stringify({
+            model: 'gemini-2.0-flash-exp',
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              responseModalities: ['TEXT', 'IMAGE'],
+            }
+          })
+        }
+      );
+
+      if (response.status === 429) {
+        // Rate limited, try next key
+        console.log(`Key ${keyIndex + 1} rate limited, trying next...`);
+        continue;
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Gemini API error with key ${keyIndex + 1}:`, response.status, errorText);
+        // For non-429 errors, still try next key
+        continue;
+      }
+
+      const data = await response.json();
+      return { success: true, data, keyUsed: keyIndex + 1 };
+    } catch (error) {
+      console.error(`Error with key ${keyIndex + 1}:`, error);
+      continue;
+    }
+  }
+
+  return { success: false, error: 'All API keys exhausted or rate limited' };
 }
 
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
@@ -164,59 +231,65 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     const dateObj = new Date(date);
     const startOfYear = new Date(dateObj.getFullYear(), 0, 0);
     const dayOfYear = Math.floor((dateObj.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
-    const keyIndex = dayOfYear % apiKeys.length;
-    const apiKey = apiKeys[keyIndex];
+
+    // Use hour + minute for more granular rotation within a day
+    const hourMinute = dateObj.getHours() * 60 + dateObj.getMinutes();
+    const startKeyIndex = (dayOfYear * 24 + Math.floor(hourMinute / 60)) % apiKeys.length;
 
     // Build prompt
     const dayOfWeek = dateObj.getDay();
     const prompt = buildTheaterPrompt(stage, kappa, dayOfWeek, dayOfYear);
 
-    // Call Gemini 2.5 Flash Image API
-    const response = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': apiKey,
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{ text: prompt }]
-          }],
-          generationConfig: {
-            responseModalities: ['TEXT', 'IMAGE'],
-          }
-        })
-      }
-    );
+    // Call Gemini with smart key rotation
+    const result = await callGeminiWithRotation(prompt, apiKeys, startKeyIndex);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Gemini API error:', response.status, errorText);
-      return new Response(JSON.stringify({ error: `Gemini API error: ${response.status}` }), {
-        status: 500,
+    if (!result.success) {
+      return new Response(JSON.stringify({
+        error: result.error || 'Failed to generate image',
+        keysAvailable: apiKeys.length
+      }), {
+        status: 503,
         headers,
       });
     }
 
-    const data = await response.json();
+    // Extract image from response - handle both image generation formats
+    let imageData: string | null = null;
 
-    // Extract image from response
-    const imagePart = data.candidates?.[0]?.content?.parts?.find(
-      (part: any) => part.inlineData?.mimeType?.startsWith('image/')
-    );
+    // Format 1: generateImages response (images array)
+    if (result.data?.images?.[0]?.image?.imageBytes) {
+      const base64 = result.data.images[0].image.imageBytes;
+      imageData = `data:image/png;base64,${base64}`;
+    }
+    // Format 2: generateContent response (inline data in parts)
+    else if (result.data?.candidates?.[0]?.content?.parts) {
+      const imagePart = result.data.candidates[0].content.parts.find(
+        (part: any) => part.inlineData?.mimeType?.startsWith('image/')
+      );
+      if (imagePart?.inlineData?.data) {
+        imageData = `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
+      }
+    }
+    // Format 3: Direct generatedImages array
+    else if (result.data?.generatedImages?.[0]?.image?.imageBytes) {
+      const base64 = result.data.generatedImages[0].image.imageBytes;
+      imageData = `data:image/png;base64,${base64}`;
+    }
 
-    if (!imagePart?.inlineData?.data) {
+    if (!imageData) {
+      console.error('Unexpected response format:', JSON.stringify(result.data).slice(0, 500));
       return new Response(JSON.stringify({ error: 'No image in response' }), {
         status: 500,
         headers,
       });
     }
 
-    const imageData = `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
-
-    return new Response(JSON.stringify({ imageData, cached: false }), {
+    return new Response(JSON.stringify({
+      imageData,
+      cached: false,
+      keyUsed: result.keyUsed,
+      keysAvailable: apiKeys.length
+    }), {
       status: 200,
       headers,
     });
