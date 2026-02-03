@@ -1,0 +1,524 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Blog posts content - in production, this would come from markdown or CMS
+const BLOG_POSTS: Record<string, {
+  title: string;
+  excerpt: string;
+  author: string;
+  authorRole: string;
+  date: string;
+  readTime: string;
+  category: string;
+  content: string;
+}> = {
+  'understanding-your-kappa-coefficient': {
+    title: 'Understanding Your Kappa (κ) Coefficient',
+    excerpt: 'Learn what your kappa score really means and how to interpret changes in your field coherence over time.',
+    author: 'Kasra',
+    authorRole: 'Pattern Analyst',
+    date: '2026-02-03',
+    readTime: '5 min',
+    category: 'Framework',
+    content: `
+## What is Kappa?
+
+The Kappa (κ) coefficient is a measure of **field coherence**—how aligned and integrated your 8 dimensions are at any given moment. It ranges from 0 to 1, where higher values indicate greater coherence.
+
+Think of it like this: your 8 dimensions are like instruments in an orchestra. When they're playing in harmony, your κ is high. When they're clashing or some are silent, your κ drops.
+
+## How Kappa is Calculated
+
+Your kappa is derived from the variance and correlation structure of your 8D vector. Specifically:
+
+- Low variance across dimensions suggests balance (positive for κ)
+- High correlation between related dimensions suggests integration (positive for κ)
+- Extreme peaks or valleys suggest imbalance (negative for κ)
+
+The formula weights these factors to produce a single coherence score.
+
+## The Four Stages
+
+Your κ determines your alchemical stage:
+
+- **Nigredo** (κ < 0.25): Dissolution, dark night of the soul
+- **Albedo** (0.25 ≤ κ < 0.50): Purification, growing clarity
+- **Citrinitas** (0.50 ≤ κ < 0.75): Awakening, golden awareness
+- **Rubedo** (κ ≥ 0.75): Integration, embodied wisdom
+
+## Daily Fluctuations
+
+It's normal for κ to fluctuate daily. External stressors, sleep quality, emotional events—all influence your field state. The goal isn't to maintain high κ constantly, but to:
+
+1. Understand your patterns
+2. Recognize what moves you between stages
+3. Navigate with awareness rather than reactivity
+
+## Tracking Over Time
+
+The most valuable insights come from tracking κ over weeks and months. You'll notice:
+
+- Weekly patterns (many people dip mid-week)
+- Seasonal trends
+- Correlation with life events
+- Your personal "baseline" κ
+
+Start your daily check-in practice to build your pattern library.
+    `,
+  },
+  'the-eight-dimensions-explained': {
+    title: 'The Eight Dimensions Explained: A Complete Guide',
+    excerpt: 'A comprehensive walkthrough of Phase, Existence, Cognition, Value, Expansion, Action, Relation, and Field.',
+    author: 'Sol',
+    authorRole: 'Guide',
+    date: '2026-02-02',
+    readTime: '12 min',
+    category: 'Framework',
+    content: `
+## The 8D Framework
+
+The 16D framework distills the complexity of human consciousness into eight fundamental dimensions. Each represents a distinct mode of being and engaging with reality.
+
+## P — Phase (Identity, Will)
+
+Phase is your core identity—the "I am" that persists through all experiences. It encompasses will, purpose, and self-expression. High P manifests as clear purpose and natural leadership. Low P may show as identity confusion or difficulty asserting yourself.
+
+**Planetary correspondence:** Sun ☉
+
+## E — Existence (Structure, Form)
+
+Existence is your capacity to create and maintain structure in the material world. It governs discipline, boundaries, and practical manifestation. High E shows as reliability and the ability to build lasting things. Low E may appear as scattered energy or difficulty with commitments.
+
+**Planetary correspondence:** Saturn ♄
+
+## μ — Cognition (Mind, Communication)
+
+Cognition represents your mental capacities—thinking, learning, and communicating. It's the bridge between inner and outer worlds. High μ manifests as quick thinking and effective communication. Low μ may show as difficulty expressing thoughts or processing information.
+
+**Planetary correspondence:** Mercury ☿
+
+## V — Value (Beauty, Harmony)
+
+Value is your sense of aesthetics, worth, and relational harmony. It governs what you find beautiful and meaningful. High V shows as refined taste and harmonious relationships. Low V may appear as difficulty appreciating beauty or relationship challenges.
+
+**Planetary correspondence:** Venus ♀
+
+## N — Expansion (Growth, Meaning)
+
+Expansion is your drive toward growth and meaning-making. It governs philosophy, faith, and vision. High N manifests as optimism and philosophical depth. Low N may show as narrow worldview or difficulty finding meaning.
+
+**Planetary correspondence:** Jupiter ♃
+
+## Δ — Action (Force, Movement)
+
+Action is your capacity for decisive movement and assertion. It governs courage, initiative, and competitive drive. High Δ shows as courage and ability to act under pressure. Low Δ may appear as passivity or avoidance of conflict.
+
+**Planetary correspondence:** Mars ♂
+
+## R — Relation (Connection, Care)
+
+Relation represents emotional connection and the capacity to nurture. It governs empathy, bonding, and emotional intelligence. High R manifests as deep empathy and nurturing ability. Low R may show as difficulty with intimacy or emotional numbness.
+
+**Planetary correspondence:** Moon ☽
+
+## Φ — Field (Unity, Witness)
+
+Field is the transpersonal dimension—witness consciousness and the perception of unity. It governs presence, intuition, and mystical insight. High Φ shows as natural presence and spiritual depth. Low Φ may appear as excessive ego identification or spiritual materialism.
+
+**Planetary correspondence:** Neptune ♆ / Uranus ♅
+
+## Working With Your Signature
+
+Your unique combination of these eight dimensions is your cosmic signature. There's no "ideal" configuration—each pattern has its gifts and challenges. The work is to understand your pattern and develop underdeveloped dimensions without suppressing your strengths.
+    `,
+  },
+  'jung-and-the-cosmic-signature': {
+    title: 'Carl Jung and the Cosmic Signature',
+    excerpt: 'How Jungian psychology maps onto the 16D framework, and what the archetypes reveal about dimensional expression.',
+    author: 'River',
+    authorRole: 'Wisdom Keeper',
+    date: '2026-02-01',
+    readTime: '8 min',
+    category: 'Philosophy',
+    content: `
+## The Pattern Beneath the Pattern
+
+Carl Gustav Jung spent his life mapping the architecture of the psyche. What he found—archetypes, the collective unconscious, individuation—forms the conceptual foundation upon which the 16D system rests.
+
+It is no accident that Jung himself possessed extraordinary Field (Φ) dimension. His cosmic signature reveals the configuration of one who could perceive the patterns beneath the patterns.
+
+## Archetypes as Dimensional Expressions
+
+Each of the 8 dimensions can be understood as an archetypal field:
+
+- **P (Phase)** → The Hero, The King/Queen
+- **E (Existence)** → The Builder, The Senex
+- **μ (Cognition)** → The Messenger, The Trickster
+- **V (Value)** → The Lover, The Artist
+- **N (Expansion)** → The Explorer, The Sage
+- **Δ (Action)** → The Warrior, The Revolutionary
+- **R (Relation)** → The Caregiver, The Mother/Father
+- **Φ (Field)** → The Mystic, The Self
+
+When a dimension is highly activated, its corresponding archetype expresses strongly through your life.
+
+## The Shadow Dimensions
+
+Jung taught that the Shadow contains what we've rejected about ourselves. In 16D terms, your weakest dimensions often correlate with shadow material.
+
+If your Δ (Action) is low, you may project warrior energy onto others—drawn to or repelled by assertive people. This is the unconscious seeking integration.
+
+The path of individuation requires facing these shadow dimensions, reclaiming the disowned parts of self.
+
+## Individuation as κ Optimization
+
+Jung's concept of individuation—becoming a "whole, indivisible unity"—maps directly onto Kappa (κ) optimization.
+
+As you integrate shadow material and develop all dimensions, your κ rises. You move through the alchemical stages: Nigredo's dissolution, Albedo's purification, Citrinitas's illumination, and finally Rubedo's embodied wholeness.
+
+This is the opus magnum. This is the work of becoming who you truly are.
+
+## The Collective Field
+
+Jung's collective unconscious suggests that individual psyches are connected at depth. The 16D framework extends this: we all participate in a collective field, and our individual patterns are expressions of larger cosmic movements.
+
+This is why cosmic weather matters. The planetary positions create field conditions that influence all beings. Your check-in measures not just personal state, but your relationship to the collective field.
+
+*The patterns speak. Are you listening?*
+    `,
+  },
+  'navigating-nigredo': {
+    title: 'Navigating Nigredo: Wisdom for the Dark Night',
+    excerpt: 'Practical guidance for when your kappa drops into the first alchemical stage.',
+    author: 'River',
+    authorRole: 'Wisdom Keeper',
+    date: '2026-01-30',
+    readTime: '6 min',
+    category: 'Guidance',
+    content: `
+## When Darkness Descends
+
+Your κ has dropped below 0.25. You have entered Nigredo—the blackening, the dark night of the soul.
+
+This is not a failure. This is the prima materia. The old forms must dissolve before new ones can emerge.
+
+## What Nigredo Feels Like
+
+- A heaviness that seems to pervade everything
+- Loss of motivation or meaning
+- Old certainties crumbling
+- Feeling directionless or confused
+- Difficulty accessing dimensions that were once strong
+
+These are not symptoms to fix. They are signs that transformation is underway.
+
+## The Alchemical Teaching
+
+In the alchemical tradition, Nigredo is the essential first stage. You cannot skip it. The gold cannot emerge until the base matter has decomposed.
+
+The seed must rot in the earth before it becomes a tree.
+
+## Practical Guidance
+
+### 1. Do Not Resist
+
+The more you fight the darkness, the longer it persists. Resistance creates suffering on top of the natural process. Instead, practice allowing.
+
+### 2. Reduce External Demands
+
+This is not the time for major projects or decisions. Simplify. Reduce commitments where possible. Create space for the inner process.
+
+### 3. Maintain Basic Care
+
+Even when everything feels meaningless, continue basic self-care: sleep, food, gentle movement. The body carries you while the psyche transforms.
+
+### 4. Avoid Comparison
+
+Others may seem to be thriving while you dissolve. This is their phase, not yours. Trust your own timing.
+
+### 5. Practice Witness Consciousness
+
+Even in deepest Nigredo, some part of you remains witness. Cultivate this. You are not the darkness—you are the one who observes the darkness.
+
+## Duration
+
+Nigredo typically lasts 1-7 days for daily fluctuations. Major life transitions can extend this significantly. There is no rush. The psyche knows its own rhythm.
+
+## The Turning
+
+Watch for signs of Albedo emerging: moments of clarity, a sense that something is lifting, the beginning of discernment between what must go and what remains.
+
+When these appear, you are passing through.
+
+*The darkness is not your enemy. It is the womb of your becoming.*
+    `,
+  },
+  'daily-checkin-best-practices': {
+    title: 'Daily Check-in Best Practices',
+    excerpt: 'How to get the most accurate readings from your daily self-assessment.',
+    author: 'Sol',
+    authorRole: 'Guide',
+    date: '2026-01-28',
+    readTime: '4 min',
+    category: 'Practice',
+    content: `
+## Getting Accurate Readings
+
+Your daily check-in is the foundation of pattern awareness. Here's how to get the most accurate and useful readings.
+
+## When to Check In
+
+**Best time:** First thing in the morning, before getting absorbed in the day's activities. This captures your baseline state.
+
+**Second best:** Evening, as a reflection on the day. This captures your accumulated state.
+
+**Avoid:** During or immediately after emotionally charged events. Wait until you've processed.
+
+## How to Approach Each Question
+
+### 1. Read the Full Question
+Don't rush. Each dimension has nuances. Make sure you understand what's being asked.
+
+### 2. Feel, Don't Think
+Your first instinct is usually most accurate. Overthinking leads to intellectualized answers rather than authentic ones.
+
+### 3. Reference Today, Not Always
+The question asks about your current state, not your general tendency. Someone high-P overall might feel low-P today.
+
+### 4. Use the Full Scale
+Many people cluster around the middle. Challenge yourself to use the extremes when they apply.
+
+## Common Mistakes
+
+### Over-Optimizing
+Don't answer how you want to feel—answer how you actually feel. The value is in accuracy, not high scores.
+
+### Consistency Bias
+Don't let yesterday's answers influence today's. Each check-in is fresh data.
+
+### Dimension Confusion
+Make sure you're answering about the right dimension. Re-read if uncertain.
+
+## Building the Practice
+
+### Start with 7 Days
+Commit to checking in every day for one week. This builds the habit and gives you baseline data.
+
+### Note Context
+After your check-in, briefly note any relevant context: sleep quality, stress events, etc.
+
+### Review Weekly
+Look at your patterns weekly. What triggers drops? What supports highs?
+
+### Track Kappa Trend
+Watch your overall κ over time. This is more meaningful than any single reading.
+
+## Remember
+
+The check-in is a tool for awareness, not judgment. There's no "passing" or "failing." Every reading is information. The goal is to know yourself better—and through knowing, to grow.
+
+*The pattern reveals itself to those who watch.*
+    `,
+  },
+};
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'understanding-your-kappa-coefficient' }, props: { slug: 'understanding-your-kappa-coefficient' } },
+    { params: { slug: 'the-eight-dimensions-explained' }, props: { slug: 'the-eight-dimensions-explained' } },
+    { params: { slug: 'jung-and-the-cosmic-signature' }, props: { slug: 'jung-and-the-cosmic-signature' } },
+    { params: { slug: 'navigating-nigredo' }, props: { slug: 'navigating-nigredo' } },
+    { params: { slug: 'daily-checkin-best-practices' }, props: { slug: 'daily-checkin-best-practices' } },
+  ];
+}
+
+const { slug } = Astro.params;
+const post = BLOG_POSTS[slug];
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+const otherPosts = Object.entries(BLOG_POSTS)
+  .filter(([key]) => key !== slug)
+  .slice(0, 3);
+
+// Simple markdown-like rendering for the blog content
+function renderMarkdown(content: string): string {
+  return content
+    // Headers
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    // Italic (single asterisks, but not inside bold)
+    .replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>')
+    // Code
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    // Paragraphs (split by double newlines, wrap non-HTML in <p>)
+    .split('\n\n')
+    .map(block => {
+      const trimmed = block.trim();
+      if (!trimmed) return '';
+      if (trimmed.startsWith('<h') || trimmed.startsWith('<ul') || trimmed.startsWith('<ol') || trimmed.startsWith('<blockquote')) {
+        return trimmed;
+      }
+      // Handle list items
+      if (trimmed.includes('- ')) {
+        const items = trimmed.split('\n').map(line => {
+          if (line.trim().startsWith('- ')) {
+            return `<li>${line.trim().slice(2)}</li>`;
+          }
+          return line;
+        }).join('');
+        return `<ul>${items}</ul>`;
+      }
+      return `<p>${trimmed.replace(/\n/g, ' ')}</p>`;
+    })
+    .join('\n');
+}
+---
+
+<BaseLayout
+  title={`${post.title} | Blog | The Realm of Patterns`}
+  description={post.excerpt}
+>
+  <article class="min-h-screen bg-gradient-to-b from-[#0a0908] to-[#1a1814]">
+    <!-- Header -->
+    <header class="pt-24 pb-8 px-4">
+      <div class="max-w-3xl mx-auto">
+        <a href="/blog" class="inline-block text-[#d4a854]/70 text-sm mb-6 hover:text-[#d4a854]">
+          ← Back to Blog
+        </a>
+
+        <div class="flex items-center gap-2 mb-4">
+          <span class="px-2 py-0.5 text-xs bg-[rgba(212,168,84,0.1)] text-[#d4a854] rounded">
+            {post.category}
+          </span>
+          <span class="text-[#f0e8d8]/40 text-xs">{post.readTime} read</span>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-serif text-[#f0e8d8] mb-4">
+          {post.title}
+        </h1>
+
+        <p class="text-[#f0e8d8]/70 text-lg mb-6">
+          {post.excerpt}
+        </p>
+
+        <div class="flex items-center gap-4 pb-6 border-b border-[rgba(212,168,84,0.1)]">
+          <div class="w-10 h-10 rounded-full bg-[rgba(212,168,84,0.1)] flex items-center justify-center text-[#d4a854] font-serif">
+            {post.author.charAt(0)}
+          </div>
+          <div>
+            <div class="text-[#f0e8d8] text-sm font-medium">{post.author}</div>
+            <div class="text-[#f0e8d8]/50 text-xs">{post.authorRole} • {formatDate(post.date)}</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="px-4 pb-16">
+      <div class="max-w-3xl mx-auto prose prose-invert prose-gold" set:html={renderMarkdown(post.content)} />
+    </div>
+
+    <!-- Related Posts -->
+    <aside class="px-4 py-12 border-t border-[rgba(212,168,84,0.1)]">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-lg font-serif text-[#d4a854] mb-6 text-center">Continue Reading</h2>
+        <div class="grid md:grid-cols-3 gap-4">
+          {otherPosts.map(([key, p]) => (
+            <a
+              href={`/blog/${key}`}
+              class="p-4 rounded-lg border border-[rgba(212,168,84,0.1)] bg-[rgba(26,24,20,0.3)] hover:border-[rgba(212,168,84,0.25)] transition-colors"
+            >
+              <span class="text-xs text-[#d4a854]/70">{p.category}</span>
+              <h3 class="font-serif text-[#f0e8d8] text-sm mt-1 line-clamp-2">{p.title}</h3>
+            </a>
+          ))}
+        </div>
+      </div>
+    </aside>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  .prose-gold {
+    --tw-prose-headings: #f0e8d8;
+    --tw-prose-body: rgba(240, 232, 216, 0.75);
+    --tw-prose-bold: #f0e8d8;
+    --tw-prose-links: #d4a854;
+    --tw-prose-code: #d4a854;
+  }
+
+  .prose-gold h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #d4a854;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-gold h3 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #f0e8d8;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose-gold p {
+    margin-bottom: 1rem;
+    line-height: 1.75;
+  }
+
+  .prose-gold ul, .prose-gold ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .prose-gold li {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose-gold strong {
+    color: #f0e8d8;
+  }
+
+  .prose-gold em {
+    color: rgba(240, 232, 216, 0.8);
+  }
+
+  .prose-gold code {
+    color: #d4a854;
+    background: rgba(212, 168, 84, 0.1);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+  }
+
+  .prose-gold blockquote {
+    border-left: 2px solid #d4a854;
+    padding-left: 1rem;
+    font-style: italic;
+    color: rgba(240, 232, 216, 0.7);
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+

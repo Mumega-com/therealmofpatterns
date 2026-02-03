@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Blog posts data - in production, this would come from a CMS or markdown files
+const BLOG_POSTS = [
+  {
+    slug: 'understanding-your-kappa-coefficient',
+    title: 'Understanding Your Kappa (κ) Coefficient',
+    excerpt: 'Learn what your kappa score really means and how to interpret changes in your field coherence over time.',
+    author: 'Kasra',
+    date: '2026-02-03',
+    readTime: '5 min',
+    category: 'Framework',
+    featured: true,
+  },
+  {
+    slug: 'the-eight-dimensions-explained',
+    title: 'The Eight Dimensions Explained: A Complete Guide',
+    excerpt: 'A comprehensive walkthrough of Phase, Existence, Cognition, Value, Expansion, Action, Relation, and Field.',
+    author: 'Sol',
+    date: '2026-02-02',
+    readTime: '12 min',
+    category: 'Framework',
+    featured: true,
+  },
+  {
+    slug: 'jung-and-the-cosmic-signature',
+    title: 'Carl Jung and the Cosmic Signature',
+    excerpt: 'How Jungian psychology maps onto the 16D framework, and what the archetypes reveal about dimensional expression.',
+    author: 'River',
+    date: '2026-02-01',
+    readTime: '8 min',
+    category: 'Philosophy',
+    featured: false,
+  },
+  {
+    slug: 'navigating-nigredo',
+    title: 'Navigating Nigredo: Wisdom for the Dark Night',
+    excerpt: 'Practical guidance for when your kappa drops into the first alchemical stage.',
+    author: 'River',
+    date: '2026-01-30',
+    readTime: '6 min',
+    category: 'Guidance',
+    featured: false,
+  },
+  {
+    slug: 'daily-checkin-best-practices',
+    title: 'Daily Check-in Best Practices',
+    excerpt: 'How to get the most accurate readings from your daily self-assessment.',
+    author: 'Sol',
+    date: '2026-01-28',
+    readTime: '4 min',
+    category: 'Practice',
+    featured: false,
+  },
+];
+
+const featuredPosts = BLOG_POSTS.filter(p => p.featured);
+const recentPosts = BLOG_POSTS.filter(p => !p.featured);
+const categories = [...new Set(BLOG_POSTS.map(p => p.category))];
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+---
+
+<BaseLayout
+  title="Blog | The Realm of Patterns"
+  description="Insights, guides, and wisdom on cosmic identity, dimensional awareness, and personal transformation."
+>
+  <main class="min-h-screen bg-gradient-to-b from-[#0a0908] to-[#1a1814]">
+    <!-- Hero -->
+    <section class="pt-24 pb-12 px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-serif text-[#f0e8d8] mb-4">
+          The Pattern <span class="text-[#d4a854]">Journal</span>
+        </h1>
+        <p class="text-[#f0e8d8]/70 text-lg max-w-2xl mx-auto">
+          Insights, guides, and wisdom for navigating your cosmic signature.
+        </p>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="pb-8 px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex flex-wrap justify-center gap-2">
+          <a
+            href="/blog"
+            class="px-3 py-1.5 text-sm bg-[#d4a854] text-[#0a0908] rounded-full"
+          >
+            All
+          </a>
+          {categories.map(cat => (
+            <a
+              href={`/blog?category=${cat.toLowerCase()}`}
+              class="px-3 py-1.5 text-sm text-[#f0e8d8]/70 border border-[rgba(212,168,84,0.2)] rounded-full hover:border-[#d4a854] hover:text-[#d4a854] transition-colors"
+            >
+              {cat}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Posts -->
+    <section class="py-8 px-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-lg font-serif text-[#d4a854] mb-6">Featured</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {featuredPosts.map(post => (
+            <a
+              href={`/blog/${post.slug}`}
+              class="group p-6 rounded-xl border border-[rgba(212,168,84,0.15)] bg-[rgba(26,24,20,0.4)] hover:border-[#d4a854] transition-all duration-300"
+            >
+              <div class="flex items-center gap-2 mb-3">
+                <span class="px-2 py-0.5 text-xs bg-[rgba(212,168,84,0.1)] text-[#d4a854] rounded">
+                  {post.category}
+                </span>
+                <span class="text-[#f0e8d8]/40 text-xs">{post.readTime}</span>
+              </div>
+              <h3 class="text-xl font-serif text-[#f0e8d8] mb-2 group-hover:text-[#d4a854] transition-colors">
+                {post.title}
+              </h3>
+              <p class="text-[#f0e8d8]/60 text-sm mb-4 line-clamp-2">
+                {post.excerpt}
+              </p>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-[#d4a854]/70">{post.author}</span>
+                <span class="text-[#f0e8d8]/40">{formatDate(post.date)}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Posts -->
+    <section class="py-8 px-4 pb-16">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-lg font-serif text-[#d4a854] mb-6">Recent</h2>
+        <div class="space-y-4">
+          {recentPosts.map(post => (
+            <a
+              href={`/blog/${post.slug}`}
+              class="group flex flex-col sm:flex-row gap-4 p-4 rounded-lg border border-[rgba(212,168,84,0.1)] bg-[rgba(26,24,20,0.3)] hover:border-[rgba(212,168,84,0.25)] transition-colors"
+            >
+              <div class="flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="px-2 py-0.5 text-xs bg-[rgba(212,168,84,0.05)] text-[#d4a854]/70 rounded">
+                    {post.category}
+                  </span>
+                  <span class="text-[#f0e8d8]/40 text-xs">{post.readTime}</span>
+                </div>
+                <h3 class="font-serif text-[#f0e8d8] group-hover:text-[#d4a854] transition-colors">
+                  {post.title}
+                </h3>
+                <p class="text-[#f0e8d8]/50 text-sm mt-1 line-clamp-1">
+                  {post.excerpt}
+                </p>
+              </div>
+              <div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 text-xs">
+                <span class="text-[#d4a854]/70">{post.author}</span>
+                <span class="text-[#f0e8d8]/40">{formatDate(post.date)}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter CTA -->
+    <section class="py-12 px-4 border-t border-[rgba(212,168,84,0.1)]">
+      <div class="max-w-xl mx-auto text-center">
+        <h3 class="text-xl font-serif text-[#f0e8d8] mb-2">
+          Get weekly insights
+        </h3>
+        <p class="text-[#f0e8d8]/60 text-sm mb-4">
+          Deep dives on cosmic identity, delivered every Sunday.
+        </p>
+        <form class="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+          <input
+            type="email"
+            placeholder="your@email.com"
+            class="flex-1 px-4 py-2.5 bg-[rgba(26,24,20,0.6)] border border-[rgba(212,168,84,0.2)] rounded-lg text-[#f0e8d8] placeholder:text-[#f0e8d8]/30 focus:border-[#d4a854] focus:outline-none"
+          />
+          <button
+            type="submit"
+            class="px-6 py-2.5 bg-[#d4a854] text-[#0a0908] rounded-lg font-medium hover:bg-[#e5b964] transition-colors"
+          >
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

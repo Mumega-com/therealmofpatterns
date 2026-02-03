@@ -8,6 +8,7 @@ const FOOTER_LINKS = {
     { href: '/weather', label: 'Cosmic Weather' },
     { href: '/sol/checkin', label: 'Daily Check-in' },
     { href: '/learn', label: 'Learn' },
+    { href: '/blog', label: 'Blog' },
     { href: '/subscribe', label: 'Subscribe' },
   ],
   stages: [
