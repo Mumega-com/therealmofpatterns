@@ -19,6 +19,8 @@ interface Env {
   GEMINI_API_KEY_9?: string;
   GEMINI_API_KEY_10?: string;
   GEMINI_API_KEY_11?: string;
+  OPENAI_API_KEY?: string;
+  GROK_API_KEY?: string;
 }
 
 interface RequestBody {
@@ -192,7 +194,51 @@ async function callGeminiWithRotation(
     }
   }
 
-  return { success: false, error: 'All API keys exhausted or rate limited' };
+  return { success: false, error: 'All Gemini API keys exhausted or rate limited' };
+}
+
+// OpenAI DALL-E fallback
+async function callOpenAIDalle(
+  prompt: string,
+  apiKey: string
+): Promise<{ success: boolean; data?: string; error?: string }> {
+  try {
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'dall-e-3',
+        prompt: prompt,
+        n: 1,
+        size: '1792x1024', // 16:9 aspect ratio
+        quality: 'standard', // Use standard for cost savings
+        response_format: 'b64_json'
+      })
+    });
+
+    if (response.status === 429) {
+      return { success: false, error: 'OpenAI rate limited' };
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('OpenAI API error:', response.status, errorText);
+      return { success: false, error: `OpenAI API error: ${response.status}` };
+    }
+
+    const data = await response.json();
+    if (data.data?.[0]?.b64_json) {
+      return { success: true, data: `data:image/png;base64,${data.data[0].b64_json}` };
+    }
+
+    return { success: false, error: 'No image in OpenAI response' };
+  } catch (error) {
+    console.error('OpenAI error:', error);
+    return { success: false, error: 'OpenAI request failed' };
+  }
 }
 
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
@@ -239,46 +285,46 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     const dayOfWeek = dateObj.getDay();
     const prompt = buildTheaterPrompt(stage, kappa, dayOfWeek, dayOfYear);
 
-    // Call Gemini with smart key rotation
-    const result = await callGeminiWithRotation(prompt, apiKeys, startKeyIndex);
-
-    if (!result.success) {
-      return new Response(JSON.stringify({
-        error: result.error || 'Failed to generate image',
-        keysAvailable: apiKeys.length
-      }), {
-        status: 503,
-        headers,
-      });
-    }
-
-    // Extract image from response - handle both image generation formats
+    // Try Gemini first with smart key rotation
     let imageData: string | null = null;
+    let provider = 'gemini';
 
-    // Format 1: generateImages response (images array)
-    if (result.data?.images?.[0]?.image?.imageBytes) {
-      const base64 = result.data.images[0].image.imageBytes;
-      imageData = `data:image/png;base64,${base64}`;
-    }
-    // Format 2: generateContent response (inline data in parts)
-    else if (result.data?.candidates?.[0]?.content?.parts) {
-      const imagePart = result.data.candidates[0].content.parts.find(
-        (part: any) => part.inlineData?.mimeType?.startsWith('image/')
-      );
-      if (imagePart?.inlineData?.data) {
-        imageData = `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
+    const geminiResult = await callGeminiWithRotation(prompt, apiKeys, startKeyIndex);
+
+    if (geminiResult.success) {
+      // Extract image from Gemini response - handle multiple formats
+      if (geminiResult.data?.images?.[0]?.image?.imageBytes) {
+        imageData = `data:image/png;base64,${geminiResult.data.images[0].image.imageBytes}`;
+      } else if (geminiResult.data?.candidates?.[0]?.content?.parts) {
+        const imagePart = geminiResult.data.candidates[0].content.parts.find(
+          (part: any) => part.inlineData?.mimeType?.startsWith('image/')
+        );
+        if (imagePart?.inlineData?.data) {
+          imageData = `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
+        }
+      } else if (geminiResult.data?.generatedImages?.[0]?.image?.imageBytes) {
+        imageData = `data:image/png;base64,${geminiResult.data.generatedImages[0].image.imageBytes}`;
       }
     }
-    // Format 3: Direct generatedImages array
-    else if (result.data?.generatedImages?.[0]?.image?.imageBytes) {
-      const base64 = result.data.generatedImages[0].image.imageBytes;
-      imageData = `data:image/png;base64,${base64}`;
+
+    // Fallback to OpenAI DALL-E if Gemini failed
+    if (!imageData && env.OPENAI_API_KEY) {
+      console.log('Gemini failed, trying OpenAI DALL-E...');
+      const openaiResult = await callOpenAIDalle(prompt, env.OPENAI_API_KEY);
+      if (openaiResult.success && openaiResult.data) {
+        imageData = openaiResult.data;
+        provider = 'openai';
+      }
     }
 
     if (!imageData) {
-      console.error('Unexpected response format:', JSON.stringify(result.data).slice(0, 500));
-      return new Response(JSON.stringify({ error: 'No image in response' }), {
-        status: 500,
+      return new Response(JSON.stringify({
+        error: 'All providers failed to generate image',
+        geminiKeys: apiKeys.length,
+        geminiError: geminiResult.error,
+        openaiAvailable: !!env.OPENAI_API_KEY
+      }), {
+        status: 503,
         headers,
       });
     }
@@ -286,7 +332,8 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return new Response(JSON.stringify({
       imageData,
       cached: false,
-      keyUsed: result.keyUsed,
+      provider,
+      keyUsed: provider === 'gemini' ? geminiResult.keyUsed : undefined,
       keysAvailable: apiKeys.length
     }), {
       status: 200,
