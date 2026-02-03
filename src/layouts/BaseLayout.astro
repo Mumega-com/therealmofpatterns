@@ -1,55 +1,102 @@
 ---
 import '../styles/global.css';
+import { Header } from '../components/shared/Header';
+import { Footer } from '../components/shared/Footer';
 
 export interface Props {
   title?: string;
   description?: string;
   mode?: 'kasra' | 'river' | 'sol';
   stage?: 'nigredo' | 'albedo' | 'citrinitas' | 'rubedo';
+  lang?: string;
+  showHeader?: boolean;
+  showFooter?: boolean;
+  transparentHeader?: boolean;
+  ogImage?: string;
 }
 
 const {
   title = 'The Realm of Patterns',
-  description = 'Personal energy forecasting based on FRC mathematics',
+  description = 'Personal energy forecasting based on FRC mathematics. Know the pattern. Shape the pattern.',
   mode = 'sol',
-  stage = 'citrinitas'
+  stage = 'citrinitas',
+  lang = 'en',
+  showHeader = true,
+  showFooter = true,
+  transparentHeader = false,
+  ogImage = '/assets/brand/hero-cosmic.png'
 } = Astro.props;
+
+const siteUrl = 'https://therealmofpatterns.com';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 ---
 
 <!DOCTYPE html>
-<html lang="en" data-mode={mode} data-stage={stage}>
+<html lang={lang} data-mode={mode} data-stage={stage}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/png" href="/assets/brand/logo.png" />
+    <link rel="apple-touch-icon" href="/assets/brand/logo.png" />
     <title>{title}</title>
 
     <!-- Preload fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+    <meta property="og:site_name" content="The Realm of Patterns" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+    <!-- Language alternates -->
+    <link rel="alternate" hreflang="en" href={`${siteUrl}${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang="es" href={`${siteUrl}/es${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang="pt-BR" href={`${siteUrl}/pt-br${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}${Astro.url.pathname}`} />
+
+    <!-- Theme color -->
+    <meta name="theme-color" content="#0a0908" />
+
+    <!-- Plausible Analytics -->
+    <script defer data-domain="therealmofpatterns.com" src="https://plausible.io/js/script.js"></script>
   </head>
-  <body class="min-h-screen transition-colors duration-300">
-    <slot />
+  <body class="min-h-screen bg-[#0a0908] text-[#f0e8d8] transition-colors duration-300">
+    {showHeader && <Header client:load currentLang={lang} transparent={transparentHeader} />}
+
+    <main class={showHeader ? 'pt-14' : ''}>
+      <slot />
+    </main>
+
+    {showFooter && <Footer />}
 
     <script>
       // Initialize mode from localStorage or default to 'sol'
       const savedMode = localStorage.getItem('rop_mode') || 'sol';
       document.documentElement.dataset.mode = savedMode;
 
+      // Initialize language from localStorage
+      const savedLang = localStorage.getItem('rop_lang');
+      if (savedLang) {
+        document.documentElement.lang = savedLang;
+      }
+
       // Keyboard shortcuts for mode switching
       document.addEventListener('keydown', (e) => {
         if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
 
         const key = e.key.toLowerCase();
         if (key === 'k') setMode('kasra');

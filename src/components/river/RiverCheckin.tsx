@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { $stage, updateForecast, setFailureMode, type Stage } from '../../stores';
 import { RiverCard, RiverQuote, RiverDivider } from './RiverCard';
+import { saveCheckin } from '../../lib/checkin-storage';
 
 interface CheckinQuestion {
   id: string;
@@ -95,6 +96,9 @@ export function RiverCheckin({ onComplete, className = '' }: RiverCheckinProps) 
       // Update global store
       updateForecast({ kappa });
       detectFailureMode(newScores);
+
+      // Save to localStorage
+      saveCheckin(newScores, kappa, 'river');
 
       onComplete?.(kappa);
     }

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { updateForecast, setFailureMode } from '../../stores';
 import { SolCard, SolButton, SolProgress, SolAlert, SolBadge } from './SolCard';
+import { saveCheckin, getTodaysCheckin, getCheckinHistory, type CheckinEntry } from '../../lib/checkin-storage';
 
 interface CheckinQuestion {
   id: string;
@@ -115,6 +116,9 @@ export function SolCheckin({ onComplete, className = '' }: SolCheckinProps) {
       updateForecast({ kappa });
       detectAndSetFailureMode(newScores);
 
+      // Save to localStorage
+      saveCheckin(newScores, kappa, 'sol');
+
       onComplete?.(kappa);
     }
   };
@@ -193,6 +197,12 @@ function CheckinResult({
   className: string;
 }) {
   const percent = Math.round(kappa * 100);
+  const [history, setHistory] = useState<{ streak: number; entries: CheckinEntry[] }>({ streak: 0, entries: [] });
+
+  useEffect(() => {
+    const h = getCheckinHistory();
+    setHistory({ streak: h.streak, entries: h.entries.slice(0, 7) });
+  }, []);
 
   return (
     <div className={`space-y-4 ${className}`}>
@@ -207,7 +217,38 @@ function CheckinResult({
         </div>
 
         <SolProgress value={percent} showValue={false} className="mt-2" />
+
+        {/* Streak badge */}
+        {history.streak > 1 && (
+          <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-sol-accent/10 rounded-full">
+            <span>🔥</span>
+            <span className="text-sol-caption text-sol-accent font-medium">
+              {history.streak} day streak!
+            </span>
+          </div>
+        )}
       </SolCard>
+
+      {/* Recent check-ins mini chart */}
+      {history.entries.length > 1 && (
+        <SolCard className="!p-4">
+          <div className="text-sol-caption text-sol-muted mb-3">Your week at a glance</div>
+          <div className="flex items-end justify-between gap-1 h-16">
+            {history.entries.slice(0, 7).reverse().map((entry, i) => (
+              <div key={entry.id} className="flex-1 flex flex-col items-center gap-1">
+                <div
+                  className="w-full bg-sol-accent/80 rounded-t transition-all"
+                  style={{ height: `${entry.kappa * 100}%` }}
+                  title={`${Math.round(entry.kappa * 100)}%`}
+                />
+                <span className="text-[10px] text-sol-muted">
+                  {new Date(entry.timestamp).toLocaleDateString('en', { weekday: 'short' }).charAt(0)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </SolCard>
+      )}
 
       <SolAlert
         type="tip"

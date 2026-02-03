@@ -8,6 +8,7 @@ export {
   $stage,
   $isLoading,
   $error,
+  $isStoreHydrated,
   setMode,
   setStage,
   setLoading,

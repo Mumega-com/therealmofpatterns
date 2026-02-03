@@ -8,13 +8,20 @@ export type Stage = 'nigredo' | 'albedo' | 'citrinitas' | 'rubedo';
 
 export const $mode = atom<Mode>('sol');
 export const $stage = atom<Stage>('citrinitas');
+export const $isStoreHydrated = atom<boolean>(false);
 
-// Initialize from localStorage (client-side only)
+// Initialize from localStorage after a microtask to avoid hydration mismatches
+// This ensures React hydration completes with default values first
 if (typeof window !== 'undefined') {
-  const savedMode = localStorage.getItem('rop_mode') as Mode;
-  if (savedMode && ['kasra', 'river', 'sol'].includes(savedMode)) {
-    $mode.set(savedMode);
-  }
+  // Use requestAnimationFrame to defer initialization until after hydration
+  requestAnimationFrame(() => {
+    const savedMode = localStorage.getItem('rop_mode') as Mode;
+    if (savedMode && ['kasra', 'river', 'sol'].includes(savedMode)) {
+      $mode.set(savedMode);
+      document.documentElement.dataset.mode = savedMode;
+    }
+    $isStoreHydrated.set(true);
+  });
 }
 
 // Mode actions

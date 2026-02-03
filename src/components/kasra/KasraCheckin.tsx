@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { $forecast, updateForecast, setFailureMode } from '../../stores';
 import { KasraCard, KasraAlert } from './KasraCard';
 import { KasraGauge } from './KasraGauge';
+import { saveCheckin, getCheckinHistory, type CheckinEntry } from '../../lib/checkin-storage';
 
 interface CheckinQuestion {
   id: string;
@@ -89,6 +90,9 @@ export function KasraCheckin({ onComplete, className = '' }: KasraCheckinProps) 
         computedAt: calculatedResults.timestamp,
       });
       setFailureMode(calculatedResults.failureMode, calculatedResults.kappa < 0.3 ? 0.7 : 0.3);
+
+      // Save to localStorage
+      saveCheckin(calculatedResults.scores, calculatedResults.kappa, 'kasra');
 
       onComplete?.(calculatedResults);
     }
