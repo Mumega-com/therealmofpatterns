@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Testimonials } from '../components/shared/Testimonials';
 ---
 
 <BaseLayout title="Subscribe - The Realm of Patterns" description="Choose your practice tier: Witness (free), Pattern-Keeper ($19/mo), or Circle ($49/seat/mo).">
@@ -169,6 +170,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           Cancel anytime with one click.
         </p>
       </div>
+
+      <!-- Testimonials -->
+      <Testimonials client:load limit={3} className="border-t border-[rgba(212,168,84,0.1)]" />
 
       <!-- FAQ -->
       <div class="faq-section">

@@ -10,6 +10,12 @@ const FOOTER_LINKS = {
     { href: '/learn', label: 'Learn' },
     { href: '/subscribe', label: 'Subscribe' },
   ],
+  stages: [
+    { href: '/stage/nigredo', label: 'Nigredo' },
+    { href: '/stage/albedo', label: 'Albedo' },
+    { href: '/stage/citrinitas', label: 'Citrinitas' },
+    { href: '/stage/rubedo', label: 'Rubedo' },
+  ],
   modes: [
     { href: '/kasra', label: 'Kasra Mode' },
     { href: '/river', label: 'River Mode' },
@@ -28,7 +34,7 @@ export function Footer({ className = '' }: FooterProps) {
     <footer className={`bg-[#0a0908] border-t border-[rgba(212,168,84,0.1)] ${className}`}>
       <div className="max-w-6xl mx-auto px-4 py-12">
         {/* Main Footer Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
             <a href="/" className="flex items-center gap-2 mb-4">
@@ -64,10 +70,29 @@ export function Footer({ className = '' }: FooterProps) {
             </ul>
           </div>
 
+          {/* Stages Links */}
+          <div>
+            <h4 className="text-[#d4a854] text-xs font-semibold uppercase tracking-wider mb-4">
+              Stages
+            </h4>
+            <ul className="space-y-2">
+              {FOOTER_LINKS.stages.map(link => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="text-[#f0e8d8]/60 hover:text-[#d4a854] text-sm transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Modes Links */}
           <div>
             <h4 className="text-[#d4a854] text-xs font-semibold uppercase tracking-wider mb-4">
-              Modes
+              Voices
             </h4>
             <ul className="space-y-2">
               {FOOTER_LINKS.modes.map(link => (
