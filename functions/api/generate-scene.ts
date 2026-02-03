@@ -155,7 +155,7 @@ async function callGeminiWithRotation(
 
     try {
       const response = await fetch(
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateImages',
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent',
         {
           method: 'POST',
           headers: {
@@ -163,7 +163,6 @@ async function callGeminiWithRotation(
             'x-goog-api-key': apiKey,
           },
           body: JSON.stringify({
-            model: 'gemini-2.0-flash-exp',
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: {
               responseModalities: ['TEXT', 'IMAGE'],
