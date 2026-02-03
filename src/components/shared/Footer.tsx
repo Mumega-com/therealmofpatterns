@@ -5,7 +5,8 @@ interface FooterProps {
 const FOOTER_LINKS = {
   explore: [
     { href: '/theater', label: 'Cosmic Theater' },
-    { href: '/river/checkin', label: 'Daily Check-in' },
+    { href: '/sol/checkin', label: 'Daily Check-in' },
+    { href: '/learn', label: 'Learn' },
     { href: '/subscribe', label: 'Subscribe' },
   ],
   modes: [
@@ -13,11 +14,9 @@ const FOOTER_LINKS = {
     { href: '/river', label: 'River Mode' },
     { href: '/sol', label: 'Sol Mode' },
   ],
-  stages: [
-    { href: '/stage/nigredo', label: 'Nigredo' },
-    { href: '/stage/albedo', label: 'Albedo' },
-    { href: '/stage/citrinitas', label: 'Citrinitas' },
-    { href: '/stage/rubedo', label: 'Rubedo' },
+  community: [
+    { href: '/squad', label: 'Meet the Squad' },
+    { href: '/docs', label: 'Documentation' },
   ],
 };
 
@@ -83,13 +82,13 @@ export function Footer({ className = '' }: FooterProps) {
             </ul>
           </div>
 
-          {/* Stages Links */}
+          {/* Community Links */}
           <div>
             <h4 className="text-[#d4a854] text-xs font-semibold uppercase tracking-wider mb-4">
-              Stages
+              Community
             </h4>
             <ul className="space-y-2">
-              {FOOTER_LINKS.stages.map(link => (
+              {FOOTER_LINKS.community.map(link => (
                 <li key={link.href}>
                   <a
                     href={link.href}
