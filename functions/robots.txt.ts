@@ -9,7 +9,7 @@
  * - Respects Cloudflare Pages conventions
  */
 
-import { Env } from '../src/types';
+import type { Env } from '../src/types';
 
 // Base URL for the site
 const BASE_URL = 'https://therealmofpatterns.com';

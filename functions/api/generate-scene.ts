@@ -229,7 +229,7 @@ async function callOpenAIDalle(
       return { success: false, error: `OpenAI API error: ${response.status}` };
     }
 
-    const data = await response.json();
+    const data = await response.json() as { data?: { b64_json: string }[] };
     if (data.data?.[0]?.b64_json) {
       return { success: true, data: `data:image/png;base64,${data.data[0].b64_json}` };
     }

@@ -3,7 +3,8 @@
  * Create a Stripe checkout session for premium report
  */
 
-import { Env, CheckoutRequest, CheckoutResponse, ErrorResponse, PRODUCTS, ProductId } from '../../src/types';
+import type { Env, CheckoutRequest, CheckoutResponse, ErrorResponse, ProductId } from '../../src/types';
+import { PRODUCTS } from '../../src/types';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;

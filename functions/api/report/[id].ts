@@ -3,7 +3,7 @@
  * Download a generated PDF report
  */
 
-import { Env, ErrorResponse } from '../../../src/types';
+import type { Env, ErrorResponse } from '../../../src/types';
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { params, request, env } = context;

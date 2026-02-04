@@ -37,7 +37,7 @@ export interface Transformation {
 }
 
 export interface Zeitgeist {
-  dimensions: Partial<DiamondState['dimensions']>;
+  dimensions: Record<number, number>;
   depth: number;
   time: number;
   coherence: number;

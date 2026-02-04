@@ -3,7 +3,7 @@
  * Compute full 16D vector with all matches (for premium users)
  */
 
-import { Env, BirthData, ComputeResponse, ErrorResponse, FigureMatch, DimensionInfo } from '../../src/types';
+import type { Env, BirthData, ComputeResponse, ErrorResponse, FigureMatch, DimensionInfo } from '../../src/types';
 import { compute16DFromBirthData, cosineResonance, analyzeDimensions } from '../../src/lib/16d-engine';
 
 interface RequestBody {

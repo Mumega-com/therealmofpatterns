@@ -3,7 +3,7 @@
  * Share results to social media (Twitter, Telegram, Discord)
  */
 
-import { Env, ErrorResponse } from '../../src/types';
+import type { Env, ErrorResponse } from '../../src/types';
 
 interface ShareRequest {
   platform: 'twitter' | 'telegram' | 'discord';

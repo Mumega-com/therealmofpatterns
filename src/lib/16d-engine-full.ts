@@ -5,7 +5,7 @@
  * Matches core/frc_16d_full_spec.py specification
  */
 
-import { Vector8D, Vector16D } from '../types';
+import type { Vector8D, Vector16D } from '../types';
 
 // ============================================
 // Constants

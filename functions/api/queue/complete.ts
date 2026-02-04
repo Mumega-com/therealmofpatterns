@@ -9,13 +9,9 @@
  *   - admin_key: Admin authentication key
  */
 
-import { Env } from '../../../src/types';
-import {
-  CompleteRequest,
-  errorResponse,
-  successResponse,
-  checkAuth,
-} from './_shared';
+import type { Env } from '../../../src/types';
+import type { CompleteRequest } from './_shared';
+import { errorResponse, successResponse, checkAuth } from './_shared';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;

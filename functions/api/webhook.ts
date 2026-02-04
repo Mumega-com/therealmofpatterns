@@ -3,7 +3,7 @@
  * Stripe webhook handler
  */
 
-import { Env, BirthData, FigureMatch } from '../../src/types';
+import type { Env, BirthData, FigureMatch } from '../../src/types';
 import { compute16DFromBirthData, cosineResonance, analyzeDimensions } from '../../src/lib/16d-engine';
 
 interface StripeEvent {

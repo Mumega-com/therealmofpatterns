@@ -6,13 +6,9 @@
  *   - limit: Max number of items to return (default: 10, max: 50)
  */
 
-import { Env } from '../../../src/types';
-import {
-  QueueItem,
-  errorResponse,
-  successResponse,
-  checkAuth,
-} from './_shared';
+import type { Env } from '../../../src/types';
+import type { QueueItem } from './_shared';
+import { errorResponse, successResponse, checkAuth } from './_shared';
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { request, env } = context;

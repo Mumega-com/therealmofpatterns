@@ -3,7 +3,7 @@
  * Create a Stripe subscription checkout session for Pro tier
  */
 
-import { Env, ErrorResponse } from '../../src/types';
+import type { Env, ErrorResponse } from '../../src/types';
 
 interface CreateCheckoutRequest {
   priceId?: string;

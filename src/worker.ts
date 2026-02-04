@@ -3,7 +3,7 @@
  * Serves static assets from R2 and handles API routes
  */
 
-import { Env, BirthData, PreviewResponse, ErrorResponse, HistoricalFigure, FigureMatch, StripeCheckoutSession } from './types';
+import type { Env, BirthData, PreviewResponse, ErrorResponse, HistoricalFigure, FigureMatch, StripeCheckoutSession } from './types';
 import { computeFromBirthData, getDominant, cosineResonance, getDimensionTeaser } from './lib/16d-engine';
 
 // Static file mapping

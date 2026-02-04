@@ -10,7 +10,7 @@
  * - GET  /api/queue/stats            Get queue statistics
  */
 
-import { Env } from '../../src/types';
+import type { Env } from '../../src/types';
 
 // ============================================
 // Types

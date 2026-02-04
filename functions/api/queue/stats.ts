@@ -4,13 +4,9 @@
  * Get queue statistics including counts by status, language, and content type.
  */
 
-import { Env } from '../../../src/types';
-import {
-  QueueStats,
-  errorResponse,
-  successResponse,
-  checkAuth,
-} from './_shared';
+import type { Env } from '../../../src/types';
+import type { QueueStats } from './_shared';
+import { errorResponse, successResponse, checkAuth } from './_shared';
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { request, env } = context;

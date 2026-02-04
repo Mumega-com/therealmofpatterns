@@ -100,12 +100,13 @@ export function captureError(error: Error, context?: ErrorContext): void {
 
   // Send to Sentry if available
   if (typeof window !== 'undefined' && window.Sentry) {
-    window.Sentry.withScope((scope: SentryScope) => {
+    const sentry = window.Sentry;
+    sentry.withScope((scope: SentryScope) => {
       if (context?.component) scope.setTag('component', context.component);
       if (context?.action) scope.setTag('action', context.action);
       if (context?.userId) scope.setUser({ id: context.userId });
       if (context?.extra) scope.setExtras(context.extra);
-      window.Sentry.captureException(error);
+      sentry.captureException(error);
     });
   }
 

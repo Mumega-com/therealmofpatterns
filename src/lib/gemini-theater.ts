@@ -294,11 +294,19 @@ export async function generateTheaterImage(
     throw new Error(`Gemini API error: ${response.status} - ${error}`);
   }
 
-  const data = await response.json();
+  const data = await response.json() as {
+    candidates?: Array<{
+      content?: {
+        parts?: Array<{
+          inlineData?: { mimeType?: string; data?: string };
+        }>;
+      };
+    }>;
+  };
 
   // Extract base64 image from response
   const imagePart = data.candidates?.[0]?.content?.parts?.find(
-    (part: any) => part.inlineData?.mimeType?.startsWith('image/')
+    (part) => part.inlineData?.mimeType?.startsWith('image/')
   );
 
   if (imagePart?.inlineData?.data) {
@@ -334,7 +342,7 @@ export async function generateTheaterImageViaAPI(
     throw new Error(`API error: ${response.status} - ${error}`);
   }
 
-  const data = await response.json();
+  const data = await response.json() as { imageData: string };
   return data.imageData;
 }
 

@@ -13,7 +13,7 @@
  * @module failure-detector
  */
 
-import { DiamondState } from './diamond-engine';
+import type { DiamondState } from './diamond-engine';
 
 // =============================================================================
 // Types

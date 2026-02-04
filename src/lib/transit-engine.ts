@@ -10,7 +10,8 @@
  * @module transit-engine
  */
 
-import { DiamondState, DIMENSION_SYMBOLS, createState } from './diamond-engine';
+import type { DiamondState } from './diamond-engine';
+import { DIMENSION_SYMBOLS, createState } from './diamond-engine';
 
 // =============================================================================
 // Types

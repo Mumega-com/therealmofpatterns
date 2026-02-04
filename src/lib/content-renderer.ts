@@ -8,7 +8,7 @@
  * - Footer with language switcher
  */
 
-import { Env } from '../types';
+import type { Env } from '../types';
 
 // ============================================
 // Types

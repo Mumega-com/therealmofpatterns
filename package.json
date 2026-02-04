@@ -14,7 +14,10 @@
     "db:seed": "wrangler d1 execute therealmofpatterns-db --file=src/db/seed.sql",
     "db:query": "wrangler d1 execute therealmofpatterns-db",
     "lint": "eslint \"functions/**/*.ts\" \"src/**/*.ts\"",
-    "typecheck": "astro check && tsc --noEmit"
+    "typecheck": "astro check && tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [
     "cloudflare",
@@ -35,8 +38,11 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
+    "@vitest/coverage-v8": "^4.0.18",
     "eslint": "^8.56.0",
+    "happy-dom": "^20.5.0",
     "typescript": "^5.3.3",
+    "vitest": "^4.0.18",
     "wrangler": "^4.61.1"
   },
   "dependencies": {

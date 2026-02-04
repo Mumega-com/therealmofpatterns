@@ -1,6 +1,7 @@
 'use client';
 
-import { Component, ReactNode } from 'react';
+import { Component } from 'react';
+import type { ReactNode } from 'react';
 import { captureError } from '../../lib/monitoring';
 
 interface Props {
@@ -60,7 +61,7 @@ export class ErrorBoundary extends Component<Props, State> {
           >
             Try again
           </button>
-          {process.env.NODE_ENV === 'development' && this.state.error && (
+          {this.state.error && (
             <pre className="mt-4 p-3 text-left text-xs bg-[#0a0908] text-[#ef4444] rounded overflow-auto max-h-40">
               {this.state.error.message}
             </pre>

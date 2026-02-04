@@ -3,7 +3,7 @@
  * Generate a free 8D preview based on birth data
  */
 
-import { Env, BirthData, PreviewResponse, ErrorResponse, HistoricalFigure, FigureMatch } from '../../src/types';
+import type { Env, BirthData, PreviewResponse, ErrorResponse, HistoricalFigure, FigureMatch } from '../../src/types';
 import { computeFromBirthData, getDominant, cosineResonance, getDimensionTeaser } from '../../src/lib/16d-engine';
 
 interface RequestBody {

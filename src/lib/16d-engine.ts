@@ -3,7 +3,8 @@
  * FRC 16D.002 Implementation
  */
 
-import { Vector8D, Vector16D, BirthData, DIMENSION_METADATA, DimensionInfo } from '../types';
+import type { Vector8D, Vector16D, BirthData, DimensionInfo } from '../types';
+import { DIMENSION_METADATA } from '../types';
 
 // ============================================
 // Planet-to-Dimension Weight Matrix (W)

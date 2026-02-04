@@ -13,7 +13,7 @@
  * - Reports validation results with QualityCheckResult
  */
 
-import { Env } from '../../src/types';
+import type { Env } from '../../src/types';
 
 // Quality threshold default (0.0 - 1.0 scale, stored as 0-100 in DB)
 const DEFAULT_QUALITY_THRESHOLD = 0.5; // 50 in DB scale

@@ -16,7 +16,7 @@
  * Supports up to 50,000 URLs per sitemap (Google limit)
  */
 
-import { Env } from '../src/types';
+import type { Env } from '../src/types';
 
 interface ContentRow {
   id: string;

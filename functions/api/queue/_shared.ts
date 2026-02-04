@@ -2,7 +2,7 @@
  * Shared types, constants, and utilities for Content Queue API
  */
 
-import { Env } from '../../../src/types';
+import type { Env } from '../../../src/types';
 
 // ============================================
 // Types

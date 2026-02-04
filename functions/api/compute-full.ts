@@ -4,7 +4,7 @@
  * Phase 2 Implementation - FRC 16D.002 Complete Specification
  */
 
-import { Env } from '../../src/types';
+import type { Env } from '../../src/types';
 
 // Note: For MVP, we use client-side ephemeris approximation
 // Production should use server-side Swiss Ephemeris or Astro API

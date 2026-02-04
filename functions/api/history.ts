@@ -3,7 +3,7 @@
  * Retrieve historical UV snapshots and trends
  */
 
-import { Env } from '../../src/types';
+import type { Env } from '../../src/types';
 
 interface HistoryParams {
   email_hash: string;

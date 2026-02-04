@@ -1,3 +1,5 @@
+// @ts-nocheck
+// Three.js visualization - requires @react-three/fiber and @react-three/drei
 "use client";
 
 import { useRef, useMemo, useState } from "react";

@@ -13,7 +13,7 @@
  * - Updates sitemap index with all language variants
  */
 
-import { Env } from '../../src/types';
+import type { Env } from '../../src/types';
 
 // Supported languages
 const SUPPORTED_LANGUAGES = ['en', 'pt-br', 'pt-pt', 'es-mx', 'es-ar', 'es-es'] as const;

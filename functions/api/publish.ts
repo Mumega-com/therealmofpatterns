@@ -6,17 +6,16 @@
  * stores in D1 cosmic_content table, and optionally backs up to R2.
  */
 
-import { Env } from '../../src/types';
-import {
+import type { Env } from '../../src/types';
+import type {
   ContentType,
   LanguageCode,
   ContentStatus,
   PublishRequest,
   PublishResponse,
   PublishError,
-  generateSlug,
-  calculateQualityScore,
 } from '../../src/types/content';
+import { generateSlug, calculateQualityScore } from '../../src/types/content';
 
 // ============================================
 // Request Handler

@@ -7,7 +7,7 @@
  * Authorization: X-Admin-Key header or ?key= query param
  */
 
-import { Env } from '../../src/types';
+import type { Env } from '../../src/types';
 
 interface QueueStats {
   total: number;

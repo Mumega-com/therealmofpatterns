@@ -4,7 +4,7 @@
  * Fetches from cms_cosmic_content, renders with FAQ schema
  */
 
-import { Env } from '../../../src/types';
+import type { Env } from '../../../src/types';
 import { DIMENSION_METADATA } from '../../../src/types';
 
 interface CMSContent {
@@ -79,13 +79,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       html = renderCMSContent(content, lang, currentPath);
     } else {
       // Fallback to metadata-based content
-      html = renderFallbackContent(lang, slug, currentPath);
-      if (!html) {
+      const fallbackHtml = renderFallbackContent(lang, slug, currentPath);
+      if (!fallbackHtml) {
         return new Response(render404(lang), {
           status: 404,
           headers: { 'Content-Type': 'text/html; charset=utf-8' },
         });
       }
+      html = fallbackHtml;
     }
 
     // Cache for 1 hour

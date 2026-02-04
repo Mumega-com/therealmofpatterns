@@ -5,7 +5,8 @@
  * Cache in KV for 1 hour
  */
 
-import { Env, HistoricalFigure, DIMENSION_METADATA } from '../../../src/types';
+import type { Env, HistoricalFigure } from '../../../src/types';
+import { DIMENSION_METADATA } from '../../../src/types';
 import {
   fetchContent,
   loadVoice,

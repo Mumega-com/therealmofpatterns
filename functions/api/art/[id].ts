@@ -3,7 +3,7 @@
  * Serve generated sacred art from R2
  */
 
-import { Env, ErrorResponse } from '../../../src/types';
+import type { Env, ErrorResponse } from '../../../src/types';
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { params, env } = context;

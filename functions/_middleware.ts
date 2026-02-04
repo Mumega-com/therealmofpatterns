@@ -2,13 +2,9 @@
  * Global middleware for CORS, geo-language detection, and request handling
  */
 
-import { Env } from '../src/types';
-import {
-  detectLanguage,
-  getLocalizedPath,
-  CloudflareRequest,
-  SupportedLanguage,
-} from '../src/lib/geo-language';
+import type { Env } from '../src/types';
+import { detectLanguage, getLocalizedPath } from '../src/lib/geo-language';
+import type { CloudflareRequest, SupportedLanguage } from '../src/lib/geo-language';
 
 const ALLOWED_ORIGINS = [
   'https://therealmofpatterns.pages.dev',

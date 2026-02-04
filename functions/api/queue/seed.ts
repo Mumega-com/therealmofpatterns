@@ -8,9 +8,9 @@
  *   - admin_key: Admin authentication key
  */
 
-import { Env } from '../../../src/types';
+import type { Env } from '../../../src/types';
+import type { SeedRequest } from './_shared';
 import {
-  SeedRequest,
   ALL_LANGUAGES,
   ALL_CONTENT_TYPES,
   errorResponse,

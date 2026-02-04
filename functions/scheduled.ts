@@ -11,7 +11,7 @@
  * or configured in Cloudflare Dashboard > Pages > Settings > Functions > Cron Triggers
  */
 
-import { Env } from '../src/types';
+import type { Env } from '../src/types';
 
 export const onRequest: PagesFunction<Env, never, { scheduledTime: number }> = async (context) => {
   const { env } = context;

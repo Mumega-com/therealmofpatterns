@@ -3,7 +3,7 @@
  * Add email to Resend contact list
  */
 
-import { Env, ErrorResponse } from '../../src/types';
+import type { Env, ErrorResponse } from '../../src/types';
 
 interface SubscribeRequest {
   email: string;

@@ -3,7 +3,7 @@
  * Get the current cosmic weather (today's 8D field state)
  */
 
-import { Env, WeatherResponse, ErrorResponse } from '../../src/types';
+import type { Env, WeatherResponse, ErrorResponse } from '../../src/types';
 import { approximateLongitudes, compute8D, getDominant } from '../../src/lib/16d-engine';
 
 // Zodiac signs for position interpretation
