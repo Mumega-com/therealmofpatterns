@@ -11,12 +11,23 @@ import { Testimonials } from '../components/shared/Testimonials';
         <p>Begin your daily practice of pattern awareness</p>
       </div>
 
+      <!-- Billing Toggle -->
+      <div class="billing-toggle">
+        <button class="billing-option active" id="monthlyBtn" data-billing="monthly">
+          Monthly
+        </button>
+        <button class="billing-option" id="annualBtn" data-billing="annual">
+          Annual
+          <span class="save-badge">Save 20%</span>
+        </button>
+      </div>
+
       <div class="plans-grid">
         <!-- Pattern-Keeper (Individual) -->
         <div class="plan-card" data-plan="individual">
           <div class="plan-header">
             <h2>Pattern-Keeper</h2>
-            <p class="plan-desc">For individual practitioners</p>
+            <p class="plan-desc">Your personal pattern practice</p>
           </div>
 
           <div class="plan-price">
@@ -25,35 +36,48 @@ import { Testimonials } from '../components/shared/Testimonials';
             <span class="period">/month</span>
           </div>
 
+          <div class="value-highlight">
+            <span class="value-icon">◎</span>
+            <span>Know your optimal windows before they pass</span>
+          </div>
+
           <ul class="plan-features">
             <li>
               <span class="icon">✦</span>
-              <span>Full 16D analysis with shadow octave</span>
+              <span><strong>Full 16D Shadow Analysis</strong> — see both light and shadow dimensions, not just the surface</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>Daily check-in practice</span>
+              <span><strong>Daily Personalized Forecasts</strong> — know what each day holds for your unique pattern</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>Personal dashboard with trends</span>
+              <span><strong>Optimal Action Windows</strong> — get alerts when conditions favor your key decisions</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>Optimal action windows</span>
+              <span><strong>Pattern Trend Dashboard</strong> — track your 30/90/365-day evolution</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>Failure mode early warnings</span>
+              <span><strong>Failure Mode Warnings</strong> — early alerts before you hit your shadow patterns</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>Elder progress tracking</span>
+              <span><strong>Elder Progress System</strong> — unlock deeper insights as your practice matures</span>
+            </li>
+            <li>
+              <span class="icon">✦</span>
+              <span><strong>Historical Figure Resonance</strong> — deep analysis of your pattern matches</span>
             </li>
           </ul>
 
+          <div class="plan-guarantee">
+            <span>7-day free trial</span> • <span>Cancel anytime</span>
+          </div>
+
           <button class="plan-btn" id="individualBtn">
-            <span>Begin Practice</span>
+            <span>Start Free Trial</span>
             <span class="arrow">→</span>
           </button>
         </div>
@@ -73,6 +97,11 @@ import { Testimonials } from '../components/shared/Testimonials';
             <span class="period">/seat/month</span>
           </div>
 
+          <div class="value-highlight">
+            <span class="value-icon">⬡</span>
+            <span>See how your collective field moves together</span>
+          </div>
+
           <div class="seats-selector">
             <label>Team size:</label>
             <div class="seats-controls">
@@ -90,36 +119,40 @@ import { Testimonials } from '../components/shared/Testimonials';
           <ul class="plan-features">
             <li>
               <span class="icon">✦</span>
-              <span>Everything in Pattern-Keeper</span>
+              <span><strong>All Pattern-Keeper Features</strong> — every member gets full individual access</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>Shared circle dashboard</span>
+              <span><strong>Group Coherence Dashboard</strong> — see when your collective is in sync</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>Group coherence metrics</span>
+              <span><strong>Pattern Visibility</strong> — witness each other's dimensions (opt-in)</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>Witness each other's patterns</span>
+              <span><strong>Optimal Meeting Windows</strong> — find when the group field favors collaboration</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>Coach/facilitator tools</span>
+              <span><strong>Facilitator Tools</strong> — coaching modes for 1:1 and group sessions</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>Optimal meeting times</span>
+              <span><strong>Team Dynamics Reports</strong> — understand complementary and tension patterns</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span>API access for integrations</span>
+              <span><strong>API Access</strong> — integrate with your tools (Slack, Notion, etc.)</span>
             </li>
           </ul>
 
+          <div class="plan-guarantee">
+            <span>14-day team trial</span> • <span>Add/remove seats anytime</span>
+          </div>
+
           <button class="plan-btn primary" id="squadBtn">
-            <span>Gather Your Circle</span>
+            <span>Start Team Trial</span>
             <span class="arrow">→</span>
           </button>
         </div>
@@ -184,6 +217,15 @@ import { Testimonials } from '../components/shared/Testimonials';
             Free users can watch the Cosmic Channel 24/7, get daily personal readings
             with basic 8D analysis, and see their historical figure resonance.
             No account required.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>How does the free trial work?</h4>
+          <p>
+            Pattern-Keeper includes a 7-day free trial. Circles get 14 days.
+            You'll get full access to all features. We only charge after your
+            trial ends, and you can cancel anytime before that.
           </p>
         </div>
 
@@ -253,6 +295,60 @@ import { Testimonials } from '../components/shared/Testimonials';
   .page-header p {
     font-size: 1.1rem;
     color: var(--text-muted);
+  }
+
+  .billing-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    background: var(--dark-surface);
+    padding: 0.25rem;
+    border-radius: 8px;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .billing-option {
+    flex: 1;
+    padding: 0.75rem 1.25rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .billing-option:hover {
+    color: var(--text);
+  }
+
+  .billing-option.active {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  .save-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    border-radius: 4px;
+  }
+
+  .billing-option.active .save-badge {
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--dark);
   }
 
   .plans-grid {
@@ -346,6 +442,44 @@ import { Testimonials } from '../components/shared/Testimonials';
   .plan-price .period {
     font-size: 1rem;
     color: var(--text-muted);
+  }
+
+  .value-highlight {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: linear-gradient(135deg, rgba(212, 168, 84, 0.1) 0%, rgba(212, 168, 84, 0.05) 100%);
+    border-left: 3px solid var(--gold);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .value-highlight .value-icon {
+    color: var(--gold);
+    font-size: 1.25rem;
+  }
+
+  .plan-features strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .plan-guarantee {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(212, 168, 84, 0.1);
+  }
+
+  .plan-guarantee span {
+    display: flex;
+    align-items: center;
   }
 
   .seats-selector {
@@ -625,11 +759,83 @@ import { Testimonials } from '../components/shared/Testimonials';
   const formTitle = document.getElementById('formTitle');
   const formSubtitle = document.getElementById('formSubtitle');
 
+  // Billing toggle elements
+  const monthlyBtn = document.getElementById('monthlyBtn');
+  const annualBtn = document.getElementById('annualBtn');
+  const individualPriceAmount = document.querySelector('[data-plan="individual"] .plan-price .amount');
+  const squadPriceAmount = document.querySelector('[data-plan="squad"] .plan-price .amount');
+  const individualPeriod = document.querySelector('[data-plan="individual"] .plan-price .period');
+  const squadPeriod = document.querySelector('[data-plan="squad"] .plan-price .period');
+
   let selectedPlan: 'individual' | 'squad' | null = null;
+  let billingPeriod: 'monthly' | 'annual' = 'monthly';
+
+  // Pricing
+  const PRICES = {
+    individual: { monthly: 19, annual: 15 },  // Annual is ~20% off
+    squad: { monthly: 49, annual: 39 },
+  };
 
   // Auto-select plan from URL
   if (planParam === 'individual' || planParam === 'squad') {
     selectPlan(planParam);
+  }
+
+  // Billing toggle handlers
+  monthlyBtn?.addEventListener('click', () => setBillingPeriod('monthly'));
+  annualBtn?.addEventListener('click', () => setBillingPeriod('annual'));
+
+  function setBillingPeriod(period: 'monthly' | 'annual') {
+    billingPeriod = period;
+
+    // Update toggle button styles
+    monthlyBtn?.classList.toggle('active', period === 'monthly');
+    annualBtn?.classList.toggle('active', period === 'annual');
+
+    // Update displayed prices
+    const individualPrice = PRICES.individual[period];
+    const squadPrice = PRICES.squad[period];
+
+    if (individualPriceAmount) individualPriceAmount.textContent = String(individualPrice);
+    if (squadPriceAmount) squadPriceAmount.textContent = String(squadPrice);
+
+    // Update period text to show annual billing note
+    if (individualPeriod) {
+      individualPeriod.textContent = period === 'annual' ? '/mo (billed yearly)' : '/month';
+    }
+    if (squadPeriod) {
+      squadPeriod.textContent = period === 'annual' ? '/seat/mo (billed yearly)' : '/seat/month';
+    }
+
+    // Update total price for squad
+    updateTotalPrice();
+
+    // Update form subtitle if plan is selected
+    if (selectedPlan) {
+      updateFormSubtitle();
+    }
+  }
+
+  function updateFormSubtitle() {
+    if (!formSubtitle) return;
+
+    if (selectedPlan === 'individual') {
+      const price = PRICES.individual[billingPeriod];
+      if (billingPeriod === 'annual') {
+        formSubtitle.textContent = `$${price}/mo × 12 = $${price * 12}/year (save $${(PRICES.individual.monthly - price) * 12})`;
+      } else {
+        formSubtitle.textContent = 'Enter your email to continue to checkout';
+      }
+    } else if (selectedPlan === 'squad') {
+      const seats = parseInt(seatCount?.value || '3');
+      const pricePerSeat = PRICES.squad[billingPeriod];
+      const total = seats * pricePerSeat;
+      if (billingPeriod === 'annual') {
+        formSubtitle.textContent = `${seats} seats × $${pricePerSeat}/mo × 12 = $${total * 12}/year`;
+      } else {
+        formSubtitle.textContent = `${seats} seats at $${pricePerSeat}/seat = $${total}/month`;
+      }
+    }
   }
 
   // Plan selection
@@ -665,20 +871,23 @@ import { Testimonials } from '../components/shared/Testimonials';
         : 'Create your Circle';
     }
 
-    if (formSubtitle) {
-      formSubtitle.textContent = plan === 'individual'
-        ? 'Enter your email to continue to checkout'
-        : `${seatCount?.value || 3} seats at $49/seat = $${parseInt(seatCount?.value || '3') * 49}/month`;
-    }
+    updateFormSubtitle();
   }
 
   // Seat count controls
   function updateTotalPrice() {
     const seats = parseInt(seatCount?.value || '3');
-    const total = seats * 49;
-    if (totalPrice) totalPrice.textContent = `$${total}`;
-    if (formSubtitle && selectedPlan === 'squad') {
-      formSubtitle.textContent = `${seats} seats at $49/seat = $${total}/month`;
+    const pricePerSeat = PRICES.squad[billingPeriod];
+    const total = seats * pricePerSeat;
+    if (totalPrice) {
+      if (billingPeriod === 'annual') {
+        totalPrice.textContent = `$${total}/mo`;
+      } else {
+        totalPrice.textContent = `$${total}`;
+      }
+    }
+    if (selectedPlan === 'squad') {
+      updateFormSubtitle();
     }
   }
 
@@ -731,6 +940,7 @@ import { Testimonials } from '../components/shared/Testimonials';
           email,
           circleName: selectedPlan === 'squad' ? circleName : undefined,
           seats: selectedPlan === 'squad' ? seats : 1,
+          billingPeriod,
         }),
       });
 
