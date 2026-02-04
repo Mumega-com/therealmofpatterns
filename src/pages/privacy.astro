@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Privacy Policy - The Realm of Patterns" description="How we collect, use, and protect your data at The Realm of Patterns.">
+  <div class="legal-page">
+    <div class="page-container">
+      <header class="page-header">
+        <h1>Privacy Policy</h1>
+        <p class="effective-date">Effective Date: February 4, 2026</p>
+      </header>
+
+      <div class="legal-content">
+        <section>
+          <h2>1. Introduction</h2>
+          <p>
+            The Realm of Patterns ("we," "our," or "us") is committed to protecting your privacy.
+            This Privacy Policy explains how we collect, use, disclose, and safeguard your information
+            when you use our website and services.
+          </p>
+        </section>
+
+        <section>
+          <h2>2. Information We Collect</h2>
+
+          <h3>2.1 Information You Provide</h3>
+          <ul>
+            <li><strong>Birth Data:</strong> Date, time, and location of birth (required for pattern calculations)</li>
+            <li><strong>Account Information:</strong> Email address (for account creation and communication)</li>
+            <li><strong>Check-in Responses:</strong> Your answers to the 8-question daily check-in</li>
+            <li><strong>Payment Information:</strong> Processed securely through Stripe; we don't store credit card numbers</li>
+          </ul>
+
+          <h3>2.2 Information Collected Automatically</h3>
+          <ul>
+            <li><strong>Usage Data:</strong> Pages visited, features used, time spent</li>
+            <li><strong>Device Information:</strong> Browser type, operating system, screen size</li>
+            <li><strong>IP Address:</strong> For security and approximate location (country level)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>3. How We Use Your Information</h2>
+          <ul>
+            <li>Calculate your 16-dimensional cosmic pattern</li>
+            <li>Provide personalized readings and recommendations</li>
+            <li>Track your pattern over time (history feature)</li>
+            <li>Process payments and manage subscriptions</li>
+            <li>Send service-related communications</li>
+            <li>Improve our services through aggregated analytics</li>
+            <li>Prevent fraud and ensure security</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>4. Data Sharing</h2>
+          <p>We do not sell your personal data. We share information only in these limited circumstances:</p>
+          <ul>
+            <li><strong>Service Providers:</strong> Stripe (payments), Cloudflare (hosting), necessary third parties</li>
+            <li><strong>Legal Requirements:</strong> When required by law or to protect rights</li>
+            <li><strong>Business Transfers:</strong> In connection with mergers or acquisitions</li>
+            <li><strong>With Your Consent:</strong> When you explicitly agree to sharing</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>5. Circle (Team) Features</h2>
+          <p>
+            If you join a Circle, certain pattern data may be visible to other Circle members as part
+            of the shared dashboard feature. You can control what is shared through your privacy settings.
+            Circle facilitators can see aggregated coherence metrics but not individual check-in responses
+            unless you choose to share them.
+          </p>
+        </section>
+
+        <section>
+          <h2>6. Data Storage and Security</h2>
+          <ul>
+            <li>Data is stored on Cloudflare infrastructure with encryption at rest</li>
+            <li>We use HTTPS for all data transmission</li>
+            <li>Access to personal data is restricted to authorized personnel</li>
+            <li>We conduct regular security reviews</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>7. Data Retention</h2>
+          <p>
+            We retain your data as long as your account is active or as needed to provide services.
+            After account deletion, we retain data for up to 30 days for backup purposes, then permanently delete it.
+            Aggregated, anonymized data may be retained indefinitely for research and improvement.
+          </p>
+        </section>
+
+        <section>
+          <h2>8. Your Rights</h2>
+          <p>You have the right to:</p>
+          <ul>
+            <li><strong>Access:</strong> Request a copy of your personal data</li>
+            <li><strong>Export:</strong> Download your data in portable formats (Pattern-Keeper+)</li>
+            <li><strong>Correction:</strong> Update inaccurate information</li>
+            <li><strong>Deletion:</strong> Request deletion of your account and data</li>
+            <li><strong>Opt-out:</strong> Unsubscribe from marketing communications</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>9. Cookies and Local Storage</h2>
+          <p>We use:</p>
+          <ul>
+            <li><strong>Essential cookies:</strong> For authentication and security</li>
+            <li><strong>Local storage:</strong> For preferences, mode selection, and offline functionality</li>
+            <li><strong>Analytics:</strong> To understand usage patterns (can be disabled)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>10. Children's Privacy</h2>
+          <p>
+            Our services are not intended for users under 13. We do not knowingly collect data from children.
+            If we learn we have collected data from a child under 13, we will delete it promptly.
+          </p>
+        </section>
+
+        <section>
+          <h2>11. International Users</h2>
+          <p>
+            Our services are hosted globally via Cloudflare. By using our services, you consent to
+            the transfer of your data to servers that may be located outside your country of residence.
+          </p>
+        </section>
+
+        <section>
+          <h2>12. Changes to This Policy</h2>
+          <p>
+            We may update this Privacy Policy periodically. We will notify you of material changes
+            via email or prominent notice on our website. Continued use after changes constitutes acceptance.
+          </p>
+        </section>
+
+        <section>
+          <h2>13. Contact Us</h2>
+          <p>
+            For privacy-related questions or to exercise your rights, contact us at:
+          </p>
+          <p>
+            <strong>Email:</strong> privacy@therealmofpatterns.com
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    --gold: #d4a854;
+    --dark: #0a0908;
+    --dark-surface: #141210;
+    --text: #f0e8d8;
+    --text-muted: rgba(240, 232, 216, 0.6);
+
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 6rem 2rem 4rem;
+  }
+
+  .page-container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(212, 168, 84, 0.2);
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+
+  .effective-date {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .legal-content section {
+    margin-bottom: 2.5rem;
+  }
+
+  .legal-content h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .legal-content h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 1.25rem 0 0.75rem;
+  }
+
+  .legal-content p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .legal-content ul {
+    padding-left: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .legal-content li {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .legal-content li strong {
+    color: var(--text);
+  }
+</style>

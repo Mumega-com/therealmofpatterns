@@ -1,0 +1,322 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const FAQ_ITEMS = [
+  {
+    category: 'Getting Started',
+    questions: [
+      {
+        q: 'What do I need to get started?',
+        a: 'Just your birth date, time, and location. You can take a free check-in without creating an account. For more accurate readings, knowing your exact birth time helps significantly.',
+      },
+      {
+        q: "What if I don't know my birth time?",
+        a: "You can still use the system! We'll default to 12:00 noon. Your readings will be less precise for time-sensitive dimensions, but the core pattern analysis remains useful.",
+      },
+      {
+        q: 'How long does a check-in take?',
+        a: 'About 60 seconds. You answer 8 questions about your current state, and the system computes your dimensional reading in real-time.',
+      },
+      {
+        q: 'Is this astrology?',
+        a: "FRC uses astronomical data (planetary positions) like astrology, but the mathematical framework is different. We don't use houses or traditional sign interpretations. Think of it as a pattern-recognition system that happens to use cosmic timing as its input.",
+      },
+    ],
+  },
+  {
+    category: 'The Framework',
+    questions: [
+      {
+        q: 'What are the 16 dimensions?',
+        a: '8 core dimensions (Inner Octave) represent your natal pattern: Phase, Existence, Cognition, Value, Expansion, Action, Relation, Field. The Outer Octave (dimensions 9-16) represents how current transits are activating each natal dimension.',
+      },
+      {
+        q: 'What is the kappa (κ) coefficient?',
+        a: 'Kappa measures field coherence — how aligned your dimensions are with each other and with current conditions. Higher κ indicates smoother flow; lower κ suggests internal tension or challenging conditions. Range is 0-1.',
+      },
+      {
+        q: 'What are the alchemical stages?',
+        a: 'Based on your κ coefficient: Nigredo (κ < 0.25) is dissolution, Albedo (0.25-0.50) is purification, Citrinitas (0.50-0.75) is illumination, Rubedo (κ ≥ 0.75) is integration. These map to traditional alchemical transformation stages.',
+      },
+      {
+        q: 'What are the three voices?',
+        a: 'Kasra (technical/mathematical), River (symbolic/archetypal), and Sol (friendly/practical). Same data, different interpretation styles. Switch anytime using keyboard shortcuts K, R, or S.',
+      },
+    ],
+  },
+  {
+    category: 'Accuracy & Science',
+    questions: [
+      {
+        q: 'Is this scientifically proven?',
+        a: "The astronomical calculations are precise. The interpretive framework draws from Jungian psychology, complexity theory, and traditional wisdom traditions. Like any pattern-recognition system, accuracy depends on how you apply the insights. We encourage you to rate predictions and track your own accuracy.",
+      },
+      {
+        q: 'How accurate are the predictions?',
+        a: "We track accuracy through user feedback. Our system lets you rate predictions as accurate, partially accurate, or inaccurate. Aggregate accuracy is displayed on your dashboard. We're committed to transparency about what works and what doesn't.",
+      },
+      {
+        q: 'Can this predict the future?',
+        a: "Not in a deterministic sense. FRC identifies likely conditions and tendencies based on cosmic timing and your pattern. Think of it as weather forecasting for your inner landscape — useful for planning, but not a guarantee.",
+      },
+    ],
+  },
+  {
+    category: 'Pricing & Plans',
+    questions: [
+      {
+        q: 'What can I do for free?',
+        a: "Watch the Cosmic Theater 24/7, get daily basic readings with 8D analysis, see your historical figure resonance, and access the cosmic weather. No account required.",
+      },
+      {
+        q: "What's included in Pattern-Keeper ($19/mo)?",
+        a: "Full 16D analysis including shadow octave, unlimited check-in history, optimal action windows, failure mode warnings, elder progress tracking, and detailed historical figure analysis. 7-day free trial.",
+      },
+      {
+        q: "What's included in Circle ($49/seat/mo)?",
+        a: "Everything in Pattern-Keeper plus shared team dashboard, group coherence metrics, witness each other's patterns, optimal meeting times, facilitator tools, and API access. 14-day free trial. Minimum 3 seats.",
+      },
+      {
+        q: 'Can I cancel anytime?',
+        a: "Yes. Cancel with one click from your dashboard. No contracts, no questions asked. You'll retain access until the end of your billing period.",
+      },
+      {
+        q: 'Is there a discount for annual billing?',
+        a: 'Yes! Annual billing saves 20%. Pattern-Keeper is $15/mo billed yearly ($180/year). Circle is $39/seat/mo billed yearly.',
+      },
+    ],
+  },
+  {
+    category: 'Privacy & Data',
+    questions: [
+      {
+        q: 'What data do you collect?',
+        a: "Birth data (date, time, location), check-in responses, and usage patterns. We don't sell your data or share it with third parties. See our Privacy Policy for full details.",
+      },
+      {
+        q: 'Can I export my data?',
+        a: "Pattern-Keeper and Circle members can export their data in JSON, CSV, or PDF format at any time. Your data belongs to you.",
+      },
+      {
+        q: 'Can I delete my account?',
+        a: "Yes. Contact us or use the account settings to delete your account and all associated data. This action is irreversible.",
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout title="FAQ - The Realm of Patterns" description="Frequently asked questions about the FRC framework, pricing, accuracy, and how to get started with The Realm of Patterns.">
+  <div class="faq-page">
+    <div class="page-container">
+      <header class="page-header">
+        <h1>
+          <span class="kasra-only">FAQ_DATABASE</span>
+          <span class="river-only">Questions Answered</span>
+          <span class="sol-only">Frequently Asked Questions</span>
+        </h1>
+        <p class="subtitle">
+          <span class="kasra-only">Common queries and system documentation.</span>
+          <span class="river-only">Seek and you shall find.</span>
+          <span class="sol-only">Everything you might want to know.</span>
+        </p>
+      </header>
+
+      <nav class="faq-nav">
+        {FAQ_ITEMS.map((section) => (
+          <a href={`#${section.category.toLowerCase().replace(/\s+/g, '-')}`} class="nav-link">
+            {section.category}
+          </a>
+        ))}
+      </nav>
+
+      <div class="faq-content">
+        {FAQ_ITEMS.map((section) => (
+          <section class="faq-section" id={section.category.toLowerCase().replace(/\s+/g, '-')}>
+            <h2>{section.category}</h2>
+            <div class="questions-list">
+              {section.questions.map((item) => (
+                <details class="faq-item">
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <section class="contact-section">
+        <h3>
+          <span class="kasra-only">ADDITIONAL_QUERIES?</span>
+          <span class="river-only">More Questions?</span>
+          <span class="sol-only">Still Have Questions?</span>
+        </h3>
+        <p>
+          <span class="kasra-only">Submit inquiry via support channel.</span>
+          <span class="river-only">We're here to help illuminate your path.</span>
+          <span class="sol-only">Reach out — we're happy to help!</span>
+        </p>
+        <a href="mailto:support@therealmofpatterns.com" class="contact-btn">
+          <span class="kasra-only">CONTACT_SUPPORT</span>
+          <span class="river-only">Contact Us</span>
+          <span class="sol-only">Email Us</span>
+        </a>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .faq-page {
+    --gold: #d4a854;
+    --dark: #0a0908;
+    --dark-surface: #141210;
+    --text: #f0e8d8;
+    --text-muted: rgba(240, 232, 216, 0.6);
+
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 6rem 2rem 4rem;
+  }
+
+  .page-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+  }
+
+  .faq-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(212, 168, 84, 0.2);
+  }
+
+  .nav-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    transition: all 0.2s;
+  }
+
+  .nav-link:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .faq-section {
+    margin-bottom: 3rem;
+  }
+
+  .faq-section h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(212, 168, 84, 0.1);
+  }
+
+  .faq-item {
+    margin-bottom: 0.5rem;
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.1);
+  }
+
+  .faq-item summary {
+    padding: 1rem 1.25rem;
+    font-size: 1.05rem;
+    color: var(--text);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.2s;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: '+';
+    font-size: 1.25rem;
+    color: var(--gold);
+    transition: transform 0.2s;
+  }
+
+  .faq-item[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  .faq-item summary:hover {
+    background: rgba(212, 168, 84, 0.05);
+  }
+
+  .faq-item p {
+    padding: 0 1.25rem 1.25rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .contact-section {
+    text-align: center;
+    padding: 2rem;
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.2);
+  }
+
+  .contact-section h3 {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-section p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .contact-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--gold);
+    color: var(--dark);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .contact-btn:hover {
+    background: #e5b964;
+  }
+</style>
