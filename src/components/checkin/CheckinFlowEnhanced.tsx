@@ -6,6 +6,10 @@ import { $mode, $forecast, updateForecast, setFailureMode } from '../../stores';
 import { saveCheckin, getCheckinHistory } from '../../lib/checkin-storage';
 import { ModeDiscovery } from '../shared/ModeDiscovery';
 import { SyncPrompt } from '../shared/SyncPrompt';
+import { BirthDataPrompt } from '../shared/BirthDataPrompt';
+import { PredictionCard } from '../shared/PredictionCard';
+import { hasPersonalizedData, getNatal16D, getTodayTransit16D } from '../../lib/personal-transit';
+import { storeFeedback, getCalibrationStats } from '../../lib/prediction-calibration';
 
 // ============================================
 // Types
@@ -149,6 +153,13 @@ export function CheckinFlowEnhanced({ onComplete, className = '' }: CheckinFlowE
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [selectedScore, setSelectedScore] = useState<number | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [showPrediction, setShowPrediction] = useState(true);
+  const [hasBirthData, setHasBirthData] = useState(false);
+
+  // Check for birth data on mount
+  useEffect(() => {
+    setHasBirthData(hasPersonalizedData());
+  }, []);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const currentQuestion = QUESTIONS[currentIndex];
@@ -237,7 +248,19 @@ export function CheckinFlowEnhanced({ onComplete, className = '' }: CheckinFlowE
         labels={labels}
         onReset={handleReset}
         className={className}
+        hasBirthData={hasBirthData}
+        onBirthDataComplete={() => setHasBirthData(true)}
       />
+    );
+  }
+
+  // Pre-check-in prediction view (only if user has birth data)
+  if (showPrediction && hasBirthData) {
+    return (
+      <div className={`checkin-flow checkin-flow--${mode} ${className}`}>
+        <PredictionCard onStartCheckin={() => setShowPrediction(false)} />
+        <style>{getStyles(mode)}</style>
+      </div>
     );
   }
 
@@ -450,12 +473,16 @@ function ResultsView({
   labels,
   onReset,
   className,
+  hasBirthData,
+  onBirthDataComplete,
 }: {
   mode: string;
   results: CheckinResults;
   labels: typeof LABELS.kasra;
   onReset: () => void;
   className: string;
+  hasBirthData: boolean;
+  onBirthDataComplete: () => void;
 }) {
   const kappaPercent = Math.round(results.kappa * 100);
   const isHealthy = results.failureMode === 'healthy';
@@ -550,6 +577,17 @@ function ResultsView({
         </div>
       )}
 
+      {/* Prediction Comparison - if user had a prediction */}
+      <PredictionComparison mode={mode} actualKappa={results.kappa} />
+
+      {/* Birth Data Prompt - if user doesn't have birth data */}
+      {!hasBirthData && (
+        <BirthDataPrompt
+          timing="after-checkin"
+          onComplete={() => onBirthDataComplete()}
+        />
+      )}
+
       {/* Mode Discovery - shows only after first check-in */}
       <ModeDiscovery />
 
@@ -572,6 +610,250 @@ function ResultsView({
       </div>
 
       <style>{getResultStyles(mode)}</style>
+    </div>
+  );
+}
+
+// ============================================
+// Prediction Comparison Component
+// ============================================
+
+function PredictionComparison({ mode, actualKappa }: { mode: string; actualKappa: number }) {
+  const [prediction, setPrediction] = useState<{ predictedKappa: number; date: string } | null>(null);
+  const [accuracy, setAccuracy] = useState<number | null>(null);
+  const [stats, setStats] = useState<ReturnType<typeof getCalibrationStats> | null>(null);
+
+  useEffect(() => {
+    // Load today's prediction
+    const stored = localStorage.getItem('rop_today_prediction');
+    if (stored) {
+      try {
+        const pred = JSON.parse(stored);
+        const today = new Date().toISOString().split('T')[0];
+
+        // Only show if prediction was for today
+        if (pred.date === today) {
+          setPrediction(pred);
+
+          // Calculate accuracy
+          const error = Math.abs(pred.predictedKappa - actualKappa);
+          const acc = Math.max(0, 1 - error) * 100;
+          setAccuracy(Math.round(acc));
+
+          // Store feedback with dimension tracking for calibration
+          const natal16D = getNatal16D();
+          const transit16D = getTodayTransit16D();
+          storeFeedback(pred.predictedKappa, actualKappa, transit16D, natal16D ?? undefined);
+
+          // Get updated calibration stats
+          setStats(getCalibrationStats());
+        }
+      } catch {}
+    }
+  }, [actualKappa]);
+
+  if (!prediction || accuracy === null) return null;
+
+  const predictedPercent = Math.round(prediction.predictedKappa * 100);
+  const actualPercent = Math.round(actualKappa * 100);
+  const isAccurate = accuracy >= 80;
+
+  return (
+    <div className={`prediction-comparison ${isAccurate ? 'accurate' : ''}`}>
+      <div className="comparison-header">
+        {mode === 'kasra' ? 'PREDICTION_VALIDATION' :
+         mode === 'river' ? 'Oracle Verification' :
+         'How accurate were we?'}
+      </div>
+
+      <div className="comparison-values">
+        <div className="value-item predicted">
+          <span className="value-label">
+            {mode === 'kasra' ? 'PREDICTED' : 'Predicted'}
+          </span>
+          <span className="value-number">{predictedPercent}%</span>
+        </div>
+
+        <div className="comparison-arrow">→</div>
+
+        <div className="value-item actual">
+          <span className="value-label">
+            {mode === 'kasra' ? 'ACTUAL' : 'Actual'}
+          </span>
+          <span className="value-number">{actualPercent}%</span>
+        </div>
+      </div>
+
+      <div className={`accuracy-result ${isAccurate ? 'good' : 'learning'}`}>
+        {isAccurate ? (
+          <>
+            <span className="accuracy-icon">✓</span>
+            <span className="accuracy-text">
+              {mode === 'kasra' ? `${accuracy}% ACCURACY` :
+               mode === 'river' ? `${accuracy}% resonance with the oracle` :
+               `${accuracy}% accurate!`}
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="accuracy-icon">◐</span>
+            <span className="accuracy-text">
+              {mode === 'kasra' ? `${accuracy}% - CALIBRATING` :
+               mode === 'river' ? `${accuracy}% - The pattern is learning you` :
+               `${accuracy}% - We're still learning your patterns`}
+            </span>
+          </>
+        )}
+      </div>
+
+      {stats && stats.totalCheckins >= 7 && (
+        <div className="calibration-info">
+          <span className="calibration-label">
+            {mode === 'kasra' ? 'CALIBRATION_STATUS:' :
+             mode === 'river' ? 'Pattern attunement:' :
+             'Our accuracy is'}
+          </span>
+          <span className="calibration-value">
+            {stats.calibrationQuality === 'excellent' ? (
+              mode === 'kasra' ? 'OPTIMIZED' :
+              mode === 'river' ? 'deeply attuned' :
+              'excellent'
+            ) : stats.calibrationQuality === 'good' ? (
+              mode === 'kasra' ? 'STABLE' :
+              mode === 'river' ? 'resonating well' :
+              'good'
+            ) : (
+              mode === 'kasra' ? 'LEARNING' :
+              mode === 'river' ? 'still awakening' :
+              'improving'
+            )}
+          </span>
+          {stats.trend === 'improving' && (
+            <span className="calibration-trend">↑</span>
+          )}
+        </div>
+      )}
+
+      <style>{`
+        .prediction-comparison {
+          background: rgba(212, 168, 84, 0.08);
+          border: 1px solid rgba(212, 168, 84, 0.15);
+          border-radius: 12px;
+          padding: 1rem;
+          margin: 1rem 0;
+        }
+
+        .prediction-comparison.accurate {
+          border-color: rgba(34, 197, 94, 0.3);
+          background: rgba(34, 197, 94, 0.08);
+        }
+
+        .comparison-header {
+          font-size: 0.75rem;
+          color: rgba(240, 232, 216, 0.5);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 0.75rem;
+        }
+
+        .comparison-values {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 1rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .value-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .value-label {
+          font-size: 0.7rem;
+          color: rgba(240, 232, 216, 0.4);
+          margin-bottom: 0.25rem;
+        }
+
+        .value-number {
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #f0e8d8;
+        }
+
+        .value-item.predicted .value-number {
+          color: rgba(240, 232, 216, 0.6);
+        }
+
+        .comparison-arrow {
+          color: rgba(240, 232, 216, 0.3);
+          font-size: 1.25rem;
+        }
+
+        .accuracy-result {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          padding: 0.5rem;
+          border-radius: 8px;
+          font-size: 0.85rem;
+        }
+
+        .accuracy-result.good {
+          background: rgba(34, 197, 94, 0.15);
+          color: #22c55e;
+        }
+
+        .accuracy-result.learning {
+          background: rgba(251, 191, 36, 0.15);
+          color: #fbbf24;
+        }
+
+        .accuracy-icon {
+          font-size: 1rem;
+        }
+
+        [data-mode="kasra"] .prediction-comparison {
+          border-color: rgba(34, 211, 238, 0.15);
+          background: rgba(34, 211, 238, 0.05);
+        }
+
+        [data-mode="river"] .prediction-comparison {
+          border-color: rgba(167, 139, 250, 0.15);
+          background: rgba(167, 139, 250, 0.05);
+        }
+
+        .calibration-info {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.35rem;
+          margin-top: 0.75rem;
+          padding-top: 0.75rem;
+          border-top: 1px solid rgba(240, 232, 216, 0.1);
+          font-size: 0.75rem;
+          color: rgba(240, 232, 216, 0.5);
+        }
+
+        .calibration-value {
+          color: #d4a854;
+        }
+
+        .calibration-trend {
+          color: #22c55e;
+          font-weight: bold;
+        }
+
+        [data-mode="kasra"] .calibration-value {
+          color: #22d3ee;
+        }
+
+        [data-mode="river"] .calibration-value {
+          color: #a78bfa;
+        }
+      `}</style>
     </div>
   );
 }

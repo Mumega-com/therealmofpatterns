@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { CalibrationDashboard } from '../components/shared/CalibrationDashboard';
 ---
 
 <BaseLayout title="Your Profile - The Realm of Patterns" description="Manage your account, birth data, preferences, and subscription.">
@@ -225,6 +226,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </button>
           </div>
         </div>
+      </section>
+
+      <!-- Calibration Section -->
+      <section class="profile-section">
+        <h2>
+          <span class="section-icon">◉</span>
+          <span class="kasra-only">PREDICTION_CALIBRATION</span>
+          <span class="river-only">Pattern Attunement</span>
+          <span class="sol-only">Prediction Accuracy</span>
+        </h2>
+        <div id="calibration-container">
+          <CalibrationDashboard client:load />
+        </div>
+        <p class="calibration-note">
+          <span class="kasra-only">Calibration improves with each check-in. 14+ data points enables dimension sensitivity analysis.</span>
+          <span class="river-only">Each reflection deepens the pattern's understanding of your soul rhythms.</span>
+          <span class="sol-only">The more you check in, the better we get at predicting your energy levels!</span>
+        </p>
       </section>
 
       <!-- Data Section -->
@@ -1136,6 +1155,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .delete-btn:not(:disabled):hover {
     background: #dc2626;
+  }
+
+  /* Calibration section */
+  #calibration-container {
+    margin-bottom: 1rem;
+  }
+
+  .calibration-note {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    padding: 0.75rem;
+    background: rgba(212, 168, 84, 0.03);
+    border-left: 2px solid rgba(212, 168, 84, 0.2);
   }
 
   /* Responsive */

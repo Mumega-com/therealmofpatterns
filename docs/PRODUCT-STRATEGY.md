@@ -1,6 +1,6 @@
 # Product Strategy: The Realm of Patterns
 
-**Last Updated:** 2026-02-02
+**Last Updated:** 2026-02-04
 **Status:** Strategic Direction Document
 
 ---
@@ -90,31 +90,64 @@ The ARL (Adaptive Resonance Learning) system means:
 
 ## Daily Engagement Loop
 
-### Morning Check-in (2 min)
+### Morning Check-in (2-3 min)
+
+**Step 1: Pre-Check-in Prediction (if birth data exists)**
 ```
 ┌─────────────────────────────────┐
-│ Today's Coherence: 0.72 (↑)    │
-│ Failure Risk: LOW              │
+│ TODAY'S FORECAST               │
 │                                │
-│ Watch for: Dispersion tendency │
-│ if energy spikes without focus │
+│ Predicted Energy: 72%          │
+│ Confidence: 85% (↑ improving)  │
+│                                │
+│ Dominant Transit: ☽ Moon       │
+│ Effect: Amplifying             │
+│                                │
+│ Best Windows Today:            │
+│ • 08:00-10:00 Focused Work     │
+│ • 14:00-16:00 Creative         │
+│                                │
+│    [Start Check-in →]          │
 └─────────────────────────────────┘
 ```
 
-### Throughout Day (30 sec each)
-- Quick state check-ins (swipe interface)
-- "Did this resonate?" feedback on predictions
-- Feeds ARL for personalization
+**Step 2: 6 Questions (30 sec)**
+- Coherence, energy, focus, embodiment
+- Simple 1-5 scale with mode-specific language
 
-### Evening Reflection (3 min)
-- Day summary
-- Prediction accuracy feedback
-- Tomorrow preview
+**Step 3: Prediction Comparison**
+```
+┌─────────────────────────────────┐
+│ PREDICTION VALIDATION          │
+│                                │
+│ Predicted: 72% → Actual: 68%   │
+│                                │
+│ ✓ 94% ACCURACY                 │
+│ Calibration: OPTIMIZED         │
+└─────────────────────────────────┘
+```
+
+**Step 4: Results + Insights**
+- κ score, failure mode status
+- Personalized recommendations in user's chosen voice
+
+### Calibration Journey
+```
+Week 1:  "Learning your patterns" (50% confidence)
+Week 2:  "Starting to calibrate" (65% confidence)
+Week 3+: "Tuned to your rhythms" (80%+ confidence)
+```
+
+The system tracks:
+- Which transit dimensions affect you most (Moon, Mercury, etc.)
+- Prediction bias (do we run high or low for you?)
+- Accuracy trends over time
 
 ### Weekly Deep Dive (10 min)
 - Trend analysis with visualizations
 - Pattern insights
 - Upcoming optimal windows calendar
+- Dimension sensitivity insights
 - Export option for therapist/coach
 
 ---
@@ -156,18 +189,25 @@ The ARL (Adaptive Resonance Learning) system means:
 - PDF Report Generator
 - Email Service (Resend)
 - Diamond Visualization (3D WebGL)
+- **Daily Check-in Flow** (6 questions → kappa computation)
+- **Birth Data Onboarding** (progressive disclosure, mode-aware UI)
+- **Personal Transit Engine** (natal-transit 16D resonance predictions)
+- **Pre-Check-in Predictions** (show predicted kappa before user reports)
+- **Prediction Comparison** (accuracy display after check-in)
+- **Feedback Calibration System** (learns from predicted vs actual)
+- **Dimension Sensitivity Tracking** (which transits affect user most)
+- **Optimal Windows Calculator** (hourly resonance-based recommendations)
 
 ### In Progress 🔄
-- Daily check-in flow UI
-- Prediction accuracy tracking
-- ARL feedback integration
-- User dashboard
+- User dashboard with calibration stats
+- Historical trend visualizations
+- Weekly insight summaries
 
 ### Planned 📋
 - Mobile app (React Native)
 - Therapist/coach portal (B2B)
 - API for integrations
-- Historical trend visualizations
+- Notification system for optimal windows
 
 ---
 
@@ -239,8 +279,15 @@ The ARL (Adaptive Resonance Learning) system means:
 - `/docs/FAILURE_MODES.md` - Clinical taxonomy
 - `/src/lib/failure-detector.ts` - Implementation
 - `/src/lib/transit-engine.ts` - κ coupling calculations
+- `/src/lib/personal-transit.ts` - Natal-transit resonance engine
+- `/src/lib/prediction-calibration.ts` - Feedback learning system
+- `/src/lib/16d-engine.ts` - Core 16D vector computation
+- `/src/components/shared/BirthDataPrompt.tsx` - Birth data collection UI
+- `/src/components/shared/PredictionCard.tsx` - Pre-check-in predictions
+- `/src/components/checkin/CheckinFlowEnhanced.tsx` - Full check-in flow
 - FRC 16D.331 paper - Academic foundation
 
 ---
 
 *Strategy document maintained by Kasra (Builder)*
+*Last updated: 2026-02-04*

@@ -803,7 +803,123 @@ def normalize_vector(U: np.ndarray) -> np.ndarray:
 
 ---
 
-## 15. Open Questions / Future Refinements
+## 15. TypeScript Implementation (Browser/Client-Side)
+
+The system includes a client-side implementation for personalized predictions that runs entirely in the browser.
+
+### 15.1 Personal Transit Engine (`src/lib/personal-transit.ts`)
+
+```typescript
+// Core exports
+export function getNatal16D(): Vector16D | null
+export function getTodayTransit16D(): Vector16D
+export function computePersonalPrediction(): PersonalPrediction | null
+export function hasPersonalizedData(): boolean
+export function clearNatalCache(): void
+
+// PersonalPrediction interface
+interface PersonalPrediction {
+  predictedKappa: number;           // 0-1 resonance score
+  confidence: number;               // Increases with calibration data
+  dominantTransit: {
+    name: string;                   // "Moon", "Mercury", etc.
+    symbol: string;                 // "☽", "☿", etc.
+    effect: 'amplify' | 'challenge' | 'neutral';
+  };
+  optimalWindows: {                 // Best times today
+    start: string;                  // "08:00"
+    end: string;                    // "10:00"
+    activity: 'focused_work' | 'creative' | 'social' | 'rest' | 'important_decisions';
+    quality: number;                // 0-1
+  }[];
+  warnings: string[];               // Shadow activation alerts
+  opportunities: string[];          // Favorable conditions
+}
+```
+
+### 15.2 Prediction Calibration System (`src/lib/prediction-calibration.ts`)
+
+The calibration system learns from prediction feedback to improve accuracy over time.
+
+```typescript
+// Core exports
+export function storeFeedback(
+  predicted: number,
+  actual: number,
+  transit16D?: Vector16D,
+  natal16D?: Vector16D
+): void
+
+export function calibratePrediction(
+  rawPrediction: number,
+  transitDominant?: number
+): number
+
+export function getCalibrationStats(): CalibrationStats
+export function getCalibrationProfile(): CalibrationProfile | null
+export function getDimensionInsights(): {
+  mostSensitive: { index: number; name: string; sensitivity: number } | null;
+  leastSensitive: { index: number; name: string; sensitivity: number } | null;
+}
+
+// CalibrationProfile interface
+interface CalibrationProfile {
+  bias: number;                     // Positive = predicting too high
+  averageAccuracy: number;          // Historical accuracy %
+  recentAccuracy: number;           // Last 7 days
+  dimensionSensitivities: number[]; // 8-element array
+  sampleCount: number;              // Feedback data points
+  lastUpdated: string;
+}
+
+// CalibrationStats interface
+interface CalibrationStats {
+  totalCheckins: number;
+  averageAccuracy: number;
+  bestDay: { date: string; accuracy: number } | null;
+  trend: 'improving' | 'stable' | 'declining';
+  calibrationQuality: 'excellent' | 'good' | 'learning' | 'insufficient';
+}
+```
+
+### 15.3 LocalStorage Keys
+
+| Key | Purpose | Retention |
+|-----|---------|-----------|
+| `rop_natal_16d` | Cached natal 16D vector | Permanent |
+| `rop_birth_data_full` | Full birth data (year, month, day, hour, minute) | Permanent |
+| `rop_today_prediction` | Today's prediction for comparison | 1 day |
+| `rop_prediction_feedback` | Historical feedback for calibration | 90 days |
+| `rop_calibration_profile` | Computed calibration parameters | Auto-updated |
+| `rop_birth_prompt_dismissed` | User dismissed prompt timestamp | 7 days |
+
+### 15.4 Calibration Algorithm
+
+```
+1. Store feedback after each check-in:
+   - predicted kappa, actual kappa, error, accuracy
+   - dominant transit dimension (0-7)
+   - dominant natal dimension (0-7)
+
+2. Update calibration profile when feedback stored:
+   a) Calculate bias = mean(predicted - actual)
+   b) Calculate average accuracy across all feedback
+   c) Group feedback by dominant transit dimension
+   d) For each dimension with ≥2 data points:
+      - Calculate sensitivity = mean(actual/predicted)
+      - Clamp to [0.5, 1.5] range
+
+3. Apply calibration to new predictions:
+   a) Subtract 50% of bias (partial correction)
+   b) Multiply by dimension sensitivity (30% weight)
+   c) Clamp result to [0, 1]
+
+4. Increase confidence when calibration profile has ≥14 samples
+```
+
+---
+
+## 16. Open Questions / Future Refinements
 
 1. **Empirical weight tuning**: Train W matrix on psychological test data
 2. **Aspect orb optimization**: Current 5° is standard; could be planet-specific
@@ -811,6 +927,8 @@ def normalize_vector(U: np.ndarray) -> np.ndarray:
 4. **Sign modulation percentages**: 1.2x fire boost is approximate
 5. **RU scaling factor**: Current 50x multiplier needs calibration
 6. **Cross-validation**: Test on diverse birth charts with known outcomes
+7. **Calibration ML**: Use feedback data to train user-specific prediction models
+8. **Time-of-day refinement**: Moon transit tracking for optimal window precision
 
 ---
 
