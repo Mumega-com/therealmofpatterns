@@ -381,6 +381,104 @@ import { Onboarding } from '../components/shared/Onboarding';
     </section>
 
     <!-- ============================================
+         HOW IT WORKS
+         ============================================ -->
+    <section class="how-it-works-section">
+      <div class="section-container">
+        <div class="section-header">
+          <h2 class="section-title kasra-only">
+            <span class="title-icon">&#9881;</span>
+            PROTOCOL_SEQUENCE
+          </h2>
+          <h2 class="section-title river-only">
+            <span class="title-icon">&#10047;</span>
+            The Practice
+          </h2>
+          <h2 class="section-title sol-only">
+            <span class="title-icon">&#128161;</span>
+            How It Works
+          </h2>
+        </div>
+
+        <p class="section-subtitle">
+          <span class="kasra-only">Three-step field calibration protocol.</span>
+          <span class="river-only">A simple ritual for daily insight.</span>
+          <span class="sol-only">Three easy steps to understand your energy.</span>
+        </p>
+
+        <div class="steps-grid">
+          <!-- Step 1 -->
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-icon">
+              <span class="kasra-only">&#9684;</span>
+              <span class="river-only">&#9790;</span>
+              <span class="sol-only">&#128197;</span>
+            </div>
+            <h3 class="step-title">
+              <span class="kasra-only">INPUT_PARAMETERS</span>
+              <span class="river-only">Share Your Birth Moment</span>
+              <span class="sol-only">Enter Your Birthday</span>
+            </h3>
+            <p class="step-desc">
+              <span class="kasra-only">Date, time, location coordinates initialize your baseline vector in 16-dimensional space.</span>
+              <span class="river-only">The moment you entered this world holds the seed of your pattern. Your cosmic fingerprint.</span>
+              <span class="sol-only">Just your birth date, time, and place. This is your unique starting point. Takes 30 seconds.</span>
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="step-icon">
+              <span class="kasra-only">&#9654;</span>
+              <span class="river-only">&#10024;</span>
+              <span class="sol-only">&#129302;</span>
+            </div>
+            <h3 class="step-title">
+              <span class="kasra-only">DAILY_CHECKIN</span>
+              <span class="river-only">Receive Your Reading</span>
+              <span class="sol-only">Check In Daily</span>
+            </h3>
+            <p class="step-desc">
+              <span class="kasra-only">Execute 8-question calibration. System computes current field state and κ-coefficient.</span>
+              <span class="river-only">Answer 8 questions about where you are today. The patterns will speak your current truth.</span>
+              <span class="sol-only">Answer 8 quick questions about how you're feeling. Takes about 1 minute. That's it!</span>
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-icon">
+              <span class="kasra-only">&#9733;</span>
+              <span class="river-only">&#10083;</span>
+              <span class="sol-only">&#127919;</span>
+            </div>
+            <h3 class="step-title">
+              <span class="kasra-only">APPLY_INSIGHTS</span>
+              <span class="river-only">Live the Pattern</span>
+              <span class="sol-only">Use Your Insights</span>
+            </h3>
+            <p class="step-desc">
+              <span class="kasra-only">Receive optimal windows, failure mode warnings, and dimensional recommendations for high-coherence operation.</span>
+              <span class="river-only">Know your best hours for action, connection, and rest. Move with the cosmic rhythm, not against it.</span>
+              <span class="sol-only">See when you'll have the most energy today. Plan important stuff for your best times. Simple!</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="how-cta">
+          <a href="/sol/checkin" class="cta-btn primary-action">
+            <span class="kasra-only">&#9881; BEGIN_PROTOCOL</span>
+            <span class="river-only">&#10022; Begin the Practice</span>
+            <span class="sol-only">&#128640; Try it now — free</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
          PRICING
          ============================================ -->
     <section class="pricing-section">
@@ -1900,6 +1998,158 @@ import { Onboarding } from '../components/shared/Onboarding';
   [data-mode="kasra"] .cta-note { font-family: 'Geist Mono', monospace; color: rgba(255, 255, 255, 0.4); }
   [data-mode="river"] .cta-note { font-family: 'Cormorant Garamond', serif; color: rgba(255, 255, 255, 0.5); }
   [data-mode="sol"] .cta-note { font-family: 'Inter', sans-serif; color: #9ca3af; }
+
+  /* ==========================================
+     HOW IT WORKS SECTION
+     ========================================== */
+  .how-it-works-section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  [data-mode="kasra"] .how-it-works-section {
+    background: linear-gradient(180deg, rgba(0, 255, 136, 0.03) 0%, transparent 50%);
+  }
+
+  [data-mode="river"] .how-it-works-section {
+    background: linear-gradient(180deg, rgba(139, 92, 246, 0.02) 0%, transparent 50%);
+  }
+
+  [data-mode="sol"] .how-it-works-section {
+    background: #fdfcfa;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .steps-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .step-card {
+    position: relative;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  [data-mode="kasra"] .step-card {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 255, 136, 0.15);
+  }
+
+  [data-mode="river"] .step-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 12px;
+  }
+
+  [data-mode="sol"] .step-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .step-number {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  [data-mode="kasra"] .step-number {
+    background: #00ff88;
+    color: black;
+    font-family: 'Geist Mono', monospace;
+  }
+
+  [data-mode="river"] .step-number {
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: white;
+    border-radius: 50%;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  [data-mode="sol"] .step-number {
+    background: #fbbf24;
+    color: #1f2937;
+    border-radius: 50%;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .step-icon {
+    font-size: 2.5rem;
+    margin: 1rem 0;
+  }
+
+  [data-mode="kasra"] .step-icon { color: #00ff88; }
+  [data-mode="river"] .step-icon { color: #a78bfa; }
+  [data-mode="sol"] .step-icon { color: #f59e0b; }
+
+  .step-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  [data-mode="kasra"] .step-title {
+    font-family: 'Geist Mono', monospace;
+    color: #00ff88;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  [data-mode="river"] .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    color: #e9d5ff;
+    font-weight: 500;
+  }
+
+  [data-mode="sol"] .step-title {
+    font-family: 'Inter', sans-serif;
+    color: #1f2937;
+    font-weight: 600;
+  }
+
+  .step-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  [data-mode="kasra"] .step-desc {
+    font-family: 'Geist Mono', monospace;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+  }
+
+  [data-mode="river"] .step-desc {
+    font-family: 'Cormorant Garamond', serif;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  [data-mode="sol"] .step-desc {
+    font-family: 'Inter', sans-serif;
+    color: #6b7280;
+  }
+
+  .how-cta {
+    text-align: center;
+  }
 
   /* ==========================================
      PRICING SECTION

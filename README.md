@@ -30,6 +30,8 @@ A production SaaS platform mapping cosmic identity through mathematical patterns
 | **Live** | [therealmofpatterns.com](https://therealmofpatterns.com) |
 | **Check-in** | [/sol/checkin](https://therealmofpatterns.com/sol/checkin) |
 | **Theater** | [/theater](https://therealmofpatterns.com/theater) (Alchemical scenes) |
+| **Weather** | [/weather](https://therealmofpatterns.com/weather) (Daily cosmic forecast) |
+| **Blog** | [/blog](https://therealmofpatterns.com/blog) (SEO content) |
 | **Learn** | [/learn](https://therealmofpatterns.com/learn) (92 CMS pages) |
 | **Docs** | [/docs](https://therealmofpatterns.com/docs) |
 | **Admin** | [/admin](https://therealmofpatterns.pages.dev/admin) |
@@ -77,8 +79,10 @@ Based on the kappa coefficient (κ), your current coherence maps to alchemical s
 │  /sol            Friendly mode                                   │
 │  /stage/*        Alchemical stage deep-dives                    │
 │  /theater        Alchemical Theater (AI scenes)                 │
+│  /weather        Daily cosmic weather forecast                  │
+│  /blog           SEO content articles                           │
 │  /learn          CMS content index                              │
-│  /subscribe      SaaS pricing (Witness/Pattern-Keeper/Circle)   │
+│  /subscribe      SaaS pricing (annual/monthly)                  │
 │  /squad          The three voices explained                     │
 │  /docs           Documentation index                            │
 └─────────────────────────────────────────────────────────────────┘
@@ -113,8 +117,10 @@ Based on the kappa coefficient (κ), your current coherence maps to alchemical s
 | Tier | Price | Features |
 |------|-------|----------|
 | **Witness** | Free | Theater access, daily weather, basic check-ins |
-| **Pattern-Keeper** | $19/mo | Full 16D readings, unlimited check-ins, history |
-| **Circle** | $49/seat/mo | Squad features, shared insights, team patterns |
+| **Pattern-Keeper** | $19/mo ($15/mo annual) | Full 16D readings, optimal windows, failure warnings |
+| **Circle** | $49/seat/mo ($39/seat annual) | Team dashboards, group coherence, facilitator tools |
+
+*7-day free trial for Pattern-Keeper. 14-day free trial for Circle.*
 
 ---
 
@@ -196,24 +202,29 @@ Deep-dive specifications in [docs/squad/](docs/squad/):
 therealmofpatterns/
 ├── src/
 │   ├── pages/              # Astro pages
-│   │   ├── index.astro     # Homepage
+│   │   ├── index.astro     # Homepage (3-mode)
 │   │   ├── kasra/          # Technical mode
 │   │   ├── river/          # Archetypal mode
 │   │   ├── sol/            # Friendly mode
 │   │   ├── stage/          # Alchemical stages
 │   │   ├── theater/        # AI-generated scenes
+│   │   ├── weather/        # Cosmic weather
+│   │   ├── blog/           # SEO content
 │   │   ├── learn/          # CMS index
+│   │   ├── subscribe.astro # Pricing (annual/monthly)
 │   │   ├── squad/          # The three voices
-│   │   └── docs/           # Documentation
+│   │   ├── docs/           # Documentation
+│   │   └── en/             # SEO pages (dimensions, figures, jungian)
 │   │
 │   ├── components/         # React components
-│   │   ├── shared/         # Header, Footer, etc.
+│   │   ├── shared/         # Header, Footer, Onboarding, etc.
 │   │   ├── kasra/          # Technical UI
 │   │   ├── river/          # Mystical UI
 │   │   └── sol/            # Friendly UI
 │   │
 │   ├── layouts/            # Astro layouts
-│   └── lib/                # Utilities
+│   ├── hooks/              # React hooks (useError, etc.)
+│   └── lib/                # Utilities, 16D engine
 │
 ├── functions/              # Cloudflare Pages Functions
 │   ├── api/                # REST endpoints
