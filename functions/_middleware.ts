@@ -136,11 +136,16 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   // Process the request normally
   const response = await context.next();
 
-  // Add CORS headers to response
+  // Add CORS and security headers to response
   const corsHeaders = getCORSHeaders(origin);
+  const securityHeaders = getSecurityHeaders();
   const newResponse = new Response(response.body, response);
 
   for (const [key, value] of Object.entries(corsHeaders)) {
+    newResponse.headers.set(key, value);
+  }
+
+  for (const [key, value] of Object.entries(securityHeaders)) {
     newResponse.headers.set(key, value);
   }
 
@@ -162,6 +167,30 @@ function getCORSHeaders(origin: string): Record<string, string> {
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Max-Age': '86400',
+  };
+}
+
+/**
+ * Security headers to protect against common attacks
+ */
+function getSecurityHeaders(): Record<string, string> {
+  return {
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
+    'Content-Security-Policy': [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://challenges.cloudflare.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data: https: blob:",
+      "connect-src 'self' https://api.stripe.com wss://*.therealmofpatterns.com https://*.cloudflare.com",
+      "frame-src https://js.stripe.com https://challenges.cloudflare.com",
+      "object-src 'none'",
+      "base-uri 'self'",
+    ].join('; '),
   };
 }
 
