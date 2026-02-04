@@ -227,7 +227,7 @@ const description = `Personal energy forecast and optimal activity windows for $
   }
 </style>
 
-<script define:vars={{ date }}>
+<script define:vars={{ date, nextDate }}>
   import { createElement } from 'react';
   import { createRoot } from 'react-dom/client';
 
@@ -239,15 +239,15 @@ const description = `Personal energy forecast and optimal activity windows for $
     if (mode === 'kasra') {
       const { KasraForecast } = await import('../../components/kasra/KasraForecast');
       const el = document.getElementById('kasra-forecast');
-      if (el) createRoot(el).render(createElement(KasraForecast));
+      if (el) createRoot(el).render(createElement(KasraForecast, { nextDate }));
     } else if (mode === 'river') {
       const { RiverForecast } = await import('../../components/river/RiverForecast');
       const el = document.getElementById('river-forecast');
-      if (el) createRoot(el).render(createElement(RiverForecast));
+      if (el) createRoot(el).render(createElement(RiverForecast, { nextDate }));
     } else {
       const { SolForecast } = await import('../../components/sol/SolForecast');
       const el = document.getElementById('sol-forecast');
-      if (el) createRoot(el).render(createElement(SolForecast));
+      if (el) createRoot(el).render(createElement(SolForecast, { nextDate }));
     }
 
     // Load email capture

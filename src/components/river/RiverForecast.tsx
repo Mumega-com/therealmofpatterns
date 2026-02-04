@@ -11,6 +11,7 @@ import { RiverCard, RiverQuote, RiverInsight, RiverDivider, StageGlyph } from '.
 
 interface RiverForecastProps {
   className?: string;
+  nextDate?: string;
 }
 
 // Poetic descriptions for each stage
@@ -74,7 +75,7 @@ const FAILURE_POETRY: Record<FailureMode, {
   },
 };
 
-export function RiverForecast({ className = '' }: RiverForecastProps) {
+export function RiverForecast({ className = '', nextDate }: RiverForecastProps) {
   const forecast = useStore($forecast);
   const stage = useStore($stage);
   const isInFailure = useStore($isInFailure);
@@ -124,6 +125,30 @@ export function RiverForecast({ className = '' }: RiverForecastProps) {
       <RiverCard title="The Ladder of Being">
         <MuLevelPoetic muLevel={forecast.muLevel} />
       </RiverCard>
+
+      {/* Tomorrow Teaser */}
+      {nextDate && (
+        <div className="mt-8">
+          <RiverDivider className="my-8" symbol="☾" />
+          <div className="opacity-80 hover:opacity-100 transition-opacity duration-500">
+            <RiverCard className="border-river-accent/30 bg-river-surface/50">
+              <div className="text-center">
+                <h3 className="river-h2 text-river-accent mb-2">The Wheel Turns</h3>
+                <p className="river-body italic mb-6">
+                  The stars do not stand still. Tomorrow brings a new configuration.<br />
+                  Return to witness how the pattern evolves.
+                </p>
+                <a
+                  href={nextDate}
+                  className="inline-block px-6 py-2 border border-river-accent text-river-accent hover:bg-river-accent hover:text-river-bg rounded-full transition-colors font-river text-lg no-underline"
+                >
+                  Glimpse Tomorrow ⟶
+                </a>
+              </div>
+            </RiverCard>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
