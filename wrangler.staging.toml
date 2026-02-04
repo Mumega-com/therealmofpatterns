@@ -1,0 +1,64 @@
+# The Realm of Patterns - STAGING Configuration
+# Deploy with: wrangler pages deploy dist --project-name=therealmofpatterns-staging
+
+name = "therealmofpatterns-staging"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+# ============================================
+# Staging D1 Database (separate from production)
+# ============================================
+# Create with: wrangler d1 create therealmofpatterns-staging-db
+[[d1_databases]]
+binding = "DB"
+database_name = "therealmofpatterns-staging-db"
+# database_id = "SET_AFTER_CREATION"
+
+# ============================================
+# Staging R2 Bucket
+# ============================================
+# Create with: wrangler r2 bucket create therealmofpatterns-staging-assets
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "therealmofpatterns-staging-assets"
+
+# ============================================
+# Staging KV Namespace
+# ============================================
+# Create with: wrangler kv:namespace create "STAGING_CACHE"
+[[kv_namespaces]]
+binding = "CACHE"
+# id = "SET_AFTER_CREATION"
+
+# ============================================
+# Workers AI
+# ============================================
+[ai]
+binding = "AI"
+
+# ============================================
+# Staging Environment Variables
+# ============================================
+[vars]
+ENVIRONMENT = "staging"
+APP_NAME = "The Realm of Patterns (Staging)"
+APP_URL = "https://therealmofpatterns-staging.pages.dev"
+# Use Stripe test mode keys in staging
+LOG_LEVEL = "debug"
+
+# ============================================
+# Development Settings
+# ============================================
+[dev]
+port = 8789
+local_protocol = "http"
+
+# ============================================
+# Staging Secrets (set via wrangler secret put)
+# ============================================
+# Use TEST mode keys for staging:
+# STRIPE_SECRET_KEY (sk_test_...)
+# STRIPE_WEBHOOK_SECRET
+# STRIPE_PUBLISHABLE_KEY (pk_test_...)
+# GEMINI_API_KEY
+# ADMIN_KEY
