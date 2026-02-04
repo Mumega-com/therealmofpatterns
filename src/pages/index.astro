@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ModeToggle } from '../components/shared/ModeToggle';
+import { Onboarding } from '../components/shared/Onboarding';
 ---
 
 <BaseLayout
@@ -9,6 +10,9 @@ import { ModeToggle } from '../components/shared/ModeToggle';
   transparentHeader={true}
 >
   <div class="landing-page" id="landing-page">
+    <!-- Onboarding for first-time visitors -->
+    <Onboarding client:load />
+
     <!-- ============================================
          HERO BACKGROUNDS - Mode-specific
          ============================================ -->
