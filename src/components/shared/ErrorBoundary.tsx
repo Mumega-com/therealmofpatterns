@@ -1,11 +1,13 @@
 'use client';
 
 import { Component, ReactNode } from 'react';
+import { captureError } from '../../lib/monitoring';
 
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
+  componentName?: string;
 }
 
 interface State {
@@ -25,6 +27,15 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
+
+    // Report to monitoring
+    captureError(error, {
+      component: this.props.componentName || 'ErrorBoundary',
+      extra: {
+        componentStack: errorInfo.componentStack,
+      },
+    });
+
     this.props.onError?.(error, errorInfo);
   }
 
