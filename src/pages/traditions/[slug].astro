@@ -1,0 +1,648 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'chinese' }, props: { slug: 'chinese' } },
+    { params: { slug: 'vedic' }, props: { slug: 'vedic' } },
+    { params: { slug: 'mayan' }, props: { slug: 'mayan' } },
+    { params: { slug: 'western' }, props: { slug: 'western' } },
+    { params: { slug: 'celtic' }, props: { slug: 'celtic' } },
+  ];
+}
+
+interface TraditionContent {
+  name: string;
+  nativeName: string;
+  title: string;
+  subtitle: string;
+  intro: string;
+  keyPrinciples: { name: string; frcMapping: string; description: string }[];
+  dimensionMappings: { tradition: string; frc: string; meaning: string }[];
+  practicalBridge: string[];
+  culturalInsight: string;
+  callToAction: string;
+}
+
+const TRADITIONS: Record<string, TraditionContent> = {
+  'chinese': {
+    name: 'Chinese Astrology',
+    nativeName: '中國占星術',
+    title: 'Chinese Astrology & The FRC Framework',
+    subtitle: 'Bridging the Five Elements with 16-Dimensional Pattern Analysis',
+    intro: 'Chinese astrology, with its 5,000-year history, maps human nature through the interplay of Five Elements (Wu Xing), Twelve Animals, and Heavenly Stems. The FRC framework honors this wisdom while adding dimensional precision to ancient insights.',
+    keyPrinciples: [
+      {
+        name: 'Wu Xing (Five Elements)',
+        frcMapping: 'Maps to 5 core dimensions',
+        description: 'Wood (Expansion/μ₅), Fire (Action/μ₆), Earth (Existence/μ₂), Metal (Cognition/μ₃), Water (Field/μ₈). The generative and controlling cycles mirror dimensional harmonics.',
+      },
+      {
+        name: 'Twelve Animals',
+        frcMapping: 'Phase archetypes',
+        description: 'Each animal represents a Phase (μ₁) configuration. Your birth animal indicates your core identity pattern, much like FRC\'s Phase dimension.',
+      },
+      {
+        name: 'Yin-Yang Balance',
+        frcMapping: 'Inner/Outer Octave polarity',
+        description: 'The yin-yang dynamic maps directly to FRC\'s Inner Octave (karma/natal) and Outer Octave (dharma/transit) structure.',
+      },
+      {
+        name: 'Four Pillars (BaZi)',
+        frcMapping: '4 temporal dimensions',
+        description: 'Year, Month, Day, Hour pillars parallel FRC\'s temporal dimension analysis, both recognizing that time-of-birth specificity increases reading accuracy.',
+      },
+    ],
+    dimensionMappings: [
+      { tradition: 'Wood (木)', frc: 'Expansion (μ₅)', meaning: 'Growth, vision, new beginnings' },
+      { tradition: 'Fire (火)', frc: 'Action (μ₆)', meaning: 'Energy, transformation, will' },
+      { tradition: 'Earth (土)', frc: 'Existence (μ₂)', meaning: 'Stability, nourishment, grounding' },
+      { tradition: 'Metal (金)', frc: 'Cognition (μ₃)', meaning: 'Precision, clarity, structure' },
+      { tradition: 'Water (水)', frc: 'Field (μ₈)', meaning: 'Wisdom, flow, collective connection' },
+    ],
+    practicalBridge: [
+      'If your BaZi shows Wood dominance, expect high Expansion dimension scores',
+      'Fire year transits correlate with Action dimension activation',
+      'Earth element imbalance often shows as low Existence/grounding scores',
+      'Metal personalities typically score high on Cognition dimension',
+      'Water-dominant charts align with Field dimension sensitivity',
+    ],
+    culturalInsight: 'Chinese astrology emphasizes cyclical time and collective patterns. The 60-year cycle (Sexagenary Cycle) mirrors FRC\'s recognition that patterns repeat and evolve across longer timeframes. Where Chinese astrology excels in understanding collective and generational patterns, FRC adds precision in daily timing.',
+    callToAction: 'See how your Chinese animal sign maps to your 16D signature.',
+  },
+  'vedic': {
+    name: 'Vedic Astrology',
+    nativeName: 'Jyotish (ज्योतिष)',
+    title: 'Vedic Astrology & The FRC Framework',
+    subtitle: 'Uniting Jyotish Wisdom with Modern Pattern Mathematics',
+    intro: 'Jyotish, the "science of light," has illuminated human destiny for over 5,000 years. Its sophisticated system of nakshatras, dashas, and yogas finds remarkable parallels in FRC\'s dimensional analysis, suggesting both traditions glimpsed the same underlying pattern structure.',
+    keyPrinciples: [
+      {
+        name: 'Navagraha (Nine Planets)',
+        frcMapping: 'Core planetary dimensions',
+        description: 'FRC uses the same planetary bodies but maps them to specific dimensions rather than houses. Sun (Phase/μ₁), Moon (Field/μ₈), Mars (Action/μ₆), etc.',
+      },
+      {
+        name: '27 Nakshatras',
+        frcMapping: 'Fine-grained phase states',
+        description: 'Nakshatras divide the zodiac into 27 lunar mansions. FRC recognizes similar micro-variations within each dimension, allowing for nuanced readings.',
+      },
+      {
+        name: 'Dasha System',
+        frcMapping: 'Transit-based activation',
+        description: 'Planetary periods (dashas) determining life phases parallel FRC\'s Outer Octave transit analysis. Both recognize that certain energies dominate at certain times.',
+      },
+      {
+        name: 'Karma & Dharma',
+        frcMapping: 'Inner/Outer Octave',
+        description: 'Jyotish\'s karma (past actions) and dharma (life purpose) map directly to FRC\'s Inner Octave (natal pattern) and Outer Octave (current transits).',
+      },
+    ],
+    dimensionMappings: [
+      { tradition: 'Surya (Sun)', frc: 'Phase (μ₁)', meaning: 'Soul, identity, life purpose' },
+      { tradition: 'Chandra (Moon)', frc: 'Field (μ₈)', meaning: 'Mind, emotions, intuition' },
+      { tradition: 'Mangala (Mars)', frc: 'Action (μ₆)', meaning: 'Energy, courage, will' },
+      { tradition: 'Budha (Mercury)', frc: 'Cognition (μ₃)', meaning: 'Intellect, communication' },
+      { tradition: 'Guru (Jupiter)', frc: 'Expansion (μ₅)', meaning: 'Wisdom, growth, fortune' },
+      { tradition: 'Shukra (Venus)', frc: 'Relation (μ₇)', meaning: 'Love, beauty, harmony' },
+      { tradition: 'Shani (Saturn)', frc: 'Value (μ₄)', meaning: 'Discipline, karma, time' },
+    ],
+    practicalBridge: [
+      'Your Vedic Moon sign often correlates with Field dimension sensitivity',
+      'Mangala dasha periods show elevated Action dimension scores',
+      'Shani transits (Sade Sati) typically correlate with Value dimension challenges',
+      'Jupiter return patterns align with Expansion dimension peaks',
+      'Rahu/Ketu axis shows in Phase/Field dimension tension',
+    ],
+    culturalInsight: 'Jyotish emphasizes karmic patterns and spiritual evolution. Its sophisticated predictive techniques have been refined over millennia. FRC honors this depth while adding real-time dimensional tracking. Where Jyotish excels in life-pattern prediction, FRC adds daily practical guidance.',
+    callToAction: 'Discover how your Jyotish chart illuminates your 16D pattern.',
+  },
+  'mayan': {
+    name: 'Mayan Calendar',
+    nativeName: 'Tzolk\'in',
+    title: 'The Mayan Calendar & The FRC Framework',
+    subtitle: 'Ancient Mesoamerican Wisdom Meets Modern Pattern Science',
+    intro: 'The Maya developed one of history\'s most sophisticated calendar systems, tracking cycles within cycles across vast time scales. The Tzolk\'in\'s 260-day sacred calendar and its 20 day signs offer profound parallels to FRC\'s dimensional structure.',
+    keyPrinciples: [
+      {
+        name: 'Tzolk\'in (260-Day Cycle)',
+        frcMapping: 'Pattern recurrence period',
+        description: 'The 260-day sacred calendar (13 × 20) creates a rhythm of archetypal energies. FRC recognizes similar cyclical patterns in dimensional activation.',
+      },
+      {
+        name: '20 Day Signs (Nawales)',
+        frcMapping: 'Phase archetypes',
+        description: 'Each nawal represents a distinct energy pattern. Like FRC\'s Phase dimension configurations, they describe core identity flavors.',
+      },
+      {
+        name: '13 Tones (Numbers)',
+        frcMapping: 'Intensity modifiers',
+        description: 'The 13 galactic tones modify each day sign\'s expression. FRC similarly uses dimensional intensity scores to show how strongly each dimension manifests.',
+      },
+      {
+        name: 'Long Count',
+        frcMapping: 'Macro-cycle tracking',
+        description: 'The Long Count tracks vast time cycles. FRC\'s historical pattern database recognizes similar macro-patterns across longer timeframes.',
+      },
+    ],
+    dimensionMappings: [
+      { tradition: 'Imix (Dragon)', frc: 'Field (μ₈)', meaning: 'Primordial energy, source' },
+      { tradition: 'Ik (Wind)', frc: 'Cognition (μ₃)', meaning: 'Breath, spirit, communication' },
+      { tradition: 'Akbal (Night)', frc: 'Phase (μ₁)', meaning: 'Transformation, dreaming' },
+      { tradition: 'Kan (Seed)', frc: 'Value (μ₄)', meaning: 'Potential, intention, targeting' },
+      { tradition: 'Chicchan (Serpent)', frc: 'Action (μ₆)', meaning: 'Life force, kundalini' },
+      { tradition: 'Cimi (Transformer)', frc: 'Existence (μ₂)', meaning: 'Death/rebirth, grounding' },
+      { tradition: 'Manik (Deer)', frc: 'Relation (μ₇)', meaning: 'Grace, tools, healing' },
+      { tradition: 'Lamat (Star)', frc: 'Expansion (μ₅)', meaning: 'Abundance, ripening' },
+    ],
+    practicalBridge: [
+      'Your Mayan day sign indicates your primary Phase configuration',
+      'The tone number (1-13) suggests dimensional intensity levels',
+      'Portal days correlate with high Field dimension sensitivity',
+      'Galactic cycles align with longer-term FRC pattern shifts',
+      'The uinal (20-day period) creates a mini-cycle of dimensional emphasis',
+    ],
+    culturalInsight: 'Mayan timekeeping was deeply integrated with ceremony and cosmic awareness. The calendar wasn\'t just for tracking days—it was a spiritual technology for alignment. FRC shares this vision of time as meaningful pattern, not mere measurement.',
+    callToAction: 'Find your Mayan day sign and see its dimensional signature.',
+  },
+  'western': {
+    name: 'Western Astrology',
+    nativeName: 'Horoscopic Astrology',
+    title: 'Western Astrology & The FRC Framework',
+    subtitle: 'Building on the Hellenistic Foundation with Dimensional Precision',
+    intro: 'Western astrology, rooted in Hellenistic, Medieval, and Renaissance traditions, remains the most widely practiced astrological system in the modern world. FRC builds directly on this foundation while adding mathematical precision to archetypal insights.',
+    keyPrinciples: [
+      {
+        name: 'Twelve Signs',
+        frcMapping: 'Phase modifiers',
+        description: 'The zodiac signs color how each planet/dimension expresses. FRC honors this but adds quantitative precision to qualitative descriptions.',
+      },
+      {
+        name: 'Planetary Aspects',
+        frcMapping: 'Dimensional harmonics',
+        description: 'Conjunctions, squares, trines map to dimensional interactions. FRC computes these as κ-coefficient relationships between dimensions.',
+      },
+      {
+        name: 'Houses',
+        frcMapping: 'Life area focus',
+        description: 'The 12 houses indicate where dimensions manifest in life. FRC\'s context-aware readings adapt to similar life-area specificity.',
+      },
+      {
+        name: 'Transits',
+        frcMapping: 'Outer Octave',
+        description: 'Transit analysis is core to both systems. FRC\'s real-time transit tracking provides daily, hourly precision for optimal timing.',
+      },
+    ],
+    dimensionMappings: [
+      { tradition: 'Sun', frc: 'Phase (μ₁)', meaning: 'Core identity, ego, vitality' },
+      { tradition: 'Moon', frc: 'Field (μ₈)', meaning: 'Emotions, intuition, the unconscious' },
+      { tradition: 'Mercury', frc: 'Cognition (μ₃)', meaning: 'Mind, communication, learning' },
+      { tradition: 'Venus', frc: 'Relation (μ₇)', meaning: 'Love, beauty, values, pleasure' },
+      { tradition: 'Mars', frc: 'Action (μ₆)', meaning: 'Drive, assertion, energy' },
+      { tradition: 'Jupiter', frc: 'Expansion (μ₅)', meaning: 'Growth, meaning, optimism' },
+      { tradition: 'Saturn', frc: 'Existence (μ₂)', meaning: 'Structure, limits, responsibility' },
+      { tradition: 'Uranus/Neptune/Pluto', frc: 'Value (μ₄) + Field (μ₈)', meaning: 'Transpersonal dimensions' },
+    ],
+    practicalBridge: [
+      'Your Sun sign indicates your Phase dimension baseline',
+      'Moon sign reveals Field dimension sensitivity patterns',
+      'Mercury placement shows Cognition dimension strengths',
+      'Venus aspects correlate with Relation dimension harmony',
+      'Saturn transits often challenge Existence dimension stability',
+    ],
+    culturalInsight: 'Western astrology excels at psychological depth and individual focus. Its modern forms integrate Jungian archetypes and humanistic values. FRC extends this psychological sophistication with daily practical guidance.',
+    callToAction: 'Enter your birth data to see your Western chart as a 16D signature.',
+  },
+  'celtic': {
+    name: 'Celtic Tree Calendar',
+    nativeName: 'Beth-Luis-Nion',
+    title: 'The Celtic Tree Calendar & The FRC Framework',
+    subtitle: 'Druidic Wisdom and the Natural Rhythms of Pattern',
+    intro: 'The Celtic tree calendar (Beth-Luis-Nion) assigns sacred trees to lunar months, connecting human nature to the wisdom of the forest. This nature-based system offers a grounded approach to pattern understanding that complements FRC\'s cosmic mathematics.',
+    keyPrinciples: [
+      {
+        name: '13 Lunar Months',
+        frcMapping: 'Monthly pattern cycles',
+        description: 'Each tree governs a lunar month (28 days). FRC tracks similar monthly patterns in dimensional activation.',
+      },
+      {
+        name: 'Ogham Alphabet',
+        frcMapping: 'Symbolic dimension keys',
+        description: 'The Ogham letters encode tree wisdom. Each letter\'s shape and meaning parallel dimensional qualities.',
+      },
+      {
+        name: 'Seasonal Festivals',
+        frcMapping: 'Macro-transition points',
+        description: 'The 8 Celtic festivals mark seasonal thresholds. FRC recognizes similar collective transition points in the cosmic field.',
+      },
+      {
+        name: 'Tree Spirit Archetypes',
+        frcMapping: 'Phase configurations',
+        description: 'Each tree carries an archetypal energy. Your birth tree suggests Phase dimension qualities.',
+      },
+    ],
+    dimensionMappings: [
+      { tradition: 'Oak (Duir)', frc: 'Existence (μ₂)', meaning: 'Strength, endurance, protection' },
+      { tradition: 'Birch (Beith)', frc: 'Phase (μ₁)', meaning: 'New beginnings, purification' },
+      { tradition: 'Willow (Saille)', frc: 'Field (μ₈)', meaning: 'Intuition, moon magic, flow' },
+      { tradition: 'Hazel (Coll)', frc: 'Cognition (μ₃)', meaning: 'Wisdom, inspiration, knowledge' },
+      { tradition: 'Vine (Muin)', frc: 'Relation (μ₇)', meaning: 'Joy, celebration, connection' },
+      { tradition: 'Holly (Tinne)', frc: 'Action (μ₆)', meaning: 'Challenge, warrior spirit' },
+      { tradition: 'Ash (Nion)', frc: 'Expansion (μ₅)', meaning: 'World tree, connection, growth' },
+      { tradition: 'Yew (Idho)', frc: 'Value (μ₄)', meaning: 'Transformation, ancestors' },
+    ],
+    practicalBridge: [
+      'Your Celtic birth tree reveals core Phase characteristics',
+      'Oak periods favor Existence dimension grounding',
+      'Willow moons heighten Field dimension sensitivity',
+      'Hazel times support Cognition dimension clarity',
+      'Festival days mark powerful dimensional transition points',
+    ],
+    culturalInsight: 'The Celtic tradition grounds cosmic patterns in living nature. Trees are seen as ancestors, teachers, and allies. FRC honors this earth-centered spirituality while adding precision timing. Where Celtic wisdom excels in nature connection, FRC adds daily practical guidance.',
+    callToAction: 'Discover your Celtic tree sign and its dimensional resonance.',
+  },
+};
+
+const { slug } = Astro.props;
+const content = TRADITIONS[slug];
+
+if (!content) {
+  return Astro.redirect('/404');
+}
+---
+
+<BaseLayout title={content.title} description={content.subtitle + '. ' + content.intro.slice(0, 100)}>
+  <article class="tradition-article">
+    <div class="article-container">
+      <header class="article-header">
+        <span class="native-name">{content.nativeName}</span>
+        <h1>{content.title}</h1>
+        <p class="subtitle">{content.subtitle}</p>
+      </header>
+
+      <div class="article-content">
+        <section class="intro-section">
+          <p class="intro-text">{content.intro}</p>
+        </section>
+
+        <section class="principles-section">
+          <h2>Key Principles & FRC Mappings</h2>
+          <div class="principles-grid">
+            {content.keyPrinciples.map((principle) => (
+              <div class="principle-card">
+                <h3>{principle.name}</h3>
+                <span class="frc-mapping">{principle.frcMapping}</span>
+                <p>{principle.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section class="mappings-section">
+          <h2>Dimension Correspondences</h2>
+          <div class="mappings-table">
+            <div class="table-header">
+              <span>{content.name}</span>
+              <span>FRC Dimension</span>
+              <span>Meaning</span>
+            </div>
+            {content.dimensionMappings.map((mapping) => (
+              <div class="table-row">
+                <span class="tradition-term">{mapping.tradition}</span>
+                <span class="frc-term">{mapping.frc}</span>
+                <span class="meaning">{mapping.meaning}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section class="bridge-section">
+          <h2>Practical Bridge</h2>
+          <p class="bridge-intro">How to use {content.name} knowledge with FRC:</p>
+          <ul class="bridge-list">
+            {content.practicalBridge.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="insight-section">
+          <h2>Cultural Insight</h2>
+          <blockquote>{content.culturalInsight}</blockquote>
+        </section>
+
+        <section class="cta-section">
+          <h3>Explore Your Pattern</h3>
+          <p>{content.callToAction}</p>
+          <div class="cta-buttons">
+            <a href="/sol/checkin" class="cta-primary">See My Pattern</a>
+            <a href="/traditions" class="cta-secondary">Explore Other Traditions</a>
+          </div>
+        </section>
+      </div>
+
+      <!-- Related Traditions -->
+      <nav class="related-traditions">
+        <h3>Other Traditions</h3>
+        <div class="related-grid">
+          {Object.entries(TRADITIONS)
+            .filter(([key]) => key !== slug)
+            .map(([key, tradition]) => (
+              <a href={`/traditions/${key}`} class="related-card">
+                <span class="related-native">{tradition.nativeName}</span>
+                <span class="related-name">{tradition.name}</span>
+              </a>
+            ))}
+        </div>
+      </nav>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .tradition-article {
+    --gold: #d4a854;
+    --dark: #0a0908;
+    --dark-surface: #141210;
+    --text: #f0e8d8;
+    --text-muted: rgba(240, 232, 216, 0.6);
+
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 6rem 2rem 4rem;
+  }
+
+  .article-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .article-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(212, 168, 84, 0.2);
+  }
+
+  .native-name {
+    display: inline-block;
+    font-size: 1.25rem;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .article-header h1 {
+    font-size: 2.25rem;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .article-content section {
+    margin-bottom: 3rem;
+  }
+
+  .intro-text {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+  }
+
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .principles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .principle-card {
+    padding: 1.5rem;
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.15);
+  }
+
+  .principle-card h3 {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .frc-mapping {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(212, 168, 84, 0.1);
+  }
+
+  .principle-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .mappings-table {
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.15);
+  }
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(212, 168, 84, 0.08);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
+  .table-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid rgba(212, 168, 84, 0.1);
+  }
+
+  .tradition-term {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .frc-term {
+    color: var(--gold);
+  }
+
+  .meaning {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 640px) {
+    .table-header, .table-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .table-header span:last-child,
+    .table-row .meaning {
+      display: none;
+    }
+  }
+
+  .bridge-intro {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .bridge-list {
+    padding-left: 1.25rem;
+  }
+
+  .bridge-list li {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .bridge-list li::marker {
+    color: var(--gold);
+  }
+
+  blockquote {
+    padding: 1.5rem 2rem;
+    background: rgba(212, 168, 84, 0.05);
+    border-left: 4px solid var(--gold);
+    font-size: 1.1rem;
+    color: var(--text);
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  .cta-section {
+    text-align: center;
+    padding: 2.5rem;
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.2);
+  }
+
+  .cta-section h3 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-section > p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-primary {
+    padding: 0.875rem 1.5rem;
+    background: var(--gold);
+    color: var(--dark);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .cta-primary:hover {
+    background: #e5b964;
+    box-shadow: 0 0 20px rgba(212, 168, 84, 0.3);
+  }
+
+  .cta-secondary {
+    padding: 0.875rem 1.5rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .cta-secondary:hover {
+    background: rgba(212, 168, 84, 0.1);
+  }
+
+  .related-traditions {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(212, 168, 84, 0.1);
+  }
+
+  .related-traditions h3 {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    text-align: center;
+  }
+
+  .related-grid {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.15);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .related-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  .related-native {
+    font-size: 0.9rem;
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+  }
+
+  .related-name {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+</style>
