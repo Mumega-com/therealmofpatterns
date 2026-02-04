@@ -1,0 +1,1157 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Your Profile - The Realm of Patterns" description="Manage your account, birth data, preferences, and subscription.">
+  <div class="profile-page">
+    <div class="profile-container">
+      <header class="page-header">
+        <h1>
+          <span class="kasra-only">PROFILE_CONFIGURATION</span>
+          <span class="river-only">Your Sacred Record</span>
+          <span class="sol-only">Your Profile</span>
+        </h1>
+        <p class="subtitle">
+          <span class="kasra-only">Manage user parameters and system preferences.</span>
+          <span class="river-only">The keeper of your cosmic signature.</span>
+          <span class="sol-only">Manage your account and settings.</span>
+        </p>
+      </header>
+
+      <!-- Account Section -->
+      <section class="profile-section">
+        <h2>
+          <span class="section-icon">◎</span>
+          <span class="kasra-only">ACCOUNT_DATA</span>
+          <span class="river-only">Identity</span>
+          <span class="sol-only">Account</span>
+        </h2>
+
+        <div class="field-group">
+          <label>Email</label>
+          <div class="field-value" id="emailDisplay">Loading...</div>
+          <button class="field-action" id="editEmailBtn">Edit</button>
+        </div>
+
+        <div class="field-group">
+          <label>Password</label>
+          <div class="field-value">••••••••</div>
+          <button class="field-action" id="changePasswordBtn">Change</button>
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span class="kasra-only">ACCOUNT_STATUS</span>
+            <span class="river-only">Membership</span>
+            <span class="sol-only">Member Since</span>
+          </label>
+          <div class="field-value" id="memberSinceDisplay">-</div>
+        </div>
+      </section>
+
+      <!-- Birth Data Section -->
+      <section class="profile-section">
+        <h2>
+          <span class="section-icon">✧</span>
+          <span class="kasra-only">NATAL_PARAMETERS</span>
+          <span class="river-only">Birth Signature</span>
+          <span class="sol-only">Birth Data</span>
+        </h2>
+
+        <div class="field-group">
+          <label>
+            <span class="kasra-only">BIRTH_DATE</span>
+            <span class="river-only">Day of Emergence</span>
+            <span class="sol-only">Birthday</span>
+          </label>
+          <div class="field-value" id="birthDateDisplay">Not set</div>
+          <button class="field-action" id="editBirthBtn">Edit</button>
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span class="kasra-only">BIRTH_TIME</span>
+            <span class="river-only">Moment of Arrival</span>
+            <span class="sol-only">Birth Time</span>
+          </label>
+          <div class="field-value" id="birthTimeDisplay">Not set</div>
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span class="kasra-only">BIRTH_LOCATION</span>
+            <span class="river-only">Place of Origin</span>
+            <span class="sol-only">Birth Location</span>
+          </label>
+          <div class="field-value" id="birthLocationDisplay">Not set</div>
+        </div>
+
+        <div class="info-note">
+          <span class="note-icon">i</span>
+          <span class="kasra-only">Birth parameters affect dimensional calculations. Changes will recalibrate your pattern.</span>
+          <span class="river-only">Your birth signature is the anchor of your pattern. Changing it will reshape all readings.</span>
+          <span class="sol-only">Your birth info affects all your readings. Only change if you have more accurate data.</span>
+        </div>
+      </section>
+
+      <!-- Preferences Section -->
+      <section class="profile-section">
+        <h2>
+          <span class="section-icon">◇</span>
+          <span class="kasra-only">SYSTEM_PREFERENCES</span>
+          <span class="river-only">Sacred Preferences</span>
+          <span class="sol-only">Preferences</span>
+        </h2>
+
+        <div class="field-group">
+          <label>
+            <span class="kasra-only">INTERFACE_MODE</span>
+            <span class="river-only">Voice</span>
+            <span class="sol-only">Reading Style</span>
+          </label>
+          <div class="mode-selector">
+            <button class="mode-btn" data-mode="kasra">
+              <span class="mode-name">Kasra</span>
+              <span class="mode-desc">Technical</span>
+            </button>
+            <button class="mode-btn" data-mode="river">
+              <span class="mode-name">River</span>
+              <span class="mode-desc">Mystical</span>
+            </button>
+            <button class="mode-btn" data-mode="sol">
+              <span class="mode-name">Sol</span>
+              <span class="mode-desc">Friendly</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span class="kasra-only">ALERT_NOTIFICATIONS</span>
+            <span class="river-only">Whispers</span>
+            <span class="sol-only">Notifications</span>
+          </label>
+          <div class="toggle-group">
+            <label class="toggle-item">
+              <input type="checkbox" id="alertOptimalWindows" checked />
+              <span class="toggle-label">
+                <span class="kasra-only">Optimal window alerts</span>
+                <span class="river-only">Sacred timing whispers</span>
+                <span class="sol-only">Best time alerts</span>
+              </span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="alertFailureWarnings" checked />
+              <span class="toggle-label">
+                <span class="kasra-only">Failure mode warnings</span>
+                <span class="river-only">Storm approach warnings</span>
+                <span class="sol-only">Heads up alerts</span>
+              </span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="alertStreakReminders" checked />
+              <span class="toggle-label">
+                <span class="kasra-only">Streak continuity reminders</span>
+                <span class="river-only">Practice reminders</span>
+                <span class="sol-only">Streak reminders</span>
+              </span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="alertDimensionChanges" />
+              <span class="toggle-label">
+                <span class="kasra-only">Dimension spike/drop alerts</span>
+                <span class="river-only">Energy shift notices</span>
+                <span class="sol-only">Dimension change alerts</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span class="kasra-only">EMAIL_PREFERENCES</span>
+            <span class="river-only">Written Whispers</span>
+            <span class="sol-only">Email Settings</span>
+          </label>
+          <div class="toggle-group">
+            <label class="toggle-item">
+              <input type="checkbox" id="emailDailyForecast" />
+              <span class="toggle-label">
+                <span class="kasra-only">Daily forecast digest</span>
+                <span class="river-only">Morning oracle message</span>
+                <span class="sol-only">Daily email forecast</span>
+              </span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="emailWeeklyInsight" />
+              <span class="toggle-label">
+                <span class="kasra-only">Weekly pattern analysis</span>
+                <span class="river-only">Weekly reflection</span>
+                <span class="sol-only">Weekly summary email</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Subscription Section -->
+      <section class="profile-section">
+        <h2>
+          <span class="section-icon">★</span>
+          <span class="kasra-only">SUBSCRIPTION_STATUS</span>
+          <span class="river-only">Your Path</span>
+          <span class="sol-only">Subscription</span>
+        </h2>
+
+        <div class="subscription-card" id="subscriptionCard">
+          <div class="sub-tier">
+            <span class="tier-name" id="tierName">Witness</span>
+            <span class="tier-badge free" id="tierBadge">Free</span>
+          </div>
+          <div class="sub-details">
+            <p id="tierDescription">Basic 8D readings and cosmic weather access.</p>
+            <p class="sub-renewal" id="renewalInfo" style="display: none;"></p>
+          </div>
+          <div class="sub-actions">
+            <a href="/subscribe" class="upgrade-btn" id="upgradeBtn">
+              <span class="kasra-only">UPGRADE_TIER</span>
+              <span class="river-only">Expand Your Path</span>
+              <span class="sol-only">Upgrade</span>
+            </a>
+            <button class="manage-btn" id="manageBillingBtn" style="display: none;">
+              <span class="kasra-only">MANAGE_BILLING</span>
+              <span class="river-only">Manage Subscription</span>
+              <span class="sol-only">Manage Billing</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Data Section -->
+      <section class="profile-section">
+        <h2>
+          <span class="section-icon">◈</span>
+          <span class="kasra-only">DATA_MANAGEMENT</span>
+          <span class="river-only">Your Records</span>
+          <span class="sol-only">Your Data</span>
+        </h2>
+
+        <div class="data-actions">
+          <button class="data-btn" id="exportDataBtn">
+            <span class="btn-icon">↓</span>
+            <div class="btn-content">
+              <span class="btn-title">
+                <span class="kasra-only">EXPORT_DATA</span>
+                <span class="river-only">Download Records</span>
+                <span class="sol-only">Export My Data</span>
+              </span>
+              <span class="btn-desc">
+                <span class="kasra-only">Download all user data in JSON format</span>
+                <span class="river-only">Receive all your patterns and history</span>
+                <span class="sol-only">Get a copy of all your data</span>
+              </span>
+            </div>
+          </button>
+
+          <button class="data-btn danger" id="deleteAccountBtn">
+            <span class="btn-icon">✕</span>
+            <div class="btn-content">
+              <span class="btn-title">
+                <span class="kasra-only">DELETE_ACCOUNT</span>
+                <span class="river-only">Release All Bonds</span>
+                <span class="sol-only">Delete Account</span>
+              </span>
+              <span class="btn-desc">
+                <span class="kasra-only">Permanently remove all data and account</span>
+                <span class="river-only">Return your records to the void</span>
+                <span class="sol-only">Permanently delete everything</span>
+              </span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Save Button -->
+      <div class="save-bar" id="saveBar" style="display: none;">
+        <span class="unsaved-label">
+          <span class="kasra-only">UNSAVED_CHANGES</span>
+          <span class="river-only">Changes await</span>
+          <span class="sol-only">Unsaved changes</span>
+        </span>
+        <button class="save-btn" id="saveBtn">
+          <span class="kasra-only">SAVE_CONFIG</span>
+          <span class="river-only">Seal Changes</span>
+          <span class="sol-only">Save</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<!-- Edit Birth Data Modal -->
+<div class="modal" id="birthModal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <h3>
+      <span class="kasra-only">EDIT_NATAL_PARAMETERS</span>
+      <span class="river-only">Update Birth Signature</span>
+      <span class="sol-only">Edit Birth Data</span>
+    </h3>
+
+    <form id="birthForm">
+      <div class="form-group">
+        <label for="birthDate">Date of Birth</label>
+        <input type="date" id="birthDate" required />
+      </div>
+
+      <div class="form-group">
+        <label for="birthTime">Time of Birth</label>
+        <input type="time" id="birthTime" />
+        <div class="form-hint">Leave blank if unknown (will use 12:00 noon)</div>
+      </div>
+
+      <div class="form-group">
+        <label for="birthTimeKnown">Time Precision</label>
+        <select id="birthTimeKnown">
+          <option value="exact">Exact (from birth certificate)</option>
+          <option value="approximate">Approximate (within 1-2 hours)</option>
+          <option value="unknown">Unknown</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="birthCity">City</label>
+        <input type="text" id="birthCity" placeholder="e.g., San Francisco" required />
+      </div>
+
+      <div class="form-group">
+        <label for="birthCountry">Country</label>
+        <input type="text" id="birthCountry" placeholder="e.g., United States" required />
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" id="cancelBirthBtn">Cancel</button>
+        <button type="submit" class="submit-btn">Save Birth Data</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" id="deleteModal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content danger">
+    <h3>
+      <span class="kasra-only">CONFIRM_DELETION</span>
+      <span class="river-only">Final Release</span>
+      <span class="sol-only">Delete Account?</span>
+    </h3>
+
+    <p class="warning-text">
+      <span class="kasra-only">This action is irreversible. All data will be permanently deleted.</span>
+      <span class="river-only">Once released, your patterns cannot be recovered. This is a final farewell.</span>
+      <span class="sol-only">This will permanently delete your account and all your data. This cannot be undone.</span>
+    </p>
+
+    <div class="confirm-input">
+      <label>Type "DELETE" to confirm:</label>
+      <input type="text" id="deleteConfirmInput" placeholder="DELETE" />
+    </div>
+
+    <div class="form-actions">
+      <button class="cancel-btn" id="cancelDeleteBtn">Cancel</button>
+      <button class="delete-btn" id="confirmDeleteBtn" disabled>Delete Forever</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Mode management
+  const mode = localStorage.getItem('rop_mode') || 'river';
+  document.body.setAttribute('data-mode', mode);
+
+  // Load user data
+  function loadProfile() {
+    const user = localStorage.getItem('rop_user');
+    const birthData = localStorage.getItem('rop_birth_data');
+    const prefs = localStorage.getItem('rop_preferences');
+    const subscription = localStorage.getItem('rop_subscription');
+
+    // Display email
+    if (user) {
+      const userData = JSON.parse(user);
+      const emailDisplay = document.getElementById('emailDisplay');
+      if (emailDisplay) emailDisplay.textContent = userData.email || 'Not set';
+
+      const memberSince = document.getElementById('memberSinceDisplay');
+      if (memberSince && userData.createdAt) {
+        memberSince.textContent = new Date(userData.createdAt).toLocaleDateString();
+      }
+    }
+
+    // Display birth data
+    if (birthData) {
+      const data = JSON.parse(birthData);
+      const dateEl = document.getElementById('birthDateDisplay');
+      const timeEl = document.getElementById('birthTimeDisplay');
+      const locEl = document.getElementById('birthLocationDisplay');
+
+      if (dateEl && data.date) {
+        dateEl.textContent = new Date(data.date).toLocaleDateString('en-US', {
+          year: 'numeric', month: 'long', day: 'numeric'
+        });
+      }
+
+      if (timeEl) {
+        if (data.time && data.timeKnown !== 'unknown') {
+          timeEl.textContent = data.time + (data.timeKnown === 'approximate' ? ' (approx)' : '');
+        } else {
+          timeEl.textContent = 'Unknown (using 12:00 noon)';
+        }
+      }
+
+      if (locEl && data.city) {
+        locEl.textContent = `${data.city}, ${data.country}`;
+      }
+    }
+
+    // Load preferences
+    if (prefs) {
+      const prefData = JSON.parse(prefs);
+      Object.entries(prefData).forEach(([key, value]) => {
+        const checkbox = document.getElementById(key) as HTMLInputElement;
+        if (checkbox) checkbox.checked = value as boolean;
+      });
+    }
+
+    // Load subscription
+    if (subscription) {
+      const subData = JSON.parse(subscription);
+      updateSubscriptionDisplay(subData);
+    }
+
+    // Set active mode button
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
+    });
+  }
+
+  function updateSubscriptionDisplay(sub: { tier: string; status?: string; renewsAt?: string }) {
+    const tierName = document.getElementById('tierName');
+    const tierBadge = document.getElementById('tierBadge');
+    const tierDesc = document.getElementById('tierDescription');
+    const renewalInfo = document.getElementById('renewalInfo');
+    const upgradeBtn = document.getElementById('upgradeBtn');
+    const manageBtn = document.getElementById('manageBillingBtn');
+
+    const tierInfo = {
+      witness: { name: 'Witness', badge: 'Free', desc: 'Basic 8D readings and cosmic weather access.' },
+      keeper: { name: 'Pattern-Keeper', badge: 'Pro', desc: 'Full 16D analysis, history, optimal windows, and elder system.' },
+      circle: { name: 'Circle', badge: 'Team', desc: 'Team dashboard, group coherence, and facilitator tools.' },
+    };
+
+    const info = tierInfo[sub.tier as keyof typeof tierInfo] || tierInfo.witness;
+
+    if (tierName) tierName.textContent = info.name;
+    if (tierBadge) {
+      tierBadge.textContent = info.badge;
+      tierBadge.className = 'tier-badge ' + (sub.tier === 'witness' ? 'free' : 'paid');
+    }
+    if (tierDesc) tierDesc.textContent = info.desc;
+
+    if (sub.tier !== 'witness' && sub.renewsAt) {
+      if (renewalInfo) {
+        renewalInfo.style.display = 'block';
+        renewalInfo.textContent = `Renews ${new Date(sub.renewsAt).toLocaleDateString()}`;
+      }
+      if (upgradeBtn) upgradeBtn.style.display = 'none';
+      if (manageBtn) manageBtn.style.display = 'inline-flex';
+    }
+  }
+
+  // Mode switching
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const newMode = btn.getAttribute('data-mode');
+      if (newMode) {
+        localStorage.setItem('rop_mode', newMode);
+        document.body.setAttribute('data-mode', newMode);
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        showSaveBar();
+      }
+    });
+  });
+
+  // Preference toggles
+  document.querySelectorAll('.toggle-item input').forEach(input => {
+    input.addEventListener('change', () => showSaveBar());
+  });
+
+  function showSaveBar() {
+    const saveBar = document.getElementById('saveBar');
+    if (saveBar) saveBar.style.display = 'flex';
+  }
+
+  // Save preferences
+  document.getElementById('saveBtn')?.addEventListener('click', () => {
+    const prefs: Record<string, boolean> = {};
+    document.querySelectorAll('.toggle-item input').forEach(input => {
+      const checkbox = input as HTMLInputElement;
+      prefs[checkbox.id] = checkbox.checked;
+    });
+    localStorage.setItem('rop_preferences', JSON.stringify(prefs));
+
+    const saveBar = document.getElementById('saveBar');
+    if (saveBar) saveBar.style.display = 'none';
+
+    // Show confirmation
+    alert('Preferences saved!');
+  });
+
+  // Birth data modal
+  const birthModal = document.getElementById('birthModal');
+  const editBirthBtn = document.getElementById('editBirthBtn');
+  const cancelBirthBtn = document.getElementById('cancelBirthBtn');
+  const birthForm = document.getElementById('birthForm');
+
+  editBirthBtn?.addEventListener('click', () => {
+    birthModal?.classList.add('open');
+
+    // Load existing data
+    const stored = localStorage.getItem('rop_birth_data');
+    if (stored) {
+      const data = JSON.parse(stored);
+      (document.getElementById('birthDate') as HTMLInputElement).value = data.date || '';
+      (document.getElementById('birthTime') as HTMLInputElement).value = data.time || '';
+      (document.getElementById('birthTimeKnown') as HTMLSelectElement).value = data.timeKnown || 'exact';
+      (document.getElementById('birthCity') as HTMLInputElement).value = data.city || '';
+      (document.getElementById('birthCountry') as HTMLInputElement).value = data.country || '';
+    }
+  });
+
+  cancelBirthBtn?.addEventListener('click', () => {
+    birthModal?.classList.remove('open');
+  });
+
+  birthModal?.querySelector('.modal-backdrop')?.addEventListener('click', () => {
+    birthModal?.classList.remove('open');
+  });
+
+  birthForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const birthData = {
+      date: (document.getElementById('birthDate') as HTMLInputElement).value,
+      time: (document.getElementById('birthTime') as HTMLInputElement).value || '12:00',
+      timeKnown: (document.getElementById('birthTimeKnown') as HTMLSelectElement).value,
+      city: (document.getElementById('birthCity') as HTMLInputElement).value,
+      country: (document.getElementById('birthCountry') as HTMLInputElement).value,
+    };
+
+    localStorage.setItem('rop_birth_data', JSON.stringify(birthData));
+    birthModal?.classList.remove('open');
+    loadProfile();
+  });
+
+  // Delete account modal
+  const deleteModal = document.getElementById('deleteModal');
+  const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+  const deleteConfirmInput = document.getElementById('deleteConfirmInput') as HTMLInputElement;
+  const confirmDeleteBtn = document.getElementById('confirmDeleteBtn') as HTMLButtonElement;
+
+  deleteAccountBtn?.addEventListener('click', () => {
+    deleteModal?.classList.add('open');
+    if (deleteConfirmInput) deleteConfirmInput.value = '';
+    if (confirmDeleteBtn) confirmDeleteBtn.disabled = true;
+  });
+
+  cancelDeleteBtn?.addEventListener('click', () => {
+    deleteModal?.classList.remove('open');
+  });
+
+  deleteModal?.querySelector('.modal-backdrop')?.addEventListener('click', () => {
+    deleteModal?.classList.remove('open');
+  });
+
+  deleteConfirmInput?.addEventListener('input', () => {
+    if (confirmDeleteBtn) {
+      confirmDeleteBtn.disabled = deleteConfirmInput.value !== 'DELETE';
+    }
+  });
+
+  confirmDeleteBtn?.addEventListener('click', () => {
+    // Clear all local storage
+    const keysToRemove = Object.keys(localStorage).filter(k => k.startsWith('rop_'));
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+
+    // Redirect to home
+    window.location.href = '/?deleted=true';
+  });
+
+  // Export data
+  document.getElementById('exportDataBtn')?.addEventListener('click', () => {
+    const data: Record<string, unknown> = {};
+    Object.keys(localStorage)
+      .filter(k => k.startsWith('rop_'))
+      .forEach(k => {
+        try {
+          data[k] = JSON.parse(localStorage.getItem(k) || '');
+        } catch {
+          data[k] = localStorage.getItem(k);
+        }
+      });
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `realm-of-patterns-export-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // Initialize
+  loadProfile();
+</script>
+
+<style>
+  .profile-page {
+    --gold: #d4a854;
+    --dark: #0a0908;
+    --dark-surface: #141210;
+    --text: #f0e8d8;
+    --text-muted: rgba(240, 232, 216, 0.6);
+    --danger: #ef4444;
+
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 6rem 2rem 6rem;
+  }
+
+  .profile-container {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+  }
+
+  /* Sections */
+  .profile-section {
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.15);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(212, 168, 84, 0.1);
+  }
+
+  .section-icon {
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  /* Field groups */
+  .field-group {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(212, 168, 84, 0.05);
+  }
+
+  .field-group:last-of-type {
+    border-bottom: none;
+  }
+
+  .field-group label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .field-value {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .field-action {
+    padding: 0.35rem 0.75rem;
+    background: transparent;
+    border: 1px solid rgba(212, 168, 84, 0.3);
+    color: var(--gold);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .field-action:hover {
+    background: rgba(212, 168, 84, 0.1);
+    border-color: var(--gold);
+  }
+
+  .info-note {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(212, 168, 84, 0.05);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .note-icon {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* Mode selector */
+  .mode-selector {
+    display: flex;
+    gap: 0.5rem;
+    grid-column: 2 / -1;
+  }
+
+  .mode-btn {
+    flex: 1;
+    padding: 0.75rem;
+    background: transparent;
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .mode-btn:hover {
+    border-color: rgba(212, 168, 84, 0.4);
+  }
+
+  .mode-btn.active {
+    background: rgba(212, 168, 84, 0.1);
+    border-color: var(--gold);
+  }
+
+  .mode-name {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .mode-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Toggle groups */
+  .toggle-group {
+    grid-column: 2 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .toggle-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+  }
+
+  .toggle-item input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+
+  .toggle-label {
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  /* Subscription card */
+  .subscription-card {
+    padding: 1.25rem;
+    background: rgba(212, 168, 84, 0.05);
+    border: 1px solid rgba(212, 168, 84, 0.15);
+  }
+
+  .sub-tier {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tier-name {
+    font-size: 1.25rem;
+    color: var(--text);
+  }
+
+  .tier-badge {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tier-badge.free {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+  }
+
+  .tier-badge.paid {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  .sub-details p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .sub-renewal {
+    font-size: 0.85rem !important;
+    color: var(--gold) !important;
+  }
+
+  .sub-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .upgrade-btn, .manage-btn {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .upgrade-btn {
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+  }
+
+  .upgrade-btn:hover {
+    background: #e5b964;
+  }
+
+  .manage-btn {
+    background: transparent;
+    border: 1px solid rgba(212, 168, 84, 0.3);
+    color: var(--gold);
+  }
+
+  .manage-btn:hover {
+    border-color: var(--gold);
+  }
+
+  /* Data actions */
+  .data-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .data-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+  }
+
+  .data-btn:hover {
+    background: rgba(212, 168, 84, 0.05);
+    border-color: rgba(212, 168, 84, 0.4);
+  }
+
+  .data-btn.danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: var(--danger);
+  }
+
+  .btn-icon {
+    font-size: 1.25rem;
+    color: var(--gold);
+  }
+
+  .data-btn.danger .btn-icon {
+    color: var(--danger);
+  }
+
+  .btn-content {
+    flex: 1;
+  }
+
+  .btn-title {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .btn-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Save bar */
+  .save-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    background: var(--dark-surface);
+    border-top: 1px solid var(--gold);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    z-index: 50;
+  }
+
+  .unsaved-label {
+    font-size: 0.9rem;
+    color: var(--gold);
+  }
+
+  .save-btn {
+    padding: 0.6rem 1.5rem;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .save-btn:hover {
+    background: #e5b964;
+  }
+
+  /* Modal */
+  .modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  .modal.open {
+    display: flex;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    padding: 1.5rem;
+  }
+
+  .modal-content.danger {
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .modal-content h3 {
+    font-size: 1.25rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .modal-content.danger h3 {
+    color: var(--danger);
+  }
+
+  .warning-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .confirm-input {
+    margin-bottom: 1.25rem;
+  }
+
+  .confirm-input label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .confirm-input input {
+    width: 100%;
+    padding: 0.6rem;
+    background: var(--dark);
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  /* Form styles */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 0.6rem;
+    background: var(--dark);
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  .form-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .cancel-btn {
+    flex: 1;
+    padding: 0.6rem;
+    background: transparent;
+    border: 1px solid rgba(212, 168, 84, 0.3);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .cancel-btn:hover {
+    border-color: var(--gold);
+  }
+
+  .submit-btn {
+    flex: 1;
+    padding: 0.6rem;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .submit-btn:hover {
+    background: #e5b964;
+  }
+
+  .delete-btn {
+    flex: 1;
+    padding: 0.6rem;
+    background: var(--danger);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .delete-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .delete-btn:not(:disabled):hover {
+    background: #dc2626;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .field-group {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .mode-selector {
+      grid-column: 1;
+      flex-direction: column;
+    }
+
+    .toggle-group {
+      grid-column: 1;
+    }
+  }
+</style>
