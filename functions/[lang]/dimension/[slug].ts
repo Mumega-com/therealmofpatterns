@@ -604,7 +604,7 @@ function formatMarkdown(text: string): string {
   for (const line of lines) {
     if (line.trim().startsWith('*   ') || line.trim().startsWith('- ')) {
       if (!inList) { result += '<ul>'; inList = true; }
-      result += `<li>${line.replace(/^[\s]*[\*\-]\s+/, '')}</li>`;
+      result += `<li>${line.replace(/^[\s]*[*-]\s+/, '')}</li>`;
     } else {
       if (inList) { result += '</ul>'; inList = false; }
       if (line.trim()) result += `<p>${line}</p>`;

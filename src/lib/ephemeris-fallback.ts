@@ -233,8 +233,8 @@ function heliocentricLongitude(planet: PlanetName, jd: number): number {
   const d = daysSinceJ2000(jd);
 
   // Update elements for precession
-  let varpi = elements.varpi + (rates.varpi || 0) * T;
-  let omega = elements.omega + (rates.omega || 0) * T;
+  const varpi = elements.varpi + (rates.varpi || 0) * T;
+  const omega = elements.omega + (rates.omega || 0) * T;
 
   // Mean longitude
   const L = normalizeDegrees(elements.L0 + elements.n * d);
@@ -283,7 +283,7 @@ function moonPosition(jd: number): { longitude: number; latitude: number; speed:
   const Frad = toRadians(F);
 
   // Longitude corrections (simplified perturbations)
-  let dL = 6.289 * Math.sin(Mmrad)        // Equation of center
+  const dL = 6.289 * Math.sin(Mmrad)        // Equation of center
          - 1.274 * Math.sin(2 * Drad - Mmrad)  // Evection
          + 0.658 * Math.sin(2 * Drad)          // Variation
          - 0.214 * Math.sin(2 * Mmrad)
@@ -291,7 +291,7 @@ function moonPosition(jd: number): { longitude: number; latitude: number; speed:
          - 0.114 * Math.sin(2 * Frad);
 
   // Latitude corrections
-  let dB = 5.128 * Math.sin(Frad)
+  const dB = 5.128 * Math.sin(Frad)
          + 0.281 * Math.sin(Mmrad + Frad)
          - 0.278 * Math.sin(Frad - Mmrad)
          + 0.173 * Math.sin(2 * Drad - Frad);
