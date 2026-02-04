@@ -16,6 +16,7 @@ const NAV_LINKS = [
   { href: '/squad', label: 'Squad', icon: '☉' },
   { href: '/docs', label: 'Docs', icon: '⚙' },
   { href: '/subscribe', label: 'Subscribe', icon: '✦' },
+  { href: '/settings', label: 'Settings', icon: '⌂' },
 ];
 
 export function Header({ className = '', currentLang = 'en', transparent = false }: HeaderProps) {

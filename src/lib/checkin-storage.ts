@@ -1,7 +1,9 @@
 /**
  * Check-in Persistence Layer
- * Stores check-in history in localStorage, with future D1 sync capability
+ * Stores check-in history in localStorage, with D1 sync via privacy storage
  */
+
+import { addCheckin as addPrivacyCheckin } from './privacy';
 
 export interface CheckinEntry {
   id: string;
@@ -78,6 +80,21 @@ export function saveCheckin(
     localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
   } catch (e) {
     console.warn('Failed to save check-in:', e);
+  }
+
+  // Also save to privacy storage for server sync
+  try {
+    const vector = scoresToVector(scores);
+    const stage = determineStage(kappa);
+    addPrivacyCheckin({
+      date: entry.timestamp.split('T')[0],
+      vector,
+      stage,
+      kappa,
+      moodScore: Math.round(kappa * 10), // Convert kappa to 1-10 mood score
+    });
+  } catch (e) {
+    console.warn('Failed to save to privacy storage:', e);
   }
 
   // Dispatch event for listeners
@@ -202,4 +219,36 @@ function calculateStreak(lastCheckin: string | null): number {
     // Streak broken - restart at 1
     return 1;
   }
+}
+
+/**
+ * Convert check-in scores to 8D vector format
+ * Maps: clarity->P, energy->Δ, focus->μ, embodiment->R, direction->N, alignment->E
+ */
+function scoresToVector(scores: Record<string, number>): number[] {
+  // Normalize scores to 0-1 range
+  const normalize = (v: number) => (v || 3) / 5;
+
+  // Map check-in dimensions to 8D vector indices
+  // [P=Phase, E=Existence, μ=Cognition, V=Value, N=Expansion, Δ=Action, R=Relation, Φ=Field]
+  return [
+    normalize(scores.clarity),     // P - Phase/Identity from clarity
+    normalize(scores.alignment),   // E - Existence/Structure from alignment
+    normalize(scores.focus),       // μ - Cognition/Mind from focus
+    normalize(scores.direction),   // V - Value/Harmony from direction
+    normalize(scores.direction),   // N - Expansion/Growth from direction
+    normalize(scores.energy),      // Δ - Action/Force from energy
+    normalize(scores.embodiment),  // R - Relation/Connection from embodiment
+    (normalize(scores.clarity) + normalize(scores.alignment)) / 2, // Φ - Field/Witness (composite)
+  ];
+}
+
+/**
+ * Determine alchemical stage from kappa score
+ */
+function determineStage(kappa: number): string {
+  if (kappa < 0.25) return 'nigredo';      // Blackening - dissolution
+  if (kappa < 0.50) return 'albedo';       // Whitening - purification
+  if (kappa < 0.75) return 'citrinitas';   // Yellowing - awakening
+  return 'rubedo';                          // Reddening - integration
 }
