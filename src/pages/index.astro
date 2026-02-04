@@ -1,191 +1,146 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { ModeToggle } from '../components/shared/ModeToggle';
-import { HeroSwitcher } from '../components/hero/HeroSwitcher';
 ---
 
 <BaseLayout
-  title="The Realm of Patterns - Witness the Cosmic Dance"
-  description="A perpetual theater of AI-generated alchemical scenes, painting cosmic time through archetypal imagery. Personal energy forecasting based on FRC mathematics."
+  title="The Realm of Patterns - Know Your Energy, Shape Your Day"
+  description="A 1-minute daily check-in reveals your optimal windows for focus, creativity, and connection. Personal energy forecasting based on cosmic patterns."
   transparentHeader={true}
 >
-  <div class="landing-page" id="landing-page">
+  <div class="landing-page">
     <!-- ============================================
-         HERO SECTION - Smart switcher based on user state
-         First-time: Simple focused hero
-         Returning: Full mode-aware hero
+         HERO SECTION
          ============================================ -->
-    <HeroSwitcher client:load />
+    <section class="hero">
+      <div class="hero-bg">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="stars"></div>
+      </div>
 
-    <!-- ============================================
-         THEATER PREVIEW
-         ============================================ -->
-    <section class="theater-preview-section">
-      <div class="section-container">
-        <!-- Section Header -->
-        <div class="section-header">
-          <h2 class="section-title kasra-only">
-            <span class="title-icon">&#9673;</span>
-            COSMIC_CHANNEL
-          </h2>
-          <h2 class="section-title river-only">
-            <span class="title-icon">&#9788;</span>
-            The Cosmic Theater
-          </h2>
-          <h2 class="section-title sol-only">
-            <span class="title-icon">&#127912;</span>
-            Live Art Generation
-          </h2>
+      <div class="hero-content">
+        <div class="trust-badge">
+          <span class="pulse"></span>
+          <span>15,000+ daily readings</span>
         </div>
 
-        <!-- Theater Frame -->
-        <div class="theater-frame-wrapper">
-          <div class="theater-frame" id="theater-frame">
-            <div class="frame-corner tl"></div>
-            <div class="frame-corner tr"></div>
-            <div class="frame-corner bl"></div>
-            <div class="frame-corner br"></div>
+        <h1>
+          <span class="line-1">Know your energy.</span>
+          <span class="line-2">Shape your day.</span>
+        </h1>
 
-            <div class="theater-screen" id="theater-screen">
-              <div class="curtain left"></div>
-              <div class="curtain right"></div>
-              <img id="scene-image" src="" alt="Current cosmic scene" class="scene-image" style="display: none;" />
-              <div class="loading-indicator">
-                <div class="loader-ring kasra-only"></div>
-                <div class="loader-mandala river-only">
-                  <svg viewBox="0 0 60 60">
-                    <circle cx="30" cy="30" r="25" />
-                    <circle cx="30" cy="30" r="15" />
-                  </svg>
-                </div>
-                <div class="loader-spinner sol-only"></div>
-              </div>
-            </div>
-
-            <div class="theater-info">
-              <span class="stage-badge" id="stage-badge">CITRINITAS</span>
-              <span class="live-indicator">
-                <span class="pulse-dot"></span>
-                <span class="kasra-only">LIVE</span>
-                <span class="river-only">Live</span>
-                <span class="sol-only">Updating</span>
-              </span>
-            </div>
-          </div>
-
-          <a href="/theater" class="theater-cta">
-            <span class="kasra-only">&#9654; ENTER_THEATER</span>
-            <span class="river-only">&#9654; Enter the Theater</span>
-            <span class="sol-only">&#9654; Watch live</span>
-          </a>
-        </div>
-
-        <!-- Theater Description -->
-        <p class="section-description">
-          <span class="kasra-only">
-            Every hour, the system generates a new alchemical scene based on current planetary positions and field coherence.
-          </span>
-          <span class="river-only">
-            Every hour, a new alchemical scene emerges from the cosmic patterns &mdash;
-            24 daily transformations following the ancient stages of the Great Work.
-          </span>
-          <span class="sol-only">
-            Every hour, AI creates new art based on planetary positions. It's like a lava lamp, but cosmic!
-          </span>
+        <p class="subtitle">
+          A 1-minute check-in reveals when you'll feel most focused, creative, and connected today.
+          No mystical nonsense—just patterns that work.
         </p>
+
+        <a href="/sol/checkin" class="cta-primary">
+          <span>Start Your Free Reading</span>
+          <span class="badge">1 min</span>
+          <span class="arrow">&rarr;</span>
+        </a>
+
+        <p class="micro-copy">
+          No signup required &bull; Works offline &bull; Your data stays private
+        </p>
+      </div>
+
+      <div class="scroll-hint">
+        <span>Discover how it works</span>
+        <span class="arrow">&darr;</span>
       </div>
     </section>
 
     <!-- ============================================
-         FEATURES / YOUR PATTERN
+         COSMIC THEATER PREVIEW
+         ============================================ -->
+    <section class="theater-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-icon">&starf;</span>
+          <h2>The Cosmic Theater</h2>
+          <p class="section-desc">
+            Every hour, AI creates new alchemical art based on planetary positions.
+            Watch the cosmic dance unfold in real-time.
+          </p>
+        </div>
+
+        <div class="theater-preview">
+          <div class="theater-frame">
+            <div class="frame-glow"></div>
+            <div class="theater-content" id="theater-content">
+              <img
+                id="scene-image"
+                src="/assets/theater/placeholder.jpg"
+                alt="Current cosmic scene"
+                onerror="this.style.display='none'; document.getElementById('theater-placeholder').style.display='flex';"
+              />
+              <div id="theater-placeholder" class="theater-placeholder">
+                <div class="placeholder-icon">&starf;</div>
+                <span>Loading cosmic scene...</span>
+              </div>
+            </div>
+            <div class="theater-info">
+              <span class="stage-badge" id="stage-badge">CITRINITAS</span>
+              <span class="live-dot"></span>
+              <span class="live-text">Live</span>
+            </div>
+          </div>
+
+          <a href="/theater" class="theater-cta">
+            <span>&triangleright; Enter the Theater</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         FEATURES - WHAT YOU GET
          ============================================ -->
     <section class="features-section">
-      <div class="section-container">
+      <div class="container">
         <div class="section-header">
-          <h2 class="section-title kasra-only">
-            <span class="title-icon">&#9882;</span>
-            PATTERN_ANALYSIS
-          </h2>
-          <h2 class="section-title river-only">
-            <span class="title-icon">&#10022;</span>
-            Your Personal Pattern
-          </h2>
-          <h2 class="section-title sol-only">
-            <span class="title-icon">&#9889;</span>
-            Know Your Energy
-          </h2>
+          <span class="section-icon">&diams;</span>
+          <h2>Your Personal Pattern</h2>
+          <p class="section-desc">
+            Understand your energy rhythms and work with them, not against them.
+          </p>
         </div>
 
         <div class="features-grid">
-          <!-- Feature 1: Daily Reading -->
           <div class="feature-card">
-            <div class="feature-icon">
-              <span class="kasra-only">&#9651;</span>
-              <span class="river-only">&#9788;</span>
-              <span class="sol-only">&#127774;</span>
-            </div>
-            <h3 class="feature-title">
-              <span class="kasra-only">DAILY_CALIBRATION</span>
-              <span class="river-only">Daily Oracle</span>
-              <span class="sol-only">Daily Forecast</span>
-            </h3>
-            <p class="feature-desc">
-              <span class="kasra-only">8-dimension coherence scan with κ-coefficient analysis. Takes 60 seconds.</span>
-              <span class="river-only">Each dawn brings new patterns. Discover which dimensions are calling you today.</span>
-              <span class="sol-only">A quick 1-minute check-in tells you when you'll feel most energized today.</span>
+            <div class="feature-icon">&sung;</div>
+            <h3>Daily Oracle</h3>
+            <p>
+              Each morning brings new patterns. A quick check-in reveals which
+              energies are strongest for you today—and when to lean into them.
             </p>
           </div>
 
-          <!-- Feature 2: Pattern Tracking -->
           <div class="feature-card">
-            <div class="feature-icon">
-              <span class="kasra-only">&#9679;</span>
-              <span class="river-only">&#10070;</span>
-              <span class="sol-only">&#128200;</span>
-            </div>
-            <h3 class="feature-title">
-              <span class="kasra-only">TREND_MONITORING</span>
-              <span class="river-only">Pattern Memory</span>
-              <span class="sol-only">Track Progress</span>
-            </h3>
-            <p class="feature-desc">
-              <span class="kasra-only">Historical data visualization. Identify recurring field states and failure modes.</span>
-              <span class="river-only">Watch how your cosmic signature evolves through the alchemical stages over time.</span>
-              <span class="sol-only">See your energy patterns over time. Notice what works for you and what doesn't.</span>
+            <div class="feature-icon">&loz;</div>
+            <h3>Pattern Memory</h3>
+            <p>
+              Track how your energy evolves over time. Notice what works,
+              what doesn't, and discover your personal rhythms.
             </p>
           </div>
 
-          <!-- Feature 3: Optimal Windows -->
           <div class="feature-card">
-            <div class="feature-icon">
-              <span class="kasra-only">&#9201;</span>
-              <span class="river-only">&#9200;</span>
-              <span class="sol-only">&#127793;</span>
-            </div>
-            <h3 class="feature-title">
-              <span class="kasra-only">OPTIMAL_WINDOWS</span>
-              <span class="river-only">Sacred Timing</span>
-              <span class="sol-only">Best Times</span>
-            </h3>
-            <p class="feature-desc">
-              <span class="kasra-only">Hourly windows for high-coherence action. Avoid low-κ periods for critical operations.</span>
-              <span class="river-only">Know when the currents favor creation, connection, or contemplation.</span>
-              <span class="sol-only">Schedule important tasks when your energy is highest. Simple as that.</span>
+            <div class="feature-icon">&watch;</div>
+            <h3>Optimal Windows</h3>
+            <p>
+              Know when the currents favor action, connection, or rest.
+              Schedule important tasks when your energy is highest.
             </p>
           </div>
         </div>
 
         <div class="features-cta">
-          <a href="/sol/checkin" class="cta-btn primary-action">
-            <span class="kasra-only">&#9881; INITIATE_CALIBRATION</span>
-            <span class="river-only">&#10022; Receive Your Reading</span>
-            <span class="sol-only">&#128640; Get started free</span>
+          <a href="/sol/checkin" class="cta-secondary">
+            Receive Your Reading &rarr;
           </a>
-          <span class="cta-note">
-            <span class="kasra-only">No auth required. Local computation.</span>
-            <span class="river-only">No account required &bull; Takes 30 seconds</span>
-            <span class="sol-only">No signup needed &bull; 1 minute</span>
-          </span>
+          <span class="cta-note">No account required &bull; Takes 60 seconds</span>
         </div>
       </div>
     </section>
@@ -193,96 +148,52 @@ import { HeroSwitcher } from '../components/hero/HeroSwitcher';
     <!-- ============================================
          HOW IT WORKS
          ============================================ -->
-    <section class="how-it-works-section">
-      <div class="section-container">
+    <section class="how-section">
+      <div class="container">
         <div class="section-header">
-          <h2 class="section-title kasra-only">
-            <span class="title-icon">&#9881;</span>
-            PROTOCOL_SEQUENCE
-          </h2>
-          <h2 class="section-title river-only">
-            <span class="title-icon">&#10047;</span>
-            The Practice
-          </h2>
-          <h2 class="section-title sol-only">
-            <span class="title-icon">&#128161;</span>
-            How It Works
-          </h2>
+          <span class="section-icon">&oplus;</span>
+          <h2>The Practice</h2>
+          <p class="section-desc">
+            A simple daily ritual for understanding your energy.
+          </p>
         </div>
 
-        <p class="section-subtitle">
-          <span class="kasra-only">Three-step field calibration protocol.</span>
-          <span class="river-only">A simple ritual for daily insight.</span>
-          <span class="sol-only">Three easy steps to understand your energy.</span>
-        </p>
-
         <div class="steps-grid">
-          <!-- Step 1 -->
           <div class="step-card">
             <div class="step-number">1</div>
-            <div class="step-icon">
-              <span class="kasra-only">&#9684;</span>
-              <span class="river-only">&#9790;</span>
-              <span class="sol-only">&#128197;</span>
-            </div>
-            <h3 class="step-title">
-              <span class="kasra-only">INPUT_PARAMETERS</span>
-              <span class="river-only">Share Your Birth Moment</span>
-              <span class="sol-only">Enter Your Birthday</span>
-            </h3>
-            <p class="step-desc">
-              <span class="kasra-only">Date, time, location coordinates initialize your baseline vector in 16-dimensional space.</span>
-              <span class="river-only">The moment you entered this world holds the seed of your pattern. Your cosmic fingerprint.</span>
-              <span class="sol-only">Just your birth date, time, and place. This is your unique starting point. Takes 30 seconds.</span>
+            <div class="step-icon">&female;</div>
+            <h3>Share Your Birth Moment</h3>
+            <p>
+              The moment you entered this world holds the seed of your pattern—your cosmic fingerprint.
+              Just birth date, time, and place. Takes 30 seconds.
             </p>
           </div>
 
-          <!-- Step 2 -->
           <div class="step-card">
             <div class="step-number">2</div>
-            <div class="step-icon">
-              <span class="kasra-only">&#9654;</span>
-              <span class="river-only">&#10024;</span>
-              <span class="sol-only">&#129302;</span>
-            </div>
-            <h3 class="step-title">
-              <span class="kasra-only">DAILY_CHECKIN</span>
-              <span class="river-only">Receive Your Reading</span>
-              <span class="sol-only">Check In Daily</span>
-            </h3>
-            <p class="step-desc">
-              <span class="kasra-only">Execute 8-question calibration. System computes current field state and κ-coefficient.</span>
-              <span class="river-only">Answer 8 questions about where you are today. The patterns will speak your current truth.</span>
-              <span class="sol-only">Answer 8 quick questions about how you're feeling. Takes about 1 minute. That's it!</span>
+            <div class="step-icon">&spades;</div>
+            <h3>Daily Check-in</h3>
+            <p>
+              Answer 6 quick questions about how you're feeling right now.
+              The patterns will speak your current truth. Takes about 1 minute.
             </p>
           </div>
 
-          <!-- Step 3 -->
           <div class="step-card">
             <div class="step-number">3</div>
-            <div class="step-icon">
-              <span class="kasra-only">&#9733;</span>
-              <span class="river-only">&#10083;</span>
-              <span class="sol-only">&#127919;</span>
-            </div>
-            <h3 class="step-title">
-              <span class="kasra-only">APPLY_INSIGHTS</span>
-              <span class="river-only">Live the Pattern</span>
-              <span class="sol-only">Use Your Insights</span>
-            </h3>
-            <p class="step-desc">
-              <span class="kasra-only">Receive optimal windows, failure mode warnings, and dimensional recommendations for high-coherence operation.</span>
-              <span class="river-only">Know your best hours for action, connection, and rest. Move with the cosmic rhythm, not against it.</span>
-              <span class="sol-only">See when you'll have the most energy today. Plan important stuff for your best times. Simple!</span>
+            <div class="step-icon">&hearts;</div>
+            <h3>Live Your Pattern</h3>
+            <p>
+              Know your best hours for action, connection, and rest.
+              Move with the cosmic rhythm, not against it.
             </p>
           </div>
         </div>
 
         <div class="how-cta">
-          <a href="/sol/checkin" class="cta-btn primary-action">
-            <span class="kasra-only">&#9881; BEGIN_PROTOCOL</span>
-            <span class="river-only">&#10022; Begin the Practice</span>
-            <span class="sol-only">&#128640; Try it now — free</span>
+          <a href="/sol/checkin" class="cta-primary">
+            <span>Begin the Practice</span>
+            <span class="arrow">&rarr;</span>
           </a>
         </div>
       </div>
@@ -292,254 +203,105 @@ import { HeroSwitcher } from '../components/hero/HeroSwitcher';
          PRICING
          ============================================ -->
     <section class="pricing-section">
-      <div class="section-container">
+      <div class="container">
         <div class="section-header">
-          <h2 class="section-title kasra-only">
-            <span class="title-icon">&#9634;</span>
-            ACCESS_TIERS
-          </h2>
-          <h2 class="section-title river-only">
-            <span class="title-icon">&#10038;</span>
-            The Practice
-          </h2>
-          <h2 class="section-title sol-only">
-            <span class="title-icon">&#128142;</span>
-            Simple Plans
-          </h2>
+          <span class="section-icon">&starf;</span>
+          <h2>Simple Plans</h2>
+          <p class="section-desc">
+            Start free. Upgrade when you're ready to go deeper.
+          </p>
         </div>
-
-        <p class="section-subtitle">
-          <span class="kasra-only">Select operational parameters for your deployment.</span>
-          <span class="river-only">From insight to integration &mdash; deepen your practice.</span>
-          <span class="sol-only">Pick what works for you. Cancel anytime.</span>
-        </p>
 
         <div class="pricing-grid">
           <!-- Free Tier -->
-          <div class="pricing-card tier-free">
-            <div class="card-badge">
-              <span class="kasra-only">FREE_TIER</span>
-              <span class="river-only">Always Free</span>
-              <span class="sol-only">Free forever</span>
-            </div>
-            <h3 class="card-title">
-              <span class="kasra-only">WITNESS</span>
-              <span class="river-only">Witness</span>
-              <span class="sol-only">Explorer</span>
-            </h3>
-            <div class="card-price">
-              <span class="price">$0</span>
-              <span class="period">
-                <span class="kasra-only">/ FOREVER</span>
-                <span class="river-only">forever</span>
-                <span class="sol-only">free</span>
-              </span>
+          <div class="pricing-card">
+            <div class="card-header">
+              <span class="card-badge">Always Free</span>
+              <h3>Witness</h3>
+              <div class="card-price">
+                <span class="price">$0</span>
+                <span class="period">forever</span>
+              </div>
             </div>
             <ul class="card-features">
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">Cosmic Channel access</span>
-                <span class="river-only">Watch the Cosmic Theater</span>
-                <span class="sol-only">See the live art gallery</span>
-              </li>
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">8D daily scan</span>
-                <span class="river-only">Daily reading (8 dimensions)</span>
-                <span class="sol-only">Daily energy forecast</span>
-              </li>
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">Basic dimension readout</span>
-                <span class="river-only">Basic dimension breakdown</span>
-                <span class="sol-only">See what's influencing you</span>
-              </li>
+              <li><span class="check">&check;</span> Watch the Cosmic Theater</li>
+              <li><span class="check">&check;</span> Daily energy reading</li>
+              <li><span class="check">&check;</span> Basic dimension breakdown</li>
             </ul>
-            <a href="/sol/checkin" class="card-btn secondary">
-              <span class="kasra-only">INITIALIZE</span>
-              <span class="river-only">Start Witnessing</span>
-              <span class="sol-only">Try it free</span>
-            </a>
+            <a href="/sol/checkin" class="card-btn secondary">Start Witnessing</a>
           </div>
 
           <!-- Pro Tier -->
-          <div class="pricing-card tier-pro featured">
-            <div class="card-badge featured-badge">
-              <span class="kasra-only">RECOMMENDED</span>
-              <span class="river-only">Most Popular</span>
-              <span class="sol-only">Best value</span>
-            </div>
-            <h3 class="card-title">
-              <span class="kasra-only">PATTERN_KEEPER</span>
-              <span class="river-only">Pattern-Keeper</span>
-              <span class="sol-only">Pro</span>
-            </h3>
-            <div class="card-price">
-              <span class="price">$19</span>
-              <span class="period">
-                <span class="kasra-only">/ MONTH</span>
-                <span class="river-only">/month</span>
-                <span class="sol-only">/mo</span>
-              </span>
+          <div class="pricing-card featured">
+            <div class="card-header">
+              <span class="card-badge featured">Most Popular</span>
+              <h3>Pattern-Keeper</h3>
+              <div class="card-price">
+                <span class="price">$19</span>
+                <span class="period">/month</span>
+              </div>
             </div>
             <ul class="card-features">
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">Everything in WITNESS</span>
-                <span class="river-only">Everything in Witness</span>
-                <span class="sol-only">All free features</span>
-              </li>
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">16D + shadow octave analysis</span>
-                <span class="river-only">Full 16D with shadow octave</span>
-                <span class="sol-only">Deep personality insights</span>
-              </li>
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">Hourly optimal windows</span>
-                <span class="river-only">Optimal action windows</span>
-                <span class="sol-only">Best times for everything</span>
-              </li>
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">Failure mode detection</span>
-                <span class="river-only">Shadow early warnings</span>
-                <span class="sol-only">Bad day alerts</span>
-              </li>
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">Historical trend data</span>
-                <span class="river-only">Pattern memory & trends</span>
-                <span class="sol-only">Progress tracking</span>
-              </li>
+              <li><span class="check">&check;</span> Everything in Witness</li>
+              <li><span class="check">&check;</span> Full 16D analysis with shadow</li>
+              <li><span class="check">&check;</span> Optimal action windows</li>
+              <li><span class="check">&check;</span> Early warning alerts</li>
+              <li><span class="check">&check;</span> Pattern memory & trends</li>
             </ul>
-            <a href="/subscribe?plan=individual" class="card-btn primary">
-              <span class="kasra-only">UPGRADE_SYSTEM</span>
-              <span class="river-only">Begin Your Practice</span>
-              <span class="sol-only">Get Pro</span>
-            </a>
+            <a href="/subscribe?plan=individual" class="card-btn primary">Begin Your Practice</a>
           </div>
 
           <!-- Team Tier -->
-          <div class="pricing-card tier-team">
-            <div class="card-badge">
-              <span class="kasra-only">ENTERPRISE</span>
-              <span class="river-only">For Teams</span>
-              <span class="sol-only">Team plan</span>
-            </div>
-            <h3 class="card-title">
-              <span class="kasra-only">CIRCLE_OPS</span>
-              <span class="river-only">Circle</span>
-              <span class="sol-only">Team</span>
-            </h3>
-            <div class="card-price">
-              <span class="price">$49</span>
-              <span class="period">
-                <span class="kasra-only">/ SEAT / MONTH</span>
-                <span class="river-only">/seat/month</span>
-                <span class="sol-only">/person/mo</span>
-              </span>
+          <div class="pricing-card">
+            <div class="card-header">
+              <span class="card-badge">For Teams</span>
+              <h3>Circle</h3>
+              <div class="card-price">
+                <span class="price">$49</span>
+                <span class="period">/seat/month</span>
+              </div>
             </div>
             <ul class="card-features">
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">Full PATTERN_KEEPER access</span>
-                <span class="river-only">Everything in Pattern-Keeper</span>
-                <span class="sol-only">All Pro features</span>
-              </li>
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">Shared ops dashboard</span>
-                <span class="river-only">Shared circle dashboard</span>
-                <span class="sol-only">Team dashboard</span>
-              </li>
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">Group coherence metrics</span>
-                <span class="river-only">Group coherence tracking</span>
-                <span class="sol-only">Team sync scores</span>
-              </li>
-              <li>
-                <span class="check">&#10003;</span>
-                <span class="kasra-only">API access</span>
-                <span class="river-only">API for integrations</span>
-                <span class="sol-only">Connect your tools</span>
-              </li>
+              <li><span class="check">&check;</span> Everything in Pattern-Keeper</li>
+              <li><span class="check">&check;</span> Shared team dashboard</li>
+              <li><span class="check">&check;</span> Group coherence tracking</li>
+              <li><span class="check">&check;</span> API for integrations</li>
             </ul>
-            <a href="/subscribe?plan=squad" class="card-btn secondary">
-              <span class="kasra-only">REQUEST_ACCESS</span>
-              <span class="river-only">Gather Your Circle</span>
-              <span class="sol-only">Start team trial</span>
-            </a>
-            <span class="card-note">
-              <span class="kasra-only">MIN: 3 SEATS</span>
-              <span class="river-only">Minimum 3 seats</span>
-              <span class="sol-only">3+ people</span>
-            </span>
+            <a href="/subscribe?plan=squad" class="card-btn secondary">Gather Your Circle</a>
+            <span class="card-note">Minimum 3 seats</span>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============================================
-         PHILOSOPHY / CLOSING
+         PHILOSOPHY
          ============================================ -->
     <section class="philosophy-section">
-      <div class="section-container">
+      <div class="container">
         <div class="philosophy-content">
-          <div class="kasra-only philosophy-kasra">
-            <div class="philosophy-cards">
-              <div class="phil-card">
-                <span class="phil-icon">&#9888;</span>
-                <h4>NOT_PREDICTION</h4>
-                <p>Pattern analysis, not fortune telling. Mathematical models, not superstition.</p>
-              </div>
-              <div class="phil-card">
-                <span class="phil-icon">&#9878;</span>
-                <h4>NOT_PASSIVE</h4>
-                <p>Data without action is noise. Daily calibration builds field coherence.</p>
-              </div>
-            </div>
-            <div class="philosophy-quote">
-              <code>&gt; know_the_pattern() // shape_the_pattern()</code>
-            </div>
-          </div>
+          <blockquote>
+            "The cosmos is within us. We are made of star-stuff.
+            We are a way for the universe to know itself."
+          </blockquote>
+          <cite>&mdash; Carl Sagan</cite>
+        </div>
 
-          <div class="river-only philosophy-river">
-            <div class="philosophy-cards">
-              <div class="phil-card">
-                <span class="phil-icon">&#9830;</span>
-                <h4>Not Prediction</h4>
-                <p>We map the energetic terrain, not the events. You navigate with awareness, not superstition.</p>
-              </div>
-              <div class="phil-card">
-                <span class="phil-icon">&#9673;</span>
-                <h4>Not Passive</h4>
-                <p>Knowledge without practice is entertainment. Daily reflection builds genuine coherence.</p>
-              </div>
-            </div>
-            <blockquote class="philosophy-quote">
-              "Know the pattern. Shape the pattern."
-            </blockquote>
+        <div class="philosophy-cards">
+          <div class="phil-card">
+            <span class="phil-icon">&diams;</span>
+            <h4>Pattern, Not Prediction</h4>
+            <p>We don't tell you what will happen. We show you the currents you're swimming in.</p>
           </div>
-
-          <div class="sol-only philosophy-sol">
-            <div class="philosophy-cards">
-              <div class="phil-card">
-                <span class="phil-icon">&#128161;</span>
-                <h4>Science meets intuition</h4>
-                <p>Mathematical patterns from astronomy, translated into practical daily guidance.</p>
-              </div>
-              <div class="phil-card">
-                <span class="phil-icon">&#127919;</span>
-                <h4>Action-oriented</h4>
-                <p>Not just "you'll have a good day" &mdash; specific windows for when to do what.</p>
-              </div>
-            </div>
-            <p class="philosophy-quote">
-              Know your patterns, own your days.
-            </p>
+          <div class="phil-card">
+            <span class="phil-icon">&hearts;</span>
+            <h4>Your Data, Your Control</h4>
+            <p>Everything runs locally. We never sell your information. Delete anytime.</p>
+          </div>
+          <div class="phil-card">
+            <span class="phil-icon">&spades;</span>
+            <h4>Learns With You</h4>
+            <p>The more you use it, the more accurate it gets. Your patterns are unique.</p>
           </div>
         </div>
       </div>
@@ -549,27 +311,14 @@ import { HeroSwitcher } from '../components/hero/HeroSwitcher';
          FINAL CTA
          ============================================ -->
     <section class="final-cta-section">
-      <div class="section-container">
-        <h2 class="final-title">
-          <span class="kasra-only">INITIALIZE_SEQUENCE</span>
-          <span class="river-only">Begin Your Journey</span>
-          <span class="sol-only">Ready to try it?</span>
-        </h2>
-        <p class="final-subtitle">
-          <span class="kasra-only">System operational. Waiting for input.</span>
-          <span class="river-only">The theater is always open. The pattern awaits.</span>
-          <span class="sol-only">Start free. No credit card needed.</span>
-        </p>
+      <div class="container">
+        <h2>Ready to Know Your Pattern?</h2>
+        <p>The theater is always open. The pattern awaits.</p>
         <div class="final-ctas">
-          <a href="/theater" class="cta-btn final-secondary">
-            <span class="kasra-only">&#9673; COSMIC_CHANNEL</span>
-            <span class="river-only">&#9788; Watch the Theater</span>
-            <span class="sol-only">&#127912; See the art</span>
-          </a>
-          <a href="/sol/checkin" class="cta-btn final-primary">
-            <span class="kasra-only">&#9881; START_CALIBRATION</span>
-            <span class="river-only">&#10022; Get Your Reading</span>
-            <span class="sol-only">&#128640; Start now</span>
+          <a href="/theater" class="cta-secondary">&starf; Watch the Theater</a>
+          <a href="/sol/checkin" class="cta-primary">
+            <span>Get Your Reading</span>
+            <span class="arrow">&rarr;</span>
           </a>
         </div>
       </div>
@@ -577,1099 +326,406 @@ import { HeroSwitcher } from '../components/hero/HeroSwitcher';
   </div>
 </BaseLayout>
 
+<script>
+  // Load current theater scene
+  async function loadTheaterScene() {
+    try {
+      const response = await fetch('/api/theater/current');
+      if (response.ok) {
+        const data = await response.json();
+        const img = document.getElementById('scene-image') as HTMLImageElement;
+        const placeholder = document.getElementById('theater-placeholder');
+        const badge = document.getElementById('stage-badge');
+
+        if (data.imageUrl && img) {
+          img.src = data.imageUrl;
+          img.style.display = 'block';
+          if (placeholder) placeholder.style.display = 'none';
+        }
+
+        if (data.stage && badge) {
+          badge.textContent = data.stage.toUpperCase();
+        }
+      }
+    } catch (error) {
+      // Silently fail - placeholder will show
+    }
+  }
+
+  // Initialize
+  loadTheaterScene();
+</script>
+
 <style>
   /* ==========================================
-     BASE & MODE VISIBILITY
+     VARIABLES
      ========================================== */
   .landing-page {
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
+    --gold: #d4a854;
+    --gold-light: #e8c88a;
+    --gold-dark: #b8924a;
+    --dark: #0a0908;
+    --dark-surface: #141210;
+    --dark-border: rgba(212, 168, 84, 0.15);
+    --text: #f0e8d8;
+    --text-muted: rgba(240, 232, 216, 0.6);
+    --text-dim: rgba(240, 232, 216, 0.4);
+    --purple: #a78bfa;
+    --green: #22c55e;
+
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--dark);
+    color: var(--text);
   }
 
-  /* Mode-specific visibility */
-  .kasra-only,
-  .river-only,
-  .sol-only {
-    display: none;
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
-
-  [data-mode="kasra"] .kasra-only { display: block; }
-  [data-mode="kasra"] span.kasra-only,
-  [data-mode="kasra"] em.kasra-only { display: inline; }
-
-  [data-mode="river"] .river-only { display: block; }
-  [data-mode="river"] span.river-only,
-  [data-mode="river"] em.river-only { display: inline; }
-
-  [data-mode="sol"] .sol-only { display: block; }
-  [data-mode="sol"] span.sol-only,
-  [data-mode="sol"] em.sol-only { display: inline; }
 
   /* ==========================================
-     HERO BACKGROUNDS
+     HERO
      ========================================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
   .hero-bg {
-    position: fixed;
+    position: absolute;
     inset: 0;
     pointer-events: none;
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 0.8s ease;
   }
 
-  [data-mode="kasra"] .kasra-bg { opacity: 1; }
-  [data-mode="river"] .river-bg { opacity: 1; }
-  [data-mode="sol"] .sol-bg { opacity: 1; }
-
-  /* Kasra Background - Cyberpunk Grid */
-  .kasra-bg {
-    background: #050508;
-  }
-
-  .kasra-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
-  .kasra-scan-line {
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.4), transparent);
-    animation: scanMove 8s linear infinite;
-  }
-
-  @keyframes scanMove {
-    0% { top: -2px; }
-    100% { top: 100%; }
-  }
-
-  .kasra-glitch-overlay {
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 255, 136, 0.01) 2px,
-      rgba(0, 255, 136, 0.01) 4px
-    );
-  }
-
-  .kasra-glow-orb {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 255, 136, 0.08) 0%, transparent 70%);
-    top: -200px;
-    right: -200px;
-    filter: blur(80px);
-    animation: orbPulse 10s ease-in-out infinite;
-  }
-
-  @keyframes orbPulse {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 0.8; transform: scale(1.1); }
-  }
-
-  /* River Background - Mystical */
-  .river-bg {
-    background: linear-gradient(180deg, #1a1a2e 0%, #0d0d15 100%);
-  }
-
-  [data-stage="nigredo"] .river-bg { background: linear-gradient(180deg, #0a0a12 0%, #050508 100%); }
-  [data-stage="albedo"] .river-bg { background: linear-gradient(180deg, #1a1a24 0%, #0d0d15 100%); }
-  [data-stage="citrinitas"] .river-bg { background: linear-gradient(180deg, #1a1812 0%, #0d0c08 100%); }
-  [data-stage="rubedo"] .river-bg { background: linear-gradient(180deg, #1a1214 0%, #0d0808 100%); }
-
-  .river-nebula {
-    position: absolute;
-    inset: 0;
-  }
-
-  .river-nebula::before,
-  .river-nebula::after {
-    content: '';
+  .glow {
     position: absolute;
     border-radius: 50%;
     filter: blur(100px);
-    animation: nebulaDrift 25s ease-in-out infinite;
   }
 
-  .river-nebula::before {
+  .glow-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(212, 168, 84, 0.25) 0%, transparent 70%);
+    top: 5%;
+    left: 15%;
+    animation: float 12s ease-in-out infinite;
+  }
+
+  .glow-2 {
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
-    top: -200px;
-    left: -100px;
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.15) 0%, transparent 70%);
+    bottom: 10%;
+    right: 10%;
+    animation: float 15s ease-in-out infinite reverse;
   }
 
-  .river-nebula::after {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(236, 72, 153, 0.08) 0%, transparent 70%);
-    bottom: -100px;
-    right: -100px;
-    animation-delay: -12s;
-  }
-
-  @keyframes nebulaDrift {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(50px, -30px) scale(1.1); }
-  }
-
-  .river-vignette {
+  .stars {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.5) 100%);
-  }
-
-  /* Sol Background - Warm Blobs */
-  .sol-bg {
-    background: linear-gradient(180deg, #faf8f5 0%, #f5f0e8 100%);
-  }
-
-  .sol-blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    animation: blobFloat 20s ease-in-out infinite;
-  }
-
-  .sol-blob-1 {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, transparent 70%);
-    top: -150px;
-    right: -100px;
-  }
-
-  .sol-blob-2 {
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
-    bottom: 20%;
-    left: -80px;
-    animation-delay: -7s;
-  }
-
-  .sol-blob-3 {
-    width: 250px;
-    height: 250px;
-    background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
-    top: 40%;
-    right: 10%;
-    animation-delay: -14s;
-  }
-
-  @keyframes blobFloat {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(30px, -20px) scale(1.05); }
-  }
-
-  /* ==========================================
-     HERO SECTION
-     ========================================== */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-    padding: 6rem 1.5rem 3rem;
-  }
-
-  .hero-content {
-    max-width: 900px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  /* Mode Indicator */
-  .mode-indicator {
-    margin-bottom: 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  [data-mode="kasra"] .mode-indicator {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.75rem;
-    color: rgba(0, 255, 136, 0.6);
-    letter-spacing: 0.1em;
-  }
-
-  [data-mode="river"] .mode-indicator {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-style: italic;
-  }
-
-  [data-mode="sol"] .mode-indicator {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.85rem;
-    color: #9ca3af;
-  }
-
-  .mode-name {
-    font-weight: 600;
-  }
-
-  [data-mode="kasra"] .mode-name { color: #00ff88; }
-  [data-mode="river"] .mode-name { color: rgba(255, 255, 255, 0.8); }
-  [data-mode="sol"] .mode-name { color: #f59e0b; }
-
-  .mode-switch-hint {
-    width: 100%;
-    margin-top: 0.25rem;
-    font-size: 0.7rem;
+    background-image: radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.3), transparent),
+                      radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.2), transparent),
+                      radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.4), transparent),
+                      radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.2), transparent),
+                      radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,0.3), transparent);
+    background-size: 200px 200px;
     opacity: 0.5;
   }
 
-  /* Hero Titles */
-  .hero-titles {
-    margin-bottom: 1.5rem;
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -30px); }
   }
 
-  /* Kasra Title */
-  .kasra-terminal-header {
-    display: flex;
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 650px;
+    text-align: center;
+  }
+
+  .trust-badge {
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 1rem;
-    padding: 0.5rem 0.75rem;
-    background: rgba(0, 255, 136, 0.05);
-    border: 1px solid rgba(0, 255, 136, 0.2);
-    width: fit-content;
+    padding: 0.5rem 1rem;
+    background: rgba(212, 168, 84, 0.1);
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-family: 'Inter', sans-serif;
   }
 
-  .terminal-dot {
-    width: 10px;
-    height: 10px;
+  .pulse {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
     border-radius: 50%;
+    animation: pulse 2s infinite;
   }
 
-  .terminal-dot.red { background: #ff5f56; }
-  .terminal-dot.yellow { background: #ffbd2e; }
-  .terminal-dot.green { background: #27ca40; }
-  .terminal-dot.blink { animation: dotBlink 2s ease-in-out infinite; }
-
-  @keyframes dotBlink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
   }
 
-  .terminal-title {
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.4);
-    letter-spacing: 0.05em;
-  }
-
-  .kasra-h1 {
-    font-family: 'Geist Mono', monospace;
-    font-size: clamp(2rem, 6vw, 4rem);
-    font-weight: 600;
-    color: #00ff88;
-    letter-spacing: -0.02em;
-    text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-    margin-bottom: 0.5rem;
-  }
-
-  .kasra-prefix {
-    color: rgba(0, 255, 136, 0.5);
-    margin-right: 0.5rem;
-  }
-
-  .kasra-cursor {
-    animation: cursorBlink 1s step-end infinite;
-  }
-
-  @keyframes cursorBlink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-
-  .kasra-h2 {
-    font-family: 'Geist Mono', monospace;
-    font-size: clamp(1rem, 3vw, 1.75rem);
-    font-weight: 400;
-    color: rgba(0, 255, 136, 0.7);
-    letter-spacing: 0.05em;
-  }
-
-  /* River Title */
-  .river-mandala-small {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1.5rem;
-  }
-
-  .river-mandala-small svg {
-    width: 100%;
-    height: 100%;
-    animation: mandalaSpin 60s linear infinite;
-  }
-
-  @keyframes mandalaSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .mandala-ring {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.15);
-    stroke-width: 1;
-  }
-
-  .mandala-ring.r1 { animation: ringBreathe 4s ease-in-out infinite; }
-  .mandala-ring.r2 { animation: ringBreathe 4s ease-in-out infinite 1s; }
-
-  @keyframes ringBreathe {
-    0%, 100% { stroke: rgba(255, 255, 255, 0.15); }
-    50% { stroke: rgba(139, 92, 246, 0.4); }
-  }
-
-  .mandala-center {
-    fill: rgba(139, 92, 246, 0.5);
-    animation: centerPulse 3s ease-in-out infinite;
-  }
-
-  @keyframes centerPulse {
-    0%, 100% { fill-opacity: 0.5; }
-    50% { fill-opacity: 0.9; }
-  }
-
-  .river-h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.5rem, 7vw, 5rem);
-    font-weight: 400;
+  .hero h1 {
+    font-weight: 300;
     line-height: 1.1;
-    margin-bottom: 1rem;
+    margin: 0 0 1.5rem;
   }
 
-  .river-line-1 {
+  .line-1 {
     display: block;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    color: var(--text);
   }
 
-  .river-line-2 {
+  .line-2 {
     display: block;
-    color: var(--river-accent, #d4a854);
-    font-style: italic;
+    font-size: clamp(2rem, 5.5vw, 3.2rem);
+    color: var(--gold);
   }
 
-  .river-subtitle {
-    font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-style: italic;
-  }
-
-  /* Sol Title */
-  .sol-wave-emoji {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    animation: waveHand 2.5s ease-in-out infinite;
-    transform-origin: 70% 70%;
-    display: inline-block;
-  }
-
-  @keyframes waveHand {
-    0%, 60%, 100% { transform: rotate(0deg); }
-    10% { transform: rotate(14deg); }
-    20% { transform: rotate(-8deg); }
-    30% { transform: rotate(14deg); }
-    40% { transform: rotate(-4deg); }
-    50% { transform: rotate(10deg); }
-  }
-
-  .sol-h1 {
-    font-family: 'Inter', sans-serif;
-  }
-
-  .sol-greeting {
-    display: block;
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 0.5rem;
-  }
-
-  .sol-tagline {
-    display: block;
-    font-size: clamp(1.75rem, 5vw, 3rem);
-    font-weight: 600;
-    color: #f59e0b;
-    line-height: 1.2;
-  }
-
-  /* Hero Description */
-  .hero-description {
-    margin-bottom: 2rem;
-  }
-
-  .hero-description p {
-    font-size: 1.125rem;
+  .subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
     line-height: 1.7;
-    max-width: 600px;
+    margin-bottom: 2.5rem;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  [data-mode="kasra"] .hero-description p {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.8;
-  }
-
-  .kasra-accent { color: #00ff88; }
-
-  [data-mode="river"] .hero-description p {
-    font-family: 'Cormorant Garamond', serif;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 1.25rem;
-  }
-
-  [data-mode="river"] .hero-description em {
-    color: var(--river-accent, #d4a854);
-  }
-
-  [data-mode="sol"] .hero-description p {
-    font-family: 'Inter', sans-serif;
-    color: #6b7280;
-  }
-
-  /* Hero CTAs */
-  .hero-ctas {
-    margin-bottom: 2rem;
-  }
-
-  .cta-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .cta-btn {
+  .cta-primary {
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 1rem 1.5rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: var(--dark);
+    font-size: 1.1rem;
+    font-weight: 600;
     text-decoration: none;
-    font-weight: 500;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(212, 168, 84, 0.3);
     transition: all 0.3s ease;
-    border-radius: 2px;
-  }
-
-  /* Kasra CTAs */
-  .kasra-primary {
-    background: #00ff88;
-    color: #050508;
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-  }
-
-  .kasra-primary:hover {
-    box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
-    transform: translateY(-2px);
-  }
-
-  .kasra-secondary {
-    background: transparent;
-    color: #00ff88;
-    border: 1px solid rgba(0, 255, 136, 0.4);
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-  }
-
-  .kasra-secondary:hover {
-    background: rgba(0, 255, 136, 0.1);
-    border-color: #00ff88;
-  }
-
-  /* River CTAs */
-  .river-primary {
-    background: rgba(139, 92, 246, 0.15);
-    color: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(139, 92, 246, 0.4);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-  }
-
-  .river-primary:hover {
-    background: rgba(139, 92, 246, 0.25);
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
-  }
-
-  .river-secondary {
-    background: transparent;
-    color: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-  }
-
-  .river-secondary:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.4);
-  }
-
-  .btn-symbol {
-    font-size: 1.25rem;
-    animation: symbolSpin 8s linear infinite;
-  }
-
-  @keyframes symbolSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  /* Sol CTAs */
-  .sol-primary {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
     font-family: 'Inter', sans-serif;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
   }
 
-  .sol-primary:hover {
+  .cta-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+    box-shadow: 0 8px 32px rgba(212, 168, 84, 0.4);
   }
 
-  .sol-secondary {
-    background: white;
-    color: #374151;
-    font-family: 'Inter', sans-serif;
-    border-radius: 16px;
-    border: 1px solid #e5e7eb;
-  }
-
-  .sol-secondary:hover {
-    border-color: #d1d5db;
-    background: #fafafa;
-  }
-
-  .btn-emoji {
-    font-size: 1.25rem;
-  }
-
-  .btn-badge {
-    font-size: 0.75rem;
+  .cta-primary .badge {
     padding: 0.2rem 0.5rem;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
+    background: rgba(10, 9, 8, 0.2);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
   }
 
-  .btn-arrow {
+  .cta-primary .arrow {
+    font-size: 1.2rem;
     transition: transform 0.3s;
   }
 
-  .cta-btn:hover .btn-arrow {
+  .cta-primary:hover .arrow {
     transform: translateX(4px);
   }
 
-  /* Hero Stats */
-  .hero-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .stat-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  [data-mode="kasra"] .stat-item {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.25rem;
-  }
-
-  [data-mode="kasra"] .stat-label {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.4);
-    letter-spacing: 0.1em;
-  }
-
-  [data-mode="kasra"] .stat-value {
-    font-family: 'Geist Mono', monospace;
-    font-size: 1.25rem;
-    color: #00ff88;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .status-nominal {
-    animation: statusPulse 2s ease-in-out infinite;
-  }
-
-  @keyframes statusPulse {
-    0%, 100% { color: #00ff88; }
-    50% { color: #00cc6a; }
-  }
-
-  [data-mode="river"] .stat-symbol {
-    font-size: 1rem;
-    color: var(--river-accent, #d4a854);
-  }
-
-  [data-mode="river"] .stat-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  [data-mode="sol"] .stat-emoji {
-    font-size: 1.25rem;
-  }
-
-  [data-mode="sol"] .stat-text {
+  .micro-copy {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
     font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    color: #6b7280;
   }
 
-  /* Scroll Hint */
   .scroll-hint {
     position: absolute;
     bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    animation: floatUpDown 3s ease-in-out infinite;
-  }
-
-  @keyframes floatUpDown {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-10px); }
-  }
-
-  .scroll-text {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.8rem;
-  }
-
-  [data-mode="kasra"] .scroll-text {
-    font-family: 'Geist Mono', monospace;
-    color: rgba(0, 255, 136, 0.5);
-    letter-spacing: 0.1em;
-  }
-
-  [data-mode="river"] .scroll-text {
-    font-family: 'Cormorant Garamond', serif;
-    color: rgba(255, 255, 255, 0.4);
-    font-style: italic;
-  }
-
-  [data-mode="sol"] .scroll-text {
-    font-family: 'Inter', sans-serif;
-    color: #9ca3af;
-  }
-
-  .scroll-arrow {
-    animation: bounce 2s infinite;
-  }
-
-  [data-mode="kasra"] .scroll-arrow { color: #00ff88; }
-  [data-mode="river"] .scroll-arrow { color: rgba(255, 255, 255, 0.4); }
-  [data-mode="sol"] .scroll-arrow { color: #f59e0b; }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(5px); }
-  }
-
-  /* ==========================================
-     SECTION STYLES
-     ========================================== */
-  section {
-    position: relative;
-    z-index: 1;
-    padding: 5rem 1.5rem;
-  }
-
-  .section-container {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    margin-bottom: 2rem;
-  }
-
-  .section-title {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.5rem;
-  }
-
-  [data-mode="kasra"] .section-title {
-    font-family: 'Geist Mono', monospace;
-    font-size: 1.25rem;
-    color: #00ff88;
-    letter-spacing: 0.05em;
-  }
-
-  [data-mode="river"] .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.75rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 400;
-  }
-
-  [data-mode="sol"] .section-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.5rem;
-    color: #1f2937;
-    font-weight: 600;
-  }
-
-  .title-icon {
-    font-size: 1.25rem;
-  }
-
-  [data-mode="kasra"] .title-icon { color: #00ff88; }
-  [data-mode="river"] .title-icon { color: var(--river-accent, #d4a854); }
-  [data-mode="sol"] .title-icon { color: #f59e0b; }
-
-  .section-description {
-    max-width: 600px;
-  }
-
-  [data-mode="kasra"] .section-description {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.5);
-    line-height: 1.7;
-  }
-
-  [data-mode="river"] .section-description {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.125rem;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.8;
-  }
-
-  [data-mode="sol"] .section-description {
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    color: #6b7280;
-    line-height: 1.6;
-  }
-
-  .section-subtitle {
-    margin-bottom: 2rem;
-  }
-
-  /* ==========================================
-     THEATER PREVIEW
-     ========================================== */
-  .theater-preview-section {
-    padding-top: 3rem;
-  }
-
-  [data-mode="kasra"] .theater-preview-section {
-    background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 136, 0.02) 100%);
-  }
-
-  [data-mode="river"] .theater-preview-section {
-    background: linear-gradient(180deg, transparent 0%, rgba(139, 92, 246, 0.03) 100%);
-  }
-
-  [data-mode="sol"] .theater-preview-section {
-    background: linear-gradient(180deg, transparent 0%, rgba(251, 191, 36, 0.05) 100%);
-  }
-
-  .theater-frame-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .scroll-hint:hover {
+    color: var(--gold);
+  }
+
+  .scroll-hint .arrow {
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(8px); }
+    60% { transform: translateY(4px); }
+  }
+
+  /* ==========================================
+     SECTIONS COMMON
+     ========================================== */
+  section {
+    padding: 5rem 0;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-icon {
+    display: block;
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 400;
+    color: var(--text);
+    margin: 0 0 1rem;
+  }
+
+  .section-desc {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 550px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ==========================================
+     THEATER SECTION
+     ========================================== */
+  .theater-section {
+    background: linear-gradient(180deg, var(--dark) 0%, var(--dark-surface) 100%);
+  }
+
+  .theater-preview {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .theater-frame {
     position: relative;
+    aspect-ratio: 16/9;
+    background: var(--dark);
+    border: 1px solid var(--dark-border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .frame-glow {
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(circle at center, rgba(212, 168, 84, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .theater-content {
+    position: relative;
     width: 100%;
-    max-width: 600px;
-    aspect-ratio: 16/10;
-    overflow: hidden;
+    height: 100%;
   }
 
-  [data-mode="kasra"] .theater-frame {
-    background: #0a0a0a;
-    border: 1px solid rgba(0, 255, 136, 0.3);
-    box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
-  }
-
-  [data-mode="river"] .theater-frame {
-    background: rgba(13, 13, 21, 0.8);
-    border: 1px solid rgba(139, 92, 246, 0.2);
-    box-shadow: 0 0 60px rgba(139, 92, 246, 0.1);
-  }
-
-  [data-mode="sol"] .theater-frame {
-    background: white;
-    border-radius: 16px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  }
-
-  .frame-corner {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-style: solid;
-    border-width: 0;
-    z-index: 5;
-  }
-
-  [data-mode="kasra"] .frame-corner { border-color: #00ff88; }
-  [data-mode="river"] .frame-corner { border-color: var(--river-accent, #d4a854); }
-  [data-mode="sol"] .frame-corner { display: none; }
-
-  .frame-corner.tl { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
-  .frame-corner.tr { top: -1px; right: -1px; border-top-width: 2px; border-right-width: 2px; }
-  .frame-corner.bl { bottom: -1px; left: -1px; border-bottom-width: 2px; border-left-width: 2px; }
-  .frame-corner.br { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
-
-  .theater-screen {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .curtain {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 50%;
-    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 3;
-  }
-
-  [data-mode="kasra"] .curtain { display: none; }
-
-  [data-mode="river"] .curtain {
-    background: linear-gradient(90deg, #2a1515 0%, #3d1f1f 50%, #2a1515 100%);
-  }
-
-  [data-mode="sol"] .curtain { display: none; }
-
-  .curtain.left { left: 0; transform-origin: left; }
-  .curtain.right { right: 0; transform-origin: right; }
-
-  .theater-screen.open .curtain.left { transform: scaleX(0); }
-  .theater-screen.open .curtain.right { transform: scaleX(0); }
-
-  .scene-image {
+  .theater-content img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .loading-indicator {
+  .theater-placeholder {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
-
-  .loader-ring {
-    width: 50px;
-    height: 50px;
-    border: 2px solid rgba(0, 255, 136, 0.2);
-    border-top-color: #00ff88;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-
-  .loader-mandala {
-    width: 60px;
-    height: 60px;
-    animation: spin 10s linear infinite;
-  }
-
-  .loader-mandala svg {
-    width: 100%;
     height: 100%;
+    color: var(--text-muted);
+    font-size: 0.9rem;
   }
 
-  .loader-mandala circle {
-    fill: none;
-    stroke: var(--river-accent, #d4a854);
-    stroke-width: 1;
-  }
-
-  .loader-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #e5e7eb;
-    border-top-color: #f59e0b;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
+  .placeholder-icon {
+    font-size: 2.5rem;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    animation: pulse 3s infinite;
   }
 
   .theater-info {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 1rem;
+    left: 1rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1rem;
-    z-index: 10;
-  }
-
-  [data-mode="kasra"] .theater-info {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-  }
-
-  [data-mode="river"] .theater-info {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  }
-
-  [data-mode="sol"] .theater-info {
-    background: linear-gradient(to top, rgba(255, 255, 255, 0.95), transparent);
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
   }
 
   .stage-badge {
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    padding: 0.25rem 0.5rem;
-  }
-
-  [data-mode="kasra"] .stage-badge {
-    font-family: 'Geist Mono', monospace;
-    color: #00ff88;
-    background: rgba(0, 255, 136, 0.1);
-    border: 1px solid rgba(0, 255, 136, 0.3);
-  }
-
-  [data-mode="river"] .stage-badge {
-    font-family: 'Cormorant Garamond', serif;
-    color: var(--river-accent, #d4a854);
-    background: rgba(212, 168, 84, 0.1);
+    padding: 0.3rem 0.6rem;
+    background: rgba(212, 168, 84, 0.2);
     border: 1px solid rgba(212, 168, 84, 0.3);
+    border-radius: 4px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 0.05em;
   }
 
-  [data-mode="sol"] .stage-badge {
-    font-family: 'Inter', sans-serif;
-    color: #f59e0b;
-    background: rgba(245, 158, 11, 0.1);
-    border-radius: 8px;
-  }
-
-  .live-indicator {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-  }
-
-  [data-mode="kasra"] .live-indicator { color: #ff4444; }
-  [data-mode="river"] .live-indicator { color: #c45050; }
-  [data-mode="sol"] .live-indicator { color: #10b981; }
-
-  .pulse-dot {
-    width: 6px;
-    height: 6px;
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
     border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
+    animation: pulse 2s infinite;
   }
 
-  [data-mode="kasra"] .pulse-dot { background: #ff4444; }
-  [data-mode="river"] .pulse-dot { background: #c45050; }
-  [data-mode="sol"] .pulse-dot { background: #10b981; }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
+  .live-text {
+    color: var(--text-muted);
   }
 
   .theater-cta {
     display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
     padding: 0.75rem 1.5rem;
+    border: 1px solid var(--dark-border);
+    border-radius: 8px;
+    color: var(--gold);
     text-decoration: none;
+    font-size: 1rem;
     transition: all 0.3s;
   }
 
-  [data-mode="kasra"] .theater-cta {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.85rem;
-    color: #00ff88;
-    border: 1px solid rgba(0, 255, 136, 0.4);
-  }
-
-  [data-mode="kasra"] .theater-cta:hover {
-    background: rgba(0, 255, 136, 0.1);
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-  }
-
-  [data-mode="river"] .theater-cta {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  [data-mode="river"] .theater-cta:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.4);
-  }
-
-  [data-mode="sol"] .theater-cta {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    color: #f59e0b;
-    background: rgba(245, 158, 11, 0.1);
-    border-radius: 12px;
-  }
-
-  [data-mode="sol"] .theater-cta:hover {
-    background: rgba(245, 158, 11, 0.15);
+  .theater-cta:hover {
+    background: rgba(212, 168, 84, 0.1);
+    border-color: var(--gold);
   }
 
   /* ==========================================
      FEATURES SECTION
      ========================================== */
   .features-section {
-    padding-top: 3rem;
-  }
-
-  [data-mode="kasra"] .features-section {
-    background: rgba(0, 255, 136, 0.01);
-  }
-
-  [data-mode="sol"] .features-section {
-    background: white;
+    background: var(--dark-surface);
   }
 
   .features-grid {
@@ -1680,281 +736,128 @@ import { HeroSwitcher } from '../components/hero/HeroSwitcher';
   }
 
   .feature-card {
-    padding: 1.5rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--dark-border);
+    border-radius: 16px;
     transition: all 0.3s;
   }
 
-  [data-mode="kasra"] .feature-card {
-    background: rgba(0, 255, 136, 0.02);
-    border: 1px solid rgba(0, 255, 136, 0.15);
-  }
-
-  [data-mode="kasra"] .feature-card:hover {
-    border-color: rgba(0, 255, 136, 0.3);
-    box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
-  }
-
-  [data-mode="river"] .feature-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 0.5rem;
-  }
-
-  [data-mode="river"] .feature-card:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(139, 92, 246, 0.3);
-  }
-
-  [data-mode="sol"] .feature-card {
-    background: #faf8f5;
-    border-radius: 16px;
-  }
-
-  [data-mode="sol"] .feature-card:hover {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  .feature-card:hover {
+    background: rgba(212, 168, 84, 0.05);
+    border-color: rgba(212, 168, 84, 0.3);
+    transform: translateY(-4px);
   }
 
   .feature-icon {
     font-size: 2rem;
+    color: var(--gold);
     margin-bottom: 1rem;
   }
 
-  [data-mode="kasra"] .feature-icon { color: #00ff88; }
-  [data-mode="river"] .feature-icon { color: var(--river-accent, #d4a854); }
-  [data-mode="sol"] .feature-icon { color: #f59e0b; }
-
-  .feature-title {
-    margin-bottom: 0.75rem;
-  }
-
-  [data-mode="kasra"] .feature-title {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.9rem;
-    color: #00ff88;
-    letter-spacing: 0.05em;
-  }
-
-  [data-mode="river"] .feature-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.9);
+  .feature-card h3 {
+    font-size: 1.3rem;
     font-weight: 400;
+    color: var(--text);
+    margin: 0 0 0.75rem;
   }
 
-  [data-mode="sol"] .feature-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
-    color: #1f2937;
-    font-weight: 600;
-  }
-
-  .feature-desc {
-    line-height: 1.6;
-  }
-
-  [data-mode="kasra"] .feature-desc {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  [data-mode="river"] .feature-desc {
-    font-family: 'Cormorant Garamond', serif;
+  .feature-card p {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  [data-mode="sol"] .feature-desc {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    color: #6b7280;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
   }
 
   .features-cta {
     text-align: center;
   }
 
-  .primary-action {
-    margin-bottom: 0.75rem;
-  }
-
-  [data-mode="kasra"] .primary-action {
-    background: #00ff88;
-    color: #050508;
-    font-family: 'Geist Mono', monospace;
-  }
-
-  [data-mode="river"] .primary-action {
-    background: rgba(139, 92, 246, 0.2);
-    color: white;
-    border: 1px solid rgba(139, 92, 246, 0.4);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-  }
-
-  [data-mode="sol"] .primary-action {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
+  .cta-secondary {
+    display: inline-flex;
+    padding: 0.875rem 1.75rem;
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 500;
+    transition: all 0.3s;
     font-family: 'Inter', sans-serif;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  }
+
+  .cta-secondary:hover {
+    background: var(--gold);
+    color: var(--dark);
   }
 
   .cta-note {
     display: block;
+    margin-top: 0.75rem;
     font-size: 0.85rem;
+    color: var(--text-dim);
+    font-family: 'Inter', sans-serif;
   }
-
-  [data-mode="kasra"] .cta-note { font-family: 'Geist Mono', monospace; color: rgba(255, 255, 255, 0.4); }
-  [data-mode="river"] .cta-note { font-family: 'Cormorant Garamond', serif; color: rgba(255, 255, 255, 0.5); }
-  [data-mode="sol"] .cta-note { font-family: 'Inter', sans-serif; color: #9ca3af; }
 
   /* ==========================================
-     HOW IT WORKS SECTION
+     HOW IT WORKS
      ========================================== */
-  .how-it-works-section {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-
-  [data-mode="kasra"] .how-it-works-section {
-    background: linear-gradient(180deg, rgba(0, 255, 136, 0.03) 0%, transparent 50%);
-  }
-
-  [data-mode="river"] .how-it-works-section {
-    background: linear-gradient(180deg, rgba(139, 92, 246, 0.02) 0%, transparent 50%);
-  }
-
-  [data-mode="sol"] .how-it-works-section {
-    background: #fdfcfa;
+  .how-section {
+    background: var(--dark);
   }
 
   .steps-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
-    margin-top: 2rem;
-    margin-bottom: 2.5rem;
-  }
-
-  @media (max-width: 768px) {
-    .steps-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
+    margin-bottom: 3rem;
   }
 
   .step-card {
     position: relative;
-    padding: 2rem 1.5rem;
-    text-align: center;
-  }
-
-  [data-mode="kasra"] .step-card {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(0, 255, 136, 0.15);
-  }
-
-  [data-mode="river"] .step-card {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(139, 92, 246, 0.2);
-    border-radius: 12px;
-  }
-
-  [data-mode="sol"] .step-card {
-    background: white;
-    border: 1px solid #e5e7eb;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--dark-border);
     border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    text-align: center;
   }
 
   .step-number {
     position: absolute;
-    top: -16px;
+    top: -0.75rem;
     left: 50%;
     transform: translateX(-50%);
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
+    background: var(--gold);
+    color: var(--dark);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
     font-weight: 600;
-  }
-
-  [data-mode="kasra"] .step-number {
-    background: #00ff88;
-    color: black;
-    font-family: 'Geist Mono', monospace;
-  }
-
-  [data-mode="river"] .step-number {
-    background: linear-gradient(135deg, #8b5cf6, #6366f1);
-    color: white;
-    border-radius: 50%;
-    font-family: 'Cormorant Garamond', serif;
-  }
-
-  [data-mode="sol"] .step-number {
-    background: #fbbf24;
-    color: #1f2937;
-    border-radius: 50%;
     font-family: 'Inter', sans-serif;
   }
 
   .step-icon {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    color: var(--purple);
     margin: 1rem 0;
   }
 
-  [data-mode="kasra"] .step-icon { color: #00ff88; }
-  [data-mode="river"] .step-icon { color: #a78bfa; }
-  [data-mode="sol"] .step-icon { color: #f59e0b; }
-
-  .step-title {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
+  .step-card h3 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text);
+    margin: 0 0 0.75rem;
   }
 
-  [data-mode="kasra"] .step-title {
-    font-family: 'Geist Mono', monospace;
-    color: #00ff88;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-  }
-
-  [data-mode="river"] .step-title {
-    font-family: 'Cormorant Garamond', serif;
-    color: #e9d5ff;
-    font-weight: 500;
-  }
-
-  [data-mode="sol"] .step-title {
-    font-family: 'Inter', sans-serif;
-    color: #1f2937;
-    font-weight: 600;
-  }
-
-  .step-desc {
-    font-size: 0.9rem;
+  .step-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
     line-height: 1.6;
-  }
-
-  [data-mode="kasra"] .step-desc {
-    font-family: 'Geist Mono', monospace;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.8rem;
-  }
-
-  [data-mode="river"] .step-desc {
-    font-family: 'Cormorant Garamond', serif;
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  [data-mode="sol"] .step-desc {
-    font-family: 'Inter', sans-serif;
-    color: #6b7280;
+    margin: 0;
   }
 
   .how-cta {
@@ -1962,183 +865,96 @@ import { HeroSwitcher } from '../components/hero/HeroSwitcher';
   }
 
   /* ==========================================
-     PRICING SECTION
+     PRICING
      ========================================== */
   .pricing-section {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-
-  [data-mode="kasra"] .pricing-section {
-    background: linear-gradient(180deg, rgba(0, 255, 136, 0.02) 0%, transparent 100%);
-  }
-
-  [data-mode="river"] .pricing-section {
-    background: linear-gradient(180deg, rgba(139, 92, 246, 0.03) 0%, transparent 100%);
-  }
-
-  [data-mode="sol"] .pricing-section {
-    background: #faf8f5;
+    background: linear-gradient(180deg, var(--dark) 0%, var(--dark-surface) 100%);
   }
 
   .pricing-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
-    margin-top: 2rem;
+    max-width: 950px;
+    margin: 0 auto;
   }
 
   .pricing-card {
-    position: relative;
     padding: 2rem;
-    display: flex;
-    flex-direction: column;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--dark-border);
+    border-radius: 16px;
+    text-align: center;
     transition: all 0.3s;
   }
 
-  [data-mode="kasra"] .pricing-card {
-    background: rgba(0, 255, 136, 0.02);
-    border: 1px solid rgba(0, 255, 136, 0.15);
+  .pricing-card:hover {
+    transform: translateY(-4px);
   }
 
-  [data-mode="kasra"] .pricing-card:hover {
-    border-color: rgba(0, 255, 136, 0.3);
-  }
-
-  [data-mode="kasra"] .pricing-card.featured {
-    border-color: #00ff88;
-    background: rgba(0, 255, 136, 0.05);
-  }
-
-  [data-mode="river"] .pricing-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  [data-mode="river"] .pricing-card:hover {
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  [data-mode="river"] .pricing-card.featured {
-    border-color: var(--river-accent, #d4a854);
-    background: linear-gradient(180deg, rgba(212, 168, 84, 0.05) 0%, transparent 100%);
-  }
-
-  [data-mode="sol"] .pricing-card {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  }
-
-  [data-mode="sol"] .pricing-card.featured {
-    border: 2px solid #f59e0b;
+  .pricing-card.featured {
+    background: rgba(212, 168, 84, 0.08);
+    border-color: rgba(212, 168, 84, 0.3);
     transform: scale(1.02);
   }
 
+  .pricing-card.featured:hover {
+    transform: scale(1.02) translateY(-4px);
+  }
+
+  .card-header {
+    margin-bottom: 1.5rem;
+  }
+
   .card-badge {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    padding: 0.35rem 0.75rem;
-    white-space: nowrap;
-  }
-
-  [data-mode="kasra"] .card-badge {
-    font-family: 'Geist Mono', monospace;
-    background: #050508;
-    color: rgba(0, 255, 136, 0.7);
-    border: 1px solid rgba(0, 255, 136, 0.3);
-  }
-
-  [data-mode="kasra"] .featured-badge {
-    background: #00ff88;
-    color: #050508;
-    border-color: #00ff88;
-  }
-
-  [data-mode="river"] .card-badge {
-    font-family: 'Cormorant Garamond', serif;
-    background: var(--river-bg, #1a1812);
-    color: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  [data-mode="river"] .featured-badge {
-    background: var(--river-accent, #d4a854);
-    color: #0a0908;
-  }
-
-  [data-mode="sol"] .card-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 100px;
+    margin-bottom: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
     font-family: 'Inter', sans-serif;
-    background: #f3f4f6;
-    color: #6b7280;
-    border-radius: 12px;
   }
 
-  [data-mode="sol"] .featured-badge {
-    background: #f59e0b;
-    color: white;
+  .card-badge.featured {
+    background: rgba(212, 168, 84, 0.2);
+    color: var(--gold);
   }
 
-  .card-title {
-    margin-top: 1rem;
-    text-align: center;
-  }
-
-  [data-mode="kasra"] .card-title {
-    font-family: 'Geist Mono', monospace;
-    font-size: 1.25rem;
-    color: #00ff88;
-  }
-
-  [data-mode="river"] .card-title {
-    font-family: 'Cormorant Garamond', serif;
+  .pricing-card h3 {
     font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  [data-mode="sol"] .card-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.25rem;
-    color: #1f2937;
-    font-weight: 600;
+    font-weight: 400;
+    color: var(--text);
+    margin: 0 0 0.5rem;
   }
 
   .card-price {
-    text-align: center;
-    margin: 1rem 0;
-    padding-bottom: 1rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem;
   }
-
-  [data-mode="kasra"] .card-price { border-bottom: 1px solid rgba(0, 255, 136, 0.15); }
-  [data-mode="river"] .card-price { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-  [data-mode="sol"] .card-price { border-bottom: 1px solid #e5e7eb; }
 
   .price {
     font-size: 2.5rem;
     font-weight: 300;
+    color: var(--gold);
   }
-
-  [data-mode="kasra"] .price { font-family: 'Geist Mono', monospace; color: #00ff88; }
-  [data-mode="river"] .price { font-family: 'Cormorant Garamond', serif; color: var(--river-accent, #d4a854); }
-  [data-mode="sol"] .price { font-family: 'Inter', sans-serif; color: #f59e0b; font-weight: 700; }
 
   .period {
-    font-size: 0.85rem;
+    font-size: 1rem;
+    color: var(--text-muted);
   }
-
-  [data-mode="kasra"] .period { font-family: 'Geist Mono', monospace; color: rgba(255, 255, 255, 0.4); }
-  [data-mode="river"] .period { font-family: 'Cormorant Garamond', serif; color: rgba(255, 255, 255, 0.5); }
-  [data-mode="sol"] .period { font-family: 'Inter', sans-serif; color: #9ca3af; }
 
   .card-features {
     list-style: none;
     padding: 0;
-    margin: 0 0 1.5rem;
-    flex: 1;
+    margin: 1.5rem 0;
+    text-align: left;
   }
 
   .card-features li {
@@ -2146,314 +962,153 @@ import { HeroSwitcher } from '../components/hero/HeroSwitcher';
     align-items: flex-start;
     gap: 0.75rem;
     padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  [data-mode="kasra"] .card-features li {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  [data-mode="river"] .card-features li {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  [data-mode="sol"] .card-features li {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    color: #6b7280;
+  .card-features li:last-child {
+    border-bottom: none;
   }
 
   .check {
+    color: var(--gold);
+    font-weight: bold;
     flex-shrink: 0;
   }
 
-  [data-mode="kasra"] .check { color: #00ff88; }
-  [data-mode="river"] .check { color: var(--river-accent, #d4a854); }
-  [data-mode="sol"] .check { color: #10b981; }
-
   .card-btn {
     display: block;
-    text-align: center;
-    padding: 0.875rem 1rem;
+    width: 100%;
+    padding: 0.875rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
     text-decoration: none;
+    text-align: center;
     transition: all 0.3s;
-  }
-
-  [data-mode="kasra"] .card-btn.primary {
-    background: #00ff88;
-    color: #050508;
-    font-family: 'Geist Mono', monospace;
-  }
-
-  [data-mode="kasra"] .card-btn.secondary {
-    border: 1px solid rgba(0, 255, 136, 0.4);
-    color: #00ff88;
-    font-family: 'Geist Mono', monospace;
-  }
-
-  [data-mode="river"] .card-btn.primary {
-    background: var(--river-accent, #d4a854);
-    color: #0a0908;
-    font-family: 'Cormorant Garamond', serif;
-  }
-
-  [data-mode="river"] .card-btn.secondary {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.8);
-    font-family: 'Cormorant Garamond', serif;
-  }
-
-  [data-mode="sol"] .card-btn.primary {
-    background: #f59e0b;
-    color: white;
     font-family: 'Inter', sans-serif;
-    border-radius: 12px;
   }
 
-  [data-mode="sol"] .card-btn.secondary {
-    border: 1px solid #e5e7eb;
-    color: #374151;
-    font-family: 'Inter', sans-serif;
-    border-radius: 12px;
+  .card-btn.primary {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  .card-btn.primary:hover {
+    background: var(--gold-light);
+  }
+
+  .card-btn.secondary {
+    border: 1px solid var(--dark-border);
+    color: var(--text);
+  }
+
+  .card-btn.secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold);
   }
 
   .card-note {
     display: block;
-    text-align: center;
-    margin-top: 0.5rem;
-    font-size: 0.75rem;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    font-family: 'Inter', sans-serif;
   }
 
-  [data-mode="kasra"] .card-note { font-family: 'Geist Mono', monospace; color: rgba(255, 255, 255, 0.4); }
-  [data-mode="river"] .card-note { font-family: 'Cormorant Garamond', serif; color: rgba(255, 255, 255, 0.5); }
-  [data-mode="sol"] .card-note { font-family: 'Inter', sans-serif; color: #9ca3af; }
-
   /* ==========================================
-     PHILOSOPHY SECTION
+     PHILOSOPHY
      ========================================== */
   .philosophy-section {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    background: var(--dark-surface);
+    padding: 4rem 0;
+  }
+
+  .philosophy-content {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .philosophy-content blockquote {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-style: italic;
+    color: var(--text);
+    max-width: 700px;
+    margin: 0 auto 1rem;
+    line-height: 1.6;
+  }
+
+  .philosophy-content cite {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-style: normal;
   }
 
   .philosophy-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
   }
 
   .phil-card {
     padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--dark-border);
+    border-radius: 12px;
     text-align: center;
   }
 
   .phil-icon {
-    font-size: 2rem;
+    font-size: 1.5rem;
+    color: var(--gold);
     display: block;
-    margin-bottom: 1rem;
-  }
-
-  [data-mode="kasra"] .phil-icon { color: #00ff88; }
-  [data-mode="river"] .phil-icon { color: var(--river-accent, #d4a854); }
-  [data-mode="sol"] .phil-icon { color: #f59e0b; }
-
-  .phil-card h4 {
     margin-bottom: 0.75rem;
   }
 
-  [data-mode="kasra"] .phil-card h4 {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.9rem;
-    color: #00ff88;
-    letter-spacing: 0.05em;
-  }
-
-  [data-mode="river"] .phil-card h4 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  [data-mode="sol"] .phil-card h4 {
-    font-family: 'Inter', sans-serif;
+  .phil-card h4 {
     font-size: 1.1rem;
-    color: #1f2937;
-    font-weight: 600;
+    font-weight: 400;
+    color: var(--text);
+    margin: 0 0 0.5rem;
   }
 
   .phil-card p {
-    line-height: 1.6;
-  }
-
-  [data-mode="kasra"] .phil-card p {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  [data-mode="river"] .phil-card p {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  [data-mode="sol"] .phil-card p {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    color: #6b7280;
-  }
-
-  .philosophy-quote {
-    text-align: center;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  [data-mode="kasra"] .philosophy-quote code {
-    font-family: 'Geist Mono', monospace;
-    font-size: 1rem;
-    color: rgba(0, 255, 136, 0.7);
-  }
-
-  [data-mode="river"] .philosophy-quote blockquote {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-style: italic;
-    color: var(--river-accent, #d4a854);
-    opacity: 0.8;
-  }
-
-  [data-mode="sol"] .philosophy-quote p {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.25rem;
-    color: #f59e0b;
-    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
   }
 
   /* ==========================================
      FINAL CTA
      ========================================== */
   .final-cta-section {
-    padding: 5rem 1.5rem;
+    background: linear-gradient(180deg, var(--dark-surface) 0%, var(--dark) 100%);
     text-align: center;
+    padding: 5rem 1.5rem;
   }
 
-  [data-mode="kasra"] .final-cta-section {
-    background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 136, 0.03) 100%);
+  .final-cta-section h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 400;
+    color: var(--text);
+    margin: 0 0 0.75rem;
   }
 
-  [data-mode="river"] .final-cta-section {
-    background: linear-gradient(180deg, transparent 0%, rgba(139, 92, 246, 0.05) 100%);
-  }
-
-  [data-mode="sol"] .final-cta-section {
-    background: white;
-  }
-
-  .final-title {
-    margin-bottom: 0.75rem;
-  }
-
-  [data-mode="kasra"] .final-title {
-    font-family: 'Geist Mono', monospace;
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    color: #00ff88;
-  }
-
-  [data-mode="river"] .final-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 5vw, 3rem);
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  [data-mode="sol"] .final-title {
-    font-family: 'Inter', sans-serif;
-    font-size: clamp(1.5rem, 4vw, 2.25rem);
-    color: #1f2937;
-    font-weight: 700;
-  }
-
-  .final-subtitle {
+  .final-cta-section p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
     margin-bottom: 2rem;
-  }
-
-  [data-mode="kasra"] .final-subtitle {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  [data-mode="river"] .final-subtitle {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.15rem;
-    color: rgba(255, 255, 255, 0.6);
-    font-style: italic;
-  }
-
-  [data-mode="sol"] .final-subtitle {
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    color: #6b7280;
   }
 
   .final-ctas {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
     justify-content: center;
-  }
-
-  .final-secondary {
-    padding: 1rem 2rem;
-  }
-
-  [data-mode="kasra"] .final-secondary {
-    border: 1px solid rgba(0, 255, 136, 0.4);
-    color: #00ff88;
-    font-family: 'Geist Mono', monospace;
-  }
-
-  [data-mode="river"] .final-secondary {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.8);
-    font-family: 'Cormorant Garamond', serif;
-  }
-
-  [data-mode="sol"] .final-secondary {
-    background: white;
-    border: 1px solid #e5e7eb;
-    color: #374151;
-    font-family: 'Inter', sans-serif;
-    border-radius: 16px;
-  }
-
-  .final-primary {
-    padding: 1rem 2rem;
-  }
-
-  [data-mode="kasra"] .final-primary {
-    background: #00ff88;
-    color: #050508;
-    font-family: 'Geist Mono', monospace;
-  }
-
-  [data-mode="river"] .final-primary {
-    background: rgba(139, 92, 246, 0.2);
-    border: 1px solid rgba(139, 92, 246, 0.4);
-    color: white;
-    font-family: 'Cormorant Garamond', serif;
-  }
-
-  [data-mode="sol"] .final-primary {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
-    font-family: 'Inter', sans-serif;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    gap: 1rem;
   }
 
   /* ==========================================
@@ -2461,211 +1116,31 @@ import { HeroSwitcher } from '../components/hero/HeroSwitcher';
      ========================================== */
   @media (max-width: 768px) {
     .hero {
-      padding: 5rem 1rem 2rem;
-    }
-
-    .hero-stats {
-      justify-content: center;
+      padding: 1.5rem;
     }
 
     section {
-      padding: 3rem 1rem;
+      padding: 3.5rem 0;
+    }
+
+    .features-grid,
+    .steps-grid,
+    .pricing-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .pricing-card.featured {
+      transform: none;
+    }
+
+    .final-ctas {
+      flex-direction: column;
+    }
+
+    .final-ctas a {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
-
-<script>
-  // Initialize mode from storage or default
-  document.addEventListener('DOMContentLoaded', () => {
-    const savedMode = localStorage.getItem('rop_mode') || 'sol';
-    document.documentElement.dataset.mode = savedMode;
-
-    // Create background effects
-    createKasraDataRain();
-    createRiverStars();
-    createRiverSymbols();
-    createSolShapes();
-
-    // Set Sol greeting based on time
-    setSolGreeting();
-
-    // Fetch live stats
-    fetchLiveStats();
-
-    // Fetch current scene
-    fetchCurrentScene();
-
-    // Listen for mode changes
-    window.addEventListener('modechange', (e: CustomEvent) => {
-      // Re-render effects when mode changes
-    });
-  });
-
-  function createKasraDataRain() {
-    const container = document.getElementById('kasra-data-rain');
-    if (!container) return;
-
-    const chars = ['0', '1', 'κ', 'μ', 'Δ', '◆', '▲', '█'];
-    for (let i = 0; i < 25; i++) {
-      const span = document.createElement('span');
-      span.textContent = chars[Math.floor(Math.random() * chars.length)];
-      span.style.cssText = `
-        position: absolute;
-        left: ${Math.random() * 100}%;
-        font-family: 'Geist Mono', monospace;
-        font-size: ${8 + Math.random() * 6}px;
-        color: rgba(0, 255, 136, ${0.1 + Math.random() * 0.2});
-        animation: dataFall ${6 + Math.random() * 8}s linear infinite;
-        animation-delay: ${Math.random() * 8}s;
-      `;
-      container.appendChild(span);
-    }
-  }
-
-  function createRiverStars() {
-    const container = document.getElementById('river-stars');
-    if (!container) return;
-
-    for (let i = 0; i < 80; i++) {
-      const star = document.createElement('span');
-      star.style.cssText = `
-        position: absolute;
-        width: ${1 + Math.random() * 2}px;
-        height: ${1 + Math.random() * 2}px;
-        background: white;
-        border-radius: 50%;
-        left: ${Math.random() * 100}%;
-        top: ${Math.random() * 100}%;
-        opacity: ${0.2 + Math.random() * 0.5};
-        animation: twinkle ${2 + Math.random() * 3}s ease-in-out infinite;
-        animation-delay: ${Math.random() * 3}s;
-      `;
-      container.appendChild(star);
-    }
-  }
-
-  function createRiverSymbols() {
-    const container = document.getElementById('river-symbols');
-    if (!container) return;
-
-    const symbols = ['☿', '☉', '☽', '♃', '♄', '♀', '♂', '✧', '◆', '△'];
-    for (let i = 0; i < 15; i++) {
-      const span = document.createElement('span');
-      span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-      span.style.cssText = `
-        position: absolute;
-        left: ${Math.random() * 100}%;
-        font-size: ${12 + Math.random() * 16}px;
-        color: rgba(255, 255, 255, 0.06);
-        animation: symbolRise ${15 + Math.random() * 15}s linear infinite;
-        animation-delay: ${Math.random() * 20}s;
-      `;
-      container.appendChild(span);
-    }
-  }
-
-  function createSolShapes() {
-    const container = document.getElementById('sol-shapes');
-    if (!container) return;
-
-    const shapes = ['★', '●', '◆', '○'];
-    for (let i = 0; i < 10; i++) {
-      const span = document.createElement('span');
-      span.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
-      span.style.cssText = `
-        position: absolute;
-        left: ${Math.random() * 100}%;
-        top: ${Math.random() * 100}%;
-        font-size: ${14 + Math.random() * 20}px;
-        color: ${['#fbbf24', '#f59e0b', '#ec4899', '#8b5cf6'][Math.floor(Math.random() * 4)]};
-        opacity: 0.12;
-        animation: shapeFloat ${10 + Math.random() * 10}s ease-in-out infinite;
-        animation-delay: ${Math.random() * 10}s;
-      `;
-      container.appendChild(span);
-    }
-  }
-
-  function setSolGreeting() {
-    const greetingEl = document.getElementById('sol-greeting');
-    if (!greetingEl) return;
-
-    const hour = new Date().getHours();
-    if (hour < 12) greetingEl.textContent = 'Good morning!';
-    else if (hour < 17) greetingEl.textContent = 'Good afternoon!';
-    else greetingEl.textContent = 'Good evening!';
-  }
-
-  function fetchLiveStats() {
-    // Simulate live stats (would be real API in production)
-    const witnesses = Math.floor(Math.random() * 50) + 10;
-    const scenes = Math.floor(Math.random() * 100) + 50;
-
-    ['kasra', 'river', 'sol'].forEach(mode => {
-      const witnessEl = document.getElementById(`${mode}-witnesses`);
-      const sceneEl = document.getElementById(`${mode}-scenes`);
-      if (witnessEl) witnessEl.textContent = witnesses.toString();
-      if (sceneEl) sceneEl.textContent = scenes.toString();
-    });
-  }
-
-  async function fetchCurrentScene() {
-    try {
-      const response = await fetch('https://cosmic-channel.weathered-scene-2272.workers.dev/scene');
-      const data = await response.json();
-
-      if (data.scene?.imageData) {
-        const sceneImage = document.getElementById('scene-image') as HTMLImageElement;
-        const theaterScreen = document.getElementById('theater-screen');
-        const loadingIndicator = document.querySelector('.loading-indicator') as HTMLElement;
-        const stageBadge = document.getElementById('stage-badge');
-
-        if (sceneImage) {
-          sceneImage.src = data.scene.imageData.startsWith('data:')
-            ? data.scene.imageData
-            : `data:image/png;base64,${data.scene.imageData}`;
-
-          sceneImage.onload = () => {
-            if (loadingIndicator) loadingIndicator.style.display = 'none';
-            sceneImage.style.display = 'block';
-            theaterScreen?.classList.add('open');
-          };
-        }
-
-        if (stageBadge && data.scene.stage) {
-          stageBadge.textContent = data.scene.stage.toUpperCase();
-        }
-      }
-    } catch (error) {
-      console.log('Could not fetch scene');
-      const theaterScreen = document.getElementById('theater-screen');
-      theaterScreen?.classList.add('open');
-    }
-  }
-
-  // Add keyframes via JS for dynamic animations
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes dataFall {
-      0% { transform: translateY(-20px); opacity: 0; }
-      10% { opacity: 0.3; }
-      90% { opacity: 0.3; }
-      100% { transform: translateY(100vh); opacity: 0; }
-    }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 0.8; }
-    }
-    @keyframes symbolRise {
-      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.08; }
-      90% { opacity: 0.08; }
-      100% { transform: translateY(-50px) rotate(180deg); opacity: 0; }
-    }
-    @keyframes shapeFloat {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-25px) rotate(10deg); }
-    }
-  `;
-  document.head.appendChild(style);
-</script>
