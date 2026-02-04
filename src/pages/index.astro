@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { EmailCapture } from '../components/shared/EmailCapture';
 ---
 
 <BaseLayout
@@ -303,6 +304,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <h4>Learns With You</h4>
             <p>The more you use it, the more accurate it gets. Your patterns are unique.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         NEWSLETTER
+         ============================================ -->
+    <section class="newsletter-section">
+      <div class="container">
+        <div class="newsletter-wrapper">
+          <EmailCapture client:visible variant="card" className="w-full max-w-2xl mx-auto" />
         </div>
       </div>
     </section>
@@ -1080,6 +1092,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--text-muted);
     line-height: 1.5;
     margin: 0;
+  }
+
+  /* ==========================================
+     NEWSLETTER
+     ========================================== */
+  .newsletter-section {
+    background: var(--dark-surface);
+    padding: 3rem 0;
+    border-top: 1px solid var(--dark-border);
+  }
+
+  .newsletter-wrapper {
+    display: flex;
+    justify-content: center;
   }
 
   /* ==========================================
