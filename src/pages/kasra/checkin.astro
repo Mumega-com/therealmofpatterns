@@ -399,7 +399,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <script>
   import { createElement } from 'react';
   import { createRoot } from 'react-dom/client';
-  import { KasraCheckin } from '../../components/kasra/KasraCheckin';
+  import { CheckinFlowEnhanced } from '../../components/checkin/CheckinFlowEnhanced';
   import { setMode } from '../../stores';
 
   // Set mode to Kasra
@@ -440,7 +440,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const container = document.getElementById('checkin-container');
     if (container) {
       createRoot(container).render(
-        createElement(KasraCheckin, {
+        createElement(CheckinFlowEnhanced, {
           onComplete: (results) => {
             console.log('Check-in complete:', results);
             // Trigger completion animation

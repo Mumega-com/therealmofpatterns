@@ -461,7 +461,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <script>
   import { createElement } from 'react';
   import { createRoot } from 'react-dom/client';
-  import { RiverCheckin } from '../../components/river/RiverCheckin';
+  import { CheckinFlowEnhanced } from '../../components/checkin/CheckinFlowEnhanced';
   import { setMode, $stage } from '../../stores';
 
   // Set mode to River
@@ -517,9 +517,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const checkinEl = document.getElementById('river-checkin');
     if (checkinEl) {
       createRoot(checkinEl).render(
-        createElement(RiverCheckin, {
-          onComplete: (kappa) => {
-            console.log('Reflection complete, kappa:', kappa);
+        createElement(CheckinFlowEnhanced, {
+          onComplete: (results) => {
+            console.log('Reflection complete:', results);
           }
         })
       );

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { StageVisualization } from '../../components/stages/StageVisualization';
 
 export function getStaticPaths() {
   return [
@@ -154,7 +155,12 @@ const description = `${data.description.substring(0, 150)}...`;
 
 <BaseLayout title={title} description={description}>
   <article class="stage-page" data-stage={stage} style={`--accent: ${data.accent}; --accent-rgb: ${data.accentRgb};`}>
-    <!-- Immersive Background -->
+    <!-- Enhanced Interactive Background -->
+    <div class="stage-visualization-wrapper">
+      <StageVisualization stage={stage} interactive={true} showInfo={false} client:load />
+    </div>
+
+    <!-- Static Background Fallback -->
     <div class="stage-bg" style={`background: ${data.bgGradient};`}>
       <div class="particles" id="particles"></div>
       <div class="glow-orbs">
@@ -340,11 +346,25 @@ const description = `${data.description.substring(0, 150)}...`;
     color: rgba(255, 255, 255, 0.9);
   }
 
-  /* Background */
-  .stage-bg {
+  /* Enhanced Visualization */
+  .stage-visualization-wrapper {
     position: fixed;
     inset: 0;
     z-index: 0;
+  }
+
+  .stage-visualization-wrapper :global(.stage-visualization) {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Background (fallback/overlay) */
+  .stage-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.5;
+    pointer-events: none;
   }
 
   .particles {

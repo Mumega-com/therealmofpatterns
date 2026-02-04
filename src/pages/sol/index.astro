@@ -508,7 +508,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <script>
   import { createElement } from 'react';
   import { createRoot } from 'react-dom/client';
-  import { SolForecast } from '../../components/sol/SolForecast';
+  import { DashboardEnhanced } from '../../components/dashboard/DashboardEnhanced';
   import { SolWindows } from '../../components/sol/SolWindows';
   import { setMode, $forecast } from '../../stores';
 
@@ -620,7 +620,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     // Mount React components
     const forecastEl = document.getElementById('sol-forecast');
     if (forecastEl) {
-      createRoot(forecastEl).render(createElement(SolForecast));
+      createRoot(forecastEl).render(createElement(DashboardEnhanced));
     }
 
     const windowsEl = document.getElementById('sol-windows');

@@ -584,7 +584,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <script>
   import { createElement } from 'react';
   import { createRoot } from 'react-dom/client';
-  import { RiverForecast } from '../../components/river/RiverForecast';
+  import { DashboardEnhanced } from '../../components/dashboard/DashboardEnhanced';
   import { RiverAspects } from '../../components/river/RiverAspects';
   import { RiverWindows } from '../../components/river/RiverWindows';
   import { StageGlyph } from '../../components/river/RiverCard';
@@ -662,7 +662,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     const forecastEl = document.getElementById('river-forecast');
     if (forecastEl) {
-      createRoot(forecastEl).render(createElement(RiverForecast));
+      createRoot(forecastEl).render(createElement(DashboardEnhanced));
     }
 
     const aspectsEl = document.getElementById('river-aspects');

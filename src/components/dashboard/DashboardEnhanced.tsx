@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useStore } from '@nanostores/react';
-import { $mode, $forecast, $failure } from '../../stores';
+import { $mode, $forecast } from '../../stores';
 import { getRecentCheckins, getKappaTrend, getAverageKappa, type CheckinEntry } from '../../lib/checkin-storage';
 
 // ============================================
@@ -46,7 +46,7 @@ interface DashboardEnhancedProps {
 export function DashboardEnhanced({ className = '' }: DashboardEnhancedProps) {
   const mode = useStore($mode);
   const forecast = useStore($forecast);
-  const failure = useStore($failure);
+  const failureMode = forecast.failureMode || 'healthy';
 
   const [checkins, setCheckins] = useState<CheckinEntry[]>([]);
   const [trend, setTrend] = useState<number | null>(null);
@@ -102,7 +102,7 @@ export function DashboardEnhanced({ className = '' }: DashboardEnhancedProps) {
         />
         <StatCard
           label={mode === 'kasra' ? 'STATUS' : mode === 'river' ? 'Field State' : 'Status'}
-          value={failure.mode === 'healthy' ? (mode === 'kasra' ? 'NOMINAL' : mode === 'river' ? 'Harmonious' : 'Great!') : failure.mode.toUpperCase()}
+          value={failureMode === 'healthy' ? (mode === 'kasra' ? 'NOMINAL' : mode === 'river' ? 'Harmonious' : 'Great!') : failureMode.toUpperCase()}
           mode={mode}
         />
       </section>

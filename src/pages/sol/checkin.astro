@@ -363,7 +363,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <script>
   import { createElement } from 'react';
   import { createRoot } from 'react-dom/client';
-  import { SolCheckin } from '../../components/sol/SolCheckin';
+  import { CheckinFlowEnhanced } from '../../components/checkin/CheckinFlowEnhanced';
   import { setMode } from '../../stores';
 
   // Set mode to Sol
@@ -430,9 +430,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const checkinEl = document.getElementById('sol-checkin');
     if (checkinEl) {
       createRoot(checkinEl).render(
-        createElement(SolCheckin, {
-          onComplete: (kappa) => {
-            console.log('Check-in complete, kappa:', kappa);
+        createElement(CheckinFlowEnhanced, {
+          onComplete: (results) => {
+            console.log('Check-in complete:', results);
             triggerConfetti();
           }
         })

@@ -489,7 +489,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <script>
   import { createElement } from 'react';
   import { createRoot } from 'react-dom/client';
-  import { KasraForecast } from '../../components/kasra/KasraForecast';
+  import { DashboardEnhanced } from '../../components/dashboard/DashboardEnhanced';
   import { KasraFailureMode, KasraStatusBadge } from '../../components/kasra/KasraFailureMode';
   import { KasraAspects } from '../../components/kasra/KasraAspects';
   import { KasraWindows } from '../../components/kasra/KasraWindows';
@@ -560,10 +560,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       createRoot(badgeEl).render(createElement(KasraStatusBadge));
     }
 
-    // Forecast Display
+    // Dashboard Display (Enhanced)
     const forecastEl = document.getElementById('forecast-display');
     if (forecastEl) {
-      createRoot(forecastEl).render(createElement(KasraForecast));
+      createRoot(forecastEl).render(createElement(DashboardEnhanced));
     }
 
     // Failure Mode
