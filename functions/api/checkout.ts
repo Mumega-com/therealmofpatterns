@@ -1,6 +1,10 @@
 /**
  * POST /api/checkout
  * Create a Stripe checkout session for premium report
+ *
+ * DEPRECATED: This endpoint is for legacy one-time purchases ($497/$697).
+ * For current SaaS subscriptions, use /api/create-subscription-checkout instead.
+ * Kept for processing any pending legacy orders.
  */
 
 import type { Env, CheckoutRequest, CheckoutResponse, ErrorResponse, ProductId } from '../../src/types';

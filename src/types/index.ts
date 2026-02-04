@@ -215,17 +215,20 @@ export interface StripeCheckoutSession {
 }
 
 // ============================================
-// Products
+// Products (LEGACY - kept for historical orders)
 // ============================================
+// NOTE: These one-time products are deprecated.
+// Use SUBSCRIPTION_PLANS for current pricing.
+// Kept only for processing legacy orders in the database.
 export const PRODUCTS = {
   premium_16d_report: {
     name: 'Premium 16D Report',
-    price_cents: 49700, // $497
+    price_cents: 49700,
     description: '40+ page luxury PDF with full 16D analysis',
   },
   complete_bundle: {
     name: 'Complete Bundle',
-    price_cents: 69700, // $697
+    price_cents: 69700,
     description: 'Premium Report + Art Print + Booklet',
   },
 } as const;
