@@ -21,26 +21,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </section>
 
         <section>
-          <h2>2. Information We Collect</h2>
+          <h2>2. Privacy-First Architecture</h2>
+          <p>
+            We use a <strong>privacy by design</strong> approach with advanced cryptographic techniques
+            to protect your data. Our system is designed so that <strong>even we cannot read your personal information</strong>.
+          </p>
 
-          <h3>2.1 Information You Provide</h3>
-          <ul>
-            <li><strong>Birth Data:</strong> Date, time, and location of birth (required for pattern calculations)</li>
-            <li><strong>Account Information:</strong> Email address (for account creation and communication)</li>
-            <li><strong>Check-in Responses:</strong> Your answers to the 8-question daily check-in</li>
-            <li><strong>Payment Information:</strong> Processed securely through Stripe; we don't store credit card numbers</li>
-          </ul>
+          <h3>2.1 Local-First Storage</h3>
+          <p>
+            By default, your birth data stays on your device only. It is stored in your browser's
+            local storage and never transmitted to our servers unless you explicitly enable sync.
+          </p>
 
-          <h3>2.2 Information Collected Automatically</h3>
+          <h3>2.2 Encryption</h3>
+          <p>
+            If you choose to sync your data, it is encrypted using <strong>AES-256-GCM</strong> encryption
+            before leaving your device. The encryption key is derived from your device ID using PBKDF2
+            with 100,000 iterations. This means only your device can decrypt your data.
+          </p>
+
+          <h3>2.3 Pseudonymization</h3>
+          <p>
+            Your identity is represented by a SHA-256 hash of your device ID plus a server secret.
+            This hash cannot be reversed to identify you. We separate your encrypted identity from
+            your astrological data - so we can analyze patterns without knowing who you are.
+          </p>
+
+          <h3>2.4 Data Separation</h3>
           <ul>
-            <li><strong>Usage Data:</strong> Pages visited, features used, time spent</li>
-            <li><strong>Device Information:</strong> Browser type, operating system, screen size</li>
-            <li><strong>IP Address:</strong> For security and approximate location (country level)</li>
+            <li><strong>Encrypted Vault:</strong> Your birth data (encrypted, we cannot read it)</li>
+            <li><strong>Astrology Data:</strong> Check-ins, vectors, stages (contains no personal information)</li>
           </ul>
         </section>
 
         <section>
-          <h2>3. How We Use Your Information</h2>
+          <h2>3. Information We Collect</h2>
+
+          <h3>3.1 Information You Provide</h3>
+          <ul>
+            <li><strong>Birth Data:</strong> Date, time, and location of birth - <em>stored on your device only, encrypted if synced</em></li>
+            <li><strong>Check-in Responses:</strong> Your answers to the daily check-in - <em>linked only by anonymous hash</em></li>
+            <li><strong>Email Address:</strong> Only if you subscribe - <em>encrypted in our vault</em></li>
+            <li><strong>Payment Information:</strong> Processed by Stripe; we never see or store card numbers</li>
+          </ul>
+
+          <h3>3.2 Information Collected Automatically</h3>
+          <ul>
+            <li><strong>Device ID:</strong> A random UUID generated on your device, used for sync</li>
+            <li><strong>Country Code:</strong> For language preferences (not stored with your profile)</li>
+            <li><strong>Aggregated Analytics:</strong> Anonymous usage patterns (no individual tracking)</li>
+          </ul>
+
+          <h3>3.3 What We DON'T Collect</h3>
+          <ul>
+            <li>Your name (unless you tell us)</li>
+            <li>Your exact location or GPS coordinates</li>
+            <li>Your IP address (beyond the current request)</li>
+            <li>Your browsing history</li>
+            <li>Data from other apps or websites</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>4. How We Use Your Information</h2>
           <ul>
             <li>Calculate your 16-dimensional cosmic pattern</li>
             <li>Provide personalized readings and recommendations</li>
@@ -53,7 +96,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </section>
 
         <section>
-          <h2>4. Data Sharing</h2>
+          <h2>5. Data Sharing</h2>
           <p>We do not sell your personal data. We share information only in these limited circumstances:</p>
           <ul>
             <li><strong>Service Providers:</strong> Stripe (payments), Cloudflare (hosting), necessary third parties</li>
@@ -64,7 +107,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </section>
 
         <section>
-          <h2>5. Circle (Team) Features</h2>
+          <h2>6. Circle (Team) Features</h2>
           <p>
             If you join a Circle, certain pattern data may be visible to other Circle members as part
             of the shared dashboard feature. You can control what is shared through your privacy settings.
@@ -74,17 +117,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </section>
 
         <section>
-          <h2>6. Data Storage and Security</h2>
+          <h2>7. Data Storage and Security</h2>
           <ul>
-            <li>Data is stored on Cloudflare infrastructure with encryption at rest</li>
-            <li>We use HTTPS for all data transmission</li>
-            <li>Access to personal data is restricted to authorized personnel</li>
-            <li>We conduct regular security reviews</li>
+            <li><strong>Encryption at Rest:</strong> All personal data encrypted with AES-256-GCM</li>
+            <li><strong>Encryption in Transit:</strong> HTTPS for all data transmission</li>
+            <li><strong>Zero-Knowledge:</strong> Your birth data is encrypted with a key only your device has</li>
+            <li><strong>Pseudonymization:</strong> Your identity is a one-way hash we cannot reverse</li>
+            <li><strong>Data Separation:</strong> Personal info separated from analytics data</li>
+            <li><strong>Cloudflare Infrastructure:</strong> Enterprise-grade security and global distribution</li>
           </ul>
         </section>
 
         <section>
-          <h2>7. Data Retention</h2>
+          <h2>8. Data Retention</h2>
           <p>
             We retain your data as long as your account is active or as needed to provide services.
             After account deletion, we retain data for up to 30 days for backup purposes, then permanently delete it.
@@ -93,19 +138,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </section>
 
         <section>
-          <h2>8. Your Rights</h2>
-          <p>You have the right to:</p>
+          <h2>9. Your Rights (GDPR)</h2>
+          <p>We honor GDPR rights for <strong>all users worldwide</strong>, not just EU residents:</p>
           <ul>
-            <li><strong>Access:</strong> Request a copy of your personal data</li>
-            <li><strong>Export:</strong> Download your data in portable formats (Pattern-Keeper+)</li>
-            <li><strong>Correction:</strong> Update inaccurate information</li>
-            <li><strong>Deletion:</strong> Request deletion of your account and data</li>
-            <li><strong>Opt-out:</strong> Unsubscribe from marketing communications</li>
+            <li><strong>Right to Access (Art. 15):</strong> View all data we have about you</li>
+            <li><strong>Right to Portability (Art. 20):</strong> Export your data in JSON format</li>
+            <li><strong>Right to Rectification (Art. 16):</strong> Update your birth data anytime</li>
+            <li><strong>Right to Erasure (Art. 17):</strong> Permanently delete all your data</li>
+            <li><strong>Right to Object:</strong> Opt out of any processing</li>
           </ul>
+          <p>
+            To exercise these rights, visit <a href="/settings">Settings</a> or email
+            <a href="mailto:privacy@therealmofpatterns.com">privacy@therealmofpatterns.com</a>.
+            We respond within 30 days (usually much faster).
+          </p>
         </section>
 
         <section>
-          <h2>9. Cookies and Local Storage</h2>
+          <h2>10. Cookies and Local Storage</h2>
           <p>We use:</p>
           <ul>
             <li><strong>Essential cookies:</strong> For authentication and security</li>
@@ -115,7 +165,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </section>
 
         <section>
-          <h2>10. Children's Privacy</h2>
+          <h2>11. Children's Privacy</h2>
           <p>
             Our services are not intended for users under 13. We do not knowingly collect data from children.
             If we learn we have collected data from a child under 13, we will delete it promptly.
@@ -123,7 +173,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </section>
 
         <section>
-          <h2>11. International Users</h2>
+          <h2>12. International Users</h2>
           <p>
             Our services are hosted globally via Cloudflare. By using our services, you consent to
             the transfer of your data to servers that may be located outside your country of residence.
@@ -131,7 +181,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </section>
 
         <section>
-          <h2>12. Changes to This Policy</h2>
+          <h2>13. Changes to This Policy</h2>
           <p>
             We may update this Privacy Policy periodically. We will notify you of material changes
             via email or prominent notice on our website. Continued use after changes constitutes acceptance.
@@ -139,7 +189,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </section>
 
         <section>
-          <h2>13. Contact Us</h2>
+          <h2>14. Contact Us</h2>
           <p>
             For privacy-related questions or to exercise your rights, contact us at:
           </p>

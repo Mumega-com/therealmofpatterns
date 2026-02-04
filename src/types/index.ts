@@ -176,6 +176,7 @@ export interface Env {
   STRIPE_PUBLISHABLE_KEY: string;
   GEMINI_API_KEY: string;
   ADMIN_KEY: string;
+  HASH_PEPPER?: string;  // For privacy-first user hash generation
   TWITTER_BEARER_TOKEN?: string;
   TELEGRAM_BOT_TOKEN?: string;
   DISCORD_WEBHOOK_URL?: string;
