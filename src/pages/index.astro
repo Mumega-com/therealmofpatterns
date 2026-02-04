@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ModeToggle } from '../components/shared/ModeToggle';
-import { Onboarding } from '../components/shared/Onboarding';
-import { HeroEnhanced } from '../components/hero/HeroEnhanced';
+import { HeroSwitcher } from '../components/hero/HeroSwitcher';
 ---
 
 <BaseLayout
@@ -11,13 +10,12 @@ import { HeroEnhanced } from '../components/hero/HeroEnhanced';
   transparentHeader={true}
 >
   <div class="landing-page" id="landing-page">
-    <!-- Onboarding for first-time visitors -->
-    <Onboarding client:load />
-
     <!-- ============================================
-         HERO SECTION - Enhanced React Component
+         HERO SECTION - Smart switcher based on user state
+         First-time: Simple focused hero
+         Returning: Full mode-aware hero
          ============================================ -->
-    <HeroEnhanced client:load />
+    <HeroSwitcher client:load />
 
     <!-- ============================================
          THEATER PREVIEW
