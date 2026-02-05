@@ -41,6 +41,11 @@ export function saveHistory(forecast: ForecastState) {
   }
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+
+  // Notify components that history has changed
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('history-updated'));
+  }
 }
 
 export function getHistory(): HistoryRecord[] {

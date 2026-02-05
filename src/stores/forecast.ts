@@ -86,8 +86,8 @@ export function updateForecast(partial: Partial<ForecastState>) {
   updated.computedAt = new Date().toISOString();
   $forecast.set(updated);
 
-  // Save to history if we have a meaningful update (kappa)
-  if (partial.kappa !== undefined) {
+  // Save to history if we have a meaningful update (kappa or failureMode)
+  if (partial.kappa !== undefined || partial.failureMode !== undefined) {
     saveHistory(updated);
   }
 }

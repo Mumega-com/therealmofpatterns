@@ -11,9 +11,10 @@ import { KasraCard, KasraMetric, KasraAlert } from './KasraCard';
 
 interface KasraForecastProps {
   className?: string;
+  nextDate?: string;
 }
 
-export function KasraForecast({ className = '' }: KasraForecastProps) {
+export function KasraForecast({ className = '', nextDate }: KasraForecastProps) {
   const forecast = useStore($forecast);
   const kappaPercent = useStore($kappaPercent);
   const stageLabel = useStore($stageLabel);

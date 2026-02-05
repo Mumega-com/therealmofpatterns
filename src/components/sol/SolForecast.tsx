@@ -11,6 +11,7 @@ import { SolCard, SolStat, SolProgress, SolAlert, SolBadge, SolButton } from './
 
 interface SolForecastProps {
   className?: string;
+  nextDate?: string;
 }
 
 // Friendly stage descriptions
@@ -105,7 +106,7 @@ const FAILURE_INFO: Record<FailureMode, {
   },
 };
 
-export function SolForecast({ className = '' }: SolForecastProps) {
+export function SolForecast({ className = '', nextDate }: SolForecastProps) {
   const forecast = useStore($forecast);
   const kappaPercent = useStore($kappaPercent);
   const isInFailure = useStore($isInFailure);
