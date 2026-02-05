@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ModeToggle } from './ModeToggle';
 import { LanguageSelector } from './LanguageSelector';
+import { StreakBadge } from './StreakBadge';
 
 interface HeaderProps {
   className?: string;
@@ -69,6 +70,9 @@ export function Header({ className = '', currentLang = 'en', transparent = false
             {/* Language Selector - Always visible, compact on mobile */}
             <LanguageSelector currentLang={currentLang} compact className="sm:hidden" />
             <LanguageSelector currentLang={currentLang} className="hidden sm:block" />
+
+            {/* Streak Badge */}
+            <StreakBadge />
 
             {/* Mode Toggle */}
             <ModeToggle />
