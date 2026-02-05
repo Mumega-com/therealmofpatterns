@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { HistoryDashboard } from '../components/shared/HistoryDashboard';
+---
+
+<BaseLayout title="Pattern History - The Realm of Patterns" description="View your historical energy trends and coherence patterns.">
+  <div class="history-page max-w-4xl mx-auto px-6 py-12">
+    <header class="mb-12 text-center">
+      <h1 class="text-3xl md:text-4xl font-light mb-4 text-[#d4a854] font-serif">
+        The Unfolding Pattern
+      </h1>
+      <p class="text-[#f0e8d8] opacity-60 max-w-xl mx-auto">
+        Your journey is not a straight line, but a spiral. Observe the rhythms of your past to understand the currents of your future.
+      </p>
+    </header>
+
+    <div class="bg-[#141210] border border-[rgba(212,168,84,0.15)] rounded-xl p-6 md:p-8 shadow-lg">
+      <HistoryDashboard client:load limit={30} />
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="info-card">
+        <h3 class="text-xl font-serif text-[#d4a854] mb-3">Understanding Trends</h3>
+        <p class="opacity-70 text-sm leading-relaxed">
+          A rising trend suggests increasing alignment and clarity. A falling trend often precedes a period of necessary dissolution (Nigredo). Stability indicates a time of sustained work or integration.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <h3 class="text-xl font-serif text-[#d4a854] mb-3">The Cycle of Stages</h3>
+        <p class="opacity-70 text-sm leading-relaxed">
+          Notice how your energy moves through the alchemical stages. Nigredo (black) often leads to Albedo (white), then Citrinitas (yellow), and finally Rubedo (red). No stage is "bad"; each has its purpose.
+        </p>
+      </div>
+    </div>
+    
+    <div class="mt-12 text-center">
+      <a href="/sol/checkin" class="inline-block px-6 py-3 border border-[#d4a854] text-[#d4a854] rounded-lg hover:bg-[#d4a854] hover:text-[#0a0908] transition-colors">
+        Record Today's Pattern
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+</style>

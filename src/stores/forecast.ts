@@ -1,5 +1,6 @@
 import { atom, map, computed } from 'nanostores';
 import { $stage, setStage, stageFromKappa, type Stage } from './app';
+import { saveHistory } from '../lib/history';
 
 // =====================
 // FORECAST TYPES
@@ -84,6 +85,11 @@ export function updateForecast(partial: Partial<ForecastState>) {
 
   updated.computedAt = new Date().toISOString();
   $forecast.set(updated);
+
+  // Save to history if we have a meaningful update (kappa)
+  if (partial.kappa !== undefined) {
+    saveHistory(updated);
+  }
 }
 
 export function setKappa(kappa: number) {
