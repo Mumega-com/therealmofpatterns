@@ -1,6 +1,6 @@
 # Product Strategy: The Realm of Patterns
 
-**Last Updated:** 2026-02-04
+**Last Updated:** 2026-02-05
 **Status:** Strategic Direction Document
 
 ---
@@ -197,17 +197,22 @@ The system tracks:
 - **Feedback Calibration System** (learns from predicted vs actual)
 - **Dimension Sensitivity Tracking** (which transits affect user most)
 - **Optimal Windows Calculator** (hourly resonance-based recommendations)
+- **Calibration Dashboard** (user accuracy stats, dimension insights)
+- **History Dashboard** (trend visualizations with bar charts)
+- **Streak Gamification** (consecutive check-in tracking, animated badges)
+- **Tomorrow Teaser** (return hook with next-day forecast preview)
+- **Email Capture** (newsletter signup on landing page)
+- **History Persistence** (localStorage with event dispatch for real-time updates)
 
 ### In Progress 🔄
-- User dashboard with calibration stats
-- Historical trend visualizations
 - Weekly insight summaries
+- Push notifications for optimal windows
 
 ### Planned 📋
 - Mobile app (React Native)
 - Therapist/coach portal (B2B)
 - API for integrations
-- Notification system for optimal windows
+- Export to therapist/coach (PDF or shareable link)
 
 ---
 
@@ -263,31 +268,49 @@ The system tracks:
 
 ## Next Steps (Priority Order)
 
-1. **Failure Mode Dashboard** - Visual, clear, actionable UI
-2. **Daily Check-in Flow** - 30-second swipe interface
-3. **Prediction Accuracy Tracker** - Public accountability
+1. ~~**Failure Mode Dashboard**~~ ✅ Complete
+2. ~~**Daily Check-in Flow**~~ ✅ Complete
+3. ~~**Prediction Accuracy Tracker**~~ ✅ Complete (CalibrationDashboard)
 4. **Optimal Windows Calendar** - "Best days for X this month"
 5. **Free Tier Launch** - Maximize data collection
 6. **Founding Member Campaign** - Early revenue + evangelists
+7. **Weekly Email Digest** - Automated insights via Resend
+8. **Mobile PWA** - Installable progressive web app
 
 ---
 
 ## References
 
+### Documentation
 - `/docs/squad/00-VISION.md` - Core identity
 - `/docs/squad/34-DIAMOND-ONTOLOGY.md` - Technical framework
 - `/docs/FAILURE_MODES.md` - Clinical taxonomy
-- `/src/lib/failure-detector.ts` - Implementation
+- `/docs/ARCHITECTURE.md` - System architecture
+- `/docs/16D-IMPLEMENTATION-SPEC.md` - Full mathematics
+- FRC 16D.331 paper - Academic foundation
+
+### Core Libraries
+- `/src/lib/16d-engine.ts` - Core 16D vector computation
+- `/src/lib/failure-detector.ts` - Failure mode detection
 - `/src/lib/transit-engine.ts` - κ coupling calculations
 - `/src/lib/personal-transit.ts` - Natal-transit resonance engine
 - `/src/lib/prediction-calibration.ts` - Feedback learning system
-- `/src/lib/16d-engine.ts` - Core 16D vector computation
+- `/src/lib/history.ts` - History persistence with event dispatch
+
+### UI Components
 - `/src/components/shared/BirthDataPrompt.tsx` - Birth data collection UI
 - `/src/components/shared/PredictionCard.tsx` - Pre-check-in predictions
+- `/src/components/shared/CalibrationDashboard.tsx` - Accuracy stats display
+- `/src/components/shared/HistoryDashboard.tsx` - Trend visualizations
+- `/src/components/shared/StreakBadge.tsx` - Gamification badge
 - `/src/components/checkin/CheckinFlowEnhanced.tsx` - Full check-in flow
-- FRC 16D.331 paper - Academic foundation
+
+### Pages
+- `/src/pages/history.astro` - History dashboard page
+- `/src/pages/profile.astro` - Profile with calibration stats
+- `/src/pages/forecast/[date].astro` - Daily forecast with tomorrow teaser
 
 ---
 
 *Strategy document maintained by Kasra (Builder)*
-*Last updated: 2026-02-04*
+*Last updated: 2026-02-05*

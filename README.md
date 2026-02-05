@@ -28,13 +28,15 @@ A production SaaS platform mapping cosmic identity through mathematical patterns
 | | |
 |---|---|
 | **Live** | [therealmofpatterns.com](https://therealmofpatterns.com) |
+| **Forecast** | [/forecast](https://therealmofpatterns.com/forecast) (Daily personal forecast) |
 | **Check-in** | [/sol/checkin](https://therealmofpatterns.com/sol/checkin) |
+| **History** | [/history](https://therealmofpatterns.com/history) (Trend dashboard) |
 | **Theater** | [/theater](https://therealmofpatterns.com/theater) (Alchemical scenes) |
 | **Weather** | [/weather](https://therealmofpatterns.com/weather) (Daily cosmic forecast) |
+| **Profile** | [/profile](https://therealmofpatterns.com/profile) (Calibration stats) |
 | **Blog** | [/blog](https://therealmofpatterns.com/blog) (SEO content) |
 | **Learn** | [/learn](https://therealmofpatterns.com/learn) (92 CMS pages) |
 | **Docs** | [/docs](https://therealmofpatterns.com/docs) |
-| **Admin** | [/admin](https://therealmofpatterns.pages.dev/admin) |
 | **Stack** | Astro + Cloudflare Pages + D1 + KV + Workers |
 | **License** | MIT |
 
@@ -62,6 +64,20 @@ Based on the kappa coefficient (κ), your current coherence maps to alchemical s
 | **Albedo** | 0.25 ≤ κ < 0.50 | ✧ | Purification, clarity emerges |
 | **Citrinitas** | 0.50 ≤ κ < 0.75 | ☼ | Illumination, wisdom awakens |
 | **Rubedo** | κ ≥ 0.75 | ◆ | Integration, the opus complete |
+
+---
+
+## Engagement Features
+
+| Feature | Description |
+|---------|-------------|
+| **Daily Check-in** | 6-question flow computing your κ (kappa) coherence score |
+| **Personalized Forecasts** | Pre-check-in predictions based on birth data + transits |
+| **History Dashboard** | Visual trend charts showing your κ over time |
+| **Streak Gamification** | Track consecutive check-in days with animated badges |
+| **Tomorrow Teaser** | "Come back tomorrow" hooks with next-day preview |
+| **Calibration System** | Self-improving predictions that learn from your feedback |
+| **Email Capture** | Newsletter signup for cosmic insights |
 
 ---
 
@@ -218,13 +234,23 @@ therealmofpatterns/
 │   │
 │   ├── components/         # React components
 │   │   ├── shared/         # Header, Footer, Onboarding, etc.
+│   │   │   ├── CalibrationDashboard.tsx  # Prediction accuracy stats
+│   │   │   ├── HistoryDashboard.tsx      # Trend visualizations
+│   │   │   ├── StreakBadge.tsx           # Gamification badge
+│   │   │   └── EmailCapture.tsx          # Newsletter signup
 │   │   ├── kasra/          # Technical UI
 │   │   ├── river/          # Mystical UI
 │   │   └── sol/            # Friendly UI
 │   │
 │   ├── layouts/            # Astro layouts
 │   ├── hooks/              # React hooks (useError, etc.)
+│   ├── stores/             # Nanostores state management
+│   │   ├── app.ts          # Mode, stage, language
+│   │   └── forecast.ts     # Forecast state + history persistence
 │   └── lib/                # Utilities, 16D engine
+│       ├── 16d-engine.ts   # Core 16D vector computation
+│       ├── history.ts      # localStorage history tracking
+│       └── prediction-calibration.ts  # ARL feedback learning
 │
 ├── functions/              # Cloudflare Pages Functions
 │   ├── api/                # REST endpoints
