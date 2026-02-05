@@ -1,6 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('API Endpoints', () => {
+  test.skip(process.env.E2E_STATIC_DIST === '1', 'No API server in E2E_STATIC_DIST mode');
+
   test('health endpoint responds', async ({ request }) => {
     const response = await request.get('/api/health');
 

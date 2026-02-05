@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Homepage', () => {
   test('loads successfully with correct title', async ({ page }) => {
@@ -53,5 +53,31 @@ test.describe('Homepage', () => {
 
     // Should have at least one subscribe link in pricing section
     expect(count).toBeGreaterThan(0);
+  });
+
+  test('email capture section accepts an email', async ({ page }) => {
+    await page.route('**/api/subscribe', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true }),
+      });
+    });
+
+    await page.goto('/');
+
+    const newsletter = page.locator('.newsletter-section');
+    await newsletter.scrollIntoViewIfNeeded();
+
+    const emailInput = newsletter.locator('input[type="email"]').first();
+    await expect(emailInput).toBeVisible();
+
+    await emailInput.fill('test@example.com');
+
+    const submitButton = newsletter.locator('button[type="submit"]').first();
+    await expect(submitButton).toBeVisible();
+    await submitButton.click();
+
+    await expect(newsletter).toContainText(/you're in!/i);
   });
 });
