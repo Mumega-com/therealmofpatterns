@@ -12,7 +12,7 @@ interface HeaderProps {
 
 const NAV_LINKS = [
   { href: '/reading', label: 'Today', icon: '☽' },
-  { href: '/discover', label: 'My Pattern', icon: '◈' },
+  { href: '/journey', label: 'My Journey', icon: '◈' },
   { href: '/subscribe', label: 'Go Pro', icon: '✦' },
 ];
 

@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { JourneyDashboard } from '../components/journey/JourneyDashboard';
+---
+
+<BaseLayout title="Your Journey - The Realm of Patterns" description="Your personalized Hero's Journey. See where you are, where you've been, and what's next on your path of self-discovery.">
+  <div class="journey-page max-w-3xl mx-auto px-6 py-12">
+    <JourneyDashboard client:load />
+  </div>
+</BaseLayout>

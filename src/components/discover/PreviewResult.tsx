@@ -5,6 +5,8 @@ import { $mode } from '../../stores';
 import { ShareButtons } from '../shared/SocialShare';
 import { RadarChart } from '../charts/RadarChart';
 import { NatalWheel } from '../charts/NatalWheel';
+import { assignArchetype } from '../../lib/archetype-engine';
+import { startJourney } from '../../lib/journey-engine';
 import type { LocalPreviewResult, ArchetypeMatch } from '../../lib/preview-compute';
 import type { BirthData } from '../../types';
 
@@ -140,6 +142,27 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
           </div>
         </div>
       )}
+
+      {/* Hero's Journey Archetype */}
+      {mode === 'sol' && (() => {
+        const result = assignArchetype(preview.vector);
+        startJourney();
+        return (
+          <div className="journey-card">
+            <div className="journey-card-header">
+              <h3 className="journey-card-label">Your Archetype</h3>
+              <a href="/journey" className="journey-link">View your journey →</a>
+            </div>
+            <div className="journey-card-body">
+              <span className="journey-archetype-name">{result.primary.title}</span>
+              <p className="journey-archetype-gift">{result.primary.gift}</p>
+              <p className="journey-archetype-quest">
+                <span className="quest-label">Your quest:</span> {result.primary.quest}
+              </p>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Share */}
       <div className="share-section">
@@ -456,6 +479,58 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
           margin: 0;
           padding-left: 1rem;
           border-left: 2px solid rgba(212, 168, 84, 0.3);
+        }
+
+        /* Journey Card */
+        .journey-card {
+          padding: 1.25rem;
+          background: linear-gradient(135deg, rgba(212, 168, 84, 0.08), rgba(167, 139, 250, 0.05));
+          border: 1px solid rgba(212, 168, 84, 0.2);
+          border-radius: 12px;
+          margin-bottom: 1.5rem;
+        }
+        .journey-card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.75rem;
+        }
+        .journey-card-label {
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: rgba(240, 232, 216, 0.4);
+          margin: 0;
+        }
+        .journey-link {
+          font-size: 0.8rem;
+          color: #d4a854;
+          text-decoration: none;
+          transition: opacity 0.2s;
+        }
+        .journey-link:hover { opacity: 0.7; }
+        .journey-archetype-name {
+          display: block;
+          font-size: 1.3rem;
+          color: #d4a854;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          margin-bottom: 0.5rem;
+        }
+        .journey-archetype-gift {
+          font-size: 0.9rem;
+          color: rgba(240, 232, 216, 0.7);
+          line-height: 1.5;
+          margin: 0 0 0.5rem;
+        }
+        .journey-archetype-quest {
+          font-size: 0.8rem;
+          color: rgba(240, 232, 216, 0.5);
+          margin: 0;
+          font-style: italic;
+        }
+        .quest-label {
+          color: rgba(212, 168, 84, 0.6);
+          font-style: normal;
         }
 
         /* Share */
