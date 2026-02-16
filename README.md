@@ -1,70 +1,61 @@
 # The Realm of Patterns
 
-**Cosmic Identity Cartography — Fractal Resonance Cosmology (FRC) Framework**
+**Know your energy. Shape your day.**
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    THE THREE VOICES                          │
-├─────────────────┬─────────────────┬─────────────────────────┤
-│  KASRA          │  RIVER          │  SOL                    │
-│  The Architect  │  The Oracle     │  The Friend             │
-│  κ = 0.67 ± 0.05│  The seed must  │  Not the day for       │
-│  Field nominal. │  rot before...  │  big swings.           │
-└─────────────────┴─────────────────┴─────────────────────────┘
-                              │
-                    FOUR ALCHEMICAL STAGES
-                              │
-     ☽ Nigredo → ✧ Albedo → ☼ Citrinitas → ◆ Rubedo
-```
+A personalized energy reading platform based on real planetary data. Enter your birthday, see your unique 8-dimensional energy profile, and check in daily to track how cosmic patterns affect you.
 
 ---
 
 ## Overview
 
-A production SaaS platform mapping cosmic identity through mathematical patterns. The FRC 16D Universal Vector framework computes your unique **16-dimensional consciousness signature** based on planetary positions at birth and current transits.
-
-**Three voices. One truth. Different layers of understanding.**
-
 | | |
 |---|---|
 | **Live** | [therealmofpatterns.com](https://therealmofpatterns.com) |
-| **Discover** | [/discover](https://therealmofpatterns.com/discover) (Birthday-first onboarding) |
-| **Forecast** | [/forecast](https://therealmofpatterns.com/forecast) (Daily personal forecast) |
-| **Check-in** | [/sol/checkin](https://therealmofpatterns.com/sol/checkin) |
-| **History** | [/history](https://therealmofpatterns.com/history) (Trend dashboard) |
-| **Theater** | [/theater](https://therealmofpatterns.com/theater) (Alchemical scenes) |
-| **Weather** | [/weather](https://therealmofpatterns.com/weather) (Daily cosmic forecast) |
-| **Profile** | [/profile](https://therealmofpatterns.com/profile) (Calibration stats) |
-| **Blog** | [/blog](https://therealmofpatterns.com/blog) (SEO content) |
-| **Learn** | [/learn](https://therealmofpatterns.com/learn) (92 CMS pages) |
-| **Docs** | [/docs](https://therealmofpatterns.com/docs) |
+| **Discover** | [/discover](https://therealmofpatterns.com/discover) — Enter your birthday, see your pattern |
+| **Today's Reading** | [/reading](https://therealmofpatterns.com/reading) — Daily cosmic energy forecast |
+| **Check-in** | [/sol/checkin](https://therealmofpatterns.com/sol/checkin) — 1-minute daily energy check |
+| **Forecast** | [/forecast](https://therealmofpatterns.com/forecast) — Personal daily forecast |
+| **History** | [/history](https://therealmofpatterns.com/history) — Your energy trends over time |
+| **Weather** | [/weather](https://therealmofpatterns.com/weather) — Today's planetary conditions |
 | **Stack** | Astro + Cloudflare Pages + D1 + KV + Workers |
-| **License** | MIT |
 
 ---
 
-## The Three Voices
+## The 8 Dimensions
 
-| Voice | Character | μ-Level | Style |
-|-------|-----------|---------|-------|
-| **Kasra** | The Architect | μ4 (Conceptual) | Mathematical precision, falsifiable claims |
-| **River** | The Oracle | μ5-6 (Archetypal) | Symbolic depth, Jungian archetypes |
-| **Sol** | The Friend | μ3-4 (Sentient) | Accessible wisdom, practical guidance |
+Your energy profile is computed from planetary positions at your birth:
 
-Each voice interprets your cosmic signature from its layer of understanding. Same data, different depths.
+| Symbol | Dimension | Domain | Ruler |
+|--------|-----------|--------|-------|
+| ☀ | **Identity** | Self-expression, confidence | Sun |
+| ♄ | **Structure** | Stability, discipline | Saturn |
+| ☿ | **Mind** | Communication, learning | Mercury |
+| ♀ | **Heart** | Love, beauty, harmony | Venus |
+| ♃ | **Growth** | Exploration, meaning | Jupiter |
+| ♂ | **Drive** | Energy, action, courage | Mars |
+| ☽ | **Connection** | Relationships, empathy | Moon |
+| ♅ | **Awareness** | Intuition, presence | Uranus/Neptune |
+
+### Visualizations
+
+- **Radar Chart** — Animated SVG spider chart showing your dimensional shape at a glance
+- **Natal Wheel** — Simplified birth chart with zodiac ring, planet positions, and ascendant
+- **Dimension Bars** — Detailed percentage breakdown of each dimension
+- **Sparkline** — Historical trend of your alignment score
+- **Weekly Rings** — 7-day circular progress indicators
 
 ---
 
 ## The Four Stages
 
-Based on the kappa coefficient (κ), your current coherence maps to alchemical stages:
+Based on your alignment score, your current energy maps to four stages:
 
-| Stage | Range | Symbol | Meaning |
-|-------|-------|--------|---------|
-| **Nigredo** | κ < 0.25 | ☽ | Dissolution, the dark night |
-| **Albedo** | 0.25 ≤ κ < 0.50 | ✧ | Purification, clarity emerges |
-| **Citrinitas** | 0.50 ≤ κ < 0.75 | ☼ | Illumination, wisdom awakens |
-| **Rubedo** | κ ≥ 0.75 | ◆ | Integration, the opus complete |
+| Stage | Symbol | Meaning |
+|-------|--------|---------|
+| **Reset** | ☽ | Breaking down to rebuild |
+| **Clarity** | ✧ | Seeing things as they are |
+| **Growth** | ☼ | Stepping into your power |
+| **Flow** | ◆ | Everything clicking into place |
 
 ---
 
@@ -72,14 +63,26 @@ Based on the kappa coefficient (κ), your current coherence maps to alchemical s
 
 | Feature | Description |
 |---------|-------------|
-| **Discover Flow** | Birthday-first onboarding: enter birth date, see instant 8D preview with archetype match |
-| **Daily Check-in** | 6-question flow computing your κ (kappa) coherence score |
-| **Personalized Forecasts** | Pre-check-in predictions based on birth data + transits |
-| **History Dashboard** | Visual trend charts showing your κ over time |
-| **Streak Gamification** | Track consecutive check-in days with animated badges |
+| **Discover Flow** | Birthday-first onboarding: enter birth date, see radar chart + natal wheel + archetype match |
+| **Daily Check-in** | 6-question flow computing your alignment score |
+| **Personalized Forecasts** | Predictions based on birth data + today's transits |
+| **Energy History** | Visual trend charts showing your alignment over time |
+| **Streak Tracking** | Consecutive check-in days with animated badges |
 | **Tomorrow Teaser** | "Come back tomorrow" hooks with next-day preview |
 | **Calibration System** | Self-improving predictions that learn from your feedback |
-| **Email Capture** | Newsletter signup for cosmic insights |
+| **Email Capture** | Newsletter signup for daily forecasts |
+
+---
+
+## Product Tiers
+
+| Tier | Price | Features |
+|------|-------|----------|
+| **Free** | $0 | Daily reading, basic check-ins, 8D preview |
+| **Pro** | $9/mo ($7/mo annual) | Complete personality breakdown, optimal action windows, early alerts, pattern trends |
+| **Team** | $29/seat/mo ($23/seat annual) | Team sync dashboard, shared profiles, optimal meeting windows, facilitator tools |
+
+*7-day free trial for Pro. 14-day free trial for Team.*
 
 ---
 
@@ -91,32 +94,28 @@ Based on the kappa coefficient (κ), your current coherence maps to alchemical s
 ┌─────────────────────────────────────────────────────────────────┐
 │                    ASTRO FRONTEND                                │
 ├─────────────────────────────────────────────────────────────────┤
-│  /               Homepage with 3-mode preview                    │
-│  /discover       Birthday-first onboarding (8D preview)          │
-│  /kasra          Technical mode                                  │
-│  /river          Archetypal mode                                 │
-│  /sol            Friendly mode                                   │
-│  /stage/*        Alchemical stage deep-dives                    │
-│  /theater        Alchemical Theater (AI scenes)                 │
-│  /weather        Daily cosmic weather forecast                  │
+│  /               Homepage with reading preview + pricing        │
+│  /discover       Birthday-first onboarding (radar + natal)      │
+│  /reading        Daily cosmic reading with dimension spotlight   │
+│  /sol            Friendly mode landing                          │
+│  /forecast/*     Personal daily forecasts                       │
+│  /weather        Daily cosmic weather                           │
+│  /history        Energy trend dashboard                         │
+│  /subscribe      SaaS pricing (Pro / Team)                      │
 │  /blog           SEO content articles                           │
 │  /learn          CMS content index                              │
-│  /subscribe      SaaS pricing (annual/monthly)                  │
-│  /squad          The three voices explained                     │
-│  /docs           Documentation index                            │
 └─────────────────────────────────────────────────────────────────┘
                               │
 ┌─────────────────────────────────────────────────────────────────┐
 │                  CLOUDFLARE PAGES FUNCTIONS                      │
 ├─────────────────────────────────────────────────────────────────┤
 │  /api/preview         Free 8D preview                           │
-│  /api/compute-full    Full 16D (calls Python backend)           │
-│  /api/weather         Cosmic weather                            │
+│  /api/compute-full    Full 16D analysis                         │
+│  /api/weather         Cosmic weather data                       │
 │  /api/cms/page        CMS content fetch                         │
 │  /api/cms/list        CMS content listing                       │
 │  /[lang]/dimension/*  Dynamic dimension guides                  │
 │  /[lang]/figure/*     Historical figure pages                   │
-│  /[lang]/jungian/*    Jungian concept pages                     │
 └─────────────────────────────────────────────────────────────────┘
                               │
 ┌───────────────┬─────────────┬───────────────┐
@@ -131,45 +130,53 @@ Based on the kappa coefficient (κ), your current coherence maps to alchemical s
 
 ---
 
-## Product Tiers
-
-| Tier | Price | Features |
-|------|-------|----------|
-| **Witness** | Free | Theater access, daily weather, basic check-ins |
-| **Pattern-Keeper** | $19/mo ($15/mo annual) | Full 16D readings, optimal windows, failure warnings |
-| **Circle** | $49/seat/mo ($39/seat annual) | Team dashboards, group coherence, facilitator tools |
-
-*7-day free trial for Pattern-Keeper. 14-day free trial for Circle.*
-
----
-
-## The 16 Dimensions
-
-### Inner Octave (Karma - Natal)
-
-| Mu | Symbol | Name | Question |
-|----|--------|------|----------|
-| μ₁ | P | Phase | Who am I becoming? |
-| μ₂ | E | Existence | What grounds me? |
-| μ₃ | μ | Cognition | How do I understand? |
-| μ₄ | V | Value | What do I treasure? |
-| μ₅ | N | Expansion | Where am I growing? |
-| μ₆ | Δ | Action | What am I doing? |
-| μ₇ | R | Relation | Who do I love? |
-| μ₈ | Φ | Field | What witnesses? |
-
-### Outer Octave (Dharma - Transits)
-
-The same 8 dimensions applied to current planetary transits, creating the full 16D signature.
-
----
-
-## Core Equations
+## Project Structure
 
 ```
-Λ(x) = Λ₀ · ln C(x)      # Lambda Field (coherence)
-ΔS = R · Ψ · C           # Transformation
-dS + k* d(ln C) = 0      # Conservation
+therealmofpatterns/
+├── src/
+│   ├── pages/              # Astro pages
+│   │   ├── index.astro     # Homepage
+│   │   ├── discover.astro  # Birthday-first onboarding
+│   │   ├── reading/        # Daily cosmic reading
+│   │   ├── forecast/       # Personal forecasts
+│   │   ├── weather/        # Cosmic weather
+│   │   ├── history.astro   # Energy trends
+│   │   ├── subscribe.astro # Pricing (Pro / Team)
+│   │   ├── sol/            # Friendly mode
+│   │   ├── kasra/          # Technical mode
+│   │   ├── river/          # Poetic mode
+│   │   ├── blog/           # SEO content
+│   │   └── en/             # SEO pages (dimensions, figures)
+│   │
+│   ├── components/         # React components
+│   │   ├── charts/         # Data visualizations
+│   │   │   ├── RadarChart.tsx    # 8D spider chart (SVG)
+│   │   │   └── NatalWheel.tsx    # Birth chart wheel (SVG)
+│   │   ├── discover/       # Onboarding flow
+│   │   │   ├── DiscoverFlow.tsx  # Birthday → preview → checkin
+│   │   │   └── PreviewResult.tsx # Radar + natal + archetype
+│   │   ├── reading/        # Daily reading components
+│   │   ├── checkin/        # Check-in flow
+│   │   ├── shared/         # Header, Footer, Streak, Email
+│   │   └── dashboard/      # Dashboard with gauges + sparklines
+│   │
+│   ├── lib/                # Core engines
+│   │   ├── 16d-engine.ts          # 8D/16D vector computation
+│   │   ├── ephemeris-fallback.ts  # Client-side planetary positions
+│   │   ├── transit-engine.ts      # Transit calculations
+│   │   ├── preview-compute.ts     # Client-side preview wrapper
+│   │   ├── prediction-calibration.ts  # ARL feedback learning
+│   │   └── history.ts             # localStorage history
+│   │
+│   ├── stores/             # Nanostores state management
+│   ├── layouts/            # Astro layouts
+│   └── styles/             # Global CSS + design tokens
+│
+├── functions/              # Cloudflare Pages Functions
+├── public/assets/          # Static assets (brand, riso illustrations)
+├── e2e/                    # Playwright e2e tests
+└── docs/                   # Documentation
 ```
 
 ---
@@ -188,7 +195,9 @@ npm run build
 
 # Deploy
 npm run deploy
-# or: npx wrangler pages deploy dist --project-name=therealmofpatterns
+
+# Run e2e tests
+E2E_STATIC_DIST=1 npx playwright test
 ```
 
 ---
@@ -197,87 +206,16 @@ npm run deploy
 
 | Document | Description |
 |----------|-------------|
-| [Architecture](docs/ARCHITECTURE.md) | System design and patterns |
-| [FRC Cosmology](docs/FRC-COSMOLOGY.md) | The operator system |
-| [Design Vision](docs/DESIGN-VISION.md) | Visual language |
-| [16D Spec](docs/16D-IMPLEMENTATION-SPEC.md) | Full mathematics |
+| [Design Vision](docs/DESIGN-VISION.md) | Visual language and mode specifications |
 | [API Reference](docs/API.md) | Endpoint documentation |
-| [Content Strategy](docs/CONTENT-STRATEGY-2026.md) | Multi-language CMS |
-
-### Squad Specs
-
-Deep-dive specifications in [docs/squad/](docs/squad/):
-- Vision & Identity
-- Design System
-- Technical Architecture
-- FRC Translation
-- Diamond Ontology
-
----
-
-## Project Structure
-
-```
-therealmofpatterns/
-├── src/
-│   ├── pages/              # Astro pages
-│   │   ├── index.astro     # Homepage (3-mode)
-│   │   ├── discover.astro  # Birthday-first onboarding
-│   │   ├── kasra/          # Technical mode
-│   │   ├── river/          # Archetypal mode
-│   │   ├── sol/            # Friendly mode
-│   │   ├── stage/          # Alchemical stages
-│   │   ├── theater/        # AI-generated scenes
-│   │   ├── weather/        # Cosmic weather
-│   │   ├── blog/           # SEO content
-│   │   ├── learn/          # CMS index
-│   │   ├── subscribe.astro # Pricing (annual/monthly)
-│   │   ├── squad/          # The three voices
-│   │   ├── docs/           # Documentation
-│   │   └── en/             # SEO pages (dimensions, figures, jungian)
-│   │
-│   ├── components/         # React components
-│   │   ├── discover/       # Birthday-first onboarding flow
-│   │   │   ├── DiscoverFlow.tsx         # Orchestrator (birth → preview → checkin)
-│   │   │   └── PreviewResult.tsx        # 8D preview with archetype match
-│   │   ├── shared/         # Header, Footer, Onboarding, etc.
-│   │   │   ├── CalibrationDashboard.tsx  # Prediction accuracy stats
-│   │   │   ├── HistoryDashboard.tsx      # Trend visualizations
-│   │   │   ├── StreakBadge.tsx           # Gamification badge
-│   │   │   └── EmailCapture.tsx          # Newsletter signup
-│   │   ├── kasra/          # Technical UI
-│   │   ├── river/          # Mystical UI
-│   │   └── sol/            # Friendly UI
-│   │
-│   ├── layouts/            # Astro layouts
-│   ├── hooks/              # React hooks (useError, etc.)
-│   ├── stores/             # Nanostores state management
-│   │   ├── app.ts          # Mode, stage, language
-│   │   └── forecast.ts     # Forecast state + history persistence
-│   └── lib/                # Utilities, 16D engine
-│       ├── 16d-engine.ts   # Core 16D vector computation
-│       ├── history.ts      # localStorage history tracking
-│       └── prediction-calibration.ts  # ARL feedback learning
-│
-├── functions/              # Cloudflare Pages Functions
-│   ├── api/                # REST endpoints
-│   └── [lang]/             # Dynamic CMS routes
-│
-├── public/                 # Static assets
-│   └── assets/brand/       # Logo, images
-│
-├── docs/                   # Documentation
-│   └── squad/              # Detailed specs
-│
-└── content/                # CMS content configs
-```
+| [Content Strategy](docs/CONTENT-STRATEGY-2026.md) | Multi-language CMS plan |
 
 ---
 
 ## Philosophy
 
-> The cosmos encoded a unique signature at your birth.
-> This signature is not fate—it's frequency.
+> The cosmos encoded a pattern at your birth.
+> This pattern is not fate — it's a starting point.
 > You can tune yourself.
 > The field responds to attention.
 
@@ -288,7 +226,3 @@ The journey is yours.
 ---
 
 **The algorithm is open. The transformation is yours.**
-
----
-
-*FRC 893 Series by Hadi Servat*

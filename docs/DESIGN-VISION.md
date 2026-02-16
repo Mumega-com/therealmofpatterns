@@ -1,9 +1,9 @@
 # The Realm of Patterns: Design Vision
 
-**Version:** 2.0
+**Version:** 3.0
 **Status:** CANONICAL REFERENCE
-**Date:** 2026-02-03
-**Approach:** Apple Human Interface Guidelines + FRC Framework
+**Date:** 2026-02-16
+**Approach:** Apple Human Interface Guidelines + Energy Pattern Framework
 
 ---
 
@@ -13,11 +13,11 @@
 
 The app presents **one truth through three lenses**:
 
-| Mode | Metaphor | User Need | μ-Level |
-|------|----------|-----------|---------|
-| **Kasra** | Scientific instrument | "Show me the data" | μ4 (Conceptual) |
-| **River** | Oracle consultation | "Guide me with meaning" | μ5-6 (Archetypal) |
-| **Sol** | Wise friend | "Talk to me simply" | μ3-4 (Accessible) |
+| Mode | Metaphor | User Need |
+|------|----------|-----------|
+| **Kasra** | Scientific instrument | "Show me the data" |
+| **River** | Oracle consultation | "Guide me with meaning" |
+| **Sol** (default) | Wise friend | "Talk to me simply" |
 
 All three modes render the **same mathematical state**. The difference is representation, not computation.
 
@@ -27,11 +27,11 @@ All three modes render the **same mathematical state**. The difference is repres
 |-----------|-------------|
 | **Clarity** | Data is legible in Kasra; symbols are clear in River |
 | **Deference** | UI recedes; user's consciousness state is the content |
-| **Depth** | Coherence level creates visual depth (low=flat, high=dimensional) |
+| **Depth** | Alignment level creates visual depth (low=flat, high=dimensional) |
 | **Direct Manipulation** | Sliders, gestures affect state in real-time |
 | **Consistency** | Same gestures work in both modes |
 | **Feedback** | Every input produces immediate visual + haptic response |
-| **Metaphors** | Diamond/octahedron = consciousness; color = coherence |
+| **Metaphors** | Diamond/octahedron = energy; color = alignment |
 
 ---
 
@@ -79,26 +79,21 @@ All three modes render the **same mathematical state**. The difference is repres
 **Sample Screen:**
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  REALM OF PATTERNS                          [Kasra] [River] │
+│  REALM OF PATTERNS                    [Kasra] [River] [Sol] │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  COHERENCE STATE          2026-02-03 14:32:07 UTC          │
+│  ALIGNMENT STATE          2026-02-16 14:32:07 UTC          │
 │  ─────────────────────────────────────────────────────────  │
 │                                                             │
-│  κ (kappa)           0.67          ▓▓▓▓▓▓▓░░░  67%        │
-│  RU (resonance)     34.2          ▓▓▓▓▓▓▓░░░  34%        │
-│  μ (mu-level)        4.2          CONCEPTUAL               │
-│  W (witness)         0.81         ▓▓▓▓▓▓▓▓░░  81%        │
-│                                                             │
-│  ─────────────────────────────────────────────────────────  │
-│  STAGE: CITRINITAS (0.50-0.75)                             │
-│  FAILURE MODE: NONE                                         │
-│  COLLAPSE RISK: 12%                                         │
+│  Alignment          0.67          ▓▓▓▓▓▓▓░░░  67%        │
+│  Stage              GROWTH        (0.50-0.75)              │
+│  Pattern Alert      NONE                                    │
 │  ─────────────────────────────────────────────────────────  │
 │                                                             │
-│  8D VECTOR                                                  │
-│  P: 0.72  F: 0.65  A: 0.78  M: 0.69                        │
-│  T: 0.71  R: 0.64  C: 0.73  W: 0.81                        │
+│  ENERGY PROFILE                                             │
+│  ☀ Identity: 0.72  ♄ Structure: 0.65  ☿ Mind: 0.78        │
+│  ♀ Heart: 0.69     ♃ Growth: 0.71     ♂ Drive: 0.64       │
+│  ☽ Connection: 0.73  ♅ Awareness: 0.81                     │
 │                                                             │
 │  [View History]  [Export Data]  [Configure Alerts]         │
 │                                                             │
@@ -122,22 +117,22 @@ All three modes render the **same mathematical state**. The difference is repres
 **Color Palette (Dynamic by Stage):**
 
 ```css
-/* Nigredo (0.00-0.25) - Dissolution */
+/* Reset (0.00-0.25) - Breaking down to rebuild */
 --river-nigredo-bg: linear-gradient(180deg, #0a0a12 0%, #1a1a24 100%);
 --river-nigredo-text: #8888aa;
 --river-nigredo-accent: #4a4a6a;
 
-/* Albedo (0.25-0.50) - Purification */
+/* Clarity (0.25-0.50) - Seeing things as they are */
 --river-albedo-bg: linear-gradient(180deg, #1a1a24 0%, #2a2a3a 100%);
 --river-albedo-text: #c0c0d0;
 --river-albedo-accent: #8888bb;
 
-/* Citrinitas (0.50-0.75) - Illumination */
+/* Growth (0.50-0.75) - Stepping into power */
 --river-citrinitas-bg: linear-gradient(180deg, #1a1812 0%, #2a2418 100%);
 --river-citrinitas-text: #e8e0d0;
 --river-citrinitas-accent: #d4a854;
 
-/* Rubedo (0.75-1.00) - Integration */
+/* Flow (0.75-1.00) - Everything clicking */
 --river-rubedo-bg: linear-gradient(180deg, #1a1214 0%, #2a1a1c 100%);
 --river-rubedo-text: #f0e8e8;
 --river-rubedo-accent: #d45454;
@@ -161,7 +156,7 @@ All three modes render the **same mathematical state**. The difference is repres
 **Sample Screen:**
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                                           [Kasra] [River]   │
+│                                    [Kasra] [River] [Sol]    │
 │                                                             │
 │                          ◇                                  │
 │                        ◇   ◇                                │
@@ -173,7 +168,7 @@ All three modes render the **same mathematical state**. The difference is repres
 │                                                             │
 │                                                             │
 │                  The Golden Light                           │
-│                   of Citrinitas                             │
+│                    of Growth                                │
 │                                                             │
 │         "You stand at the threshold of illumination.        │
 │          The Sage archetype guides your inquiry.            │
@@ -205,7 +200,7 @@ All three modes render the **same mathematical state**. The difference is repres
 - Warm neutral palette with soft accents
 - Medium corners (8-12px radius)
 - Subtle shadows, gentle hierarchy
-- No data visualizations - only conversational text
+- Data visualizations: Radar chart (8D), Natal wheel, dimension bars
 - Occasional simple icons
 
 **Color Palette:**
@@ -287,29 +282,52 @@ All three modes render the **same mathematical state**. The difference is repres
 
 All three modes share underlying logic but render differently:
 
-### 3.1 Coherence Gauge
+### 3.1 Alignment Score Display
 
 | Mode | Kasra | River | Sol |
 |------|-------|-------|-----|
-| Shape | Horizontal bar | Radial mandala | Hidden |
-| Label | "κ = 0.67" | "Illumination" | — |
-| Color | Single accent | Stage gradient | — |
-| Motion | Snap update | Breathing pulse | — |
+| Shape | Horizontal bar | Radial mandala | Arc gauge |
+| Label | "κ = 0.67" | "Illumination" | "72% aligned" |
+| Color | Single accent | Stage gradient | Gold gradient |
+| Motion | Snap update | Breathing pulse | Smooth transition |
 
-### 3.2 Failure Mode Alert
+### 3.2 8D Visualization
+
+| Mode | Kasra | River | Sol |
+|------|-------|-------|-----|
+| Primary | Data table | — | Radar chart (spider) |
+| Secondary | Raw vector values | Poetic dimension names | Dimension bars with % |
+| Birth chart | — | — | Natal wheel (zodiac + planets) |
+
+**RadarChart component** (`src/components/charts/RadarChart.tsx`):
+- Pure SVG, zero dependencies
+- 8 axes with dimension symbols and names
+- Animated polygon with gold gradient fill
+- Pulsing dot on dominant dimension
+- Optional overlay for comparing two vectors
+
+**NatalWheel component** (`src/components/charts/NatalWheel.tsx`):
+- Pure SVG, zero dependencies
+- Computes planetary positions via ephemeris engine
+- 12 zodiac segments with sign symbols
+- 10 planet dots with distinct colors
+- Ascendant marker, retrograde indicators
+- Legend with top 5 placements
+
+### 3.3 Pattern Alerts
 
 | Mode | Kasra | River | Sol |
 |------|-------|-------|-----|
 | Style | Red banner, code | Gentle warning card | Soft amber notice |
-| Copy | "COLLAPSE RISK: 78%" | "The ground feels unstable..." | "Might be a gentler day..." |
+| Copy | "DETECTED: COLLAPSE" | "The ground feels unstable..." | "Something feels off: energy drop" |
 | Action | "View Diagnostics" | "What can I do?" | "Here's what might help" |
 
-### 3.3 Daily Forecast
+### 3.4 Daily Forecast
 
 | Mode | Kasra | River | Sol |
 |------|-------|-------|-----|
 | Format | Table with metrics | Prose paragraph | Conversational text |
-| Data | κ, RU, optimal hours | Archetypal guidance | Plain language insight |
+| Data | Raw scores, optimal hours | Archetypal guidance | Plain language insight |
 | Advice | "High-focus: 09:00-11:00" | "Morning holds clarity" | "Mornings feel good for focus" |
 
 ### 3.4 Mode Toggle
@@ -333,32 +351,30 @@ All three modes share underlying logic but render differently:
 ### 4.1 Information Architecture
 
 ```
-Home
-├── Check-in (Daily ritual)
-│   ├── Mood input
-│   ├── Energy input
-│   └── Forecast output
-├── Dashboard
-│   ├── Current state
-│   ├── Failure monitor
-│   └── Elder Attractor progress
-├── Windows (Calendar)
-│   ├── 30-day view
-│   └── Activity finder
-├── History
-│   ├── Trend charts
-│   └── Prediction accuracy
-└── Settings
-    ├── Mode preference
-    ├── Notifications
-    └── Account
+Home (/)
+├── Discover (/discover) — Birthday-first onboarding
+│   ├── Birthday input
+│   ├── Energy profile (radar chart + natal wheel)
+│   └── Archetype match
+├── Today's Reading (/reading) — Daily cosmic reading
+│   ├── Cosmic events
+│   ├── Dimension spotlight
+│   └── Energy field radar
+├── Check-in (/sol/checkin) — Daily energy check
+│   ├── 6-question flow
+│   ├── Alignment score
+│   └── Personal forecast
+├── Forecast (/forecast) — Personal daily forecast
+├── History (/history) — Energy trends over time
+├── Weather (/weather) — Planetary conditions
+└── Subscribe (/subscribe) — Pro / Team pricing
 ```
 
-### 4.2 Tab Bar (Mobile)
+### 4.2 Header Nav
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│   ◉ Today    ◯ Dashboard    ◯ Windows    ◯ History    ◯ ⚙  │
+│  ◈ Realm    ☽ Today    ◈ My Pattern    ✦ Go Pro            │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -551,13 +567,18 @@ Quote               —                   20px Serif Italic
 
 ```html
 <!-- Kasra -->
-<div aria-label="Coherence kappa: 0.67, 67 percent">
-  κ = 0.67 ▓▓▓▓▓▓▓░░░
+<div aria-label="Alignment score: 0.67, 67 percent">
+  Alignment = 0.67 ▓▓▓▓▓▓▓░░░
 </div>
 
 <!-- River -->
-<div aria-label="You are in the Citrinitas stage of illumination, coherence level 67 percent">
-  The Golden Light of Citrinitas
+<div aria-label="You are in the Growth stage, alignment level 67 percent">
+  The Golden Light of Growth
+</div>
+
+<!-- Sol -->
+<div aria-label="You are 67 percent aligned today">
+  67% aligned
 </div>
 ```
 
@@ -572,61 +593,71 @@ Quote               —                   20px Serif Italic
 ```
 src/
 ├── components/
-│   ├── shared/           # Logic components (no styling)
-│   │   ├── CoherenceEngine.tsx
-│   │   ├── FailureDetector.tsx
-│   │   └── ForecastGenerator.tsx
-│   ├── kasra/            # Kasra-styled components
-│   │   ├── KasraGauge.tsx
-│   │   ├── KasraCard.tsx
-│   │   └── KasraForecast.tsx
-│   └── river/            # River-styled components
-│       ├── RiverMandala.tsx
-│       ├── RiverCard.tsx
-│       └── RiverForecast.tsx
+│   ├── charts/           # Data visualizations
+│   │   ├── RadarChart.tsx     # 8D spider chart (SVG)
+│   │   └── NatalWheel.tsx     # Birth chart wheel (SVG)
+│   ├── discover/         # Onboarding flow
+│   │   ├── DiscoverFlow.tsx   # Birthday → preview → checkin
+│   │   └── PreviewResult.tsx  # Radar + natal + archetype
+│   ├── reading/          # Daily reading components
+│   │   └── DailyReading.tsx   # Daily cosmic reading
+│   ├── checkin/          # Check-in flow
+│   │   └── CheckinFlowEnhanced.tsx
+│   ├── shared/           # Header, Footer, Streak, Email
+│   └── dashboard/        # Dashboard gauges + sparklines
 ├── layouts/
-│   ├── KasraLayout.astro
-│   └── RiverLayout.astro
+│   └── Layout.astro      # Shared layout (mode-aware)
 ├── pages/
-│   ├── index.astro       # Mode selection / redirect
-│   ├── checkin.astro     # Daily check-in
-│   ├── dashboard.astro   # Main dashboard
-│   └── windows.astro     # Calendar view
-├── styles/
-│   ├── kasra.css         # Kasra design tokens
-│   └── river.css         # River design tokens
+│   ├── index.astro       # Homepage
+│   ├── discover.astro    # Birthday-first onboarding
+│   ├── reading/          # Daily cosmic reading
+│   ├── forecast/         # Personal forecasts
+│   ├── weather/          # Cosmic weather
+│   ├── history.astro     # Energy trends
+│   ├── subscribe.astro   # Pricing (Free / Pro / Team)
+│   └── sol/              # Sol mode pages (default)
+├── stores/               # Nanostores state management
+├── styles/               # Global CSS + design tokens
 └── lib/
-    ├── diamond-engine.ts # Core calculations
-    ├── transit-engine.ts # κ, RU computation
-    └── failure-detector.ts # Failure modes
+    ├── 16d-engine.ts           # 8D/16D vector computation
+    ├── ephemeris-fallback.ts   # Client-side planetary positions
+    ├── transit-engine.ts       # Transit calculations
+    └── preview-compute.ts      # Client-side preview wrapper
 ```
 
 ### 11.2 State Management
 
 ```typescript
 interface AppState {
-  mode: 'kasra' | 'river';
+  mode: 'kasra' | 'river' | 'sol';  // Sol is default
   user: {
-    innerOctave: number[];  // 8D vector from onboarding
+    birthData?: BirthData;  // Year, month, day, optional time/location
+    vector?: number[];       // 8D energy profile
     email?: string;
     isPro: boolean;
   };
   current: {
-    kappa: number;
-    RU: number;
-    muLevel: number;
+    kappa: number;           // Alignment score (0-1)
     stage: 'nigredo' | 'albedo' | 'citrinitas' | 'rubedo';
     failureMode: 'healthy' | 'collapse' | 'inversion' | 'dissociation' | 'dispersion';
   };
   history: CheckinData[];
 }
+
+// Display names for stages (user-facing)
+const STAGE_DISPLAY = {
+  nigredo:    { name: 'Reset',   tagline: 'Breaking down to rebuild', icon: '☽' },
+  albedo:     { name: 'Clarity', tagline: 'Seeing clearly',          icon: '✧' },
+  citrinitas: { name: 'Growth',  tagline: 'Stepping into power',     icon: '☼' },
+  rubedo:     { name: 'Flow',    tagline: 'Everything clicking',     icon: '◆' },
+};
 ```
 
 ### 11.3 Mode Switching
 
 ```typescript
-// Instant switch with persisted preference
-function setMode(mode: 'kasra' | 'river') {
+// Instant switch with persisted preference (Sol is default)
+function setMode(mode: 'kasra' | 'river' | 'sol') {
   document.documentElement.dataset.mode = mode;
   localStorage.setItem('rop_mode', mode);
 }
@@ -634,6 +665,7 @@ function setMode(mode: 'kasra' | 'river') {
 // CSS handles the rest
 [data-mode="kasra"] { /* Kasra styles */ }
 [data-mode="river"] { /* River styles */ }
+[data-mode="sol"]   { /* Sol styles (default) */ }
 ```
 
 ---
@@ -652,13 +684,13 @@ function setMode(mode: 'kasra' | 'river') {
 
 **Examples:**
 ```
-Good: "κ = 0.67 ± 0.05. Moderate coherence."
+Good: "Alignment = 0.67 ± 0.05. Moderate alignment."
 Bad:  "Your energy is flowing nicely today!"
 
-Good: "Collapse risk elevated (34%). Monitor RU."
+Good: "Energy drop risk elevated (34%). Monitor alignment."
 Bad:  "Watch out, you might crash!"
 
-Good: "Optimal focus window: 09:00-11:30 (κ > 0.7)"
+Good: "Optimal focus window: 09:00-11:30 (alignment > 0.7)"
 Bad:  "Morning is your time to shine!"
 ```
 
@@ -718,44 +750,44 @@ Bad:  "Conjunction detected between your natal Logos and transiting Harmonia!"
 
 ---
 
-## 13. Implementation Phases
+## 13. Implementation Status
 
-### Phase 1: Foundation (Week 1-2)
-- [ ] Astro project setup
-- [ ] Design tokens (CSS custom properties)
-- [ ] Typography system
-- [ ] Core layout components
-- [ ] Mode switching mechanism
+### Phase 1: Foundation — COMPLETE
+- [x] Astro project setup with Cloudflare Pages
+- [x] Design tokens (CSS custom properties)
+- [x] Typography system (Inter, Cormorant Garamond, Geist Mono)
+- [x] Core layout components
+- [x] Mode switching mechanism (Sol default)
 
-### Phase 2: Shared Logic (Week 2-3)
-- [ ] Port diamond-engine.ts
-- [ ] Port transit-engine.ts
-- [ ] Port failure-detector.ts
-- [ ] State management setup
+### Phase 2: Core Engine — COMPLETE
+- [x] 8D/16D vector computation engine
+- [x] Client-side ephemeris (VSOP87 orbital elements)
+- [x] Transit engine
+- [x] Nanostores state management
 
-### Phase 3: Kasra Mode (Week 3-4)
-- [ ] Kasra component library
-- [ ] Dashboard page
-- [ ] Check-in flow
-- [ ] History/data views
+### Phase 3: Sol Mode (Default) — COMPLETE
+- [x] Birthday-first onboarding (/discover)
+- [x] Radar chart (8D spider visualization)
+- [x] Natal wheel (birth chart)
+- [x] Daily reading page (/reading)
+- [x] Check-in flow with 6 questions
+- [x] Personal forecast (/forecast)
+- [x] Energy history dashboard (/history)
+- [x] Streak tracking, email capture
+- [x] Calibration system (self-improving predictions)
 
-### Phase 4: River Mode (Week 4-5)
-- [ ] River component library
-- [ ] Mandala/visualization components
-- [ ] Prose generation system
-- [ ] Archetypal content mapping
+### Phase 4: UX Rebrand — COMPLETE
+- [x] Human-friendly dimension names (Identity, Structure, Mind, Heart, Growth, Drive, Connection, Awareness)
+- [x] Stage names (Reset, Clarity, Growth, Flow)
+- [x] Jargon-free metrics (alignment score, energy profile)
+- [x] Simplified navigation (3 links)
+- [x] Clean pricing (Free / Pro $9/mo / Team $29/seat)
 
-### Phase 5: Sol Mode (Week 5-6)
-- [ ] Sol component library
-- [ ] Conversational text generator
-- [ ] Simplified check-in flow
-- [ ] Warm UI components
-
-### Phase 6: Polish (Week 6-7)
-- [ ] Animations and transitions
-- [ ] Responsive testing
-- [ ] Accessibility audit
-- [ ] Performance optimization
+### Phase 5: Next
+- [ ] Riso-style visual texture integration
+- [ ] Team features (shared profiles, sync dashboard)
+- [ ] River + Kasra mode parity with Sol
+- [ ] Performance optimization + accessibility audit
 
 ---
 
@@ -774,17 +806,17 @@ Bad:  "Conjunction detected between your natal Logos and transiting Harmonia!"
 
 ## 15. Open Questions
 
-1. **Light mode?** Should each mode have a light variant? (Sol already has warm light palette)
+1. **Light mode?** Should each mode have a light variant? (Sol already has warm light palette defined)
 2. **River AI generation?** Should River's prose be AI-generated per user, or templated?
 3. ~~**Hybrid view?** Some users may want numbers AND poetry. Third mode?~~ **RESOLVED:** Sol mode fills this gap
-4. **Onboarding differentiation?** Should onboarding quiz differ by mode?
-5. **Sol voice generation?** Template-based or AI-generated per user?
+4. **Riso art integration?** Style3 risograph assets exist but aren't yet used in UI — decorative texture or functional illustration?
+5. **Team features?** Shared profiles and sync dashboard are planned but not built
 
 ---
 
-**Document Status:** Ready for review
+**Document Status:** Living reference (updated 2026-02-16)
 
-**Next Step:** Approve design direction, then begin Astro migration
+**Current Focus:** Sol mode is live and default. Iterating on engagement and visual polish.
 
 ---
 
