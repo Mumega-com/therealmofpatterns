@@ -34,14 +34,14 @@ export interface DimensionInfo {
 }
 
 export const DIMENSION_METADATA: Omit<DimensionInfo, 'value' | 'shadow' | 'rank'>[] = [
-  { index: 0, symbol: '☀', name: 'Identity', domain: 'Self-expression, confidence', ruler: 'Sun' },
-  { index: 1, symbol: '♄', name: 'Structure', domain: 'Stability, discipline', ruler: 'Saturn' },
-  { index: 2, symbol: '☿', name: 'Mind', domain: 'Communication, learning', ruler: 'Mercury' },
-  { index: 3, symbol: '♀', name: 'Heart', domain: 'Love, beauty, harmony', ruler: 'Venus' },
-  { index: 4, symbol: '♃', name: 'Growth', domain: 'Exploration, meaning', ruler: 'Jupiter' },
-  { index: 5, symbol: '♂', name: 'Drive', domain: 'Energy, action, courage', ruler: 'Mars' },
-  { index: 6, symbol: '☽', name: 'Connection', domain: 'Relationships, empathy', ruler: 'Moon' },
-  { index: 7, symbol: '♅', name: 'Awareness', domain: 'Intuition, presence', ruler: 'Uranus/Neptune' },
+  { index: 0, symbol: 'P', name: 'Phase', domain: 'Identity, Will', ruler: 'Sun' },
+  { index: 1, symbol: 'E', name: 'Existence', domain: 'Structure, Form', ruler: 'Saturn' },
+  { index: 2, symbol: 'μ', name: 'Cognition', domain: 'Mind, Communication', ruler: 'Mercury' },
+  { index: 3, symbol: 'V', name: 'Value', domain: 'Beauty, Harmony', ruler: 'Venus' },
+  { index: 4, symbol: 'N', name: 'Narrative', domain: 'Expansion, Growth', ruler: 'Jupiter' },
+  { index: 5, symbol: 'Δ', name: 'Action', domain: 'Force, Movement', ruler: 'Mars' },
+  { index: 6, symbol: 'R', name: 'Relation', domain: 'Connection, Care', ruler: 'Moon' },
+  { index: 7, symbol: 'Φ', name: 'Field', domain: 'Witness, Unity', ruler: 'Uranus/Neptune' },
 ];
 
 // ============================================

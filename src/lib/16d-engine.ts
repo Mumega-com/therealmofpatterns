@@ -118,9 +118,9 @@ export function compute8D(longitudes: number[]): Vector8D {
     }
   }
 
-  // Normalize to 0-1 range
-  const maxVal = Math.max(...dims);
-  const normalized = dims.map((d) => d / maxVal) as Vector8D;
+  // Normalize to unit sphere (L2 norm)
+  const magnitude = Math.sqrt(dims.reduce((sum, val) => sum + val * val, 0));
+  const normalized = dims.map((d) => d / magnitude) as Vector8D;
 
   return normalized;
 }

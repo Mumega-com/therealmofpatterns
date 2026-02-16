@@ -98,23 +98,23 @@ Where the Operators express themselves:
 | # | Dim | Name | Domain | Question |
 |---|-----|------|--------|----------|
 | 1 | **P** | Potential/Phase | Identity, Will | "Who am I becoming?" |
-| 2 | **F** | Form/Existence | Structure, Body | "What is manifest?" |
-| 3 | **A** | Awareness/Cognition | Mind, Perception | "What do I know?" |
-| 4 | **M** | Meaning/Value | Pattern, Worth | "What matters?" |
-| 5 | **T** | Telos/Purpose | Direction, Goals | "Where am I going?" |
-| 6 | **R** | Response/Sentiment | Action, Emotion | "How do I act?" |
+| 2 | **E** | Existence/Structure | Structure, Body | "What is manifest?" |
+| 3 | **μ** | Cognition/Mind | Mind, Perception | "What do I know?" |
+| 4 | **V** | Value/Beauty | Pattern, Worth | "What matters?" |
+| 5 | **N** | Narrative/Growth | Direction, Goals | "Where am I going?" |
+| 6 | **Δ** | Action/Momentum | Action, Emotion | "How do I act?" |
 | 7 | **C** | Connection/Relation | Bonds, Others | "Who am I with?" |
-| 8 | **W** | Witness/Field | Awareness, Unity | "Who observes?" |
+| 8 | **Φ** | Field/Witness | Awareness, Unity | "Who observes?" |
 
 ### 3.1 Dimension Pairs (Axes)
 
 The 8 dimensions form 4 complementary axes:
 
 ```
-      P ←——————→ F      (Potential ↔ Form)
-      A ←——————→ M      (Awareness ↔ Meaning)
-      T ←——————→ R      (Purpose ↔ Response)
-      C ←——————→ W      (Connection ↔ Witness)
+      P ←——————→ E      (Potential ↔ Form)
+      μ ←——————→ V      (Awareness ↔ Meaning)
+      N ←——————→ Δ      (Purpose ↔ Response)
+      R ←——————→ Φ      (Connection ↔ Witness)
 ```
 
 ---
