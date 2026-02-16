@@ -272,4 +272,97 @@ PRACTICES
 
 ---
 
-**This document is the blueprint. Start with 6.1 (immediate tasks), then build toward the autonomous agent pipeline.**
+---
+
+## 9. The Hero's Journey System
+
+### 9.1 Core Concept
+
+Every user has a personalized Hero's Journey. Their 8D profile defines their archetype (which hero they are), their alignment score tracks where they are on the journey, and their weakest dimension reveals their shadow — the inner challenge they must face.
+
+The journey isn't a metaphor layered on top. It's the actual structure of self-discovery, driven by real data from the 16D system.
+
+### 9.2 The Eight Stages
+
+| Stage | Name | Product Trigger | What the User Sees |
+|-------|------|----------------|-------------------|
+| 1 | **Ordinary World** | User enters birth data on /discover | 8D profile + archetype assignment: "You are The Sage" |
+| 2 | **Call to Adventure** | First forecast/alert | "A dispersion pattern is likely today" — the app sees something |
+| 3 | **Meeting the Mentor** | Mode selection (Sol default for MVP) | Sol guides the journey. River/Kasra unlock later as alternate mentors |
+| 4 | **Crossing the Threshold** | First daily check-in | Commitment made. Streak begins. Active participant now |
+| 5 | **Tests, Allies & Enemies** | Daily engagement loop (days 2-14) | Tests: navigating predicted difficult days. Allies: leveraging archetype strengths on high-alignment days. Enemies: first hints of shadow dimensions |
+| 6 | **The Ordeal** | ARL has 14+ days of data | Major insight: "When your Connection drops, you tend toward self-sabotage. Let's explore this shadow." Targeted content unlocks |
+| 7 | **The Reward** | User recognizes shadow pattern before it takes over | "You saw it coming and named it." The sword is awareness, not wellness |
+| 8 | **Resurrection & Return** | Shadow pattern mastered, baseline alignment rises | Next-weakest dimension surfaces. Journey spirals. New ring on the map |
+
+### 9.3 Progressive Unlock System
+
+Users don't see the full map on day 1. The journey reveals itself:
+
+```
+Day 1:   Archetype + current position on journey → "You are here"
+Day 3:   Dominant dimension deep-dive unlocks
+Day 7:   Weakest dimension revealed (shadow teaser)
+Day 14:  Shadow dimension deep-dive + first practice unlocks (The Ordeal)
+Day 21:  Stage transition visible (e.g., Clarity → Growth)
+Day 30:  Full journey map visible with all stages
+```
+
+Each unlock is a content piece. Each content piece links to the knowledge graph. The user only sees what they're ready for.
+
+### 9.4 Archetype System
+
+The 8D vector maps to archetypes based on dominant dimensions:
+
+| Dominant Dimension(s) | Archetype | Shadow | Journey Flavor |
+|-----------------------|-----------|--------|---------------|
+| Identity (high) | The Hero | Ego inflation, narcissism | Quest for authentic power vs. ego |
+| Structure (high) | The Ruler | Rigidity, control | Quest for order vs. letting go |
+| Mind (high) | The Sage | Overthinking, detachment | Quest for truth vs. paralysis |
+| Heart (high) | The Lover/Creator | Codependency, vanity | Quest for beauty vs. self-worth |
+| Growth (high) | The Explorer | Excess, restlessness | Quest for meaning vs. grounding |
+| Drive (high) | The Warrior | Aggression, burnout | Quest for will vs. surrender |
+| Connection (high) | The Caregiver | Enmeshment, martyrdom | Quest for love vs. boundaries |
+| Awareness (high) | The Mystic | Dissociation, escapism | Quest for transcendence vs. embodiment |
+
+Shadow = the user's weakest dimension, which defines the specific challenge within their archetype's journey.
+
+### 9.5 The Journey Map (UI Component)
+
+A visual spiral/path showing:
+- **Starting point:** archetype's home position
+- **Current position:** pulsing dot based on alignment + stage
+- **Next step:** dimly lit, inviting but not revealed
+- **Past milestones:** check-ins, breakthroughs, stage transitions
+- **Shadow territory:** darker region entered during The Ordeal
+- **Mastered shadows:** completed rings (journey spirals — after one shadow, the next surfaces)
+
+### 9.6 The Spiral
+
+The journey doesn't end. After mastering one shadow (weakest dimension), the next-weakest surfaces. The map adds a new ring. Each cycle goes deeper. This is lifetime retention:
+
+```
+Cycle 1: Shadow of Structure (weakest dimension) → integrate → baseline rises
+Cycle 2: Shadow of Drive (next weakest) → integrate → baseline rises again
+Cycle 3: Shadow of Mind → ...
+```
+
+Each cycle is a complete Hero's Journey with its own Ordeal, Reward, and Return.
+
+### 9.7 MVP Scope (English + Sol Only)
+
+**Build now (Stages 1-5 + Map):**
+- Archetype engine: 8D vector → archetype assignment
+- Journey state machine: concrete triggers determine stage
+- Journey Map SVG component: visual path with user's position
+- Progressive unlock gates: content visibility per stage
+- Manual Sol-voice content for each archetype × each visible stage
+
+**Build after launch (Stages 6-8):**
+- Shadow reveal system (needs 14+ days of ARL data)
+- Recognition moments (pattern awareness detection)
+- Journey spiral (next shadow cycle)
+
+---
+
+**This document is the blueprint. Start with the Hero's Journey MVP (Section 9.7), then build toward the autonomous agent content pipeline (Sections 5-6).**
