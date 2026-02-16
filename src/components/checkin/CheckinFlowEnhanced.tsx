@@ -129,7 +129,7 @@ const LABELS = {
     progress: 'Check-in Progress',
     skip: 'Skip this one',
     complete: 'All done!',
-    kappa: 'Your Score',
+    kappa: 'Your Energy Today',
     coherence: 'How aligned you are',
     retry: 'Start Over',
     dashboard: 'See Dashboard',
@@ -497,7 +497,12 @@ function ResultsView({
             <div className="alert-title">
               {mode === 'kasra' ? `DETECTED: ${results.failureMode.toUpperCase()}` :
                mode === 'river' ? `Pattern disturbance: ${results.failureMode}` :
-               `Something feels off: ${results.failureMode}`}
+               `Something feels off: ${
+                 results.failureMode === 'collapse' ? 'energy drop' :
+                 results.failureMode === 'inversion' ? 'off-balance' :
+                 results.failureMode === 'dissociation' ? 'disconnected' :
+                 results.failureMode === 'dispersion' ? 'scattered' :
+                 results.failureMode}`}
             </div>
             <div className="alert-desc">
               {getFailureModeAdvice(results.failureMode, mode)}

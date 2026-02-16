@@ -34,14 +34,14 @@ export interface DimensionInfo {
 }
 
 export const DIMENSION_METADATA: Omit<DimensionInfo, 'value' | 'shadow' | 'rank'>[] = [
-  { index: 0, symbol: 'P', name: 'Phase', domain: 'Identity, Will', ruler: 'Sun' },
-  { index: 1, symbol: 'E', name: 'Existence', domain: 'Structure, Form', ruler: 'Saturn' },
-  { index: 2, symbol: 'μ', name: 'Cognition', domain: 'Mind, Communication', ruler: 'Mercury' },
-  { index: 3, symbol: 'V', name: 'Value', domain: 'Beauty, Harmony', ruler: 'Venus' },
-  { index: 4, symbol: 'N', name: 'Expansion', domain: 'Growth, Meaning', ruler: 'Jupiter' },
-  { index: 5, symbol: 'Δ', name: 'Delta/Action', domain: 'Force, Movement', ruler: 'Mars' },
-  { index: 6, symbol: 'R', name: 'Relation', domain: 'Connection, Care', ruler: 'Moon' },
-  { index: 7, symbol: 'Φ', name: 'Field', domain: 'Witness, Unity', ruler: 'Uranus/Neptune' },
+  { index: 0, symbol: '☀', name: 'Identity', domain: 'Self-expression, confidence', ruler: 'Sun' },
+  { index: 1, symbol: '♄', name: 'Structure', domain: 'Stability, discipline', ruler: 'Saturn' },
+  { index: 2, symbol: '☿', name: 'Mind', domain: 'Communication, learning', ruler: 'Mercury' },
+  { index: 3, symbol: '♀', name: 'Heart', domain: 'Love, beauty, harmony', ruler: 'Venus' },
+  { index: 4, symbol: '♃', name: 'Growth', domain: 'Exploration, meaning', ruler: 'Jupiter' },
+  { index: 5, symbol: '♂', name: 'Drive', domain: 'Energy, action, courage', ruler: 'Mars' },
+  { index: 6, symbol: '☽', name: 'Connection', domain: 'Relationships, empathy', ruler: 'Moon' },
+  { index: 7, symbol: '♅', name: 'Awareness', domain: 'Intuition, presence', ruler: 'Uranus/Neptune' },
 ];
 
 // ============================================
@@ -240,45 +240,44 @@ export type ProductId = keyof typeof PRODUCTS;
 // ============================================
 export const SUBSCRIPTION_PLANS = {
   witness: {
-    name: 'Witness',
+    name: 'Free',
     price_cents: 0,
     interval: null,
-    description: 'Free tier - Watch the theater, daily readings',
+    description: 'Daily readings and energy profile',
     features: [
-      'Watch the Cosmic Channel 24/7',
-      'Daily personal reading (8D)',
+      'Daily energy reading',
       'Basic dimension breakdown',
-      'Historical figure resonance',
+      'See which historical figures share your pattern',
     ],
   },
   pattern_keeper: {
-    name: 'Pattern-Keeper',
-    price_cents: 1900, // $19/month
+    name: 'Pro',
+    price_cents: 900, // $9/month
     interval: 'month' as const,
-    description: 'Individual practice with full features',
+    description: 'Full personality breakdown and daily forecasts',
     features: [
-      'Full 16D analysis with shadow octave',
-      'Daily check-in practice',
-      'Personal dashboard with trends',
-      'Optimal action windows (hourly)',
-      'Failure mode early warnings',
-      'Elder progress tracking',
+      'Complete personality breakdown (light + shadow sides)',
+      'Daily personalized forecasts',
+      'Optimal action windows',
+      'Early alerts before rough patches',
+      'Pattern trend dashboard',
+      'Unlock deeper insights as you grow',
+      'See which historical figures share your pattern',
     ],
   },
   circle: {
-    name: 'Circle',
-    price_cents: 4900, // $49/seat/month
+    name: 'Team',
+    price_cents: 2900, // $29/seat/month
     interval: 'month' as const,
     per_seat: true,
     min_seats: 3,
-    description: 'Team plan for coaches, groups, communities',
+    description: 'For coaches, teams & communities',
     features: [
-      'Everything in Pattern-Keeper',
-      'Shared circle dashboard',
-      'Group coherence metrics',
-      'Witness each other\'s patterns',
-      'Coach/facilitator tools',
-      'Optimal meeting times',
+      'Everything in Pro',
+      'See when your team is in sync',
+      'Share energy profiles with teammates',
+      'Optimal meeting windows',
+      'Facilitator tools',
       'API access for integrations',
     ],
   },

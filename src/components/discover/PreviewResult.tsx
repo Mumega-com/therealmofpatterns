@@ -16,7 +16,7 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
   const mode = useStore($mode);
 
   const headers = {
-    sol: 'Your Cosmic Pattern',
+    sol: 'Your Energy Profile',
     river: 'Your Birth Signature Revealed',
     kasra: 'NATAL_MATRIX_COMPUTED',
   };
@@ -44,10 +44,10 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
         <p className="header-teaser">{preview.teaser}</p>
       </div>
 
-      {/* 8D Dimension Bars */}
+      {/* Dimension Bars */}
       <div className="dimensions-section">
         <h3 className="section-label">
-          {mode === 'kasra' ? '8D_VECTOR_OUTPUT' : mode === 'river' ? 'The Eight Resonances' : 'Your Dimensions'}
+          {mode === 'kasra' ? '8D_VECTOR_OUTPUT' : mode === 'river' ? 'The Eight Resonances' : 'Your 8 Dimensions'}
         </h3>
         <div className="dimension-bars">
           {preview.dimensions.map((dim) => {
@@ -99,9 +99,9 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
         <div className="archetype-card">
           <div className="archetype-header">
             <h3>
-              {mode === 'kasra' ? 'ARCHETYPE_MATCH' : mode === 'river' ? 'Your Kindred Spirit' : 'You Resonate With'}
+              {mode === 'kasra' ? 'ARCHETYPE_MATCH' : mode === 'river' ? 'Your Kindred Spirit' : 'You Match With'}
             </h3>
-            <span className="resonance-badge">{(archetype.resonance * 100).toFixed(0)}%</span>
+            <span className="resonance-badge">{(archetype.resonance * 100).toFixed(0)}% match</span>
           </div>
           <div className="archetype-body">
             <div className="archetype-name">{archetype.name}</div>
@@ -120,7 +120,7 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
         </p>
         <ShareButtons
           content={{
-            title: `I'm a ${preview.dominant.name} type${archetype ? ` with ${(archetype.resonance * 100).toFixed(0)}% resonance to ${archetype.name}` : ''}!`,
+            title: `I'm a ${preview.dominant.name} type${archetype ? ` with ${(archetype.resonance * 100).toFixed(0)}% match to ${archetype.name}` : ''}!`,
             description: `${preview.teaser} Discover yours at The Realm of Patterns.`,
             url: 'https://therealmofpatterns.com/discover',
             hashtags: ['RealmOfPatterns', preview.dominant.name],

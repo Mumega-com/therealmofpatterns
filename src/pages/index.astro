@@ -32,7 +32,7 @@ import { EmailCapture } from '../components/shared/EmailCapture';
 
         <p class="subtitle">
           A 1-minute check-in reveals when you'll feel most focused, creative, and connected today.
-          No mystical nonsense—just patterns that work.
+          Based on real planetary data. Personalized to your birth chart.
         </p>
 
         <a href="/discover" class="cta-primary">
@@ -53,43 +53,20 @@ import { EmailCapture } from '../components/shared/EmailCapture';
     </section>
 
     <!-- ============================================
-         COSMIC THEATER PREVIEW
+         TODAY'S READING PREVIEW
          ============================================ -->
-    <section class="theater-section">
+    <section class="reading-preview-section">
       <div class="container">
-        <div class="section-header">
-          <span class="section-icon">&starf;</span>
-          <h2>The Cosmic Theater</h2>
-          <p class="section-desc">
-            Every hour, AI creates new alchemical art based on planetary positions.
-            Watch the cosmic dance unfold in real-time.
-          </p>
-        </div>
-
-        <div class="theater-preview">
-          <div class="theater-frame">
-            <div class="frame-glow"></div>
-            <div class="theater-content" id="theater-content">
-              <img
-                id="scene-image"
-                src="/assets/theater/placeholder.jpg"
-                alt="Current cosmic scene"
-                onerror="this.style.display='none'; document.getElementById('theater-placeholder').style.display='flex';"
-              />
-              <div id="theater-placeholder" class="theater-placeholder">
-                <div class="placeholder-icon">&starf;</div>
-                <span>Loading cosmic scene...</span>
-              </div>
-            </div>
-            <div class="theater-info">
-              <span class="stage-badge" id="stage-badge">CITRINITAS</span>
-              <span class="live-dot"></span>
-              <span class="live-text">Live</span>
-            </div>
+        <div class="reading-preview-card" id="reading-preview">
+          <div class="reading-preview-header">
+            <span class="reading-preview-icon">☽</span>
+            <span class="reading-preview-label">Today's Energy</span>
           </div>
-
-          <a href="/theater" class="theater-cta">
-            <span>&triangleright; Enter the Theater</span>
+          <p class="reading-preview-text" id="reading-preview-text">
+            See what today's planetary alignments mean for you.
+          </p>
+          <a href="/reading" class="reading-preview-link">
+            Read more &rarr;
           </a>
         </div>
       </div>
@@ -111,7 +88,7 @@ import { EmailCapture } from '../components/shared/EmailCapture';
         <div class="features-grid">
           <div class="feature-card">
             <div class="feature-icon">&sung;</div>
-            <h3>Daily Oracle</h3>
+            <h3>Daily Reading</h3>
             <p>
               Each morning brings new patterns. A quick check-in reveals which
               energies are strongest for you today—and when to lean into them.
@@ -120,7 +97,7 @@ import { EmailCapture } from '../components/shared/EmailCapture';
 
           <div class="feature-card">
             <div class="feature-icon">&loz;</div>
-            <h3>Pattern Memory</h3>
+            <h3>Your History</h3>
             <p>
               Track how your energy evolves over time. Notice what works,
               what doesn't, and discover your personal rhythms.
@@ -129,9 +106,9 @@ import { EmailCapture } from '../components/shared/EmailCapture';
 
           <div class="feature-card">
             <div class="feature-icon">&watch;</div>
-            <h3>Optimal Windows</h3>
+            <h3>Best Times</h3>
             <p>
-              Know when the currents favor action, connection, or rest.
+              Know when conditions favor action, connection, or rest.
               Schedule important tasks when your energy is highest.
             </p>
           </div>
@@ -153,9 +130,9 @@ import { EmailCapture } from '../components/shared/EmailCapture';
       <div class="container">
         <div class="section-header">
           <span class="section-icon">&oplus;</span>
-          <h2>The Practice</h2>
+          <h2>How It Works</h2>
           <p class="section-desc">
-            A simple daily ritual for understanding your energy.
+            Three simple steps to understand your energy.
           </p>
         </div>
 
@@ -163,30 +140,30 @@ import { EmailCapture } from '../components/shared/EmailCapture';
           <div class="step-card">
             <div class="step-number">1</div>
             <div class="step-icon">&female;</div>
-            <h3>Share Your Birth Moment</h3>
+            <h3>Enter Your Birthday</h3>
             <p>
-              The moment you entered this world holds the seed of your pattern—your cosmic fingerprint.
-              Just birth date, time, and place. Takes 30 seconds.
+              Your birth date, time, and place create your unique energy profile.
+              Takes 30 seconds.
             </p>
           </div>
 
           <div class="step-card">
             <div class="step-number">2</div>
             <div class="step-icon">&spades;</div>
-            <h3>Daily Check-in</h3>
+            <h3>See Your Energy Profile</h3>
             <p>
-              Answer 6 quick questions about how you're feeling right now.
-              The patterns will speak your current truth. Takes about 1 minute.
+              Get your personalized breakdown across 8 dimensions—see
+              where your strengths and growth areas are.
             </p>
           </div>
 
           <div class="step-card">
             <div class="step-number">3</div>
             <div class="step-icon">&hearts;</div>
-            <h3>Live Your Pattern</h3>
+            <h3>Check In Daily</h3>
             <p>
-              Know your best hours for action, connection, and rest.
-              Move with the cosmic rhythm, not against it.
+              A 1-minute daily check-in tracks your energy and shows
+              the best times for focus, creativity, and connection.
             </p>
           </div>
         </div>
@@ -218,57 +195,57 @@ import { EmailCapture } from '../components/shared/EmailCapture';
           <div class="pricing-card">
             <div class="card-header">
               <span class="card-badge">Always Free</span>
-              <h3>Witness</h3>
+              <h3>Free</h3>
               <div class="card-price">
                 <span class="price">$0</span>
                 <span class="period">forever</span>
               </div>
             </div>
             <ul class="card-features">
-              <li><span class="check">&check;</span> Watch the Cosmic Theater</li>
               <li><span class="check">&check;</span> Daily energy reading</li>
               <li><span class="check">&check;</span> Basic dimension breakdown</li>
+              <li><span class="check">&check;</span> Historical figure matches</li>
             </ul>
-            <a href="/discover" class="card-btn secondary">Start Witnessing</a>
+            <a href="/discover" class="card-btn secondary">Get Started Free</a>
           </div>
 
           <!-- Pro Tier -->
           <div class="pricing-card featured">
             <div class="card-header">
               <span class="card-badge featured">Most Popular</span>
-              <h3>Pattern-Keeper</h3>
+              <h3>Pro</h3>
               <div class="card-price">
-                <span class="price">$19</span>
+                <span class="price">$9</span>
                 <span class="period">/month</span>
               </div>
             </div>
             <ul class="card-features">
-              <li><span class="check">&check;</span> Everything in Witness</li>
-              <li><span class="check">&check;</span> Full 16D analysis with shadow</li>
+              <li><span class="check">&check;</span> Everything in Free</li>
+              <li><span class="check">&check;</span> Complete personality breakdown</li>
               <li><span class="check">&check;</span> Optimal action windows</li>
-              <li><span class="check">&check;</span> Early warning alerts</li>
-              <li><span class="check">&check;</span> Pattern memory & trends</li>
+              <li><span class="check">&check;</span> Early alerts before rough patches</li>
+              <li><span class="check">&check;</span> Pattern trends & history</li>
             </ul>
-            <a href="/subscribe?plan=individual" class="card-btn primary">Begin Your Practice</a>
+            <a href="/subscribe?plan=individual" class="card-btn primary">Start Free Trial</a>
           </div>
 
           <!-- Team Tier -->
           <div class="pricing-card">
             <div class="card-header">
               <span class="card-badge">For Teams</span>
-              <h3>Circle</h3>
+              <h3>Team</h3>
               <div class="card-price">
-                <span class="price">$49</span>
+                <span class="price">$29</span>
                 <span class="period">/seat/month</span>
               </div>
             </div>
             <ul class="card-features">
-              <li><span class="check">&check;</span> Everything in Pattern-Keeper</li>
-              <li><span class="check">&check;</span> Shared team dashboard</li>
-              <li><span class="check">&check;</span> Group coherence tracking</li>
-              <li><span class="check">&check;</span> API for integrations</li>
+              <li><span class="check">&check;</span> Everything in Pro</li>
+              <li><span class="check">&check;</span> See when your team is in sync</li>
+              <li><span class="check">&check;</span> Optimal meeting windows</li>
+              <li><span class="check">&check;</span> Facilitator tools</li>
             </ul>
-            <a href="/subscribe?plan=squad" class="card-btn secondary">Gather Your Circle</a>
+            <a href="/subscribe?plan=squad" class="card-btn secondary">Start Team Trial</a>
             <span class="card-note">Minimum 3 seats</span>
           </div>
         </div>
@@ -280,19 +257,11 @@ import { EmailCapture } from '../components/shared/EmailCapture';
          ============================================ -->
     <section class="philosophy-section">
       <div class="container">
-        <div class="philosophy-content">
-          <blockquote>
-            "The cosmos is within us. We are made of star-stuff.
-            We are a way for the universe to know itself."
-          </blockquote>
-          <cite>&mdash; Carl Sagan</cite>
-        </div>
-
         <div class="philosophy-cards">
           <div class="phil-card">
             <span class="phil-icon">&diams;</span>
-            <h4>Pattern, Not Prediction</h4>
-            <p>We don't tell you what will happen. We show you the currents you're swimming in.</p>
+            <h4>Awareness, Not Fortune-Telling</h4>
+            <p>We don't predict your future. We help you understand the energy you're working with today.</p>
           </div>
           <div class="phil-card">
             <span class="phil-icon">&hearts;</span>
@@ -301,8 +270,8 @@ import { EmailCapture } from '../components/shared/EmailCapture';
           </div>
           <div class="phil-card">
             <span class="phil-icon">&spades;</span>
-            <h4>Learns With You</h4>
-            <p>The more you use it, the more accurate it gets. Your patterns are unique.</p>
+            <h4>Gets Smarter Over Time</h4>
+            <p>The more you check in, the more accurate your readings become. Your patterns are unique.</p>
           </div>
         </div>
       </div>
@@ -325,9 +294,9 @@ import { EmailCapture } from '../components/shared/EmailCapture';
     <section class="final-cta-section">
       <div class="container">
         <h2>Ready to Know Your Pattern?</h2>
-        <p>The theater is always open. The pattern awaits.</p>
+        <p>It takes 30 seconds. No signup required.</p>
         <div class="final-ctas">
-          <a href="/theater" class="cta-secondary">&starf; Watch the Theater</a>
+          <a href="/reading" class="cta-secondary">☽ Today's Reading</a>
           <a href="/discover" class="cta-primary">
             <span>Discover Your Pattern</span>
             <span class="arrow">&rarr;</span>
@@ -339,33 +308,23 @@ import { EmailCapture } from '../components/shared/EmailCapture';
 </BaseLayout>
 
 <script>
-  // Load current theater scene
-  async function loadTheaterScene() {
+  // Load today's reading preview
+  async function loadReadingPreview() {
     try {
-      const response = await fetch('/api/theater/current');
+      const response = await fetch('/api/weather/today');
       if (response.ok) {
         const data = await response.json();
-        const img = document.getElementById('scene-image') as HTMLImageElement;
-        const placeholder = document.getElementById('theater-placeholder');
-        const badge = document.getElementById('stage-badge');
-
-        if (data.imageUrl && img) {
-          img.src = data.imageUrl;
-          img.style.display = 'block';
-          if (placeholder) placeholder.style.display = 'none';
-        }
-
-        if (data.stage && badge) {
-          badge.textContent = data.stage.toUpperCase();
+        const textEl = document.getElementById('reading-preview-text');
+        if (data.dominant?.description && textEl) {
+          textEl.textContent = data.dominant.description;
         }
       }
-    } catch (error) {
-      // Silently fail - placeholder will show
+    } catch {
+      // Silently fail - default text will show
     }
   }
 
-  // Initialize
-  loadTheaterScene();
+  loadReadingPreview();
 
   // Smart routing: returning users with birth data skip /discover
   if (localStorage.getItem('rop_birth_data_full')) {
@@ -633,111 +592,62 @@ import { EmailCapture } from '../components/shared/EmailCapture';
   }
 
   /* ==========================================
-     THEATER SECTION
+     READING PREVIEW SECTION
      ========================================== */
-  .theater-section {
+  .reading-preview-section {
     background: linear-gradient(180deg, var(--dark) 0%, var(--dark-surface) 100%);
+    padding: 3rem 0;
   }
 
-  .theater-preview {
-    max-width: 700px;
+  .reading-preview-card {
+    max-width: 600px;
     margin: 0 auto;
+    padding: 1.5rem 2rem;
+    background: rgba(212, 168, 84, 0.06);
+    border: 1px solid var(--dark-border);
+    border-radius: 12px;
     text-align: center;
   }
 
-  .theater-frame {
-    position: relative;
-    aspect-ratio: 16/9;
-    background: var(--dark);
-    border: 1px solid var(--dark-border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-  }
-
-  .frame-glow {
-    position: absolute;
-    inset: -50%;
-    background: radial-gradient(circle at center, rgba(212, 168, 84, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  .theater-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-
-  .theater-content img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .theater-placeholder {
+  .reading-preview-header {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-
-  .placeholder-icon {
-    font-size: 2.5rem;
-    color: var(--gold);
+    gap: 0.5rem;
     margin-bottom: 0.75rem;
-    animation: pulse 3s infinite;
   }
 
-  .theater-info {
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.8rem;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .stage-badge {
-    padding: 0.3rem 0.6rem;
-    background: rgba(212, 168, 84, 0.2);
-    border: 1px solid rgba(212, 168, 84, 0.3);
-    border-radius: 4px;
+  .reading-preview-icon {
+    font-size: 1.25rem;
     color: var(--gold);
+  }
+
+  .reading-preview-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    font-family: 'Inter', sans-serif;
     font-weight: 500;
-    letter-spacing: 0.05em;
   }
 
-  .live-dot {
-    width: 8px;
-    height: 8px;
-    background: #ef4444;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  .live-text {
+  .reading-preview-text {
+    font-size: 1.1rem;
     color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 0 1rem;
   }
 
-  .theater-cta {
-    display: inline-flex;
-    padding: 0.75rem 1.5rem;
-    border: 1px solid var(--dark-border);
-    border-radius: 8px;
+  .reading-preview-link {
+    font-size: 0.95rem;
     color: var(--gold);
     text-decoration: none;
-    font-size: 1rem;
-    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+    transition: opacity 0.3s;
   }
 
-  .theater-cta:hover {
-    background: rgba(212, 168, 84, 0.1);
-    border-color: var(--gold);
+  .reading-preview-link:hover {
+    opacity: 0.8;
   }
 
   /* ==========================================

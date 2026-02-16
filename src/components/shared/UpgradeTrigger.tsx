@@ -30,7 +30,7 @@ const TRIGGER_CONTENT: Record<TriggerContext, Record<string, {
   'after-checkin': {
     kasra: {
       title: 'SHADOW_OCTAVE_AVAILABLE',
-      description: 'Your 8D scan is complete. Pattern-Keepers unlock the full 16D analysis including the shadow octave.',
+      description: 'Your 8D scan is complete. Pro members unlock the full 16D analysis including the shadow octave.',
       benefit: 'See the complete picture. Predict failure modes before they manifest.',
       cta: 'UPGRADE_TO_16D',
     },
@@ -50,7 +50,7 @@ const TRIGGER_CONTENT: Record<TriggerContext, Record<string, {
   'shadow-locked': {
     kasra: {
       title: 'SHADOW_OCTAVE_RESTRICTED',
-      description: 'The shadow octave (dimensions 9-16) requires Pattern-Keeper access.',
+      description: 'The shadow octave (dimensions 9-16) requires Pro access.',
       benefit: 'Shadow dimensions reveal failure modes and blind spots in your field.',
       cta: 'UNLOCK_ACCESS',
     },
@@ -70,13 +70,13 @@ const TRIGGER_CONTENT: Record<TriggerContext, Record<string, {
   'history-limited': {
     kasra: {
       title: 'HISTORY_BUFFER_EXCEEDED',
-      description: 'Free tier retains 7 days. Pattern-Keepers access unlimited historical data.',
+      description: 'Free tier retains 7 days. Pro members access unlimited historical data.',
       benefit: 'Long-term pattern recognition requires historical context for accurate trend analysis.',
       cta: 'EXPAND_BUFFER',
     },
     river: {
       title: 'Memory Has Its Limits',
-      description: 'The free path shows you a week. Pattern-Keepers remember everything.',
+      description: 'The free path shows you a week. Pro members remember everything.',
       benefit: 'Watch your evolution across seasons. See how far you have journeyed.',
       cta: 'Remember Everything',
     },
@@ -90,13 +90,13 @@ const TRIGGER_CONTENT: Record<TriggerContext, Record<string, {
   'optimal-windows': {
     kasra: {
       title: 'OPTIMAL_WINDOWS_PREMIUM',
-      description: 'Hourly coherence forecasting requires Pattern-Keeper credentials.',
+      description: 'Hourly coherence forecasting requires Pro credentials.',
       benefit: 'Schedule critical operations during high-κ windows for maximum field alignment.',
       cta: 'ENABLE_FORECASTING',
     },
     river: {
       title: 'Sacred Timing Awaits',
-      description: 'When to act, when to rest, when to create. Pattern-Keepers know.',
+      description: 'When to act, when to rest, when to create. Pro members know.',
       benefit: 'Flow with the cosmic rhythm. Let timing work for you, not against you.',
       cta: 'Know Your Windows',
     },
@@ -110,13 +110,13 @@ const TRIGGER_CONTENT: Record<TriggerContext, Record<string, {
   'failure-warnings': {
     kasra: {
       title: 'FAILURE_MODE_ALERTS_DISABLED',
-      description: 'Predictive failure mode detection requires Pattern-Keeper access.',
+      description: 'Predictive failure mode detection requires Pro access.',
       benefit: 'Receive alerts 24-48 hours before low-coherence periods.',
       cta: 'ENABLE_ALERTS',
     },
     river: {
       title: 'Forewarned is Forearmed',
-      description: 'Pattern-Keepers receive whispers of coming storms.',
+      description: 'Pro members receive whispers of coming storms.',
       benefit: 'Prepare for challenging days. Transform difficulty into growth.',
       cta: 'Receive Warnings',
     },
@@ -130,13 +130,13 @@ const TRIGGER_CONTENT: Record<TriggerContext, Record<string, {
   'export-blocked': {
     kasra: {
       title: 'EXPORT_RESTRICTED',
-      description: 'Data export functionality requires Pattern-Keeper access.',
+      description: 'Data export functionality requires Pro access.',
       benefit: 'Export your pattern data in JSON, CSV, or PDF format for external analysis.',
       cta: 'ENABLE_EXPORT',
     },
     river: {
       title: 'Carry Your Patterns With You',
-      description: 'Pattern-Keepers may take their data anywhere.',
+      description: 'Pro members may take their data anywhere.',
       benefit: 'Your patterns are yours. Export them. Study them. Share them.',
       cta: 'Unlock Export',
     },
@@ -151,7 +151,7 @@ const TRIGGER_CONTENT: Record<TriggerContext, Record<string, {
     kasra: {
       title: 'STREAK_ACHIEVEMENT_DETECTED',
       description: 'Consistent practice yields optimal results. Upgrade to maximize your data.',
-      benefit: 'Pattern-Keepers see long-term trends that reveal your true signature.',
+      benefit: 'Pro members see long-term trends that reveal your true signature.',
       cta: 'COMMIT_TO_PRACTICE',
     },
     river: {
@@ -171,12 +171,12 @@ const TRIGGER_CONTENT: Record<TriggerContext, Record<string, {
     kasra: {
       title: 'HIGH_RESONANCE_MATCH',
       description: 'Your κ > 0.85 resonance qualifies for deep historical profile analysis.',
-      benefit: 'Pattern-Keepers access detailed comparison with resonant historical figures.',
+      benefit: 'Pro members access detailed comparison with resonant historical figures.',
       cta: 'ANALYZE_RESONANCE',
     },
     river: {
       title: 'A Soul Recognizes Itself',
-      description: 'This resonance is rare. Pattern-Keepers may explore what it means.',
+      description: 'This resonance is rare. Pro members may explore what it means.',
       benefit: 'Understand the path walked by those who share your pattern.',
       cta: 'Explore the Connection',
     },

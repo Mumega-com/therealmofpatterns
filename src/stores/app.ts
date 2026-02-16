@@ -51,6 +51,14 @@ export function stageFromKappa(kappa: number): Stage {
   return 'rubedo';
 }
 
+// Human-friendly stage display names
+export const STAGE_DISPLAY: Record<Stage, { name: string; tagline: string; icon: string }> = {
+  nigredo: { name: 'Reset', tagline: 'Breaking down to rebuild', icon: '☽' },
+  albedo: { name: 'Clarity', tagline: 'Seeing clearly', icon: '✧' },
+  citrinitas: { name: 'Growth', tagline: 'Stepping into power', icon: '☼' },
+  rubedo: { name: 'Flow', tagline: 'Everything clicking', icon: '◆' },
+};
+
 // =====================
 // UI STATE
 // =====================

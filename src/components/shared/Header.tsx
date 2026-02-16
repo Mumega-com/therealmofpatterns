@@ -11,11 +11,9 @@ interface HeaderProps {
 }
 
 const NAV_LINKS = [
-  { href: '/reading', label: 'Daily Reading', icon: '☽' },
-  { href: '/theater', label: 'Theater', icon: '◎' },
-  { href: '/learn', label: 'Learn', icon: '◈' },
-  { href: '/subscribe', label: 'Subscribe', icon: '✦' },
-  { href: '/settings', label: 'Settings', icon: '⌂' },
+  { href: '/reading', label: 'Today', icon: '☽' },
+  { href: '/discover', label: 'My Pattern', icon: '◈' },
+  { href: '/subscribe', label: 'Go Pro', icon: '✦' },
 ];
 
 export function Header({ className = '', currentLang = 'en', transparent = false }: HeaderProps) {

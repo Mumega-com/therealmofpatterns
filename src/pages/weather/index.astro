@@ -27,16 +27,16 @@ function getZodiacSign(longitude: number): string {
 const sunSign = getZodiacSign(longitudes[0]);
 const moonSign = getZodiacSign(longitudes[1]);
 
-// Daily descriptions
-const dailyDescriptions: Record<string, string> = {
-  'P': 'Today\'s field emphasizes identity, will, and self-discovery. A powerful day for asserting your truth and taking initiative.',
-  'E': 'The cosmic weather favors building structure and working with material reality. Ground your visions into form.',
-  'μ': 'Communication and learning flow easily today. Share ideas, connect mentally, and stay curious.',
-  'V': 'Beauty and harmony dominate the field. Seek aesthetic experiences and nurture relationships.',
-  'N': 'Expansion energy is strong. Growth, meaning-making, and philosophical exploration are favored.',
-  'Δ': 'Action and movement characterize today\'s field. Channel energy into decisive action.',
-  'R': 'Relational energies are heightened. Nurture connections and practice empathy.',
-  'Φ': 'The witness dimension is activated. Practice presence, meditation, and observing without attachment.',
+// Daily descriptions keyed by dimension index
+const dailyDescriptions: Record<number, string> = {
+  0: 'Today\'s energy emphasizes identity, confidence, and self-expression. A powerful day for asserting your truth and taking initiative.',
+  1: 'Today favors building structure and working with material reality. Ground your visions into form.',
+  2: 'Communication and learning flow easily today. Share ideas, connect mentally, and stay curious.',
+  3: 'Love, beauty, and harmony lead the way today. Seek connection and nurture relationships.',
+  4: 'Growth energy is strong. Exploration, meaning-making, and new perspectives are favored.',
+  5: 'Drive and action energy is high. Channel it into decisive, courageous action.',
+  6: 'Connection energy is heightened. Nurture relationships and practice empathy.',
+  7: 'Awareness and intuition are activated. Practice presence, meditation, and inner listening.',
 };
 
 const formattedDate = today.toLocaleDateString('en-US', {
@@ -48,16 +48,16 @@ const formattedDate = today.toLocaleDateString('en-US', {
 ---
 
 <BaseLayout
-  title={`Cosmic Weather for ${formattedDate} | The Realm of Patterns`}
-  description={`Today's cosmic weather: ${dominant.name} (${dominant.symbol}) dominant. ${dailyDescriptions[dominant.symbol]?.slice(0, 100)}...`}
+  title={`Today's Energy for ${formattedDate} | The Realm of Patterns`}
+  description={`Today's energy: ${dominant.name} (${dominant.symbol}) dominant. ${dailyDescriptions[dominant.index]?.slice(0, 100)}...`}
 >
   <div class="weather-page">
     <!-- Hero Section -->
     <section class="weather-hero">
       <div class="hero-content">
-        <p class="label">Daily Cosmic Weather</p>
+        <p class="label">Today's Energy</p>
         <h1 class="date-title">{formattedDate}</h1>
-        <p class="subtitle">The collective field state for today</p>
+        <p class="subtitle">The collective energy for today</p>
       </div>
     </section>
 
@@ -66,22 +66,21 @@ const formattedDate = today.toLocaleDateString('en-US', {
       <div class="dominant-card">
         <div class="dominant-symbol">{dominant.symbol}</div>
         <h2 class="dominant-name">{dominant.name}</h2>
-        <p class="dominant-domain">{DIMENSION_METADATA[dominant.symbol as keyof typeof DIMENSION_METADATA]?.domain}</p>
-        <p class="dominant-description">{dailyDescriptions[dominant.symbol]}</p>
+        <p class="dominant-domain">{DIMENSION_METADATA[dominant.index]?.domain}</p>
+        <p class="dominant-description">{dailyDescriptions[dominant.index]}</p>
       </div>
     </section>
 
-    <!-- 8D Vector Display -->
+    <!-- Energy Dimensions Display -->
     <section class="vector-section">
-      <h3 class="section-title">Today's 8D Field</h3>
+      <h3 class="section-title">Today's Energy Field</h3>
       <div class="vector-grid">
-        {Object.entries(DIMENSION_METADATA).map(([symbol, meta]) => {
-          const index = ['P', 'E', 'μ', 'V', 'N', 'Δ', 'R', 'Φ'].indexOf(symbol);
-          const value = vector[index];
+        {DIMENSION_METADATA.map((meta) => {
+          const value = vector[meta.index];
           const isHigh = value > 0.6;
           return (
             <div class={`vector-item ${isHigh ? 'high' : ''}`}>
-              <div class="vector-symbol">{symbol}</div>
+              <div class="vector-symbol">{meta.symbol}</div>
               <div class="vector-bar">
                 <div class="vector-fill" style={`width: ${value * 100}%`}></div>
               </div>
@@ -117,7 +116,7 @@ const formattedDate = today.toLocaleDateString('en-US', {
     <!-- CTA -->
     <section class="cta-section">
       <h3>Want personalized guidance?</h3>
-      <p>See how today's cosmic weather interacts with your unique 16D signature.</p>
+      <p>See how today's energy interacts with your unique pattern.</p>
       <div class="cta-buttons">
         <a href="/sol/checkin" class="btn btn-primary">Take a Check-in</a>
         <a href="/subscribe" class="btn btn-secondary">Get Daily Readings</a>

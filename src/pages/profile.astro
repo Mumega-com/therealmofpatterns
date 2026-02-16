@@ -206,11 +206,11 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
 
         <div class="subscription-card" id="subscriptionCard">
           <div class="sub-tier">
-            <span class="tier-name" id="tierName">Witness</span>
+            <span class="tier-name" id="tierName">Free</span>
             <span class="tier-badge free" id="tierBadge">Free</span>
           </div>
           <div class="sub-details">
-            <p id="tierDescription">Basic 8D readings and cosmic weather access.</p>
+            <p id="tierDescription">Daily energy readings and basic dimension breakdown.</p>
             <p class="sub-renewal" id="renewalInfo" style="display: none;"></p>
           </div>
           <div class="sub-actions">
@@ -464,9 +464,9 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
     const manageBtn = document.getElementById('manageBillingBtn');
 
     const tierInfo = {
-      witness: { name: 'Witness', badge: 'Free', desc: 'Basic 8D readings and cosmic weather access.' },
-      keeper: { name: 'Pattern-Keeper', badge: 'Pro', desc: 'Full 16D analysis, history, optimal windows, and elder system.' },
-      circle: { name: 'Circle', badge: 'Team', desc: 'Team dashboard, group coherence, and facilitator tools.' },
+      witness: { name: 'Free', badge: 'Free', desc: 'Daily energy readings and basic dimension breakdown.' },
+      keeper: { name: 'Pro', badge: 'Pro', desc: 'Complete personality breakdown, daily forecasts, optimal action windows, and more.' },
+      circle: { name: 'Team', badge: 'Team', desc: 'Team dashboard, group sync tracking, and facilitator tools.' },
     };
 
     const info = tierInfo[sub.tier as keyof typeof tierInfo] || tierInfo.witness;

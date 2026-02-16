@@ -35,12 +35,12 @@ const FEATURE_META: Record<Feature, {
     name: {
       kasra: 'SHADOW_OCTAVE',
       river: 'The Shadow Octave',
-      sol: 'Full 16D Analysis',
+      sol: 'Complete Personality Breakdown',
     },
     description: {
       kasra: 'Access dimensions 9-16 for complete field mapping.',
       river: 'See the hidden half of your pattern - what lies beneath.',
-      sol: 'See all 16 dimensions, not just the basic 8.',
+      sol: 'See your complete profile including your shadow sides.',
     },
     tier: 'keeper',
   },

@@ -19,7 +19,7 @@ const FAQ_ITEMS = [
       },
       {
         q: 'Is this astrology?',
-        a: "FRC uses astronomical data (planetary positions) like astrology, but the mathematical framework is different. We don't use houses or traditional sign interpretations. Think of it as a pattern-recognition system that happens to use cosmic timing as its input.",
+        a: "We use real astronomical data (planetary positions) like astrology, but the math is different. We don't use houses or traditional sign interpretations. Think of it as a pattern-recognition system that uses cosmic timing as its input.",
       },
     ],
   },
@@ -27,16 +27,16 @@ const FAQ_ITEMS = [
     category: 'The Framework',
     questions: [
       {
-        q: 'What are the 16 dimensions?',
-        a: '8 core dimensions (Inner Octave) represent your natal pattern: Phase, Existence, Cognition, Value, Expansion, Action, Relation, Field. The Outer Octave (dimensions 9-16) represents how current transits are activating each natal dimension.',
+        q: 'What are the 8 dimensions?',
+        a: '8 core dimensions represent your energy profile: Identity, Structure, Mind, Heart, Growth, Drive, Connection, and Awareness. Each maps to a planetary influence and tells you something different about your energy.',
       },
       {
-        q: 'What is the kappa (κ) coefficient?',
-        a: 'Kappa measures field coherence — how aligned your dimensions are with each other and with current conditions. Higher κ indicates smoother flow; lower κ suggests internal tension or challenging conditions. Range is 0-1.',
+        q: 'What is the alignment score?',
+        a: 'Your alignment score shows how in-sync your dimensions are with each other and with today\'s energy. Higher scores mean smoother flow; lower scores suggest tension or challenging conditions. Shown as a percentage.',
       },
       {
-        q: 'What are the alchemical stages?',
-        a: 'Based on your κ coefficient: Nigredo (κ < 0.25) is dissolution, Albedo (0.25-0.50) is purification, Citrinitas (0.50-0.75) is illumination, Rubedo (κ ≥ 0.75) is integration. These map to traditional alchemical transformation stages.',
+        q: 'What are the four stages?',
+        a: 'Based on your alignment: Reset (below 25%) is a time to pause and rebuild, Clarity (25-50%) is about seeing things as they are, Growth (50-75%) is stepping into your power, and Flow (above 75%) is everything clicking into place.',
       },
       {
         q: 'What are the three voices?',
@@ -57,7 +57,7 @@ const FAQ_ITEMS = [
       },
       {
         q: 'Can this predict the future?',
-        a: "Not in a deterministic sense. FRC identifies likely conditions and tendencies based on cosmic timing and your pattern. Think of it as weather forecasting for your inner landscape — useful for planning, but not a guarantee.",
+        a: "Not in a deterministic sense. We identify likely conditions and tendencies based on cosmic timing and your pattern. Think of it as weather forecasting for your inner landscape — useful for planning, but not a guarantee.",
       },
     ],
   },
@@ -66,15 +66,15 @@ const FAQ_ITEMS = [
     questions: [
       {
         q: 'What can I do for free?',
-        a: "Watch the Cosmic Theater 24/7, get daily basic readings with 8D analysis, see your historical figure resonance, and access the cosmic weather. No account required.",
+        a: "Daily energy readings, basic dimension breakdown, and see which historical figures share your pattern. No account required.",
       },
       {
-        q: "What's included in Pattern-Keeper ($19/mo)?",
-        a: "Full 16D analysis including shadow octave, unlimited check-in history, optimal action windows, failure mode warnings, elder progress tracking, and detailed historical figure analysis. 7-day free trial.",
+        q: "What's included in Pro ($9/mo)?",
+        a: "Complete personality breakdown (light + shadow sides), unlimited check-in history, optimal action windows, early alerts before rough patches, deeper insights as you grow, and detailed historical figure matches. 7-day free trial.",
       },
       {
-        q: "What's included in Circle ($49/seat/mo)?",
-        a: "Everything in Pattern-Keeper plus shared team dashboard, group coherence metrics, witness each other's patterns, optimal meeting times, facilitator tools, and API access. 14-day free trial. Minimum 3 seats.",
+        q: "What's included in Team ($29/seat/mo)?",
+        a: "Everything in Pro plus shared team dashboard, see when your team is in sync, share energy profiles with teammates, optimal meeting windows, facilitator tools, and API access. 14-day free trial. Minimum 3 seats.",
       },
       {
         q: 'Can I cancel anytime?',
@@ -82,7 +82,7 @@ const FAQ_ITEMS = [
       },
       {
         q: 'Is there a discount for annual billing?',
-        a: 'Yes! Annual billing saves 20%. Pattern-Keeper is $15/mo billed yearly ($180/year). Circle is $39/seat/mo billed yearly.',
+        a: 'Yes! Annual billing saves about 20%. Pro is $7/mo billed yearly ($84/year). Team is $23/seat/mo billed yearly.',
       },
     ],
   },
@@ -95,7 +95,7 @@ const FAQ_ITEMS = [
       },
       {
         q: 'Can I export my data?',
-        a: "Pattern-Keeper and Circle members can export their data in JSON, CSV, or PDF format at any time. Your data belongs to you.",
+        a: "Pro and Team members can export their data in JSON, CSV, or PDF format at any time. Your data belongs to you.",
       },
       {
         q: 'Can I delete my account?',
@@ -106,7 +106,7 @@ const FAQ_ITEMS = [
 ];
 ---
 
-<BaseLayout title="FAQ - The Realm of Patterns" description="Frequently asked questions about the FRC framework, pricing, accuracy, and how to get started with The Realm of Patterns.">
+<BaseLayout title="FAQ - The Realm of Patterns" description="Frequently asked questions about pricing, accuracy, and how to get started with The Realm of Patterns.">
   <div class="faq-page">
     <div class="page-container">
       <header class="page-header">
