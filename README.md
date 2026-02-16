@@ -28,6 +28,7 @@ A production SaaS platform mapping cosmic identity through mathematical patterns
 | | |
 |---|---|
 | **Live** | [therealmofpatterns.com](https://therealmofpatterns.com) |
+| **Discover** | [/discover](https://therealmofpatterns.com/discover) (Birthday-first onboarding) |
 | **Forecast** | [/forecast](https://therealmofpatterns.com/forecast) (Daily personal forecast) |
 | **Check-in** | [/sol/checkin](https://therealmofpatterns.com/sol/checkin) |
 | **History** | [/history](https://therealmofpatterns.com/history) (Trend dashboard) |
@@ -71,6 +72,7 @@ Based on the kappa coefficient (κ), your current coherence maps to alchemical s
 
 | Feature | Description |
 |---------|-------------|
+| **Discover Flow** | Birthday-first onboarding: enter birth date, see instant 8D preview with archetype match |
 | **Daily Check-in** | 6-question flow computing your κ (kappa) coherence score |
 | **Personalized Forecasts** | Pre-check-in predictions based on birth data + transits |
 | **History Dashboard** | Visual trend charts showing your κ over time |
@@ -90,6 +92,7 @@ Based on the kappa coefficient (κ), your current coherence maps to alchemical s
 │                    ASTRO FRONTEND                                │
 ├─────────────────────────────────────────────────────────────────┤
 │  /               Homepage with 3-mode preview                    │
+│  /discover       Birthday-first onboarding (8D preview)          │
 │  /kasra          Technical mode                                  │
 │  /river          Archetypal mode                                 │
 │  /sol            Friendly mode                                   │
@@ -219,6 +222,7 @@ therealmofpatterns/
 ├── src/
 │   ├── pages/              # Astro pages
 │   │   ├── index.astro     # Homepage (3-mode)
+│   │   ├── discover.astro  # Birthday-first onboarding
 │   │   ├── kasra/          # Technical mode
 │   │   ├── river/          # Archetypal mode
 │   │   ├── sol/            # Friendly mode
@@ -233,6 +237,9 @@ therealmofpatterns/
 │   │   └── en/             # SEO pages (dimensions, figures, jungian)
 │   │
 │   ├── components/         # React components
+│   │   ├── discover/       # Birthday-first onboarding flow
+│   │   │   ├── DiscoverFlow.tsx         # Orchestrator (birth → preview → checkin)
+│   │   │   └── PreviewResult.tsx        # 8D preview with archetype match
 │   │   ├── shared/         # Header, Footer, Onboarding, etc.
 │   │   │   ├── CalibrationDashboard.tsx  # Prediction accuracy stats
 │   │   │   ├── HistoryDashboard.tsx      # Trend visualizations

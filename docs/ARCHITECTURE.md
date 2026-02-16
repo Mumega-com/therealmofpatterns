@@ -421,14 +421,27 @@ The system now includes a learning feedback loop that improves prediction accura
 - `src/components/shared/BirthDataPrompt.tsx` - Birth data collection
 - `src/components/shared/PredictionCard.tsx` - Pre-check-in forecast
 
-### 6.2 Check-in Flow (Enhanced)
+### 6.2 Onboarding & Check-in Flow (V2)
 
 ```
+New user clicks "Discover Your Pattern" on homepage
+        │
+        ▼
+┌─────────────────┐
+│  /discover      │  1. Birthday form (BirthDataPrompt, autoExpand)
+└────────┬────────┘
+         │ Birth data submitted
+         ▼
+┌─────────────────┐
+│  8D Preview     │  2. Instant client-side vector + archetype match
+└────────┬────────┘
+         │ "Go Deeper" CTA
+         ▼
 User opens /checkin
         │
         ▼
 ┌─────────────────┐
-│  Web Adapter    │  1. Check for birth data (hasPersonalizedData)
+│  Web Adapter    │  3. Check for birth data (hasPersonalizedData)
 └────────┬────────┘
          │
          ▼
