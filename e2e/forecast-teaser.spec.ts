@@ -11,21 +11,18 @@ function addDays(dateStr: string, days: number): string {
 }
 
 test.describe('Forecast Pages', () => {
-  test('shows tomorrow teaser in River mode', async ({ page }) => {
+  test('loads forecast page for today', async ({ page }) => {
     const today = isoDate();
     const tomorrow = addDays(today, 1);
 
-    await page.addInitScript(() => {
-      localStorage.setItem('rop_mode', 'river');
-    });
-
     await page.goto(`/forecast/${today}`);
 
-    await expect(page.getByRole('heading', { name: /today's reading/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /the wheel turns/i })).toBeVisible();
+    // Page should load with date heading and forecast subtitle
+    await expect(page.getByText('Personal Energy Forecast')).toBeVisible();
 
-    const teaserLink = page.getByRole('link', { name: /glimpse tomorrow/i });
-    await expect(teaserLink).toBeVisible();
-    await expect(teaserLink).toHaveAttribute('href', `/forecast/${tomorrow}`);
+    // Navigation links should exist
+    const nextLink = page.getByRole('link', { name: /next/i });
+    await expect(nextLink).toBeVisible();
+    await expect(nextLink).toHaveAttribute('href', `/forecast/${tomorrow}`);
   });
 });

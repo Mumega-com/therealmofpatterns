@@ -10,6 +10,8 @@ import type { BirthData } from '../../types';
 interface BirthDataPromptProps {
   /** When to show: 'after-checkin' (gentle), 'before-checkin' (blocking) */
   timing?: 'after-checkin' | 'before-checkin';
+  /** Start with form expanded (skip collapsed teaser) */
+  autoExpand?: boolean;
   /** Callback when birth data is saved */
   onComplete?: (birthData: BirthData, natal16D: number[]) => void;
   /** Callback when user skips */
@@ -21,12 +23,12 @@ interface BirthDataPromptProps {
  *
  * Shows mode-appropriate messaging and stores both birth data and computed natal vector.
  */
-export function BirthDataPrompt({ timing = 'after-checkin', onComplete, onSkip }: BirthDataPromptProps) {
+export function BirthDataPrompt({ timing = 'after-checkin', autoExpand = false, onComplete, onSkip }: BirthDataPromptProps) {
   const user = useStore($user);
   const mode = useStore($mode);
 
   const [isVisible, setIsVisible] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(autoExpand);
   const [formData, setFormData] = useState({
     year: '',
     month: '',

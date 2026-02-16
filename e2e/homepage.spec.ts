@@ -32,15 +32,15 @@ test.describe('Homepage', () => {
     await expect(header).toBeVisible();
   });
 
-  test('CTA buttons link to check-in', async ({ page }) => {
+  test('CTA buttons link to discover or check-in', async ({ page }) => {
     await page.goto('/');
 
-    // Look for primary CTA
-    const ctaLink = page.locator('a[href*="checkin"], a[href*="/sol"], a[href*="/kasra"], a[href*="/river"]').first();
+    // Look for primary CTA (points to /discover for new users, or /mode/checkin for returning)
+    const ctaLink = page.locator('a[href*="discover"], a[href*="checkin"], a[href*="/sol"], a[href*="/kasra"], a[href*="/river"]').first();
 
     if (await ctaLink.isVisible()) {
       const href = await ctaLink.getAttribute('href');
-      expect(href).toMatch(/\/(sol|kasra|river)(\/checkin)?/);
+      expect(href).toMatch(/\/(discover|(sol|kasra|river)(\/checkin)?)/);
     }
   });
 
@@ -69,8 +69,10 @@ test.describe('Homepage', () => {
     const newsletter = page.locator('.newsletter-section');
     await newsletter.scrollIntoViewIfNeeded();
 
+    // Wait for React hydration (client:visible triggers on scroll)
     const emailInput = newsletter.locator('input[type="email"]').first();
     await expect(emailInput).toBeVisible();
+    await page.waitForTimeout(500);
 
     await emailInput.fill('test@example.com');
 
@@ -78,6 +80,7 @@ test.describe('Homepage', () => {
     await expect(submitButton).toBeVisible();
     await submitButton.click();
 
-    await expect(newsletter).toContainText(/you're in!/i);
+    // Success message varies by mode: "You're in!" (sol), "SUBSCRIBED" (kasra), "Welcome to the Pattern" (river)
+    await expect(newsletter).toContainText(/you're in!|subscribed|welcome to the pattern/i, { timeout: 10000 });
   });
 });

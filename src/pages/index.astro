@@ -35,9 +35,9 @@ import { EmailCapture } from '../components/shared/EmailCapture';
           No mystical nonsense—just patterns that work.
         </p>
 
-        <a href="/sol/checkin" class="cta-primary">
-          <span>Start Your Free Reading</span>
-          <span class="badge">1 min</span>
+        <a href="/discover" class="cta-primary">
+          <span>Discover Your Pattern</span>
+          <span class="badge">30 sec</span>
           <span class="arrow">&rarr;</span>
         </a>
 
@@ -138,8 +138,8 @@ import { EmailCapture } from '../components/shared/EmailCapture';
         </div>
 
         <div class="features-cta">
-          <a href="/sol/checkin" class="cta-secondary">
-            Receive Your Reading &rarr;
+          <a href="/discover" class="cta-secondary">
+            Discover Your Pattern &rarr;
           </a>
           <span class="cta-note">No account required &bull; Takes 60 seconds</span>
         </div>
@@ -192,8 +192,8 @@ import { EmailCapture } from '../components/shared/EmailCapture';
         </div>
 
         <div class="how-cta">
-          <a href="/sol/checkin" class="cta-primary">
-            <span>Begin the Practice</span>
+          <a href="/discover" class="cta-primary">
+            <span>Discover Your Pattern</span>
             <span class="arrow">&rarr;</span>
           </a>
         </div>
@@ -229,7 +229,7 @@ import { EmailCapture } from '../components/shared/EmailCapture';
               <li><span class="check">&check;</span> Daily energy reading</li>
               <li><span class="check">&check;</span> Basic dimension breakdown</li>
             </ul>
-            <a href="/sol/checkin" class="card-btn secondary">Start Witnessing</a>
+            <a href="/discover" class="card-btn secondary">Start Witnessing</a>
           </div>
 
           <!-- Pro Tier -->
@@ -328,8 +328,8 @@ import { EmailCapture } from '../components/shared/EmailCapture';
         <p>The theater is always open. The pattern awaits.</p>
         <div class="final-ctas">
           <a href="/theater" class="cta-secondary">&starf; Watch the Theater</a>
-          <a href="/sol/checkin" class="cta-primary">
-            <span>Get Your Reading</span>
+          <a href="/discover" class="cta-primary">
+            <span>Discover Your Pattern</span>
             <span class="arrow">&rarr;</span>
           </a>
         </div>
@@ -366,6 +366,14 @@ import { EmailCapture } from '../components/shared/EmailCapture';
 
   // Initialize
   loadTheaterScene();
+
+  // Smart routing: returning users with birth data skip /discover
+  if (localStorage.getItem('rop_birth_data_full')) {
+    const mode = localStorage.getItem('rop_mode') || 'sol';
+    document.querySelectorAll('a[href="/discover"]').forEach((a) => {
+      (a as HTMLAnchorElement).href = `/${mode}/checkin`;
+    });
+  }
 </script>
 
 <style>
