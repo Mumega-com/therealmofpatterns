@@ -55,8 +55,8 @@ export async function fetchArchetype(birthData: BirthData): Promise<ArchetypeMat
 
     if (!res.ok) return null;
 
-    const data = await res.json();
-    return data.archetype || null;
+    const data: Record<string, unknown> = await res.json();
+    return (data.archetype as ArchetypeMatch) || null;
   } catch {
     return null;
   }

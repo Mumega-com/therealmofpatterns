@@ -40,12 +40,13 @@ export function DailyReading({ date, events: eventsJson, vector: vectorJson, dom
     const slug = `en/cosmic-weather/${date}`;
     fetch(`/api/cms/page?slug=${encodeURIComponent(slug)}`)
       .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (data?.content_blocks) {
+      .then((data: unknown) => {
+        const d = data as Record<string, unknown> | null;
+        if (d?.content_blocks) {
           try {
-            const blocks = typeof data.content_blocks === 'string' ? JSON.parse(data.content_blocks) : data.content_blocks;
-            const faqs = data.faqs ? (typeof data.faqs === 'string' ? JSON.parse(data.faqs) : data.faqs) : [];
-            setCmsContent({ title: data.title, hero_content: data.hero_content, content_blocks: blocks, faqs });
+            const blocks = typeof d.content_blocks === 'string' ? JSON.parse(d.content_blocks) : d.content_blocks;
+            const faqs = d.faqs ? (typeof d.faqs === 'string' ? JSON.parse(d.faqs) : d.faqs) : [];
+            setCmsContent({ title: d.title as string, hero_content: d.hero_content as string, content_blocks: blocks, faqs });
           } catch { /* fallback to computed */ }
         }
       })

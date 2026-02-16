@@ -20,8 +20,8 @@ test.describe('Homepage', () => {
     expect(pageContent).not.toContain('$697');
 
     // Should contain SaaS pricing
-    expect(pageContent).toContain('$19');
-    expect(pageContent).toContain('$49');
+    expect(pageContent).toContain('$9');
+    expect(pageContent).toContain('$29');
   });
 
   test('has working navigation links', async ({ page }) => {

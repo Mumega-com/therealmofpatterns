@@ -50,7 +50,7 @@ test.describe('Core Pages', () => {
     const body = await page.textContent('body');
 
     // Should have SaaS pricing info
-    expect(body).toMatch(/\$19|\$49|month|pattern-keeper|circle/i);
+    expect(body).toMatch(/\$9|\$29|month|pro|team/i);
   });
 
   test('FAQ page has content', async ({ page }) => {
