@@ -14,14 +14,15 @@ test.describe('Homepage', () => {
   test('displays SaaS pricing (not $497)', async ({ page }) => {
     await page.goto('/');
 
-    // Should NOT contain $497 anywhere
-    const pageContent = await page.textContent('body');
+    // Should NOT contain legacy high prices
+    const pageContent = await page.innerText('body');
     expect(pageContent).not.toContain('$497');
     expect(pageContent).not.toContain('$697');
 
-    // Should contain SaaS pricing
-    expect(pageContent).toContain('$9');
-    expect(pageContent).toContain('$29');
+    // Should contain SaaS pricing visible in pricing cards
+    await expect(page.locator('.pricing-card')).toHaveCount(3);
+    await expect(page.locator('text=$9')).toBeVisible();
+    await expect(page.locator('text=$29')).toBeVisible();
   });
 
   test('has working navigation links', async ({ page }) => {

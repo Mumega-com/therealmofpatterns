@@ -14,7 +14,7 @@ test.describe('History Dashboard', () => {
   test('shows empty state when no history exists', async ({ page }) => {
     await page.goto('/history');
 
-    await expect(page.getByRole('heading', { name: /the unfolding pattern/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /your energy history/i })).toBeVisible();
     await expect(page.locator('.history-empty')).toBeVisible();
     await expect(page.locator('.history-empty')).toContainText(/no history yet/i);
   });

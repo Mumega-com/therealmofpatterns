@@ -17,6 +17,7 @@ export function DiscoverFlow() {
   const [preview, setPreview] = useState<LocalPreviewResult | null>(null);
   const [archetype, setArchetype] = useState<ArchetypeMatch | null>(null);
   const [archetypeLoading, setArchetypeLoading] = useState(false);
+  const [birthDataStored, setBirthDataStored] = useState<BirthData | null>(null);
 
   // Check for existing birth data on mount
   useEffect(() => {
@@ -24,6 +25,7 @@ export function DiscoverFlow() {
       const stored = localStorage.getItem('rop_birth_data_full');
       if (stored) {
         const birthData: BirthData = JSON.parse(stored);
+        setBirthDataStored(birthData);
         const result = computeLocalPreview(birthData);
         setPreview(result);
         setState('preview');
@@ -42,6 +44,7 @@ export function DiscoverFlow() {
   }
 
   function handleBirthDataComplete(birthData: BirthData, _natal16D: number[]) {
+    setBirthDataStored(birthData);
     const result = computeLocalPreview(birthData);
     setPreview(result);
     setState('preview');
@@ -92,6 +95,7 @@ export function DiscoverFlow() {
           archetype={archetype}
           archetypeLoading={archetypeLoading}
           onContinueToCheckin={handleContinueToCheckin}
+          birthData={birthDataStored ?? undefined}
         />
       )}
 

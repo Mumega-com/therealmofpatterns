@@ -18,7 +18,7 @@ test.describe('Forecast Pages', () => {
     await page.goto(`/forecast/${today}`);
 
     // Page should load with date heading and forecast subtitle
-    await expect(page.getByText('Personal Energy Forecast')).toBeVisible();
+    await expect(page.getByText('Your Daily Forecast')).toBeVisible();
 
     // Navigation links should exist
     const nextLink = page.getByRole('link', { name: /next/i });

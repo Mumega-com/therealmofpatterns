@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { CosmicEvent } from '../../lib/cosmic-events';
 import { DIMENSION_METADATA } from '../../types';
+import { RadarChart } from '../charts/RadarChart';
 
 interface DailyReadingProps {
   date: string;         // YYYY-MM-DD
@@ -125,6 +126,13 @@ export function DailyReading({ date, events: eventsJson, vector: vectorJson, dom
       {/* Dimension Spotlight */}
       <section className="dimension-spotlight">
         <h2>Today's Energy Field</h2>
+        <div className="reading-radar">
+          <RadarChart
+            values={vector}
+            dominantIndex={dominantIndex}
+            size={260}
+          />
+        </div>
         <div className="dim-bars">
           {vector.slice(0, 8).map((val, i) => {
             const meta = DIMENSION_METADATA[i];
@@ -269,6 +277,11 @@ export function DailyReading({ date, events: eventsJson, vector: vectorJson, dom
           color: #f0e8d8;
           margin: 0 0 1rem;
           font-weight: 600;
+        }
+        .reading-radar {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 1.5rem;
         }
         .dim-bars { display: flex; flex-direction: column; gap: 0.5rem; }
         .dim-row {

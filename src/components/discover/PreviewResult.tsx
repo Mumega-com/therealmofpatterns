@@ -3,16 +3,20 @@
 import { useStore } from '@nanostores/react';
 import { $mode } from '../../stores';
 import { ShareButtons } from '../shared/SocialShare';
+import { RadarChart } from '../charts/RadarChart';
+import { NatalWheel } from '../charts/NatalWheel';
 import type { LocalPreviewResult, ArchetypeMatch } from '../../lib/preview-compute';
+import type { BirthData } from '../../types';
 
 interface PreviewResultProps {
   preview: LocalPreviewResult;
   archetype: ArchetypeMatch | null;
   archetypeLoading: boolean;
   onContinueToCheckin: () => void;
+  birthData?: BirthData;
 }
 
-export function PreviewResult({ preview, archetype, archetypeLoading, onContinueToCheckin }: PreviewResultProps) {
+export function PreviewResult({ preview, archetype, archetypeLoading, onContinueToCheckin, birthData }: PreviewResultProps) {
   const mode = useStore($mode);
 
   const headers = {
@@ -44,11 +48,35 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
         <p className="header-teaser">{preview.teaser}</p>
       </div>
 
-      {/* Dimension Bars */}
+      {/* Charts */}
+      <div className="charts-section">
+        <div className="charts-row">
+          <div className="chart-card">
+            <h3 className="section-label">
+              {mode === 'kasra' ? '8D_VECTOR_OUTPUT' : mode === 'river' ? 'The Eight Resonances' : 'Your 8 Dimensions'}
+            </h3>
+            <RadarChart
+              values={preview.vector}
+              dominantIndex={preview.dominant.index}
+              size={240}
+            />
+          </div>
+          {birthData && (
+            <div className="chart-card">
+              <h3 className="section-label">
+                {mode === 'kasra' ? 'NATAL_CHART' : mode === 'river' ? 'Your Birth Sky' : 'Your Birth Chart'}
+              </h3>
+              <NatalWheel
+                birthData={birthData}
+                size={240}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Dimension Details */}
       <div className="dimensions-section">
-        <h3 className="section-label">
-          {mode === 'kasra' ? '8D_VECTOR_OUTPUT' : mode === 'river' ? 'The Eight Resonances' : 'Your 8 Dimensions'}
-        </h3>
         <div className="dimension-bars">
           {preview.dimensions.map((dim) => {
             const isDominant = dim.index === preview.dominant.index;
@@ -180,6 +208,35 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
           color: rgba(240, 232, 216, 0.7);
           line-height: 1.6;
           margin: 0;
+        }
+
+        /* Charts */
+        .charts-section {
+          margin-bottom: 2rem;
+        }
+
+        .charts-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+        }
+
+        .charts-row:has(> :only-child) {
+          grid-template-columns: 1fr;
+          max-width: 280px;
+          margin: 0 auto;
+        }
+
+        .chart-card {
+          text-align: center;
+        }
+
+        @media (max-width: 540px) {
+          .charts-row {
+            grid-template-columns: 1fr;
+            max-width: 280px;
+            margin: 0 auto;
+          }
         }
 
         /* Dimensions */
