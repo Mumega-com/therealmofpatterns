@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { ModeToggle } from './ModeToggle';
 import { LanguageSelector } from './LanguageSelector';
 import { StreakBadge } from './StreakBadge';
 
@@ -12,10 +11,9 @@ interface HeaderProps {
 }
 
 const NAV_LINKS = [
+  { href: '/reading', label: 'Daily Reading', icon: '☽' },
   { href: '/theater', label: 'Theater', icon: '◎' },
   { href: '/learn', label: 'Learn', icon: '◈' },
-  { href: '/squad', label: 'Squad', icon: '☉' },
-  { href: '/docs', label: 'Docs', icon: '⚙' },
   { href: '/subscribe', label: 'Subscribe', icon: '✦' },
   { href: '/settings', label: 'Settings', icon: '⌂' },
 ];
@@ -73,9 +71,6 @@ export function Header({ className = '', currentLang = 'en', transparent = false
 
             {/* Streak Badge */}
             <StreakBadge />
-
-            {/* Mode Toggle */}
-            <ModeToggle />
 
             {/* Mobile Menu Button */}
             <button

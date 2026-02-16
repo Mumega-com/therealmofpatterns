@@ -369,9 +369,8 @@ import { EmailCapture } from '../components/shared/EmailCapture';
 
   // Smart routing: returning users with birth data skip /discover
   if (localStorage.getItem('rop_birth_data_full')) {
-    const mode = localStorage.getItem('rop_mode') || 'sol';
     document.querySelectorAll('a[href="/discover"]').forEach((a) => {
-      (a as HTMLAnchorElement).href = `/${mode}/checkin`;
+      (a as HTMLAnchorElement).href = '/sol/checkin';
     });
   }
 </script>

@@ -10,15 +10,16 @@ export const $mode = atom<Mode>('sol');
 export const $stage = atom<Stage>('citrinitas');
 export const $isStoreHydrated = atom<boolean>(false);
 
-// Initialize from localStorage after a microtask to avoid hydration mismatches
-// This ensures React hydration completes with default values first
+// Initialize store hydration — Sol is the default experience.
+// Only /profile restores saved mode for power users.
 if (typeof window !== 'undefined') {
-  // Use requestAnimationFrame to defer initialization until after hydration
   requestAnimationFrame(() => {
-    const savedMode = localStorage.getItem('rop_mode') as Mode;
-    if (savedMode && ['kasra', 'river', 'sol'].includes(savedMode)) {
-      $mode.set(savedMode);
-      document.documentElement.dataset.mode = savedMode;
+    if (window.location.pathname === '/profile') {
+      const savedMode = localStorage.getItem('rop_mode') as Mode;
+      if (savedMode && ['kasra', 'river', 'sol'].includes(savedMode)) {
+        $mode.set(savedMode);
+        document.documentElement.dataset.mode = savedMode;
+      }
     }
     $isStoreHydrated.set(true);
   });

@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { approximateLongitudes, compute8D, getDominant } from '../../lib/16d-engine';
+import { getCosmicEvents, getDaySigns } from '../../lib/cosmic-events';
+import { DIMENSION_METADATA } from '../../types';
+import { CosmicCalendar } from '../../components/reading/CosmicCalendar';
+import { DailyReading } from '../../components/reading/DailyReading';
+
+// Today's data
+const today = new Date();
+const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+const birthData = { year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate() };
+const longitudes = approximateLongitudes(birthData);
+const vector = compute8D(longitudes);
+const dominant = getDominant(vector);
+const events = getCosmicEvents(today);
+const signs = getDaySigns(today);
+
+const formattedDate = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+const monthYear = today.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+// SEO
+const title = `Daily Cosmic Reading for ${formattedDate} | Realm of Patterns`;
+const description = `Today's cosmic energy reading: Sun in ${signs.sunSign}, Moon in ${signs.moonSign}. ${dominant.name} dimension leads — ${dominant.domain.toLowerCase()}. Free daily horoscope and astrology forecast.`;
+const eventNames = events.map(e => e.name).join(', ');
+
+// JSON-LD structured data
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": `${formattedDate} Cosmic Reading`,
+  "datePublished": dateStr,
+  "dateModified": dateStr,
+  "author": { "@type": "Organization", "name": "The Realm of Patterns" },
+  "publisher": { "@type": "Organization", "name": "The Realm of Patterns", "url": "https://therealmofpatterns.com" },
+  "description": description,
+  "mainEntityOfPage": `https://therealmofpatterns.com/reading`,
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage="/assets/brand/riso/hero.png"
+>
+  <div class="reading-page">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Navigation -->
+    <nav class="reading-nav">
+      <a href="/" class="back-link">&larr; Home</a>
+      <span class="nav-title">Daily Reading</span>
+      <a href={`/reading/${dateStr}`} class="today-link">Today</a>
+    </nav>
+
+    <div class="reading-layout">
+      <!-- Sidebar: Calendar -->
+      <aside class="reading-sidebar">
+        <CosmicCalendar currentDate={dateStr} client:load />
+      </aside>
+
+      <!-- Main Content -->
+      <main class="reading-main">
+        <DailyReading
+          date={dateStr}
+          events={JSON.stringify(events)}
+          vector={JSON.stringify(Array.from(vector))}
+          dominantIndex={dominant.index}
+          sunSign={signs.sunSign}
+          moonSign={signs.moonSign}
+          client:load
+        />
+      </main>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .reading-page {
+    min-height: 100vh;
+    background: #0a0908;
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  .reading-nav {
+    max-width: 1000px;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .back-link, .today-link {
+    font-size: 0.85rem;
+    color: rgba(240, 232, 216, 0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .back-link:hover, .today-link:hover { color: #d4a854; }
+
+  .nav-title {
+    font-size: 0.75rem;
+    color: rgba(212, 168, 84, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .reading-layout {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .reading-sidebar {
+    position: sticky;
+    top: 5rem;
+  }
+
+  @media (max-width: 768px) {
+    .reading-page { padding: 4.5rem 1rem 2rem; }
+
+    .reading-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .reading-sidebar {
+      position: static;
+      order: 2;
+    }
+
+    .reading-main {
+      order: 1;
+    }
+  }
+</style>

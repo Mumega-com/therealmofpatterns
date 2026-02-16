@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { approximateLongitudes, compute8D, getDominant } from '../../lib/16d-engine';
+import { getCosmicEvents, getDaySigns } from '../../lib/cosmic-events';
+import { DIMENSION_METADATA } from '../../types';
+import { CosmicCalendar } from '../../components/reading/CosmicCalendar';
+import { DailyReading } from '../../components/reading/DailyReading';
+
+export function getStaticPaths() {
+  const paths = [];
+  const today = new Date();
+
+  // Past 30 days + next 7 days = 37 pages
+  for (let offset = -30; offset <= 7; offset++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() + offset);
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    paths.push({ params: { date: dateStr } });
+  }
+
+  return paths;
+}
+
+const { date: dateStr } = Astro.params;
+const dateParts = dateStr!.split('-').map(Number);
+const pageDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+
+const today = new Date();
+const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+const isToday = dateStr === todayStr;
+
+// Compute data for this date
+const birthData = { year: pageDate.getFullYear(), month: pageDate.getMonth() + 1, day: pageDate.getDate() };
+const longitudes = approximateLongitudes(birthData);
+const vector = compute8D(longitudes);
+const dominant = getDominant(vector);
+const events = getCosmicEvents(pageDate);
+const signs = getDaySigns(pageDate);
+
+const formattedDate = pageDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+// Previous and next dates
+const prevDate = new Date(pageDate);
+prevDate.setDate(prevDate.getDate() - 1);
+const nextDate = new Date(pageDate);
+nextDate.setDate(nextDate.getDate() + 1);
+const prevStr = `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, '0')}-${String(prevDate.getDate()).padStart(2, '0')}`;
+const nextStr = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}-${String(nextDate.getDate()).padStart(2, '0')}`;
+
+// SEO
+const title = `Cosmic Reading for ${formattedDate} | Realm of Patterns`;
+const description = `Cosmic energy reading for ${formattedDate}: Sun in ${signs.sunSign}, Moon in ${signs.moonSign}. ${dominant.name} dimension dominates — ${dominant.domain.toLowerCase()}. Daily horoscope and astrology forecast.`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": `${formattedDate} Cosmic Reading`,
+  "datePublished": dateStr,
+  "dateModified": dateStr,
+  "author": { "@type": "Organization", "name": "The Realm of Patterns" },
+  "publisher": { "@type": "Organization", "name": "The Realm of Patterns", "url": "https://therealmofpatterns.com" },
+  "description": description,
+  "mainEntityOfPage": `https://therealmofpatterns.com/reading/${dateStr}`,
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage="/assets/brand/riso/hero.png"
+>
+  <div class="reading-page">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Navigation -->
+    <nav class="reading-nav">
+      <a href={`/reading/${prevStr}`} class="nav-arrow" title="Previous day">&larr; Prev</a>
+      <div class="nav-center">
+        <span class="nav-title">Daily Reading</span>
+        {isToday && <span class="today-badge">Today</span>}
+      </div>
+      <a href={`/reading/${nextStr}`} class="nav-arrow" title="Next day">Next &rarr;</a>
+    </nav>
+
+    <div class="reading-layout">
+      <!-- Sidebar: Calendar -->
+      <aside class="reading-sidebar">
+        <CosmicCalendar currentDate={dateStr!} client:load />
+
+        {!isToday && (
+          <a href="/reading" class="go-today">Go to today's reading &rarr;</a>
+        )}
+      </aside>
+
+      <!-- Main Content -->
+      <main class="reading-main">
+        <DailyReading
+          date={dateStr!}
+          events={JSON.stringify(events)}
+          vector={JSON.stringify(Array.from(vector))}
+          dominantIndex={dominant.index}
+          sunSign={signs.sunSign}
+          moonSign={signs.moonSign}
+          client:load
+        />
+      </main>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .reading-page {
+    min-height: 100vh;
+    background: #0a0908;
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  .reading-nav {
+    max-width: 1000px;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-arrow {
+    font-size: 0.85rem;
+    color: rgba(240, 232, 216, 0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+    min-width: 60px;
+  }
+  .nav-arrow:hover { color: #d4a854; }
+  .nav-arrow:last-child { text-align: right; }
+
+  .nav-center {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nav-title {
+    font-size: 0.75rem;
+    color: rgba(212, 168, 84, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .today-badge {
+    font-size: 0.6rem;
+    background: rgba(212, 168, 84, 0.15);
+    color: #d4a854;
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .reading-layout {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .reading-sidebar {
+    position: sticky;
+    top: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .go-today {
+    display: block;
+    text-align: center;
+    font-size: 0.8rem;
+    color: rgba(212, 168, 84, 0.5);
+    text-decoration: none;
+    padding: 0.5rem;
+    transition: color 0.2s;
+  }
+  .go-today:hover { color: #d4a854; }
+
+  @media (max-width: 768px) {
+    .reading-page { padding: 4.5rem 1rem 2rem; }
+
+    .reading-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .reading-sidebar {
+      position: static;
+      order: 2;
+    }
+
+    .reading-main {
+      order: 1;
+    }
+  }
+</style>

@@ -88,35 +88,14 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
     {showFooter && <Footer />}
 
     <script>
-      // Initialize mode from localStorage or default to 'sol'
-      const savedMode = localStorage.getItem('rop_mode') || 'sol';
-      document.documentElement.dataset.mode = savedMode;
+      // Sol-default: single voice experience
+      document.documentElement.dataset.mode = 'sol';
 
       // Initialize language from localStorage
       const savedLang = localStorage.getItem('rop_lang');
       if (savedLang) {
         document.documentElement.lang = savedLang;
       }
-
-      // Keyboard shortcuts for mode switching
-      document.addEventListener('keydown', (e) => {
-        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-        if (e.metaKey || e.ctrlKey || e.altKey) return;
-
-        const key = e.key.toLowerCase();
-        if (key === 'k') setMode('kasra');
-        if (key === 'r') setMode('river');
-        if (key === 's') setMode('sol');
-      });
-
-      function setMode(mode: 'kasra' | 'river' | 'sol') {
-        document.documentElement.dataset.mode = mode;
-        localStorage.setItem('rop_mode', mode);
-        window.dispatchEvent(new CustomEvent('modechange', { detail: mode }));
-      }
-
-      // Expose to window for components
-      (window as any).setMode = setMode;
 
       // Register service worker for PWA
       if ('serviceWorker' in navigator) {

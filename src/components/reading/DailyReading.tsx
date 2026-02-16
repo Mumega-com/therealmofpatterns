@@ -1,0 +1,375 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import type { CosmicEvent } from '../../lib/cosmic-events';
+import { DIMENSION_METADATA } from '../../types';
+
+interface DailyReadingProps {
+  date: string;         // YYYY-MM-DD
+  events: string;       // JSON-serialized CosmicEvent[]
+  vector: string;       // JSON-serialized number[]
+  dominantIndex: number;
+  sunSign: string;
+  moonSign: string;
+}
+
+interface CMSContent {
+  title: string;
+  hero_content: string;
+  content_blocks: Array<{ type: string; order: number; content: string }>;
+  faqs: Array<{ question: string; answer: string }>;
+}
+
+export function DailyReading({ date, events: eventsJson, vector: vectorJson, dominantIndex, sunSign, moonSign }: DailyReadingProps) {
+  const events: CosmicEvent[] = JSON.parse(eventsJson);
+  const vector: number[] = JSON.parse(vectorJson);
+  const dominant = DIMENSION_METADATA[dominantIndex];
+
+  const [cmsContent, setCmsContent] = useState<CMSContent | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const formattedDate = new Date(date + 'T12:00:00').toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  // Fetch CMS content
+  useEffect(() => {
+    const slug = `en/cosmic-weather/${date}`;
+    fetch(`/api/cms/page?slug=${encodeURIComponent(slug)}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.content_blocks) {
+          try {
+            const blocks = typeof data.content_blocks === 'string' ? JSON.parse(data.content_blocks) : data.content_blocks;
+            const faqs = data.faqs ? (typeof data.faqs === 'string' ? JSON.parse(data.faqs) : data.faqs) : [];
+            setCmsContent({ title: data.title, hero_content: data.hero_content, content_blocks: blocks, faqs });
+          } catch { /* fallback to computed */ }
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [date]);
+
+  return (
+    <article className="daily-reading">
+      {/* Date Header */}
+      <header className="reading-header">
+        <time dateTime={date} className="reading-date">{formattedDate}</time>
+        <h1 className="reading-title">
+          {cmsContent?.title || 'Daily Cosmic Reading'}
+        </h1>
+        <p className="reading-signs">
+          Sun in {sunSign} &middot; Moon in {moonSign}
+        </p>
+      </header>
+
+      {/* Cosmic Events Banner */}
+      {events.length > 0 && (
+        <div className="events-banner">
+          {events.map((e, i) => (
+            <div key={i} className="event-card" style={{ borderLeftColor: e.color }}>
+              <span className="event-icon">{e.icon}</span>
+              <div>
+                <strong className="event-name">{e.name}</strong>
+                <p className="event-desc">{e.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* CMS Content or Fallback */}
+      <div className="reading-body">
+        {loading ? (
+          <div className="reading-loading">
+            <div className="pulse" />
+            <p>Channeling today's cosmic energy...</p>
+          </div>
+        ) : cmsContent?.content_blocks?.length ? (
+          <div className="cms-content">
+            {cmsContent.hero_content && (
+              <blockquote className="reading-hero">{cmsContent.hero_content}</blockquote>
+            )}
+            {cmsContent.content_blocks
+              .sort((a, b) => a.order - b.order)
+              .map((block, i) => (
+                <section key={i} className="content-block">
+                  <div dangerouslySetInnerHTML={{ __html: block.content }} />
+                </section>
+              ))}
+          </div>
+        ) : (
+          <div className="fallback-reading">
+            <p className="reading-intro">
+              Today's cosmic field is shaped by the Sun in {sunSign} and Moon in {moonSign},
+              activating the <strong>{dominant.name}</strong> dimension — the realm of {dominant.domain.toLowerCase()}.
+            </p>
+            <p>
+              {dominantIndex === 0 && "Your identity and will are in the spotlight. Bold moves and authentic self-expression are favored. Ask yourself: what part of me wants to be seen today?"}
+              {dominantIndex === 1 && "Structure and form call for attention. Build something tangible, organize your space, commit to a practice. The foundation you lay now holds."}
+              {dominantIndex === 2 && "The mind is electric today. Communication flows, ideas spark, learning accelerates. Share what you know and stay open to what surprises you."}
+              {dominantIndex === 3 && "Beauty and harmony reign. Nurture your relationships, create something aesthetic, honor what you value most. Love is a practice, not just a feeling."}
+              {dominantIndex === 4 && "Expansion energy is strong. Growth comes through meaning-making, travel (inner or outer), and philosophical exploration. Think bigger."}
+              {dominantIndex === 5 && "Action energy peaks. Channel this force deliberately — exercise, decisive moves, starting what you've been putting off. Momentum is on your side."}
+              {dominantIndex === 6 && "Connection and care are heightened. Reach out, listen deeply, nurture the bonds that matter. Your emotional intelligence is your superpower today."}
+              {dominantIndex === 7 && "The witness dimension is activated. Practice presence, meditate, observe without judgment. The deepest insights come in stillness."}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Dimension Spotlight */}
+      <section className="dimension-spotlight">
+        <h2>Today's Energy Field</h2>
+        <div className="dim-bars">
+          {vector.slice(0, 8).map((val, i) => {
+            const meta = DIMENSION_METADATA[i];
+            const pct = Math.round(val * 100);
+            const isDominant = i === dominantIndex;
+            return (
+              <div key={i} className={`dim-row ${isDominant ? 'dim-dominant' : ''}`}>
+                <span className="dim-symbol">{meta.symbol}</span>
+                <span className="dim-name">{meta.name}</span>
+                <div className="dim-bar-track">
+                  <div
+                    className="dim-bar-fill"
+                    style={{ width: `${pct}%`, opacity: isDominant ? 1 : 0.6 }}
+                  />
+                </div>
+                <span className="dim-pct">{pct}%</span>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* FAQ section for SEO */}
+      {cmsContent?.faqs?.length ? (
+        <section className="reading-faqs">
+          <h2>Questions About Today's Reading</h2>
+          {cmsContent.faqs.map((faq, i) => (
+            <details key={i} className="faq-item">
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </section>
+      ) : null}
+
+      {/* CTA */}
+      <section className="reading-cta">
+        <h2>How Does This Affect You Personally?</h2>
+        <p>Today's cosmic reading is general. Your unique birth pattern interacts with these transits differently. Enter your birthday to see your personalized energy forecast.</p>
+        <a href="/discover" className="cta-button">
+          Discover Your Pattern
+        </a>
+        <span className="cta-sub">Free &middot; 30 seconds &middot; No signup required</span>
+      </section>
+
+      <style>{`
+        .daily-reading {
+          max-width: 680px;
+          margin: 0 auto;
+          font-family: 'Inter', sans-serif;
+        }
+        .reading-header {
+          text-align: center;
+          margin-bottom: 2rem;
+        }
+        .reading-date {
+          display: block;
+          font-size: 0.8rem;
+          color: rgba(212, 168, 84, 0.6);
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          margin-bottom: 0.5rem;
+        }
+        .reading-title {
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: #f0e8d8;
+          margin: 0 0 0.5rem;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          line-height: 1.2;
+        }
+        .reading-signs {
+          font-size: 0.9rem;
+          color: rgba(240, 232, 216, 0.5);
+        }
+
+        /* Events */
+        .events-banner {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          margin-bottom: 2rem;
+        }
+        .event-card {
+          display: flex;
+          gap: 0.75rem;
+          align-items: flex-start;
+          padding: 1rem;
+          background: rgba(26, 24, 20, 0.6);
+          border: 1px solid rgba(212, 168, 84, 0.1);
+          border-left: 3px solid;
+          border-radius: 8px;
+        }
+        .event-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+        .event-name { color: #f0e8d8; font-size: 0.9rem; display: block; }
+        .event-desc { color: rgba(240, 232, 216, 0.5); font-size: 0.8rem; margin: 0.25rem 0 0; line-height: 1.5; }
+
+        /* Body */
+        .reading-body { margin-bottom: 2.5rem; }
+        .reading-loading {
+          text-align: center;
+          padding: 2rem;
+          color: rgba(240, 232, 216, 0.4);
+        }
+        .pulse {
+          width: 40px; height: 40px; border-radius: 50%;
+          background: rgba(212, 168, 84, 0.2);
+          margin: 0 auto 1rem;
+          animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); opacity: 0.5; }
+          50% { transform: scale(1.2); opacity: 1; }
+        }
+        .reading-hero {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 1.2rem;
+          font-style: italic;
+          color: rgba(212, 168, 84, 0.8);
+          border-left: 2px solid rgba(212, 168, 84, 0.3);
+          padding-left: 1.25rem;
+          margin: 0 0 1.5rem;
+          line-height: 1.6;
+        }
+        .cms-content { color: rgba(240, 232, 216, 0.75); line-height: 1.7; font-size: 0.95rem; }
+        .cms-content h2, .cms-content h3 { color: #f0e8d8; margin-top: 1.5rem; }
+        .content-block { margin-bottom: 1rem; }
+        .fallback-reading { color: rgba(240, 232, 216, 0.75); line-height: 1.7; font-size: 0.95rem; }
+        .reading-intro { font-size: 1.05rem; margin-bottom: 1rem; }
+        .reading-intro strong { color: #d4a854; }
+
+        /* Dimensions */
+        .dimension-spotlight {
+          margin-bottom: 2.5rem;
+          padding: 1.5rem;
+          background: rgba(26, 24, 20, 0.6);
+          border: 1px solid rgba(212, 168, 84, 0.1);
+          border-radius: 12px;
+        }
+        .dimension-spotlight h2 {
+          font-size: 1rem;
+          color: #f0e8d8;
+          margin: 0 0 1rem;
+          font-weight: 600;
+        }
+        .dim-bars { display: flex; flex-direction: column; gap: 0.5rem; }
+        .dim-row {
+          display: grid;
+          grid-template-columns: 1.5rem 5.5rem 1fr 2.5rem;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .dim-symbol { font-size: 0.85rem; color: rgba(212, 168, 84, 0.5); text-align: center; }
+        .dim-name { font-size: 0.8rem; color: rgba(240, 232, 216, 0.5); }
+        .dim-bar-track {
+          height: 6px;
+          background: rgba(240, 232, 216, 0.06);
+          border-radius: 3px;
+          overflow: hidden;
+        }
+        .dim-bar-fill {
+          height: 100%;
+          background: linear-gradient(90deg, rgba(212, 168, 84, 0.4), rgba(212, 168, 84, 0.8));
+          border-radius: 3px;
+          transition: width 0.8s ease;
+        }
+        .dim-pct { font-size: 0.75rem; color: rgba(240, 232, 216, 0.4); text-align: right; }
+        .dim-dominant .dim-symbol { color: #d4a854; }
+        .dim-dominant .dim-name { color: #d4a854; font-weight: 600; }
+        .dim-dominant .dim-pct { color: #d4a854; }
+        .dim-dominant .dim-bar-fill { opacity: 1 !important; }
+
+        /* FAQs */
+        .reading-faqs { margin-bottom: 2.5rem; }
+        .reading-faqs h2 { font-size: 1rem; color: #f0e8d8; margin: 0 0 1rem; font-weight: 600; }
+        .faq-item {
+          border-bottom: 1px solid rgba(212, 168, 84, 0.08);
+          padding: 0.75rem 0;
+        }
+        .faq-item summary {
+          cursor: pointer;
+          color: rgba(240, 232, 216, 0.7);
+          font-size: 0.9rem;
+          font-weight: 500;
+        }
+        .faq-item summary:hover { color: #d4a854; }
+        .faq-item p {
+          color: rgba(240, 232, 216, 0.5);
+          font-size: 0.85rem;
+          line-height: 1.6;
+          margin: 0.5rem 0 0;
+          padding-left: 1rem;
+        }
+
+        /* CTA */
+        .reading-cta {
+          text-align: center;
+          padding: 2.5rem 1.5rem;
+          background: linear-gradient(135deg, rgba(212, 168, 84, 0.08), rgba(167, 139, 250, 0.05));
+          border: 1px solid rgba(212, 168, 84, 0.15);
+          border-radius: 16px;
+          margin-bottom: 2rem;
+        }
+        .reading-cta h2 {
+          font-size: 1.3rem;
+          color: #f0e8d8;
+          margin: 0 0 0.75rem;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+        .reading-cta p {
+          color: rgba(240, 232, 216, 0.5);
+          font-size: 0.9rem;
+          line-height: 1.6;
+          margin: 0 0 1.5rem;
+          max-width: 480px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .cta-button {
+          display: inline-block;
+          padding: 0.8rem 2rem;
+          background: linear-gradient(135deg, #d4a854, #c49a4a);
+          color: #0a0908;
+          font-weight: 700;
+          font-size: 0.95rem;
+          border-radius: 8px;
+          text-decoration: none;
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cta-button:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 20px rgba(212, 168, 84, 0.3);
+        }
+        .cta-sub {
+          display: block;
+          margin-top: 0.75rem;
+          font-size: 0.75rem;
+          color: rgba(240, 232, 216, 0.3);
+        }
+
+        @media (max-width: 640px) {
+          .reading-title { font-size: 1.4rem; }
+          .dim-row { grid-template-columns: 1.2rem 4rem 1fr 2rem; }
+          .dim-name { font-size: 0.7rem; }
+        }
+      `}</style>
+    </article>
+  );
+}

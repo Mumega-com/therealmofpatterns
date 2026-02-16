@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { $mode, $forecast, updateForecast, setFailureMode } from '../../stores';
 import { saveCheckin, getCheckinHistory } from '../../lib/checkin-storage';
-import { ModeDiscovery } from '../shared/ModeDiscovery';
 import { SyncPrompt } from '../shared/SyncPrompt';
 import { BirthDataPrompt } from '../shared/BirthDataPrompt';
 import { PredictionCard } from '../shared/PredictionCard';
@@ -587,9 +586,6 @@ function ResultsView({
           onComplete={() => onBirthDataComplete()}
         />
       )}
-
-      {/* Mode Discovery - shows only after first check-in */}
-      <ModeDiscovery />
 
       {/* Sync Prompt - encourages enabling sync */}
       <SyncPrompt />
