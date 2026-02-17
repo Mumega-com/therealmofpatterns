@@ -133,7 +133,7 @@ export async function onRequestPost(
     if (!narrative) {
       narrative = await callWorkersAI(env.AI, systemPrompt, fullUserPrompt);
       if (narrative) {
-        modelUsed = 'workers-ai-llama-3.1-8b';
+        modelUsed = 'workers-ai-gemma-3-12b';
       }
     }
 
@@ -266,7 +266,7 @@ async function callOpenAI(apiKey: string, system: string, user: string): Promise
  */
 async function callWorkersAI(ai: Ai, system: string, user: string): Promise<string | null> {
   try {
-    const result = await ai.run('@cf/meta/llama-3.1-8b-instruct' as any, {
+    const result = await ai.run('@cf/google/gemma-3-12b-it' as any, {
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: user },
