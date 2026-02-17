@@ -3,6 +3,7 @@
 import { useStore } from '@nanostores/react';
 import { $mode } from '../../stores';
 import { ShareButtons } from '../shared/SocialShare';
+import { EmailCapture } from '../shared/EmailCapture';
 import { RadarChart } from '../charts/RadarChart';
 import { NatalWheel } from '../charts/NatalWheel';
 import { assignArchetype } from '../../lib/archetype-engine';
@@ -163,6 +164,17 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
           </div>
         );
       })()}
+
+      {/* Email Capture */}
+      <div className="email-section">
+        <EmailCapture
+          variant="inline"
+          headline="Get your daily reading"
+          subheadline="Your pattern changes daily — stay in tune. We'll send a personalized energy forecast each morning."
+          className="discover-email"
+        />
+        <p className="email-disclaimer">No spam. Unsubscribe anytime.</p>
+      </div>
 
       {/* Share */}
       <div className="share-section">
@@ -531,6 +543,64 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
         .quest-label {
           color: rgba(212, 168, 84, 0.6);
           font-style: normal;
+        }
+
+        /* Email Capture */
+        .email-section {
+          padding: 1.25rem;
+          background: linear-gradient(135deg, rgba(212, 168, 84, 0.06), rgba(167, 139, 250, 0.03));
+          border: 1px solid rgba(212, 168, 84, 0.15);
+          border-radius: 12px;
+          margin-bottom: 1.5rem;
+        }
+        .email-section .discover-email p {
+          font-size: 0.9rem;
+          color: rgba(240, 232, 216, 0.6);
+          margin-bottom: 0.75rem;
+        }
+        .email-section .discover-email .flex {
+          display: flex;
+        }
+        .email-section .discover-email .gap-2 {
+          gap: 0.5rem;
+        }
+        .email-section .discover-email .mb-2 {
+          margin-bottom: 0.5rem;
+        }
+        .email-section .discover-email .input {
+          flex: 1;
+          padding: 0.6rem 0.75rem;
+          background: rgba(10, 9, 8, 0.6);
+          border: 1px solid rgba(212, 168, 84, 0.2);
+          border-radius: 8px;
+          color: #f0e8d8;
+          font-size: 0.9rem;
+          outline: none;
+        }
+        .email-section .discover-email .input:focus {
+          border-color: rgba(212, 168, 84, 0.5);
+        }
+        .email-section .discover-email .btn-primary {
+          padding: 0.6rem 1.25rem;
+          background: linear-gradient(135deg, #d4a854, #b8924a);
+          border: none;
+          border-radius: 8px;
+          color: #0a0908;
+          font-weight: 600;
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s;
+          white-space: nowrap;
+        }
+        .email-section .discover-email .btn-primary:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 16px rgba(212, 168, 84, 0.3);
+        }
+        .email-disclaimer {
+          font-size: 0.75rem;
+          color: rgba(240, 232, 216, 0.3);
+          text-align: center;
+          margin: 0.75rem 0 0;
         }
 
         /* Share */
