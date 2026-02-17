@@ -71,6 +71,14 @@ const jsonLd = {
           moonSign={signs.moonSign}
           client:load
         />
+
+        <!-- Personalization CTA -->
+        <div class="reading-cta" id="reading-cta">
+          <a href="/discover" class="reading-cta-link" id="reading-cta-link">
+            <span>Want a reading based on YOUR birth chart?</span>
+            <span class="reading-cta-arrow">&rarr;</span>
+          </a>
+        </div>
       </main>
     </div>
   </div>
@@ -120,6 +128,38 @@ const jsonLd = {
     top: 5rem;
   }
 
+  .reading-cta {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    border-radius: 12px;
+    background: rgba(212, 168, 84, 0.05);
+    text-align: center;
+  }
+
+  .reading-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #d4a854;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .reading-cta-link:hover {
+    color: #e5b865;
+  }
+
+  .reading-cta-arrow {
+    transition: transform 0.2s;
+  }
+
+  .reading-cta-link:hover .reading-cta-arrow {
+    transform: translateX(4px);
+  }
+
   @media (max-width: 768px) {
     .reading-page { padding: 4.5rem 1rem 2rem; }
 
@@ -137,3 +177,15 @@ const jsonLd = {
     }
   }
 </style>
+
+<script>
+  const hasBirthData = localStorage.getItem('rop_birth_data_full');
+  if (hasBirthData) {
+    const link = document.getElementById('reading-cta-link');
+    if (link) {
+      link.setAttribute('href', '/dashboard');
+      const textSpan = link.querySelector('span:first-child');
+      if (textSpan) textSpan.textContent = 'See your personalized dashboard';
+    }
+  }
+</script>

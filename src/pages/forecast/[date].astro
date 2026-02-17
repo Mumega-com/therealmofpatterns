@@ -101,6 +101,11 @@ const description = `Personal energy forecast and optimal activity windows for $
       <div id="email-capture"></div>
     </section>
 
+    <!-- Personalization CTA -->
+    <div class="personalize-cta">
+      <a href="/discover">Get your personalized forecast &rarr;</a>
+    </div>
+
     <!-- SEO Content -->
     <section class="forecast-seo">
       <h2>Understanding Your Energy Forecast</h2>
@@ -181,6 +186,28 @@ const description = `Personal energy forecast and optimal activity windows for $
 
   .forecast-cta > div {
     opacity: 10; /* Reset opacity for child */
+  }
+
+  .personalize-cta {
+    margin: 2rem 0;
+    text-align: center;
+  }
+
+  .personalize-cta a {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    border: 1px solid rgba(212, 168, 84, 0.3);
+    border-radius: 8px;
+    color: #d4a854;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .personalize-cta a:hover {
+    background: rgba(212, 168, 84, 0.1);
+    border-color: rgba(212, 168, 84, 0.5);
   }
 
   .forecast-seo {

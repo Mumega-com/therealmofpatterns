@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LanguageSelector } from './LanguageSelector';
 import { StreakBadge } from './StreakBadge';
 
@@ -11,13 +11,27 @@ interface HeaderProps {
 }
 
 const NAV_LINKS = [
-  { href: '/reading', label: 'Today', icon: '☽' },
+  { href: '/dashboard', label: 'Dashboard', icon: '◎' },
+  { href: '/sol/checkin', label: 'Check In', icon: '◇' },
   { href: '/journey', label: 'My Journey', icon: '◈' },
   { href: '/subscribe', label: 'Go Pro', icon: '✦' },
 ];
 
 export function Header({ className = '', currentLang = 'en', transparent = false }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isPro, setIsPro] = useState(false);
+
+  useEffect(() => {
+    try {
+      const userData = localStorage.getItem('rop_user');
+      if (userData) {
+        const user = JSON.parse(userData);
+        if (user.isPro) setIsPro(true);
+      }
+    } catch {}
+  }, []);
+
+  const visibleLinks = isPro ? NAV_LINKS.filter(l => l.href !== '/subscribe') : NAV_LINKS;
 
   return (
     <header
@@ -49,7 +63,7 @@ export function Header({ className = '', currentLang = 'en', transparent = false
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map(link => (
+            {visibleLinks.map(link => (
               <a
                 key={link.href}
                 href={link.href}
@@ -94,7 +108,7 @@ export function Header({ className = '', currentLang = 'en', transparent = false
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#0a0908] border-t border-[rgba(212,168,84,0.1)]">
           <nav className="px-4 py-3 space-y-1">
-            {NAV_LINKS.map(link => (
+            {visibleLinks.map(link => (
               <a
                 key={link.href}
                 href={link.href}

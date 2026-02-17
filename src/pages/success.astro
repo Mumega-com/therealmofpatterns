@@ -37,10 +37,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
 
       <div class="cta-group">
-        <a href="/discover/" class="cta-primary">
-          <span>Discover Your Pattern</span>
+        <a href="/discover/" class="cta-primary" id="primary-cta">
+          <span id="primary-cta-text">Discover Your Pattern</span>
           <span class="arrow">&rarr;</span>
         </a>
+        <a href="/sol/checkin" class="cta-secondary">Start a Check-in</a>
         <a href="/" class="cta-secondary">Back to Home</a>
       </div>
 
@@ -61,6 +62,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     subtitle.textContent = 'Your Team plan is active. Invite your members from the dashboard.';
   } else if (subtitle) {
     subtitle.textContent = 'Your Pro trial has started. Enjoy the full experience for 7 days free.';
+  }
+
+  // Smart CTA based on birth data
+  const hasBirthData = localStorage.getItem('rop_birth_data_full');
+  if (hasBirthData) {
+    const primaryCta = document.getElementById('primary-cta');
+    const primaryCtaText = document.getElementById('primary-cta-text');
+    if (primaryCta) primaryCta.setAttribute('href', '/dashboard');
+    if (primaryCtaText) primaryCtaText.textContent = 'Go to Your Dashboard';
+
+    // Update step 2 text
+    const steps = document.querySelectorAll('.next-steps li');
+    if (steps[1]) {
+      const strong = steps[1].querySelector('strong');
+      const p = steps[1].querySelector('p');
+      if (strong) strong.textContent = 'Explore your full dashboard';
+      if (p) p.textContent = 'Your personalized energy breakdown is ready.';
+    }
   }
 </script>
 

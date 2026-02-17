@@ -95,6 +95,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </section>
     </main>
 
+    <!-- Quick Nav -->
+    <nav class="sol-quick-nav">
+      <a href="/dashboard" class="quick-nav-link">
+        <span class="quick-nav-icon">&#9678;</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="/journey" class="quick-nav-link">
+        <span class="quick-nav-icon">&#9672;</span>
+        <span>My Journey</span>
+      </a>
+      <a href="/profile" class="quick-nav-link">
+        <span class="quick-nav-icon">&#9673;</span>
+        <span>Profile</span>
+      </a>
+      <a href="/subscribe" class="quick-nav-link">
+        <span class="quick-nav-icon">&#10022;</span>
+        <span>Go Pro</span>
+      </a>
+    </nav>
+
     <!-- Footer -->
     <footer class="sol-footer">
       <p class="footer-text">
@@ -489,6 +509,44 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   /* Responsive */
+  /* Quick Nav */
+  .sol-quick-nav {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 2rem auto 0;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .quick-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    color: #374151;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .quick-nav-link:hover {
+    background: #fffbeb;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+    color: #92400e;
+  }
+
+  .quick-nav-icon {
+    color: #d97706;
+    font-size: 1.1rem;
+  }
+
   @media (min-width: 768px) {
     .sol-page {
       padding: 2rem;
@@ -511,6 +569,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   import { DashboardEnhanced } from '../../components/dashboard/DashboardEnhanced';
   import { SolWindows } from '../../components/sol/SolWindows';
   import { setMode, $forecast } from '../../stores';
+  import { getCheckinHistory } from '../../lib/checkin-storage';
 
   // Set mode to Sol
   setMode('sol');
@@ -592,11 +651,22 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
   }
 
+  // Update streak from actual data
+  function updateStreak() {
+    const streakEl = document.getElementById('streak');
+    if (streakEl) {
+      const history = getCheckinHistory();
+      const streak = history.streak || 0;
+      streakEl.textContent = streak === 1 ? '1 day' : `${streak} days`;
+    }
+  }
+
   // Initialize
   document.addEventListener('DOMContentLoaded', () => {
     createFloatingShapes();
     setGreeting();
     setDailyTip();
+    updateStreak();
 
     // Add gradient definition for energy ring
     const svg = document.querySelector('.energy-ring svg');
