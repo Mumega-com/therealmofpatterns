@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { CosmicEvent } from '../../lib/cosmic-events';
+import { getDailyReading, getDailyAction } from '../../lib/daily-reading-content';
 import { DIMENSION_METADATA } from '../../types';
 import { RadarChart } from '../charts/RadarChart';
 
@@ -104,22 +105,26 @@ export function DailyReading({ date, events: eventsJson, vector: vectorJson, dom
               ))}
           </div>
         ) : (
-          <div className="fallback-reading">
-            <p className="reading-intro">
-              Today's cosmic field is shaped by the Sun in {sunSign} and Moon in {moonSign},
-              activating the <strong>{dominant.name}</strong> dimension — the realm of {dominant.domain.toLowerCase()}.
-            </p>
-            <p>
-              {dominantIndex === 0 && "Your identity and will are in the spotlight. Bold moves and authentic self-expression are favored. Ask yourself: what part of me wants to be seen today?"}
-              {dominantIndex === 1 && "Structure and form call for attention. Build something tangible, organize your space, commit to a practice. The foundation you lay now holds."}
-              {dominantIndex === 2 && "The mind is electric today. Communication flows, ideas spark, learning accelerates. Share what you know and stay open to what surprises you."}
-              {dominantIndex === 3 && "Beauty and harmony reign. Nurture your relationships, create something aesthetic, honor what you value most. Love is a practice, not just a feeling."}
-              {dominantIndex === 4 && "Expansion energy is strong. Growth comes through meaning-making, travel (inner or outer), and philosophical exploration. Think bigger."}
-              {dominantIndex === 5 && "Action energy peaks. Channel this force deliberately — exercise, decisive moves, starting what you've been putting off. Momentum is on your side."}
-              {dominantIndex === 6 && "Connection and care are heightened. Reach out, listen deeply, nurture the bonds that matter. Your emotional intelligence is your superpower today."}
-              {dominantIndex === 7 && "The witness dimension is activated. Practice presence, meditate, observe without judgment. The deepest insights come in stillness."}
-            </p>
-          </div>
+          (() => {
+            const reading = getDailyReading(dominantIndex, new Date(date));
+            const action = getDailyAction(dominantIndex, new Date(date));
+            return (
+              <div className="fallback-reading">
+                <p className="reading-intro">
+                  Today's cosmic field is shaped by the Sun in {sunSign} and Moon in {moonSign},
+                  activating the <strong>{dominant.name}</strong> dimension — the realm of {dominant.domain.toLowerCase()}.
+                </p>
+                <p>{reading.opening}</p>
+                <p>{reading.body}</p>
+                <p className="reading-closing">{reading.closing}</p>
+                <div className="daily-action">
+                  <h3 className="action-label">Today's Action</h3>
+                  <p className="action-title">{action.title}</p>
+                  <p className="action-desc">{action.description}</p>
+                </div>
+              </div>
+            );
+          })()
         )}
       </div>
 
@@ -261,8 +266,41 @@ export function DailyReading({ date, events: eventsJson, vector: vectorJson, dom
         .cms-content h2, .cms-content h3 { color: #f0e8d8; margin-top: 1.5rem; }
         .content-block { margin-bottom: 1rem; }
         .fallback-reading { color: rgba(240, 232, 216, 0.75); line-height: 1.7; font-size: 0.95rem; }
-        .reading-intro { font-size: 1.05rem; margin-bottom: 1rem; }
+        .fallback-reading p { margin-bottom: 1rem; }
+        .reading-intro { font-size: 1.05rem; }
         .reading-intro strong { color: #d4a854; }
+        .reading-closing {
+          font-style: italic;
+          color: rgba(212, 168, 84, 0.7);
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 1.05rem;
+        }
+        .daily-action {
+          margin-top: 1.5rem;
+          padding: 1.25rem;
+          background: rgba(212, 168, 84, 0.06);
+          border: 1px solid rgba(212, 168, 84, 0.15);
+          border-radius: 10px;
+        }
+        .action-label {
+          font-size: 0.7rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: rgba(212, 168, 84, 0.5);
+          margin: 0 0 0.5rem;
+        }
+        .action-title {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #f0e8d8;
+          margin: 0 0 0.25rem !important;
+        }
+        .action-desc {
+          font-size: 0.9rem;
+          color: rgba(240, 232, 216, 0.6);
+          margin: 0 !important;
+          line-height: 1.5;
+        }
 
         /* Dimensions */
         .dimension-spotlight {
