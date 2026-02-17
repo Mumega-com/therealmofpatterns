@@ -60,6 +60,28 @@ if (typeof window !== 'undefined') {
       }
     }
     $isUserHydrated.set(true);
+
+    // Refresh subscription status for Pro users (throttled to every 4 hours)
+    const parsed = saved ? JSON.parse(saved) : null;
+    if (parsed?.email && parsed?.isPro) {
+      const REFRESH_MS = 4 * 60 * 60 * 1000;
+      const lastCheck = localStorage.getItem('rop_sub_checked_at');
+      if (!lastCheck || (Date.now() - parseInt(lastCheck)) > REFRESH_MS) {
+        localStorage.setItem('rop_sub_checked_at', Date.now().toString());
+        fetch('/api/subscription-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: parsed.email }),
+        })
+          .then(r => r.ok ? r.json() : null)
+          .then((data: Record<string, unknown> | null) => {
+            if (!data?.success) return;
+            localStorage.setItem('rop_subscription_tier', data.tier as string);
+            $user.setKey('isPro', data.isPro as boolean);
+          })
+          .catch(() => { /* silent */ });
+      }
+    }
   });
 
   // Persist changes to localStorage (skip initial hydration)

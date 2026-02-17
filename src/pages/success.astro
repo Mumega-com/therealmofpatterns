@@ -64,6 +64,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     subtitle.textContent = 'Your Pro trial has started. Enjoy the full experience for 7 days free.';
   }
 
+  // Verify subscription via Stripe session and activate Pro in localStorage
+  const sessionId = params.get('session_id');
+  if (sessionId) {
+    try {
+      const res = await fetch('/api/subscription-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.isPro) {
+          localStorage.setItem('rop_subscription_tier', data.tier);
+          const existing = JSON.parse(localStorage.getItem('rop_user') || '{}');
+          existing.isPro = true;
+          if (data.email) existing.email = data.email;
+          localStorage.setItem('rop_user', JSON.stringify(existing));
+        }
+      }
+    } catch (err) {
+      console.warn('[ROP] Could not verify subscription:', err);
+    }
+  }
+
   // Smart CTA based on birth data
   const hasBirthData = localStorage.getItem('rop_birth_data_full');
   if (hasBirthData) {
