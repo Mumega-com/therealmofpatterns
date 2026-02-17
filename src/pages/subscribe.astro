@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Testimonials } from '../components/shared/Testimonials';
 ---
 
 <BaseLayout title="Go Pro - The Realm of Patterns" description="Upgrade to Pro ($9/mo) or Team ($29/seat/mo) for complete personality breakdowns, daily forecasts, and more.">
@@ -259,9 +258,6 @@ import { Testimonials } from '../components/shared/Testimonials';
           Cancel anytime with one click.
         </p>
       </div>
-
-      <!-- Testimonials -->
-      <Testimonials client:load limit={3} className="border-t border-[rgba(212,168,84,0.1)]" />
 
       <!-- FAQ -->
       <div class="faq-section">
