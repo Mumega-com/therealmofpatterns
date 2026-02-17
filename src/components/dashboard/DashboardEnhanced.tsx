@@ -71,7 +71,7 @@ export function DashboardEnhanced({ className = '' }: DashboardEnhancedProps) {
         <AnimatedGauge
           value={forecast.kappa ?? 0}
           max={1}
-          label={mode === 'kasra' ? 'KAPPA_COEFFICIENT' : mode === 'river' ? 'Soul Coherence' : 'Your Score'}
+          label={mode === 'kasra' ? 'KAPPA_COEFFICIENT' : mode === 'river' ? 'Soul Coherence' : 'Your Energy Today'}
           mode={mode}
           size="lg"
           showTrend
