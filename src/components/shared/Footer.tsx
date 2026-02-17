@@ -4,9 +4,11 @@ interface FooterProps {
 
 const FOOTER_LINKS = {
   explore: [
+    { href: '/dashboard', label: 'Dashboard' },
     { href: '/reading', label: 'Daily Reading' },
     { href: '/discover', label: 'Discover Your Pattern' },
     { href: '/sol/checkin', label: 'Daily Check-in' },
+    { href: '/blog', label: 'Blog' },
     { href: '/subscribe', label: 'Go Pro' },
   ],
   stages: [
