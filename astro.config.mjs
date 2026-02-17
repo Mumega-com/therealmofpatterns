@@ -5,6 +5,7 @@ import tailwind from '@astrojs/tailwind';
 // https://astro.build/config
 export default defineConfig({
   output: 'static', // Static generation, Cloudflare Pages Functions handle API
+  trailingSlash: 'always',
   integrations: [
     react(),
     tailwind({
