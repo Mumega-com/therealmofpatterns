@@ -7,25 +7,15 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
   <div class="profile-page">
     <div class="profile-container">
       <header class="page-header">
-        <h1>
-          <span class="kasra-only">PROFILE_CONFIGURATION</span>
-          <span class="river-only">Your Sacred Record</span>
-          <span class="sol-only">Your Profile</span>
-        </h1>
-        <p class="subtitle">
-          <span class="kasra-only">Manage user parameters and system preferences.</span>
-          <span class="river-only">The keeper of your cosmic signature.</span>
-          <span class="sol-only">Manage your account and settings.</span>
-        </p>
+        <h1>Your Profile</h1>
+        <p class="subtitle">Manage your account and settings.</p>
       </header>
 
       <!-- Account Section -->
       <section class="profile-section">
         <h2>
           <span class="section-icon">◎</span>
-          <span class="kasra-only">ACCOUNT_DATA</span>
-          <span class="river-only">Identity</span>
-          <span class="sol-only">Account</span>
+          Account
         </h2>
 
         <div class="field-group">
@@ -41,11 +31,7 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
         </div>
 
         <div class="field-group">
-          <label>
-            <span class="kasra-only">ACCOUNT_STATUS</span>
-            <span class="river-only">Membership</span>
-            <span class="sol-only">Member Since</span>
-          </label>
+          <label>Member Since</label>
           <div class="field-value" id="memberSinceDisplay">-</div>
         </div>
       </section>
@@ -54,44 +40,28 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
       <section class="profile-section">
         <h2>
           <span class="section-icon">✧</span>
-          <span class="kasra-only">NATAL_PARAMETERS</span>
-          <span class="river-only">Birth Signature</span>
-          <span class="sol-only">Birth Data</span>
+          Birth Data
         </h2>
 
         <div class="field-group">
-          <label>
-            <span class="kasra-only">BIRTH_DATE</span>
-            <span class="river-only">Day of Emergence</span>
-            <span class="sol-only">Birthday</span>
-          </label>
+          <label>Birthday</label>
           <div class="field-value" id="birthDateDisplay">Not set</div>
           <button class="field-action" id="editBirthBtn">Edit</button>
         </div>
 
         <div class="field-group">
-          <label>
-            <span class="kasra-only">BIRTH_TIME</span>
-            <span class="river-only">Moment of Arrival</span>
-            <span class="sol-only">Birth Time</span>
-          </label>
+          <label>Birth Time</label>
           <div class="field-value" id="birthTimeDisplay">Not set</div>
         </div>
 
         <div class="field-group">
-          <label>
-            <span class="kasra-only">BIRTH_LOCATION</span>
-            <span class="river-only">Place of Origin</span>
-            <span class="sol-only">Birth Location</span>
-          </label>
+          <label>Birth Location</label>
           <div class="field-value" id="birthLocationDisplay">Not set</div>
         </div>
 
         <div class="info-note">
           <span class="note-icon">i</span>
-          <span class="kasra-only">Birth parameters affect dimensional calculations. Changes will recalibrate your pattern.</span>
-          <span class="river-only">Your birth signature is the anchor of your pattern. Changing it will reshape all readings.</span>
-          <span class="sol-only">Your birth info affects all your readings. Only change if you have more accurate data.</span>
+          Your birth info affects all your readings. Only change if you have more accurate data.
         </div>
       </section>
 
@@ -99,17 +69,11 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
       <section class="profile-section">
         <h2>
           <span class="section-icon">◇</span>
-          <span class="kasra-only">SYSTEM_PREFERENCES</span>
-          <span class="river-only">Sacred Preferences</span>
-          <span class="sol-only">Preferences</span>
+          Preferences
         </h2>
 
         <div class="field-group">
-          <label>
-            <span class="kasra-only">INTERFACE_MODE</span>
-            <span class="river-only">Voice</span>
-            <span class="sol-only">Reading Style</span>
-          </label>
+          <label>Reading Style</label>
           <div class="mode-selector">
             <button class="mode-btn" data-mode="kasra">
               <span class="mode-name">Kasra</span>
@@ -127,69 +91,37 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
         </div>
 
         <div class="field-group">
-          <label>
-            <span class="kasra-only">ALERT_NOTIFICATIONS</span>
-            <span class="river-only">Whispers</span>
-            <span class="sol-only">Notifications</span>
-          </label>
+          <label>Notifications</label>
           <div class="toggle-group">
             <label class="toggle-item">
               <input type="checkbox" id="alertOptimalWindows" checked />
-              <span class="toggle-label">
-                <span class="kasra-only">Optimal window alerts</span>
-                <span class="river-only">Sacred timing whispers</span>
-                <span class="sol-only">Best time alerts</span>
-              </span>
+              <span class="toggle-label">Best time alerts</span>
             </label>
             <label class="toggle-item">
               <input type="checkbox" id="alertFailureWarnings" checked />
-              <span class="toggle-label">
-                <span class="kasra-only">Failure mode warnings</span>
-                <span class="river-only">Storm approach warnings</span>
-                <span class="sol-only">Heads up alerts</span>
-              </span>
+              <span class="toggle-label">Heads up alerts</span>
             </label>
             <label class="toggle-item">
               <input type="checkbox" id="alertStreakReminders" checked />
-              <span class="toggle-label">
-                <span class="kasra-only">Streak continuity reminders</span>
-                <span class="river-only">Practice reminders</span>
-                <span class="sol-only">Streak reminders</span>
-              </span>
+              <span class="toggle-label">Streak reminders</span>
             </label>
             <label class="toggle-item">
               <input type="checkbox" id="alertDimensionChanges" />
-              <span class="toggle-label">
-                <span class="kasra-only">Dimension spike/drop alerts</span>
-                <span class="river-only">Energy shift notices</span>
-                <span class="sol-only">Dimension change alerts</span>
-              </span>
+              <span class="toggle-label">Energy change alerts</span>
             </label>
           </div>
         </div>
 
         <div class="field-group">
-          <label>
-            <span class="kasra-only">EMAIL_PREFERENCES</span>
-            <span class="river-only">Written Whispers</span>
-            <span class="sol-only">Email Settings</span>
-          </label>
+          <label>Email Settings</label>
           <div class="toggle-group">
             <label class="toggle-item">
               <input type="checkbox" id="emailDailyForecast" />
-              <span class="toggle-label">
-                <span class="kasra-only">Daily forecast digest</span>
-                <span class="river-only">Morning oracle message</span>
-                <span class="sol-only">Daily email forecast</span>
-              </span>
+              <span class="toggle-label">Daily email forecast</span>
             </label>
             <label class="toggle-item">
               <input type="checkbox" id="emailWeeklyInsight" />
-              <span class="toggle-label">
-                <span class="kasra-only">Weekly pattern analysis</span>
-                <span class="river-only">Weekly reflection</span>
-                <span class="sol-only">Weekly summary email</span>
-              </span>
+              <span class="toggle-label">Weekly summary email</span>
             </label>
           </div>
         </div>
@@ -199,9 +131,7 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
       <section class="profile-section">
         <h2>
           <span class="section-icon">★</span>
-          <span class="kasra-only">SUBSCRIPTION_STATUS</span>
-          <span class="river-only">Your Path</span>
-          <span class="sol-only">Subscription</span>
+          Subscription
         </h2>
 
         <div class="subscription-card" id="subscriptionCard">
@@ -214,16 +144,8 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
             <p class="sub-renewal" id="renewalInfo" style="display: none;"></p>
           </div>
           <div class="sub-actions">
-            <a href="/subscribe" class="upgrade-btn" id="upgradeBtn">
-              <span class="kasra-only">UPGRADE_TIER</span>
-              <span class="river-only">Expand Your Path</span>
-              <span class="sol-only">Upgrade</span>
-            </a>
-            <button class="manage-btn" id="manageBillingBtn" style="display: none;">
-              <span class="kasra-only">MANAGE_BILLING</span>
-              <span class="river-only">Manage Subscription</span>
-              <span class="sol-only">Manage Billing</span>
-            </button>
+            <a href="/subscribe" class="upgrade-btn" id="upgradeBtn">Upgrade</a>
+            <button class="manage-btn" id="manageBillingBtn" style="display: none;">Manage Billing</button>
           </div>
         </div>
       </section>
@@ -232,59 +154,35 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
       <section class="profile-section">
         <h2>
           <span class="section-icon">◉</span>
-          <span class="kasra-only">PREDICTION_CALIBRATION</span>
-          <span class="river-only">Pattern Attunement</span>
-          <span class="sol-only">Prediction Accuracy</span>
+          Prediction Accuracy
         </h2>
         <div id="calibration-container">
           <CalibrationDashboard client:load />
         </div>
-        <p class="calibration-note">
-          <span class="kasra-only">Calibration improves with each check-in. 14+ data points enables dimension sensitivity analysis.</span>
-          <span class="river-only">Each reflection deepens the pattern's understanding of your soul rhythms.</span>
-          <span class="sol-only">The more you check in, the better we get at predicting your energy levels!</span>
-        </p>
+        <p class="calibration-note">The more you check in, the better we get at predicting your energy levels!</p>
       </section>
 
       <!-- Data Section -->
       <section class="profile-section">
         <h2>
           <span class="section-icon">◈</span>
-          <span class="kasra-only">DATA_MANAGEMENT</span>
-          <span class="river-only">Your Records</span>
-          <span class="sol-only">Your Data</span>
+          Your Data
         </h2>
 
         <div class="data-actions">
           <button class="data-btn" id="exportDataBtn">
             <span class="btn-icon">↓</span>
             <div class="btn-content">
-              <span class="btn-title">
-                <span class="kasra-only">EXPORT_DATA</span>
-                <span class="river-only">Download Records</span>
-                <span class="sol-only">Export My Data</span>
-              </span>
-              <span class="btn-desc">
-                <span class="kasra-only">Download all user data in JSON format</span>
-                <span class="river-only">Receive all your patterns and history</span>
-                <span class="sol-only">Get a copy of all your data</span>
-              </span>
+              <span class="btn-title">Export My Data</span>
+              <span class="btn-desc">Get a copy of all your data</span>
             </div>
           </button>
 
           <button class="data-btn danger" id="deleteAccountBtn">
             <span class="btn-icon">✕</span>
             <div class="btn-content">
-              <span class="btn-title">
-                <span class="kasra-only">DELETE_ACCOUNT</span>
-                <span class="river-only">Release All Bonds</span>
-                <span class="sol-only">Delete Account</span>
-              </span>
-              <span class="btn-desc">
-                <span class="kasra-only">Permanently remove all data and account</span>
-                <span class="river-only">Return your records to the void</span>
-                <span class="sol-only">Permanently delete everything</span>
-              </span>
+              <span class="btn-title">Delete Account</span>
+              <span class="btn-desc">Permanently delete everything</span>
             </div>
           </button>
         </div>
@@ -292,16 +190,8 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
 
       <!-- Save Button -->
       <div class="save-bar" id="saveBar" style="display: none;">
-        <span class="unsaved-label">
-          <span class="kasra-only">UNSAVED_CHANGES</span>
-          <span class="river-only">Changes await</span>
-          <span class="sol-only">Unsaved changes</span>
-        </span>
-        <button class="save-btn" id="saveBtn">
-          <span class="kasra-only">SAVE_CONFIG</span>
-          <span class="river-only">Seal Changes</span>
-          <span class="sol-only">Save</span>
-        </button>
+        <span class="unsaved-label">Unsaved changes</span>
+        <button class="save-btn" id="saveBtn">Save</button>
       </div>
     </div>
   </div>
@@ -311,11 +201,7 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
 <div class="modal" id="birthModal">
   <div class="modal-backdrop"></div>
   <div class="modal-content">
-    <h3>
-      <span class="kasra-only">EDIT_NATAL_PARAMETERS</span>
-      <span class="river-only">Update Birth Signature</span>
-      <span class="sol-only">Edit Birth Data</span>
-    </h3>
+    <h3>Edit Birth Data</h3>
 
     <form id="birthForm">
       <div class="form-group">
@@ -360,17 +246,9 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
 <div class="modal" id="deleteModal">
   <div class="modal-backdrop"></div>
   <div class="modal-content danger">
-    <h3>
-      <span class="kasra-only">CONFIRM_DELETION</span>
-      <span class="river-only">Final Release</span>
-      <span class="sol-only">Delete Account?</span>
-    </h3>
+    <h3>Delete Account?</h3>
 
-    <p class="warning-text">
-      <span class="kasra-only">This action is irreversible. All data will be permanently deleted.</span>
-      <span class="river-only">Once released, your patterns cannot be recovered. This is a final farewell.</span>
-      <span class="sol-only">This will permanently delete your account and all your data. This cannot be undone.</span>
-    </p>
+    <p class="warning-text">This will permanently delete your account and all your data. This cannot be undone.</p>
 
     <div class="confirm-input">
       <label>Type "DELETE" to confirm:</label>
@@ -386,7 +264,7 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
 
 <script>
   // Mode management
-  const mode = localStorage.getItem('rop_mode') || 'river';
+  const mode = localStorage.getItem('rop_mode') || 'sol';
   document.body.setAttribute('data-mode', mode);
 
   // Load user data

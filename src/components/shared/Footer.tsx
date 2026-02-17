@@ -8,7 +8,6 @@ const FOOTER_LINKS = {
     { href: '/discover', label: 'Discover Your Pattern' },
     { href: '/sol/checkin', label: 'Daily Check-in' },
     { href: '/subscribe', label: 'Go Pro' },
-    { href: '/blog', label: 'Blog' },
   ],
   stages: [
     { href: '/stage/nigredo', label: 'Reset' },

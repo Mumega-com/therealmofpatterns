@@ -31,11 +31,11 @@ const WHY_CONTENT: Record<string, WhyContent> = {
   'tired': {
     title: 'Why Am I So Tired?',
     question: 'Why do I feel exhausted even when I sleep enough?',
-    intro: 'Fatigue that persists despite rest often signals a misalignment between your natural energy rhythm and how you are living. The FRC framework reveals that chronic tiredness frequently stems from the Action dimension (μ₆) being out of phase.',
-    dimension: 'Δ',
-    dimensionName: 'Action (μ₆)',
-    explanation: 'The Action dimension governs your capacity for output, initiative, and physical vitality. When Mars transits create tension with your natal pattern, or when your Action dimension is suppressed, exhaustion follows. Your body is asking you to recalibrate.',
-    shadow: 'The shadow of Action is paralysis or forced hyperactivity. You may be either pushing too hard against your natural rhythm, or avoiding action so completely that energy stagnates. Both create fatigue.',
+    intro: 'Fatigue that persists despite rest often signals a misalignment between your natural energy rhythm and how you are living. Chronic tiredness frequently stems from the Drive dimension being out of balance.',
+    dimension: '♂',
+    dimensionName: 'Drive (Mars)',
+    explanation: 'The Drive dimension governs your capacity for output, initiative, and physical vitality. When Mars transits create tension with your natal pattern, or when your Drive energy is suppressed, exhaustion follows. Your body is asking you to recalibrate.',
+    shadow: 'The shadow of Drive is paralysis or forced hyperactivity. You may be either pushing too hard against your natural rhythm, or avoiding action so completely that energy stagnates. Both create fatigue.',
     signs: [
       'Tired in the morning but wired at night',
       'Energy spikes that crash quickly',
@@ -43,21 +43,21 @@ const WHY_CONTENT: Record<string, WhyContent> = {
       'Physical heaviness without physical cause',
     ],
     actions: [
-      'Check your daily Action dimension reading to find your high-energy windows',
+      'Check your daily Drive reading to find your high-energy windows',
       'Schedule demanding tasks during your optimal windows, not against them',
       'Consider that fatigue may be wisdom - your body protecting you from wrong action',
       'Track your energy for 7 days to find your natural rhythm',
     ],
-    optimalTimes: 'Action dimension peaks typically occur in late morning (9-11am) and again in mid-afternoon (3-5pm) for most patterns. Your personal peaks depend on your natal Mars placement.',
+    optimalTimes: 'Drive energy peaks typically occur in late morning (9-11am) and again in mid-afternoon (3-5pm) for most patterns. Your personal peaks depend on your natal Mars placement.',
   },
   'stuck': {
     title: 'Why Do I Feel Stuck?',
     question: 'Why can\'t I move forward in my life?',
-    intro: 'Feeling stuck usually indicates a Phase dimension (μ₁) transition. Like a seed that must crack its shell before sprouting, you may be in a necessary dissolution period - the Nigredo stage of transformation.',
-    dimension: 'P',
-    dimensionName: 'Phase (μ₁)',
-    explanation: 'The Phase dimension represents your core identity and direction. When undergoing a Phase shift, old structures must dissolve before new ones can form. What feels like stuckness is often the quiet before emergence.',
-    shadow: 'The shadow of Phase is either rigidly clinging to an outdated identity, or chaotically abandoning self before the new form is ready. Patience is required.',
+    intro: 'Feeling stuck usually indicates an Identity dimension transition. Like a seed that must crack its shell before sprouting, you may be in a necessary reset period before transformation.',
+    dimension: '☉',
+    dimensionName: 'Identity (Sun)',
+    explanation: 'The Identity dimension represents your core sense of self and direction. When undergoing a shift, old structures must dissolve before new ones can form. What feels like stuckness is often the quiet before emergence.',
+    shadow: 'The shadow of Identity is either rigidly clinging to an outdated sense of self, or chaotically abandoning who you are before the new form is ready. Patience is required.',
     signs: [
       'Old goals feel meaningless but new ones haven\'t appeared',
       'Sensing you\'re between chapters of your life',
@@ -65,21 +65,21 @@ const WHY_CONTENT: Record<string, WhyContent> = {
       'Dreams of transformation, fear of the unknown',
     ],
     actions: [
-      'Accept the Nigredo stage - dissolution precedes renewal',
+      'Accept the reset stage - dissolution precedes renewal',
       'Journal about who you were vs. who you sense yourself becoming',
       'Reduce pressure to perform while in transition',
       'Look for small signs of new growth rather than forcing clarity',
     ],
-    optimalTimes: 'Phase transitions often accelerate during New Moons and when the Sun aspects your natal Sun. These are windows for setting new intentions.',
+    optimalTimes: 'Identity transitions often accelerate during New Moons and when the Sun aspects your natal Sun. These are windows for setting new intentions.',
   },
   'anxious': {
     title: 'Why Am I So Anxious?',
     question: 'Why won\'t the anxiety go away?',
-    intro: 'Persistent anxiety often reflects disturbance in the Field dimension (μ₈) - your interface with collective and transcendent awareness. When Field is activated without grounding, the result is free-floating anxiety.',
-    dimension: 'Φ',
-    dimensionName: 'Field (μ₈)',
-    explanation: 'The Field dimension connects you to larger patterns - collective consciousness, spiritual awareness, the unseen. When over-activated or ungrounded, you pick up on energies that aren\'t yours, sensing threats you can\'t name.',
-    shadow: 'The shadow of Field is either dissolution into collective anxiety (losing yourself in world fears) or complete disconnection (nihilism, spiritual bypassing). Balance requires grounding.',
+    intro: 'Persistent anxiety often reflects disturbance in the Awareness dimension - your interface with collective and transcendent consciousness. When Awareness is activated without grounding, the result is free-floating anxiety.',
+    dimension: '♆',
+    dimensionName: 'Awareness (Neptune)',
+    explanation: 'The Awareness dimension connects you to larger patterns - collective consciousness, spiritual sensitivity, the unseen. When over-activated or ungrounded, you pick up on energies that aren\'t yours, sensing threats you can\'t name.',
+    shadow: 'The shadow of Awareness is either dissolution into collective anxiety (losing yourself in world fears) or complete disconnection (nihilism, spiritual bypassing). Balance requires grounding.',
     signs: [
       'Anxiety without clear cause',
       'Absorbing others\' emotions easily',
@@ -88,20 +88,20 @@ const WHY_CONTENT: Record<string, WhyContent> = {
     ],
     actions: [
       'Ground daily: physical movement, nature, body awareness',
-      'Distinguish your feelings from collective field disturbances',
-      'Limit exposure to news and social media during high-Field periods',
-      'Practice boundaries between self and field',
+      'Distinguish your feelings from collective disturbances',
+      'Limit exposure to news and social media during high-sensitivity periods',
+      'Practice boundaries between self and world',
     ],
-    optimalTimes: 'Field sensitivity peaks during Neptune transits and Full Moons. Use these times for spiritual practice, not major decisions.',
+    optimalTimes: 'Awareness sensitivity peaks during Neptune transits and Full Moons. Use these times for spiritual practice, not major decisions.',
   },
   'unmotivated': {
     title: 'Why Am I So Unmotivated?',
     question: 'Why can\'t I find the drive to do anything?',
-    intro: 'Lack of motivation often signals that your Value dimension (μ₄) is misaligned with your actions. You may be trying to pursue goals that don\'t actually matter to you at a deep level.',
-    dimension: 'V',
-    dimensionName: 'Value (μ₄)',
-    explanation: 'The Value dimension represents what you truly treasure - not what you think you should want, but what genuinely pulls your soul. When Value is disconnected from action, motivation dies.',
-    shadow: 'The shadow of Value is pursuing false values (status, approval, inherited goals) or refusing to value anything (cynicism, detachment). Neither generates authentic motivation.',
+    intro: 'Lack of motivation often signals that your Heart dimension is misaligned with your actions. You may be trying to pursue goals that don\'t actually matter to you at a deep level.',
+    dimension: '♀',
+    dimensionName: 'Heart (Venus)',
+    explanation: 'The Heart dimension represents what you truly treasure - not what you think you should want, but what genuinely pulls your soul. When Heart is disconnected from action, motivation dies.',
+    shadow: 'The shadow of Heart is pursuing false values (status, approval, inherited goals) or refusing to value anything (cynicism, detachment). Neither generates authentic motivation.',
     signs: [
       'Success feels empty',
       'Can\'t explain why you\'re pursuing your current goals',
@@ -114,16 +114,16 @@ const WHY_CONTENT: Record<string, WhyContent> = {
       'Reconnect with childhood interests before social conditioning',
       'Allow yourself to want what you actually want',
     ],
-    optimalTimes: 'Value clarity often emerges during Venus returns (yearly) and when Venus aspects your natal Venus. These are windows for reassessing what matters.',
+    optimalTimes: 'Heart clarity often emerges during Venus returns (yearly) and when Venus aspects your natal Venus. These are windows for reassessing what matters.',
   },
   'restless': {
     title: 'Why Am I So Restless?',
     question: 'Why can\'t I feel settled?',
-    intro: 'Restlessness typically indicates activation in the Expansion dimension (μ₅). Your growth-seeking nature is calling for more, but may not yet have found its direction.',
-    dimension: 'N',
-    dimensionName: 'Expansion (μ₅)',
-    explanation: 'The Expansion dimension governs growth, learning, adventure, and meaning-making. When Expansion is activated, staying still feels like dying. You need new horizons.',
-    shadow: 'The shadow of Expansion is either scattered chasing of novelty (never going deep) or fear-based refusal to grow (stagnation). Balance requires choosing growth paths wisely.',
+    intro: 'Restlessness typically indicates activation in the Growth dimension. Your growth-seeking nature is calling for more, but may not yet have found its direction.',
+    dimension: '♃',
+    dimensionName: 'Growth (Jupiter)',
+    explanation: 'The Growth dimension governs learning, adventure, and meaning-making. When Growth is activated, staying still feels like dying. You need new horizons.',
+    shadow: 'The shadow of Growth is either scattered chasing of novelty (never going deep) or fear-based refusal to grow (stagnation). Balance requires choosing growth paths wisely.',
     signs: [
       'Boredom with routines that used to satisfy',
       'Yearning for travel, learning, or adventure',
@@ -132,20 +132,20 @@ const WHY_CONTENT: Record<string, WhyContent> = {
     ],
     actions: [
       'Honor the call for growth - it\'s not restlessness, it\'s readiness',
-      'Choose one expansion direction rather than scattering energy',
+      'Choose one growth direction rather than scattering energy',
       'Find adventures within your constraints if large changes aren\'t possible',
       'Study something new to feed the hungry dimension',
     ],
-    optimalTimes: 'Expansion peaks during Jupiter transits and when Jupiter aspects your natal Jupiter (every 12 years is a major cycle). These are windows for bold moves.',
+    optimalTimes: 'Growth peaks during Jupiter transits and when Jupiter aspects your natal Jupiter (every 12 years is a major cycle). These are windows for bold moves.',
   },
   'overwhelmed': {
     title: 'Why Am I So Overwhelmed?',
     question: 'Why does everything feel like too much?',
-    intro: 'Overwhelm often reflects a Cognition dimension (μ₃) overload combined with insufficient Existence dimension (μ₂) grounding. You\'re processing more than your system can handle without proper foundation.',
-    dimension: 'μ',
-    dimensionName: 'Cognition (μ₃)',
-    explanation: 'The Cognition dimension governs mental processing, understanding, and communication. When overloaded without breaks, the system crashes. Modern life often demands constant cognitive output.',
-    shadow: 'The shadow of Cognition is either mental paralysis (can\'t think clearly) or obsessive analysis (can\'t stop thinking). Both indicate system stress.',
+    intro: 'Overwhelm often reflects a Mind dimension overload combined with insufficient Structure grounding. You\'re processing more than your system can handle without proper foundation.',
+    dimension: '☿',
+    dimensionName: 'Mind (Mercury)',
+    explanation: 'The Mind dimension governs mental processing, understanding, and communication. When overloaded without breaks, the system crashes. Modern life often demands constant cognitive output.',
+    shadow: 'The shadow of Mind is either mental paralysis (can\'t think clearly) or obsessive analysis (can\'t stop thinking). Both indicate system stress.',
     signs: [
       'Simple decisions feel impossible',
       'Can\'t prioritize - everything seems urgent',
@@ -153,21 +153,21 @@ const WHY_CONTENT: Record<string, WhyContent> = {
       'Forgetting things more than usual',
     ],
     actions: [
-      'Reduce cognitive load: delegate, defer, delete tasks',
-      'Ground in Existence dimension: body, nature, simple sensory experience',
+      'Reduce mental load: delegate, defer, delete tasks',
+      'Ground through your body: nature, movement, simple sensory experience',
       'Single-task instead of multi-task during overwhelm periods',
-      'Schedule cognitive rest as seriously as cognitive work',
+      'Schedule mental rest as seriously as mental work',
     ],
-    optimalTimes: 'Cognitive clarity improves during Mercury\'s clear periods (not retrograde) and when Mercury makes harmonious aspects. Schedule important thinking then.',
+    optimalTimes: 'Mental clarity improves during Mercury\'s clear periods (not retrograde) and when Mercury makes harmonious aspects. Schedule important thinking then.',
   },
   'disconnected': {
     title: 'Why Do I Feel Disconnected?',
     question: 'Why do I feel alone even when I\'m with people?',
-    intro: 'Feeling disconnected often signals a Relation dimension (μ₇) deficit or shadow state. Your capacity for intimate connection may be blocked or unfed.',
-    dimension: 'R',
-    dimensionName: 'Relation (μ₇)',
-    explanation: 'The Relation dimension governs love, partnership, beauty, and the capacity for genuine meeting. Disconnection arises when this dimension is wounded, neglected, or in shadow.',
-    shadow: 'The shadow of Relation is either desperate clinging (fear of being alone) or rigid isolation (fear of being consumed). True connection requires neither extreme.',
+    intro: 'Feeling disconnected often signals a Connection dimension deficit or shadow state. Your capacity for intimate connection may be blocked or unfed.',
+    dimension: '☽',
+    dimensionName: 'Connection (Moon)',
+    explanation: 'The Connection dimension governs love, partnership, empathy, and the capacity for genuine meeting. Disconnection arises when this dimension is wounded, neglected, or in shadow.',
+    shadow: 'The shadow of Connection is either desperate clinging (fear of being alone) or rigid isolation (fear of being consumed). True connection requires neither extreme.',
     signs: [
       'Feeling like nobody really knows you',
       'Relationships feel performative or transactional',
@@ -180,15 +180,15 @@ const WHY_CONTENT: Record<string, WhyContent> = {
       'Examine what disconnection protects you from',
       'Quality over quantity - deepen one relationship rather than spreading thin',
     ],
-    optimalTimes: 'Relation openings occur during Venus transits and Friday evenings (Venus-ruled). Use these times for connection attempts.',
+    optimalTimes: 'Connection openings occur during Venus transits and Friday evenings (Venus-ruled). Use these times for connection attempts.',
   },
   'creative-block': {
     title: 'Why Do I Have Creative Block?',
     question: 'Why can\'t I create anymore?',
-    intro: 'Creative block typically indicates that the Expansion dimension (μ₅) and Value dimension (μ₄) are misaligned. Your creative energy wants to flow, but something is blocking the channel.',
-    dimension: 'N',
-    dimensionName: 'Expansion (μ₅)',
-    explanation: 'Creative flow requires both the Expansion dimension (generating new possibilities) and the Value dimension (caring enough to manifest them). Block occurs when either is suppressed or when inner criticism silences emerging work.',
+    intro: 'Creative block typically indicates that the Growth dimension and Heart dimension are misaligned. Your creative energy wants to flow, but something is blocking the channel.',
+    dimension: '♃',
+    dimensionName: 'Growth (Jupiter)',
+    explanation: 'Creative flow requires both the Growth dimension (generating new possibilities) and the Heart dimension (caring enough to manifest them). Block occurs when either is suppressed or when inner criticism silences emerging work.',
     shadow: 'The shadow of creativity is either perfectionism (nothing is good enough to express) or chaos (everything spills out without form). Both prevent completed work.',
     signs: [
       'Ideas that won\'t become reality',
@@ -273,12 +273,12 @@ if (!content) {
         <section class="cta-section">
           <h3>Understand Your Unique Pattern</h3>
           <p>
-            This general insight applies to everyone. For guidance specific to YOUR pattern
-            and YOUR current transits, take a check-in to see your personal dimensional state.
+            This general insight applies to everyone. For guidance specific to YOUR energy pattern
+            and YOUR current state, discover your personal profile.
           </p>
           <div class="cta-buttons">
-            <a href="/sol/checkin" class="cta-primary">See My Pattern</a>
-            <a href="/subscribe" class="cta-secondary">Get Personal Insights</a>
+            <a href="/discover" class="cta-primary">Discover Your Pattern</a>
+            <a href="/subscribe" class="cta-secondary">Go Pro</a>
           </div>
         </section>
       </div>

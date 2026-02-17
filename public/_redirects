@@ -1,0 +1,17 @@
+# Redirects for removed pages (Cloudflare Pages format)
+/theater /reading/ 301
+/theater/ /reading/ 301
+/weather /reading/ 301
+/weather/ /reading/ 301
+/live / 301
+/live/ / 301
+/learn /about/ 301
+/learn/ /about/ 301
+/docs /about/ 301
+/docs/ /about/ 301
+/squad /subscribe/ 301
+/squad/ /subscribe/ 301
+/enterprise /subscribe/ 301
+/enterprise/ /subscribe/ 301
+/tools/best-time-to /reading/ 301
+/tools/best-time-to/ /reading/ 301

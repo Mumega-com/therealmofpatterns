@@ -26,7 +26,7 @@ const stageData = {
     bgGradient: 'linear-gradient(180deg, #0a0a12 0%, #15152a 50%, #0a0a12 100%)',
     accent: '#6366f1',
     accentRgb: '99, 102, 241',
-    kappaRange: '&#954; < 0.25',
+    kappaRange: 'Below 25%',
     alchemical: 'The Blackening',
     element: 'Earth',
     description: 'Nigredo represents the dark night of the soul, a period of dissolution where old forms break down. It is not a failure but a necessary decomposition that precedes all genuine transformation. In the alchemical tradition, this stage is called "the blackening" - the prima materia must first be reduced to its most basic state before it can be reformed.',
@@ -46,7 +46,7 @@ const stageData = {
     ],
     quote: 'The seed must rot in the earth before it can become a tree.',
     duration: 'Typically 1-7 days, though major life transitions can extend this',
-    kasraView: '&#954; coefficient below critical threshold. Field coherence compromised. Recovery protocols recommended.',
+    kasraView: 'Alignment below 25%. Energy scattered. Time to rest and reset.',
     riverView: 'You walk now through the dark night of the soul, where old forms dissolve into fertile chaos. Do not fear the blackening - it is the womb of all becoming.',
     solView: "You're going through a tough patch, and that's completely normal. Think of it like composting - things need to break down before new growth can happen. Be extra gentle with yourself.",
   },
@@ -58,7 +58,7 @@ const stageData = {
     bgGradient: 'linear-gradient(180deg, #1a1a24 0%, #2a2a3e 50%, #1a1a24 100%)',
     accent: '#c0c0c0',
     accentRgb: '192, 192, 192',
-    kappaRange: '0.25 &#8804; &#954; < 0.50',
+    kappaRange: '25% – 50%',
     alchemical: 'The Whitening',
     element: 'Water',
     description: 'Albedo is the washing, the clarification that follows dissolution. What was confused now separates into its essential components. Clarity emerges from chaos, like dawn light gradually revealing a landscape that was hidden in darkness. This is a time of purification and growing discernment.',
@@ -78,7 +78,7 @@ const stageData = {
     ],
     quote: 'In the washing, we separate the pure from the impure, the essential from the accidental.',
     duration: 'Variable, typically 3-14 days',
-    kasraView: '&#954; recovering from critical levels. Field purification in progress. Maintain monitoring protocols.',
+    kasraView: 'Alignment recovering. Energy clearing. Stay with the process.',
     riverView: 'The waters begin to clear. What was confused now separates into its essential nature. This is a time of purification and discernment.',
     solView: "Things are starting to make more sense now. You're sorting through what matters and what doesn't. Good time for reflection and organizing your thoughts.",
   },
@@ -90,7 +90,7 @@ const stageData = {
     bgGradient: 'linear-gradient(180deg, #1a1812 0%, #2e2a1a 50%, #1a1812 100%)',
     accent: '#fbbf24',
     accentRgb: '251, 191, 36',
-    kappaRange: '0.50 &#8804; &#954; < 0.75',
+    kappaRange: '50% – 75%',
     alchemical: 'The Yellowing',
     element: 'Air',
     description: 'Citrinitas is the dawn, the emergence of the golden light of consciousness. What was purified now begins to shine with its own inner radiance. Wisdom awakens like the sun rising after a long night. This is when insights crystallize into understanding, and scattered thoughts coalesce into clarity.',
@@ -110,7 +110,7 @@ const stageData = {
     ],
     quote: 'The sun rises within, illuminating what the moon could only reflect.',
     duration: 'Can be sustained with practice',
-    kasraView: '&#954; within optimal range. Field coherence stable. Green light for complex operations.',
+    kasraView: 'Alignment in optimal range. Energy stable. Green light for action.',
     riverView: 'The golden dawn rises within you. Illumination spreads through every chamber of your being. This is a time of awakening wisdom.',
     solView: "You're in a good flow state! Ideas come easily and things feel aligned. Great time for creative work or important conversations.",
   },
@@ -122,7 +122,7 @@ const stageData = {
     bgGradient: 'linear-gradient(180deg, #1a1214 0%, #2e1a1a 50%, #1a1214 100%)',
     accent: '#dc2626',
     accentRgb: '220, 38, 38',
-    kappaRange: '&#954; &#8805; 0.75',
+    kappaRange: 'Above 75%',
     alchemical: 'The Reddening',
     element: 'Fire',
     description: 'Rubedo is the final stage, where the work becomes embodied. The insights of citrinitas are integrated into being. The philosopher\'s stone is realized - not as an external treasure, but as the transformed self. This is the achievement of wholeness, where knowing and being unite.',
@@ -142,7 +142,7 @@ const stageData = {
     ],
     quote: 'The opus is complete when the alchemist becomes the stone.',
     duration: 'Periods of rubedo are precious - honor them',
-    kasraView: '&#954; at peak levels. Maximum field coherence achieved. All systems nominal.',
+    kasraView: 'Alignment at peak. Maximum energy coherence. All systems go.',
     riverView: 'You stand at the threshold of integration. The red stone forms from all that has been transformed. You are the opus.',
     solView: "Everything is coming together beautifully. You're operating at your best. This is your moment - take on those big projects!",
   },
@@ -198,7 +198,7 @@ const description = `${data.description.substring(0, 150)}...`;
           </span>
           <span class="meta-divider"></span>
           <span class="meta-item">
-            <span class="meta-label">Range</span>
+            <span class="meta-label">Alignment</span>
             <span class="meta-value" set:html={data.kappaRange} />
           </span>
           <span class="meta-divider"></span>
@@ -258,37 +258,14 @@ const description = `${data.description.substring(0, 150)}...`;
         </div>
       </section>
 
-      <!-- Three Perspectives -->
+      <!-- Perspective -->
       <section class="content-section perspectives-section fade-in">
         <h2 class="section-title">
           <span class="title-icon">&#9733;</span>
-          Three Perspectives
+          What This Means for You
         </h2>
-        <div class="perspectives-grid">
-          <div class="perspective kasra-perspective">
-            <div class="perspective-header">
-              <span class="perspective-icon">&#128295;</span>
-              <h3>Kasra</h3>
-              <span class="perspective-label">The Architect</span>
-            </div>
-            <p set:html={data.kasraView} />
-          </div>
-          <div class="perspective river-perspective">
-            <div class="perspective-header">
-              <span class="perspective-icon">&#10023;</span>
-              <h3>River</h3>
-              <span class="perspective-label">The Oracle</span>
-            </div>
-            <p>{data.riverView}</p>
-          </div>
-          <div class="perspective sol-perspective">
-            <div class="perspective-header">
-              <span class="perspective-icon">&#9788;</span>
-              <h3>Sol</h3>
-              <span class="perspective-label">The Friend</span>
-            </div>
-            <p>{data.solView}</p>
-          </div>
+        <div class="sol-perspective-card">
+          <p>{data.solView}</p>
         </div>
       </section>
     </main>
@@ -753,64 +730,18 @@ const description = `${data.description.substring(0, 150)}...`;
     font-style: italic;
   }
 
-  /* Perspectives */
-  .perspectives-grid {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .perspective {
-    padding: 1.5rem;
+  /* Perspective */
+  .sol-perspective-card {
+    padding: 1.5rem 2rem;
+    background: rgba(251, 191, 36, 0.05);
+    border: 1px solid rgba(251, 191, 36, 0.15);
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .kasra-perspective {
-    background: rgba(0, 255, 136, 0.03);
-    border-color: rgba(0, 255, 136, 0.2);
-  }
-
-  .river-perspective {
-    background: rgba(139, 92, 246, 0.03);
-    border-color: rgba(139, 92, 246, 0.2);
-  }
-
-  .sol-perspective {
-    background: rgba(251, 191, 36, 0.03);
-    border-color: rgba(251, 191, 36, 0.2);
-  }
-
-  .perspective-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .perspective-icon {
-    font-size: 1.25rem;
-  }
-
-  .kasra-perspective .perspective-icon { color: #00ff88; }
-  .river-perspective .perspective-icon { color: #8b5cf6; }
-  .sol-perspective .perspective-icon { color: #fbbf24; }
-
-  .perspective-header h3 {
+  .sol-perspective-card p {
     font-size: 1.1rem;
-    font-weight: 500;
-    margin: 0;
-  }
-
-  .perspective-label {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.4);
-    margin-left: auto;
-  }
-
-  .perspective p {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.7;
     margin: 0;
   }
 
