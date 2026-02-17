@@ -3,7 +3,7 @@ interface Testimonial {
   author: string;
   role: string;
   avatar?: string;
-  kappa?: number;
+  alignment?: number; // 0-100 percentage
 }
 
 const TESTIMONIALS: Testimonial[] = [
@@ -11,37 +11,37 @@ const TESTIMONIALS: Testimonial[] = [
     quote: "The daily check-ins have become my morning ritual. It's like having a wise friend who sees patterns I can't see myself.",
     author: "Sarah M.",
     role: "Yoga Instructor",
-    kappa: 0.72
+    alignment: 72
   },
   {
-    quote: "As a therapist, I've found the 16D framework invaluable for understanding my clients. It adds a dimension to my practice I didn't know was missing.",
+    quote: "As a therapist, I've found the personality breakdown invaluable for understanding my clients. It adds a dimension to my practice I didn't know was missing.",
     author: "Dr. James L.",
     role: "Clinical Psychologist",
-    kappa: 0.68
+    alignment: 68
   },
   {
-    quote: "River's voice helped me through my darkest nigredo. The alchemical framing made my struggle feel meaningful rather than pointless.",
+    quote: "This helped me through my toughest reset phase. The framing made my struggle feel meaningful rather than pointless.",
     author: "Alex K.",
     role: "Writer",
-    kappa: 0.64
+    alignment: 64
   },
   {
-    quote: "Kasra mode gives me the data-driven clarity I need. No fluff, just insights I can act on.",
+    quote: "I love the data-driven clarity. No fluff, just insights I can act on.",
     author: "Marcus T.",
     role: "Startup Founder",
-    kappa: 0.71
+    alignment: 71
   },
   {
     quote: "I was skeptical at first, but tracking my dimensions over time revealed patterns I was completely blind to. Game-changing.",
     author: "Elena R.",
     role: "Product Designer",
-    kappa: 0.67
+    alignment: 67
   },
   {
-    quote: "The cosmic weather feature helps me plan my week. I schedule creative work on high-V days and admin on high-E days.",
+    quote: "The daily reading helps me plan my week. I schedule creative work on high-Heart days and admin on high-Structure days.",
     author: "Jordan P.",
     role: "Creative Director",
-    kappa: 0.73
+    alignment: 73
   }
 ];
 
@@ -57,10 +57,10 @@ export function Testimonials({ className = '', limit = 3 }: TestimonialsProps) {
     <section className={`py-12 ${className}`}>
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-serif text-[#f0e8d8] mb-2">
-          Voices from the Field
+          What People Are Saying
         </h2>
         <p className="text-[#f0e8d8]/60 text-sm">
-          Join thousands exploring their cosmic signatures
+          Join thousands exploring their energy patterns
         </p>
       </div>
 
@@ -79,9 +79,9 @@ export function Testimonials({ className = '', limit = 3 }: TestimonialsProps) {
                 <div className="text-[#f0e8d8] text-sm font-medium">{testimonial.author}</div>
                 <div className="text-[#f0e8d8]/50 text-xs">{testimonial.role}</div>
               </div>
-              {testimonial.kappa && (
+              {testimonial.alignment && (
                 <div className="text-right">
-                  <div className="text-[#d4a854] text-xs font-mono">κ = {testimonial.kappa.toFixed(2)}</div>
+                  <div className="text-[#d4a854] text-xs font-mono">{testimonial.alignment}% aligned</div>
                 </div>
               )}
             </div>
@@ -100,8 +100,8 @@ export function Testimonials({ className = '', limit = 3 }: TestimonialsProps) {
           <div className="text-[#f0e8d8]/50 text-xs">Active explorers</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl md:text-3xl font-serif text-[#d4a854]">0.67</div>
-          <div className="text-[#f0e8d8]/50 text-xs">Avg. κ improvement</div>
+          <div className="text-2xl md:text-3xl font-serif text-[#d4a854]">67%</div>
+          <div className="text-[#f0e8d8]/50 text-xs">Avg. alignment improvement</div>
         </div>
       </div>
     </section>

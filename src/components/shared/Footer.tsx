@@ -4,27 +4,23 @@ interface FooterProps {
 
 const FOOTER_LINKS = {
   explore: [
-    { href: '/theater', label: 'Cosmic Theater' },
-    { href: '/weather', label: 'Cosmic Weather' },
+    { href: '/reading', label: 'Daily Reading' },
+    { href: '/discover', label: 'Discover Your Pattern' },
     { href: '/sol/checkin', label: 'Daily Check-in' },
-    { href: '/learn', label: 'Learn' },
+    { href: '/subscribe', label: 'Go Pro' },
     { href: '/blog', label: 'Blog' },
-    { href: '/subscribe', label: 'Subscribe' },
   ],
   stages: [
-    { href: '/stage/nigredo', label: 'Nigredo' },
-    { href: '/stage/albedo', label: 'Albedo' },
-    { href: '/stage/citrinitas', label: 'Citrinitas' },
-    { href: '/stage/rubedo', label: 'Rubedo' },
+    { href: '/stage/nigredo', label: 'Reset' },
+    { href: '/stage/albedo', label: 'Clarity' },
+    { href: '/stage/citrinitas', label: 'Growth' },
+    { href: '/stage/rubedo', label: 'Flow' },
   ],
-  modes: [
-    { href: '/kasra', label: 'Kasra Mode' },
-    { href: '/river', label: 'River Mode' },
-    { href: '/sol', label: 'Sol Mode' },
-  ],
-  community: [
-    { href: '/squad', label: 'Meet the Squad' },
-    { href: '/docs', label: 'Documentation' },
+  info: [
+    { href: '/about', label: 'About' },
+    { href: '/faq', label: 'FAQ' },
+    { href: '/privacy', label: 'Privacy' },
+    { href: '/terms', label: 'Terms' },
   ],
 };
 
@@ -35,7 +31,7 @@ export function Footer({ className = '' }: FooterProps) {
     <footer className={`bg-[#0a0908] border-t border-[rgba(212,168,84,0.1)] ${className}`}>
       <div className="max-w-6xl mx-auto px-4 py-12">
         {/* Main Footer Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
             <a href="/" className="flex items-center gap-2 mb-4">
@@ -90,32 +86,13 @@ export function Footer({ className = '' }: FooterProps) {
             </ul>
           </div>
 
-          {/* Modes Links */}
+          {/* Info Links */}
           <div>
             <h4 className="text-[#d4a854] text-xs font-semibold uppercase tracking-wider mb-4">
-              Voices
+              Info
             </h4>
             <ul className="space-y-2">
-              {FOOTER_LINKS.modes.map(link => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-[#f0e8d8]/60 hover:text-[#d4a854] text-sm transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Community Links */}
-          <div>
-            <h4 className="text-[#d4a854] text-xs font-semibold uppercase tracking-wider mb-4">
-              Community
-            </h4>
-            <ul className="space-y-2">
-              {FOOTER_LINKS.community.map(link => (
+              {FOOTER_LINKS.info.map(link => (
                 <li key={link.href}>
                   <a
                     href={link.href}

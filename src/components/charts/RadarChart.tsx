@@ -201,23 +201,12 @@ export function RadarChart({
               <g key={`label-${i}`}>
                 <text
                   x={x}
-                  y={y - 5}
+                  y={y}
                   textAnchor="middle"
-                  dominantBaseline="auto"
-                  className="radar-label-symbol"
-                  fill={isDominant ? '#d4a854' : 'rgba(240, 232, 216, 0.5)'}
-                  fontSize={11}
-                >
-                  {dim.symbol}
-                </text>
-                <text
-                  x={x}
-                  y={y + 8}
-                  textAnchor="middle"
-                  dominantBaseline="auto"
+                  dominantBaseline="central"
                   className="radar-label-name"
-                  fill={isDominant ? '#d4a854' : 'rgba(240, 232, 216, 0.35)'}
-                  fontSize={8}
+                  fill={isDominant ? '#d4a854' : 'rgba(240, 232, 216, 0.45)'}
+                  fontSize={9}
                   fontWeight={isDominant ? 600 : 400}
                 >
                   {dim.name}
