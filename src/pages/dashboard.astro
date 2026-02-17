@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ProDashboard } from '../components/dashboard/ProDashboard';
+---
+
+<BaseLayout title="Your Dashboard - The Realm of Patterns" description="Your personalized energy dashboard. Track your patterns, see today's energy, and continue your journey.">
+  <div class="dashboard-page max-w-4xl mx-auto px-6 py-12">
+    <ProDashboard client:load />
+  </div>
+</BaseLayout>
