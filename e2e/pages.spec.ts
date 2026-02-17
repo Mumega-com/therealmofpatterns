@@ -9,8 +9,7 @@ test.describe('Core Pages', () => {
     { path: '/about', name: 'About' },
     { path: '/privacy', name: 'Privacy' },
     { path: '/terms', name: 'Terms' },
-    { path: '/weather', name: 'Weather' },
-    { path: '/theater', name: 'Theater' },
+    { path: '/dashboard', name: 'Dashboard' },
   ];
 
   for (const { path, name } of pages) {
