@@ -124,7 +124,7 @@ export async function onRequestPost(
       if (!narrative && env.OPENAI_API_KEY) {
         narrative = await callOpenAI(env.OPENAI_API_KEY, systemPrompt, fullUserPrompt);
         if (narrative) {
-          modelUsed = 'openai-gpt-4o-mini';
+          modelUsed = 'openai-gpt-5.2-mini';
         }
       }
     }
@@ -236,7 +236,7 @@ async function callOpenAI(apiKey: string, system: string, user: string): Promise
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-5.2-mini',
         messages: [
           { role: 'system', content: system },
           { role: 'user', content: user },
