@@ -193,6 +193,9 @@ export interface Env {
   GEMINI_API_KEY_10?: string;
   GEMINI_API_KEY_11?: string;
 
+  // OpenAI API key (for narrator fallback + DALL-E)
+  OPENAI_API_KEY?: string;
+
   // Python backend for PDF generation (optional)
   PYTHON_BACKEND_URL?: string;
 

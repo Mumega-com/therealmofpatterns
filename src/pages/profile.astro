@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { CalibrationDashboard } from '../components/shared/CalibrationDashboard';
+import { NarratorCard } from '../components/shared/NarratorCard';
 ---
 
 <BaseLayout title="Your Profile - The Realm of Patterns" description="Manage your account, birth data, preferences, and subscription.">
@@ -148,6 +149,15 @@ import { CalibrationDashboard } from '../components/shared/CalibrationDashboard'
             <button class="manage-btn" id="manageBillingBtn" style="display: none;">Manage Billing</button>
           </div>
         </div>
+      </section>
+
+      <!-- Your Story Section -->
+      <section class="profile-section" id="narrator">
+        <h2>
+          <span class="section-icon">☀</span>
+          Your Story
+        </h2>
+        <NarratorCard client:load />
       </section>
 
       <!-- Calibration Section -->
