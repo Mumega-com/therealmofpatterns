@@ -10,10 +10,10 @@ const FOOTER_LINKS = {
     { href: '/subscribe', label: 'Go Pro' },
   ],
   stages: [
-    { href: '/stage/nigredo', label: 'Reset' },
-    { href: '/stage/albedo', label: 'Clarity' },
-    { href: '/stage/citrinitas', label: 'Growth' },
-    { href: '/stage/rubedo', label: 'Flow' },
+    { href: '/stage/reset', label: 'Reset' },
+    { href: '/stage/clarity', label: 'Clarity' },
+    { href: '/stage/growth', label: 'Growth' },
+    { href: '/stage/flow', label: 'Flow' },
   ],
   info: [
     { href: '/about', label: 'About' },

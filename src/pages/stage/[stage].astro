@@ -4,10 +4,16 @@ import { StageVisualization } from '../../components/stages/StageVisualization';
 
 export function getStaticPaths() {
   return [
-    { params: { stage: 'nigredo' }, props: { stage: 'nigredo' } },
-    { params: { stage: 'albedo' }, props: { stage: 'albedo' } },
-    { params: { stage: 'citrinitas' }, props: { stage: 'citrinitas' } },
-    { params: { stage: 'rubedo' }, props: { stage: 'rubedo' } },
+    // Human-friendly URLs (canonical)
+    { params: { stage: 'reset' }, props: { stage: 'nigredo' as const } },
+    { params: { stage: 'clarity' }, props: { stage: 'albedo' as const } },
+    { params: { stage: 'growth' }, props: { stage: 'citrinitas' as const } },
+    { params: { stage: 'flow' }, props: { stage: 'rubedo' as const } },
+    // Keep old URLs working (same content)
+    { params: { stage: 'nigredo' }, props: { stage: 'nigredo' as const } },
+    { params: { stage: 'albedo' }, props: { stage: 'albedo' as const } },
+    { params: { stage: 'citrinitas' }, props: { stage: 'citrinitas' as const } },
+    { params: { stage: 'rubedo' }, props: { stage: 'rubedo' as const } },
   ];
 }
 
@@ -274,24 +280,24 @@ const description = `${data.description.substring(0, 150)}...`;
     <nav class="stage-nav fade-in">
       <h3 class="nav-title">Explore the Journey</h3>
       <div class="journey-path">
-        <a href="/stage/nigredo" class:list={['journey-step', { active: stage === 'nigredo' }]}>
+        <a href="/stage/reset" class:list={['journey-step', { active: stage === 'nigredo' }]}>
           <span class="step-symbol">&#9789;</span>
-          <span class="step-name">Nigredo</span>
+          <span class="step-name">Reset</span>
         </a>
         <div class="journey-connector"></div>
-        <a href="/stage/albedo" class:list={['journey-step', { active: stage === 'albedo' }]}>
+        <a href="/stage/clarity" class:list={['journey-step', { active: stage === 'albedo' }]}>
           <span class="step-symbol">&#10023;</span>
-          <span class="step-name">Albedo</span>
+          <span class="step-name">Clarity</span>
         </a>
         <div class="journey-connector"></div>
-        <a href="/stage/citrinitas" class:list={['journey-step', { active: stage === 'citrinitas' }]}>
+        <a href="/stage/growth" class:list={['journey-step', { active: stage === 'citrinitas' }]}>
           <span class="step-symbol">&#9788;</span>
-          <span class="step-name">Citrinitas</span>
+          <span class="step-name">Growth</span>
         </a>
         <div class="journey-connector"></div>
-        <a href="/stage/rubedo" class:list={['journey-step', { active: stage === 'rubedo' }]}>
+        <a href="/stage/flow" class:list={['journey-step', { active: stage === 'rubedo' }]}>
           <span class="step-symbol">&#9670;</span>
-          <span class="step-name">Rubedo</span>
+          <span class="step-name">Flow</span>
         </a>
       </div>
     </nav>

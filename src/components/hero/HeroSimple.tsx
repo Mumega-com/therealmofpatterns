@@ -30,7 +30,7 @@ export function HeroSimple() {
         {/* Tiny trust signal */}
         <div className="trust-badge">
           <span className="pulse" />
-          <span>15,000+ daily readings</span>
+          <span>Free — no signup required</span>
         </div>
 
         {/* Main headline - benefit focused */}
