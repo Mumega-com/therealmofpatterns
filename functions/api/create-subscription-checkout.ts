@@ -1,18 +1,20 @@
 /**
- * Create subscription checkout session
- * Handles both individual and squad (team) plans
+ * POST /api/create-subscription-checkout
+ * Create a Stripe Checkout session for Pro or Team subscription.
+ *
+ * Expects JSON body:
+ *   { plan: 'individual' | 'squad', email: string, billingPeriod?: 'monthly' | 'annual',
+ *     seats?: number, circleName?: string }
+ *
+ * Returns: { success: true, sessionId: string, url: string }
  */
 
-interface Env {
-  STRIPE_SECRET_KEY: string;
-  APP_URL: string;
-  STRIPE_INDIVIDUAL_PRICE_ID?: string;
-  STRIPE_SQUAD_PRICE_ID?: string;
-}
+import type { Env } from '../../src/types';
 
 interface CheckoutRequest {
   plan: 'individual' | 'squad';
   email: string;
+  billingPeriod?: 'monthly' | 'annual';
   circleName?: string;
   seats?: number;
 }
@@ -22,97 +24,91 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   try {
     const body = await request.json() as CheckoutRequest;
-    const { plan, email, circleName, seats = 1 } = body;
+    const { plan, email, billingPeriod = 'monthly', circleName, seats = 3 } = body;
 
-    // Validate input
+    // Validate
     if (!email || !email.includes('@')) {
-      return new Response(JSON.stringify({ error: 'Invalid email' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return jsonError('Please provide a valid email address.', 400);
     }
-
     if (!['individual', 'squad'].includes(plan)) {
-      return new Response(JSON.stringify({ error: 'Invalid plan' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return jsonError('Invalid plan. Choose "individual" or "squad".', 400);
     }
 
-    // Price IDs - these should be set in Cloudflare environment
-    // For now, use placeholder IDs that will be configured in Stripe
-    const priceIds = {
-      individual: env.STRIPE_INDIVIDUAL_PRICE_ID || 'price_individual_placeholder',
-      squad: env.STRIPE_SQUAD_PRICE_ID || 'price_squad_placeholder',
-    };
+    // Resolve the correct Stripe Price ID
+    const priceId = getPriceId(env, plan, billingPeriod);
+    if (!priceId) {
+      return jsonError(
+        'Pricing is not configured yet. Please try again later or contact support.',
+        503,
+      );
+    }
 
-    const priceId = priceIds[plan];
     const quantity = plan === 'squad' ? Math.max(3, Math.min(50, seats)) : 1;
+    const trialDays = plan === 'squad' ? 14 : 7;
 
-    // Build Stripe checkout params
+    // Build Stripe Checkout params
     const params = new URLSearchParams();
     params.append('mode', 'subscription');
     params.append('payment_method_types[]', 'card');
     params.append('line_items[0][price]', priceId);
     params.append('line_items[0][quantity]', quantity.toString());
-    params.append('success_url', `${env.APP_URL || 'https://therealmofpatterns.com'}/success?session_id={CHECKOUT_SESSION_ID}&plan=${plan}`);
-    params.append('cancel_url', `${env.APP_URL || 'https://therealmofpatterns.com'}/subscribe?canceled=true`);
     params.append('customer_email', email);
     params.append('allow_promotion_codes', 'true');
 
-    // Add metadata
+    // Trial
+    params.append('subscription_data[trial_period_days]', trialDays.toString());
+
+    // Metadata (available in webhooks)
     params.append('metadata[plan]', plan);
+    params.append('metadata[billing_period]', billingPeriod);
+    params.append('subscription_data[metadata][plan]', plan);
+    params.append('subscription_data[metadata][billing_period]', billingPeriod);
+
     if (plan === 'squad') {
       params.append('metadata[seats]', quantity.toString());
-      if (circleName) {
-        params.append('metadata[circle_name]', circleName);
-      }
-    }
-
-    // Subscription-specific settings
-    params.append('subscription_data[metadata][plan]', plan);
-    if (plan === 'squad') {
       params.append('subscription_data[metadata][seats]', quantity.toString());
       if (circleName) {
+        params.append('metadata[circle_name]', circleName);
         params.append('subscription_data[metadata][circle_name]', circleName);
       }
     }
 
-    // Create Stripe session
-    const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+    // URLs
+    const appUrl = env.APP_URL || 'https://therealmofpatterns.com';
+    params.append(
+      'success_url',
+      `${appUrl}/success/?session_id={CHECKOUT_SESSION_ID}&plan=${plan}`,
+    );
+    params.append(
+      'cancel_url',
+      `${appUrl}/subscribe/?canceled=true`,
+    );
+
+    // Call Stripe
+    const stripeRes = await fetch('https://api.stripe.com/v1/checkout/sessions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.STRIPE_SECRET_KEY}`,
+        Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: params,
     });
 
-    const session = await response.json() as { id?: string; url?: string; error?: { message: string } };
+    const session = (await stripeRes.json()) as {
+      id?: string;
+      url?: string;
+      error?: { message: string };
+    };
 
-    if (session.error) {
-      console.error('Stripe error:', session.error);
-      return new Response(JSON.stringify({ error: session.error.message }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+    if (!stripeRes.ok || session.error) {
+      console.error('Stripe error:', session.error?.message);
+      return jsonError('Failed to create checkout session. Please try again.', 502);
     }
 
-    return new Response(JSON.stringify({
-      success: true,
-      sessionId: session.id,
-      url: session.url,
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-  } catch (error) {
-    console.error('Checkout error:', error);
-    return new Response(JSON.stringify({ error: 'Failed to create checkout session' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return Response.json({ success: true, sessionId: session.id, url: session.url });
+  } catch (err) {
+    console.error('Checkout error:', err);
+    return jsonError('Something went wrong. Please try again.', 500);
   }
 };
 
@@ -128,3 +124,21 @@ export const onRequestOptions: PagesFunction = async () => {
     },
   });
 };
+
+// ── helpers ──────────────────────────────────────────────
+
+function getPriceId(env: Env, plan: string, period: string): string | null {
+  if (plan === 'individual') {
+    return period === 'annual'
+      ? env.STRIPE_PRO_ANNUAL_PRICE_ID
+      : env.STRIPE_PRO_MONTHLY_PRICE_ID || env.STRIPE_PRO_PRICE_ID || null;
+  }
+  // squad / team
+  return period === 'annual'
+    ? env.STRIPE_TEAM_ANNUAL_PRICE_ID
+    : env.STRIPE_TEAM_MONTHLY_PRICE_ID || null;
+}
+
+function jsonError(message: string, status: number) {
+  return Response.json({ success: false, error: message }, { status });
+}

@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Welcome to Pro - The Realm of Patterns" description="Your subscription is active. Welcome to the full experience.">
+  <div class="success-page">
+    <div class="success-content">
+      <div class="success-icon">✦</div>
+      <h1>You're in!</h1>
+      <p class="subtitle" id="subtitle">Your subscription is now active.</p>
+
+      <div class="next-steps">
+        <h2>What happens next</h2>
+        <ol>
+          <li>
+            <span class="step-num">1</span>
+            <div>
+              <strong>Check your email</strong>
+              <p>We sent a confirmation with your login details.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <div>
+              <strong>Discover your full profile</strong>
+              <p>Enter your birth data to see your complete energy breakdown.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <div>
+              <strong>Get your daily reading</strong>
+              <p>Personalized forecasts start tomorrow morning.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="cta-group">
+        <a href="/discover/" class="cta-primary">
+          <span>Discover Your Pattern</span>
+          <span class="arrow">&rarr;</span>
+        </a>
+        <a href="/" class="cta-secondary">Back to Home</a>
+      </div>
+
+      <p class="note">
+        Questions? Email <a href="mailto:support@therealmofpatterns.com">support@therealmofpatterns.com</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Personalize based on URL params
+  const params = new URLSearchParams(window.location.search);
+  const plan = params.get('plan');
+  const subtitle = document.getElementById('subtitle');
+
+  if (subtitle && plan === 'squad') {
+    subtitle.textContent = 'Your Team plan is active. Invite your members from the dashboard.';
+  } else if (subtitle) {
+    subtitle.textContent = 'Your Pro trial has started. Enjoy the full experience for 7 days free.';
+  }
+</script>
+
+<style>
+  .success-page {
+    --gold: #d4a854;
+    --dark: #0a0908;
+    --dark-surface: #141210;
+    --text: #f0e8d8;
+    --text-muted: rgba(240, 232, 216, 0.6);
+
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 6rem 2rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .success-content {
+    max-width: 520px;
+    text-align: center;
+  }
+
+  .success-icon {
+    font-size: 3rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--text);
+    margin: 0 0 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .next-steps {
+    text-align: left;
+    background: var(--dark-surface);
+    border: 1px solid rgba(212, 168, 84, 0.15);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .next-steps h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin: 0 0 1.5rem;
+    font-weight: 400;
+  }
+
+  .next-steps ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .next-steps li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212, 168, 84, 0.1);
+    border: 1px solid rgba(212, 168, 84, 0.3);
+    border-radius: 50%;
+    font-size: 0.8rem;
+    color: var(--gold);
+    flex-shrink: 0;
+    font-family: 'Geist Mono', monospace;
+  }
+
+  .next-steps strong {
+    display: block;
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .next-steps p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .cta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .cta-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: var(--gold);
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+
+  .cta-primary:hover {
+    background: #e5b865;
+    box-shadow: 0 0 24px rgba(212, 168, 84, 0.3);
+  }
+
+  .cta-primary .arrow {
+    transition: transform 0.3s;
+  }
+
+  .cta-primary:hover .arrow {
+    transform: translateX(4px);
+  }
+
+  .cta-secondary {
+    padding: 0.75rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  .cta-secondary:hover {
+    color: var(--gold);
+  }
+
+  .note {
+    font-size: 0.8rem;
+    color: rgba(240, 232, 216, 0.4);
+  }
+
+  .note a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .note a:hover {
+    text-decoration: underline;
+  }
+</style>

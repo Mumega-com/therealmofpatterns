@@ -199,7 +199,13 @@ export interface Env {
   // Email service
   RESEND_API_KEY?: string;
 
-  // Pro subscription
+  // Stripe Price IDs (set in Cloudflare dashboard)
+  STRIPE_PRO_MONTHLY_PRICE_ID: string;
+  STRIPE_PRO_ANNUAL_PRICE_ID: string;
+  STRIPE_TEAM_MONTHLY_PRICE_ID: string;
+  STRIPE_TEAM_ANNUAL_PRICE_ID: string;
+
+  /** @deprecated Use STRIPE_PRO_MONTHLY_PRICE_ID */
   STRIPE_PRO_PRICE_ID?: string;
 }
 
