@@ -117,14 +117,14 @@ export async function onRequestPost(
       // Pro: Gemini first
       narrative = await callGemini(env, systemPrompt, fullUserPrompt);
       if (narrative) {
-        modelUsed = 'gemini-2.0-flash';
+        modelUsed = 'gemini-2.5-flash-lite';
       }
 
       // Pro fallback: OpenAI
       if (!narrative && env.OPENAI_API_KEY) {
         narrative = await callOpenAI(env.OPENAI_API_KEY, systemPrompt, fullUserPrompt);
         if (narrative) {
-          modelUsed = 'openai-gpt-5.2-mini';
+          modelUsed = 'openai-gpt-5-mini';
         }
       }
     }
@@ -190,7 +190,7 @@ async function callGemini(env: Env, system: string, user: string): Promise<strin
 
   if (keys.length === 0) return null;
 
-  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent';
 
   for (let i = 0; i < Math.min(keys.length, 3); i++) {
     try {
@@ -225,7 +225,7 @@ async function callGemini(env: Env, system: string, user: string): Promise<strin
 }
 
 /**
- * Call OpenAI GPT-4o-mini as fallback for Pro users.
+ * Call OpenAI GPT-5-mini as fallback for Pro users.
  */
 async function callOpenAI(apiKey: string, system: string, user: string): Promise<string | null> {
   try {
@@ -236,7 +236,7 @@ async function callOpenAI(apiKey: string, system: string, user: string): Promise
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-5.2-mini',
+        model: 'gpt-5-mini',
         messages: [
           { role: 'system', content: system },
           { role: 'user', content: user },

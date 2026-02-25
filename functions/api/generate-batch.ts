@@ -888,7 +888,7 @@ async function callGeminiAPI(
   prompt: string,
   keyRotator?: GeminiKeyRotator
 ): Promise<any | null> {
-  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent';
 
   try {
     const response = await fetch(`${url}?key=${apiKey}`, {

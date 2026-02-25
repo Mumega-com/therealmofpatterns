@@ -610,7 +610,7 @@ async function callGeminiAPI(
   keyRotator?: GeminiKeyRotator
 ): Promise<any | null> {
   // Use Gemini 2.0 Flash - stable production model
-  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent';
 
   try {
     const response = await fetch(`${url}?key=${apiKey}`, {

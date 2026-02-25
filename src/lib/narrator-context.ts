@@ -98,8 +98,9 @@ export function buildNarratorContext(): { context: NarratorContext; tier: Person
           weakestDimension: archResult.weakestIndex,
         };
 
-        // Transit: today's planetary positions
+        // Transit: today's planetary positions (correct for local timezone)
         const now = new Date();
+        const tzOffsetHours = -now.getTimezoneOffset() / 60;
         const todayBirth: BirthData = {
           year: now.getFullYear(),
           month: now.getMonth() + 1,
@@ -108,6 +109,7 @@ export function buildNarratorContext(): { context: NarratorContext; tier: Person
           minute: now.getMinutes(),
           latitude: birthData.latitude,
           longitude: birthData.longitude,
+          timezone_offset: tzOffsetHours,
         };
         const transitVector = Array.from(computeFromBirthData(todayBirth)).slice(0, 8);
         const dominantTransit = transitVector.indexOf(Math.max(...transitVector));
