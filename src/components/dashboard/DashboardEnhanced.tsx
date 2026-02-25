@@ -656,18 +656,18 @@ function getStyles(mode: string): string {
       --dash-font: 'Cormorant Garamond', serif;
     `,
     sol: `
-      --dash-bg: #fffbf5;
-      --dash-card-bg: rgba(245,158,11,0.03);
-      --dash-accent: #f59e0b;
-      --dash-accent-dim: rgba(245,158,11,0.3);
-      --dash-text: #1a1a1a;
-      --dash-muted: rgba(26,26,26,0.5);
-      --dash-border: rgba(245,158,11,0.2);
-      --gauge-track: rgba(245,158,11,0.15);
-      --gauge-tick: rgba(245,158,11,0.3);
-      --spark-color: #f59e0b;
-      --ring-track: rgba(245,158,11,0.15);
-      --ring-fill: #f59e0b;
+      --dash-bg: #0a0908;
+      --dash-card-bg: rgba(212,168,84,0.03);
+      --dash-accent: #d4a854;
+      --dash-accent-dim: rgba(212,168,84,0.3);
+      --dash-text: #f0e8d8;
+      --dash-muted: rgba(240,232,216,0.5);
+      --dash-border: rgba(212,168,84,0.2);
+      --gauge-track: rgba(212,168,84,0.15);
+      --gauge-tick: rgba(212,168,84,0.3);
+      --spark-color: #d4a854;
+      --ring-track: rgba(212,168,84,0.15);
+      --ring-fill: #d4a854;
       --dash-font: 'Inter', system-ui, sans-serif;
     `,
   };
