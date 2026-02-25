@@ -986,12 +986,12 @@ function getStyles(mode: string): string {
       --checkin-font: 'Cormorant Garamond', serif;
     `,
     sol: `
-      --checkin-bg: #fffbf5;
-      --checkin-accent: #f59e0b;
-      --checkin-text: #1a1a1a;
-      --checkin-muted: rgba(26,26,26,0.5);
-      --checkin-border: rgba(245,158,11,0.3);
-      --checkin-card-bg: rgba(245,158,11,0.05);
+      --checkin-bg: #0a0908;
+      --checkin-accent: #d4a854;
+      --checkin-text: #f0e8d8;
+      --checkin-muted: rgba(240,232,216,0.5);
+      --checkin-border: rgba(212,168,84,0.25);
+      --checkin-card-bg: rgba(212,168,84,0.05);
       --checkin-font: 'Inter', system-ui, sans-serif;
     `,
   };
@@ -1129,7 +1129,7 @@ function getStyles(mode: string): string {
     .score-button.selected {
       background: var(--checkin-accent);
       border-color: var(--checkin-accent);
-      color: ${mode === 'sol' ? '#fff' : 'var(--checkin-bg)'};
+      color: ${mode === 'sol' ? '#0a0908' : 'var(--checkin-bg)'};
     }
     .score-number {
       font-size: 1.5rem;
@@ -1189,7 +1189,7 @@ function getCelebrationStyles(mode: string): string {
   const colors: Record<string, { primary: string; secondary: string; bg: string }> = {
     kasra: { primary: '#00ff88', secondary: '#00d4ff', bg: '#0a0a0a' },
     river: { primary: '#a78bfa', secondary: '#ec4899', bg: '#0f0c1a' },
-    sol: { primary: '#f59e0b', secondary: '#f97316', bg: '#fffbf5' },
+    sol: { primary: '#d4a854', secondary: '#c49a4a', bg: '#0a0908' },
   };
   const c = colors[mode] || colors.sol;
 

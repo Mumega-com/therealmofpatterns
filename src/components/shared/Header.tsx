@@ -14,24 +14,12 @@ const NAV_LINKS = [
   { href: '/dashboard', label: 'Dashboard', icon: '◎' },
   { href: '/sol/checkin', label: 'Check In', icon: '◇' },
   { href: '/journey', label: 'My Journey', icon: '◈' },
-  { href: '/subscribe', label: 'Go Pro', icon: '✦' },
+  { href: '/reading', label: 'Daily Reading', icon: '☀' },
 ];
 
 export function Header({ className = '', currentLang = 'en', transparent = false }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isPro, setIsPro] = useState(false);
-
-  useEffect(() => {
-    try {
-      const userData = localStorage.getItem('rop_user');
-      if (userData) {
-        const user = JSON.parse(userData);
-        if (user.isPro) setIsPro(true);
-      }
-    } catch {}
-  }, []);
-
-  const visibleLinks = isPro ? NAV_LINKS.filter(l => l.href !== '/subscribe') : NAV_LINKS;
+  const visibleLinks = NAV_LINKS;
 
   return (
     <header

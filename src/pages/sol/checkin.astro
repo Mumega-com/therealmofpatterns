@@ -74,8 +74,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     font-family: 'Inter', -apple-system, sans-serif;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(180deg, #faf8f5 0%, #f5f0e8 100%);
-    color: #1f2937;
+    background: #0a0908;
+    color: #f0e8d8;
   }
 
   /* Warm Background */
@@ -90,15 +90,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.5;
+    filter: blur(80px);
+    opacity: 0.35;
     animation: blob-float 15s ease-in-out infinite;
   }
 
   .blob-1 {
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(212, 168, 84, 0.3) 0%, transparent 70%);
     top: -100px;
     right: -50px;
     animation-delay: 0s;
@@ -107,7 +107,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .blob-2 {
     width: 250px;
     height: 250px;
-    background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.2) 0%, transparent 70%);
     bottom: 20%;
     left: -50px;
     animation-delay: -5s;
@@ -116,7 +116,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .blob-3 {
     width: 200px;
     height: 200px;
-    background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(212, 168, 84, 0.15) 0%, transparent 70%);
     bottom: -50px;
     right: 20%;
     animation-delay: -10s;
@@ -138,7 +138,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   .sparkles span {
     position: absolute;
-    color: #fbbf24;
+    color: #d4a854;
     opacity: 0;
     animation: sparkle-float 4s ease-in-out infinite;
   }
@@ -162,14 +162,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     align-items: center;
     gap: 0.5rem;
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: rgba(240, 232, 216, 0.4);
     text-decoration: none;
     margin-bottom: 2rem;
     transition: all 0.3s ease;
   }
 
   .back-link:hover {
-    color: #d4a373;
+    color: #d4a854;
   }
 
   .back-arrow {
@@ -223,14 +223,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   .page-title {
     font-size: 2rem;
-    font-weight: 700;
-    color: #1f2937;
+    font-weight: 600;
+    color: #f0e8d8;
     margin-bottom: 0.5rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
   }
 
   .page-subtitle {
     font-size: 1rem;
-    color: #6b7280;
+    color: rgba(240, 232, 216, 0.6);
     line-height: 1.6;
   }
 
@@ -251,18 +252,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #e5e7eb;
+    background: rgba(212, 168, 84, 0.2);
     transition: all 0.3s ease;
   }
 
   .progress-dot.active {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+    background: linear-gradient(135deg, #d4a854 0%, #c49a4a 100%);
+    box-shadow: 0 2px 8px rgba(212, 168, 84, 0.4);
   }
 
   .progress-label {
     font-size: 0.75rem;
-    color: #9ca3af;
+    color: rgba(240, 232, 216, 0.4);
     font-weight: 500;
     letter-spacing: 0.02em;
   }
@@ -292,10 +293,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     align-items: flex-start;
     gap: 0.75rem;
     padding: 1rem;
-    background: white;
+    background: rgba(26, 24, 20, 0.6);
     border-radius: 16px;
-    border: 1px solid #f3f4f6;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(212, 168, 84, 0.1);
   }
 
   .footer-icon {
@@ -305,13 +305,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   .footer-tip {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: rgba(240, 232, 216, 0.5);
     line-height: 1.5;
     margin: 0;
   }
 
   .footer-tip strong {
-    color: #374151;
+    color: #d4a854;
   }
 
   /* Confetti */

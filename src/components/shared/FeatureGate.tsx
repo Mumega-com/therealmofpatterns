@@ -194,13 +194,8 @@ export function FeatureGate({
   const mode = useStore($mode);
   const userTier = useSubscription();
 
-  const meta = FEATURE_META[feature];
-  const hasAccess = canAccess(userTier, meta.tier);
-
-  // If user has access, just render children
-  if (hasAccess) {
-    return <>{children}</>;
-  }
+  // All features are currently free — Pro gating disabled
+  return <>{children}</>;
 
   // Otherwise, show gate
   return (

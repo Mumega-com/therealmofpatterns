@@ -9,7 +9,6 @@ const FOOTER_LINKS = {
     { href: '/discover', label: 'Discover Your Pattern' },
     { href: '/sol/checkin', label: 'Daily Check-in' },
     { href: '/blog', label: 'Blog' },
-    { href: '/subscribe', label: 'Go Pro' },
   ],
   stages: [
     { href: '/stage/reset', label: 'Reset' },

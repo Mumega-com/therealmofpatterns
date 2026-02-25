@@ -174,7 +174,7 @@ export function ProDashboard() {
         </section>
       </div>
 
-      {isFree && <UpgradeBanner />}
+      {/* Pro upgrade disabled — all features free for now */}
 
       <style>{`
         .pro-dashboard {
