@@ -32,13 +32,13 @@
   --river-warning: #ffaa00;
   --font-river: 'Cormorant Garamond', Georgia, serif;
 
-  /* Sol Mode */
-  --sol-bg: #faf8f5;
-  --sol-surface: #ffffff;
-  --sol-border: #e8e4de;
-  --sol-text: #2a2520;
-  --sol-muted: #8a8580;
-  --sol-accent: #d4a373;
+  /* Sol Mode — dark theme matching #0a0908 page background */
+  --sol-bg: #0a0908;
+  --sol-surface: rgba(26, 24, 20, 0.6);
+  --sol-border: rgba(212, 168, 84, 0.15);
+  --sol-text: #f0e8d8;
+  --sol-muted: rgba(240, 232, 216, 0.5);
+  --sol-accent: #d4a854;
   --sol-positive: #4ade80;
   --font-sol: 'Inter', 'SF Pro', system-ui, sans-serif;
 }
@@ -68,17 +68,6 @@
   --river-text: #f0d8d8;
 }
 
-/* Sol dark mode */
-@media (prefers-color-scheme: dark) {
-  [data-mode="sol"][data-theme="system"],
-  [data-mode="sol"].dark {
-    --sol-bg: #1a1815;
-    --sol-surface: #252220;
-    --sol-border: #3a3530;
-    --sol-text: #f5f0ea;
-    --sol-muted: #a09890;
-  }
-}
 
 /* =====================
    BASE STYLES
