@@ -1,19 +1,32 @@
 /**
  * Personal Transit Engine
  *
- * Computes personalized predictions by comparing:
- * - User's natal 16D vector (computed once from birth data)
- * - Current transit 16D vector (computed daily from planetary positions)
- *
- * The resonance between these vectors predicts the user's experience.
+ * Computes personalized predictions using real ephemeris:
+ * - User's natal 16D vector (from birth data with real planetary positions)
+ * - Current transit positions (real ephemeris, not approximations)
+ * - Aspect-based κ (kappa) coupling with Gaussian decay
+ * - Vedic Dasha integration for outer octave
  */
 
 import {
   compute16DFromBirthData,
+  computeFromBirthData,
+  compute8D,
   cosineResonance,
   getDominant,
-  approximateLongitudes,
 } from './16d-engine';
+import {
+  getLongitudesFromBirthData,
+  getPlanetaryLongitudes,
+  birthDataToDate,
+} from './ephemeris';
+import {
+  computeGlobalKappa,
+  computeOuterOctave,
+  computeRU,
+  classifyFailureMode,
+  computeElderProgress,
+} from './transit-engine';
 import { calibratePrediction, getCalibrationProfile } from './prediction-calibration';
 import type { BirthData, Vector16D } from '../types';
 
@@ -36,6 +49,9 @@ export interface PersonalPrediction {
   }[];
   warnings: string[];
   opportunities: string[];
+  failureMode: string;
+  elderProgress: number;
+  RU: number;
 }
 
 export interface TransitAspect {
@@ -51,85 +67,107 @@ export interface TransitAspect {
 // ============================================
 
 /**
- * Get or compute the user's natal 16D vector
+ * Get stored birth data
  */
-export function getNatal16D(): Vector16D | null {
+function getStoredBirthData(): BirthData | null {
   if (typeof window === 'undefined') return null;
-
-  // Check cache first
-  const cached = localStorage.getItem('rop_natal_16d');
-  if (cached) {
-    try {
-      return JSON.parse(cached) as Vector16D;
-    } catch {
-      // Fall through to recompute
-    }
-  }
-
-  // Try to compute from birth data
-  const birthDataStr = localStorage.getItem('rop_birth_data_full');
-  if (!birthDataStr) return null;
-
+  const str = localStorage.getItem('rop_birth_data_full');
+  if (!str) return null;
   try {
-    const birthData = JSON.parse(birthDataStr) as BirthData;
-    const natal16D = compute16DFromBirthData(birthData);
-    localStorage.setItem('rop_natal_16d', JSON.stringify(natal16D));
-    return natal16D;
+    return JSON.parse(str) as BirthData;
   } catch {
     return null;
   }
 }
 
 /**
- * Compute today's transit 16D vector
+ * Get or compute the user's natal 16D vector using real ephemeris
  */
-export function getTodayTransit16D(): Vector16D {
-  const today = new Date();
-  const transitBirthData: BirthData = {
-    year: today.getFullYear(),
-    month: today.getMonth() + 1,
-    day: today.getDate(),
-    hour: today.getHours(),
-    minute: today.getMinutes(),
-  };
-  return compute16DFromBirthData(transitBirthData);
+export function getNatal16D(): Vector16D | null {
+  if (typeof window === 'undefined') return null;
+
+  const birthData = getStoredBirthData();
+  if (!birthData) return null;
+
+  // Always recompute with real ephemeris (fast enough client-side)
+  const natal16D = compute16DFromBirthData(birthData);
+  localStorage.setItem('rop_natal_16d', JSON.stringify(natal16D));
+  return natal16D;
 }
 
 /**
- * Compute personalized prediction for today
+ * Compute today's transit 16D vector using real ephemeris.
+ * Inner = transit positions through W matrix
+ * Outer = 1 - inner (shadow)
+ */
+export function getTodayTransit16D(): Vector16D {
+  const today = new Date();
+  const longs = getPlanetaryLongitudes(today);
+  const inner = compute8D(longs);
+  const shadow = inner.map((v: number) => 1 - v);
+  return [...inner, ...shadow] as Vector16D;
+}
+
+/**
+ * Compute personalized prediction for today using real ephemeris + aspect kappa
  */
 export function computePersonalPrediction(): PersonalPrediction | null {
+  const birthData = getStoredBirthData();
+  if (!birthData) return null;
+
   const natal16D = getNatal16D();
-  if (!natal16D) {
-    return null; // No birth data available
-  }
+  if (!natal16D) return null;
 
-  const transit16D = getTodayTransit16D();
+  // Real natal longitudes
+  const natalLongs = getLongitudesFromBirthData(birthData);
+  const birthDate = birthDataToDate(birthData);
 
-  // Compute base resonance (kappa)
-  const rawKappa = cosineResonance(natal16D, transit16D);
+  // Real transit longitudes
+  const now = new Date();
+  const transitLongs = getPlanetaryLongitudes(now);
+
+  // Aspect-based kappa (real coupling)
+  const { kappaBar } = computeGlobalKappa(natalLongs, transitLongs);
+
+  // Outer octave with Vedic Dasha
+  const outerOctave = computeOuterOctave(now, birthDate);
+
+  // Full 16D for RU calculation
+  const inner8D = computeFromBirthData(birthData);
+  const U_16 = [...inner8D, ...outerOctave];
+
+  // RU (real formula)
+  const RU = computeRU(U_16, kappaBar, natalLongs);
+
+  // Witness magnitude
+  const Wmag = Math.sqrt(U_16.reduce((s, v) => s + v * v, 0));
+
+  // Failure mode & elder progress
+  const failureMode = classifyFailureMode(RU, kappaBar, Wmag);
+  const elderProgress = computeElderProgress(kappaBar, RU, Wmag);
 
   // Get dominant dimensions
   const natalDominant = getDominant(natal16D.slice(0, 8));
+  const transit16D = getTodayTransit16D();
   const transitDominant = getDominant(transit16D.slice(0, 8));
 
-  // Apply calibration if available (learns from user feedback)
-  const predictedKappa = calibratePrediction(rawKappa, transitDominant.index);
+  // Apply calibration if available
+  const predictedKappa = calibratePrediction(kappaBar, transitDominant.index);
 
-  // Determine effect based on dimension interaction
+  // Effect
   const effect = determineEffect(natalDominant.index, transitDominant.index);
 
-  // Calculate confidence based on how much data we have
+  // Confidence
   const checkinCount = getCheckinCount();
   const calibrationProfile = getCalibrationProfile();
   const calibrationBonus = calibrationProfile && calibrationProfile.sampleCount >= 14 ? 0.15 : 0;
   const confidence = Math.min(0.5 + checkinCount * 0.03 + calibrationBonus, 0.95);
 
-  // Compute optimal windows throughout the day
-  const optimalWindows = computeOptimalWindows(natal16D);
+  // Optimal windows (real ephemeris)
+  const optimalWindows = computeOptimalWindows(natalLongs, birthDate);
 
-  // Generate warnings and opportunities
-  const { warnings, opportunities } = generateInsights(natal16D, transit16D, predictedKappa);
+  // Insights
+  const { warnings, opportunities } = generateInsights(natal16D, transit16D, predictedKappa, failureMode);
 
   return {
     predictedKappa,
@@ -142,146 +180,110 @@ export function computePersonalPrediction(): PersonalPrediction | null {
     optimalWindows,
     warnings,
     opportunities,
+    failureMode,
+    elderProgress,
+    RU,
   };
 }
 
 /**
- * Compute optimal windows throughout the day based on Moon transit
+ * Compute optimal windows using real Moon transit (fastest-moving body)
  */
-function computeOptimalWindows(natal16D: Vector16D): PersonalPrediction['optimalWindows'] {
+function computeOptimalWindows(
+  natalLongs: number[],
+  birthDate: Date,
+): PersonalPrediction['optimalWindows'] {
   const windows: PersonalPrediction['optimalWindows'] = [];
   const today = new Date();
 
-  // Check every 2 hours
   for (let hour = 6; hour < 22; hour += 2) {
-    const hourlyBirthData: BirthData = {
-      year: today.getFullYear(),
-      month: today.getMonth() + 1,
-      day: today.getDate(),
-      hour,
-      minute: 0,
-    };
+    const hourDate = new Date(today);
+    hourDate.setHours(hour, 0, 0, 0);
 
-    const hourlyTransit = compute16DFromBirthData(hourlyBirthData);
-    const resonance = cosineResonance(natal16D, hourlyTransit);
+    const transitLongs = getPlanetaryLongitudes(hourDate);
+    const { kappaBar } = computeGlobalKappa(natalLongs, transitLongs);
 
-    // Only include windows with good resonance
-    if (resonance > 0.6) {
-      const activity = determineOptimalActivity(hourlyTransit, hour);
+    if (kappaBar > 0.2) {
+      const activity = determineOptimalActivity(transitLongs, hour);
       windows.push({
         start: `${hour.toString().padStart(2, '0')}:00`,
         end: `${(hour + 2).toString().padStart(2, '0')}:00`,
         activity,
-        quality: resonance,
+        quality: (kappaBar + 1) / 2, // normalize to 0-1
       });
     }
   }
 
-  // Sort by quality and return top 3
   return windows.sort((a, b) => b.quality - a.quality).slice(0, 3);
 }
 
-/**
- * Determine what activity is optimal based on transit energies
- */
 function determineOptimalActivity(
-  transit16D: Vector16D,
-  hour: number
+  transitLongs: number[],
+  hour: number,
 ): PersonalPrediction['optimalWindows'][0]['activity'] {
-  const dominant = getDominant(transit16D.slice(0, 8));
+  const transit8D = compute8D(transitLongs);
+  const dominant = getDominant(transit8D);
 
-  // Morning favors focused work
   if (hour < 12) {
-    if (dominant.index === 2) return 'focused_work'; // Cognition
-    if (dominant.index === 5) return 'important_decisions'; // Action
+    if (dominant.index === 2) return 'focused_work';
+    if (dominant.index === 5) return 'important_decisions';
   }
-
-  // Afternoon can be creative or social
   if (hour >= 12 && hour < 17) {
-    if (dominant.index === 4) return 'creative'; // Expansion
-    if (dominant.index === 6) return 'social'; // Relation
+    if (dominant.index === 4) return 'creative';
+    if (dominant.index === 6) return 'social';
   }
-
-  // Evening favors rest and reflection
   if (hour >= 17) {
-    if (dominant.index === 7) return 'rest'; // Field/Witness
+    if (dominant.index === 7) return 'rest';
   }
 
-  // Default based on dominant dimension
   switch (dominant.index) {
-    case 0:
-    case 1:
-      return 'important_decisions';
-    case 2:
-      return 'focused_work';
-    case 3:
-    case 6:
-      return 'social';
-    case 4:
-      return 'creative';
-    default:
-      return 'rest';
+    case 0: case 1: return 'important_decisions';
+    case 2: return 'focused_work';
+    case 3: case 6: return 'social';
+    case 4: return 'creative';
+    default: return 'rest';
   }
 }
 
-/**
- * Determine the effect of transit on natal configuration
- */
 function determineEffect(
-  natalDominantIndex: number,
-  transitDominantIndex: number
+  natalIdx: number,
+  transitIdx: number,
 ): 'amplify' | 'challenge' | 'neutral' {
-  // Same dimension = amplify
-  if (natalDominantIndex === transitDominantIndex) {
-    return 'amplify';
-  }
-
-  // Opposite dimensions (0-4, 1-5, 2-6, 3-7) = challenge
-  if (Math.abs(natalDominantIndex - transitDominantIndex) === 4) {
-    return 'challenge';
-  }
-
-  // Adjacent or other = neutral
+  if (natalIdx === transitIdx) return 'amplify';
+  if (Math.abs(natalIdx - transitIdx) === 4) return 'challenge';
   return 'neutral';
 }
 
-/**
- * Generate warnings and opportunities based on predictions
- */
 function generateInsights(
   natal16D: Vector16D,
   transit16D: Vector16D,
-  predictedKappa: number
+  predictedKappa: number,
+  failureMode: string,
 ): { warnings: string[]; opportunities: string[] } {
   const warnings: string[] = [];
   const opportunities: string[] = [];
 
-  // Low kappa warning
   if (predictedKappa < 0.4) {
     warnings.push('Energy may feel scattered today - keep tasks simple');
   }
 
-  // Check shadow dimensions (indices 8-15)
-  const natalShadow = natal16D.slice(8);
-  const transitShadow = transit16D.slice(8);
+  // Failure mode warnings
+  if (failureMode === 'Collapse') warnings.push('Very low energy — rest and recharge');
+  if (failureMode === 'Inversion') warnings.push('Inner-outer tension active — avoid big decisions');
+  if (failureMode === 'Dissociation') warnings.push('Energy feels disconnected — ground yourself');
+  if (failureMode === 'Dispersion') warnings.push('High energy but unfocused — pick one priority');
 
-  // High shadow activation
-  const shadowResonance = cosineResonance(natalShadow, transitShadow);
+  const shadowResonance = cosineResonance(natal16D.slice(8), transit16D.slice(8));
   if (shadowResonance > 0.7) {
     warnings.push('Shadow patterns may surface - practice self-awareness');
   }
 
-  // High kappa opportunity
   if (predictedKappa > 0.75) {
     opportunities.push('Strong alignment today - good for important decisions');
   }
-
-  // Check for expansion dimension (index 4)
   if (transit16D[4] > 0.7 && natal16D[4] > 0.5) {
     opportunities.push('Creative expansion favored - pursue new ideas');
   }
-
-  // Check for relation dimension (index 6)
   if (transit16D[6] > 0.7) {
     opportunities.push('Social connections amplified - reach out to others');
   }
@@ -289,15 +291,10 @@ function generateInsights(
   return { warnings, opportunities };
 }
 
-/**
- * Get count of user's check-ins for confidence calculation
- */
 function getCheckinCount(): number {
   if (typeof window === 'undefined') return 0;
-
   const history = localStorage.getItem('rop_checkin_history');
   if (!history) return 0;
-
   try {
     const { entries } = JSON.parse(history);
     return entries?.length || 0;
@@ -306,17 +303,11 @@ function getCheckinCount(): number {
   }
 }
 
-/**
- * Check if user has birth data for personalized predictions
- */
 export function hasPersonalizedData(): boolean {
   if (typeof window === 'undefined') return false;
-  return localStorage.getItem('rop_natal_16d') !== null;
+  return localStorage.getItem('rop_birth_data_full') !== null;
 }
 
-/**
- * Clear cached natal data (for when birth data changes)
- */
 export function clearNatalCache(): void {
   if (typeof window === 'undefined') return;
   localStorage.removeItem('rop_natal_16d');

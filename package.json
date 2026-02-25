@@ -57,6 +57,7 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "astro": "^5.17.1",
+    "astronomy-engine": "^2.1.19",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.4",
     "nanostores": "^1.1.0",
