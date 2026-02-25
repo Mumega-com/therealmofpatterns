@@ -5,6 +5,7 @@ import { useStore } from '@nanostores/react';
 import { $user, setBirthData } from '../../stores/user';
 import { $mode } from '../../stores';
 import { compute16DFromBirthData } from '../../lib/16d-engine';
+import { resolveLocation } from '../../lib/geocoding';
 import type { BirthData } from '../../types';
 
 interface BirthDataPromptProps {
@@ -92,29 +93,26 @@ export function BirthDataPrompt({ timing = 'after-checkin', autoExpand = false, 
         minute: formData.timeKnown !== 'unknown' ? parseInt(formData.minute) : 0,
       };
 
-      // Compute natal 16D vector
-      const natal16D = compute16DFromBirthData(birthData);
-
-      // Geocode city + country to get lat/lng
-      let lat = 0;
-      let lng = 0;
+      // Resolve location: geocode + timezone + UTC offset
+      let lat = 0, lng = 0, timezone = 'UTC', utcOffset = 0;
       if (formData.city && formData.country) {
-        try {
-          const query = encodeURIComponent(`${formData.city}, ${formData.country}`);
-          const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`, {
-            headers: { 'User-Agent': 'TheRealmOfPatterns/1.0' },
-          });
-          const geoData = await geoRes.json() as Array<{ lat: string; lon: string }>;
-          if (geoData && geoData.length > 0) {
-            lat = parseFloat(geoData[0].lat);
-            lng = parseFloat(geoData[0].lon);
-            birthData.latitude = lat;
-            birthData.longitude = lng;
-          }
-        } catch {
-          // Continue without coordinates
+        const geo = await resolveLocation(
+          formData.city, formData.country,
+          birthData.year, birthData.month, birthData.day, birthData.hour ?? 12,
+        );
+        if (geo) {
+          lat = geo.lat;
+          lng = geo.lng;
+          timezone = geo.timezone;
+          utcOffset = geo.utcOffset;
+          birthData.latitude = lat;
+          birthData.longitude = lng;
+          birthData.timezone_offset = utcOffset;
         }
       }
+
+      // Compute natal 16D vector with correct timezone
+      const natal16D = compute16DFromBirthData(birthData);
 
       // Store birth data in user store
       setBirthData({
@@ -123,10 +121,10 @@ export function BirthDataPrompt({ timing = 'after-checkin', autoExpand = false, 
           parseInt(formData.hour) < 6 ? 'night' :
           parseInt(formData.hour) < 12 ? 'morning' :
           parseInt(formData.hour) < 18 ? 'afternoon' : 'evening',
-        location: formData.city ? { city: `${formData.city}, ${formData.country}`, lat, lng } : null,
+        location: formData.city ? { city: `${formData.city}, ${formData.country}`, lat, lng, timezone } : null,
       });
 
-      // Store natal vector separately for quick access
+      // Store natal vector and full birth data
       localStorage.setItem('rop_natal_16d', JSON.stringify(natal16D));
       localStorage.setItem('rop_birth_data_full', JSON.stringify(birthData));
 

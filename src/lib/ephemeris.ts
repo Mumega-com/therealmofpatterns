@@ -12,7 +12,6 @@ import {
   GeoVector,
   Ecliptic,
   EclipticGeoMoon,
-  SunPosition,
 } from 'astronomy-engine';
 import type { BirthData } from '../types';
 

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { $mode } from '../../stores';
 import { compute16DFromBirthData } from '../../lib/16d-engine';
+import { resolveLocation } from '../../lib/geocoding';
 import type { BirthData as NatalBirthData } from '../../types';
 
 interface BirthData {
@@ -14,30 +15,13 @@ interface BirthData {
   country: string;
   latitude?: number;
   longitude?: number;
+  timezone?: string;
+  utcOffset?: number;
 }
 
 interface OnboardingQuizProps {
   onComplete: (data: BirthData) => void;
   onSkip?: () => void;
-}
-
-/**
- * Geocode city + country to lat/lng using OpenStreetMap Nominatim (free, no key required)
- */
-async function geocodeLocation(city: string, country: string): Promise<{ lat: number; lng: number } | null> {
-  try {
-    const query = encodeURIComponent(`${city}, ${country}`);
-    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`, {
-      headers: { 'User-Agent': 'TheRealmOfPatterns/1.0' },
-    });
-    const data = await res.json() as Array<{ lat: string; lon: string }>;
-    if (data && data.length > 0) {
-      return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
-    }
-    return null;
-  } catch {
-    return null;
-  }
 }
 
 const STEP_CONTENT = {
@@ -177,35 +161,42 @@ export function OnboardingQuiz({ onComplete, onSkip }: OnboardingQuizProps) {
     setGeocodeError('');
 
     try {
-      // Geocode city + country to get lat/lng
-      const coords = await geocodeLocation(birthData.city, birthData.country);
-
-      const updatedBirthData = {
-        ...birthData,
-        latitude: coords?.lat,
-        longitude: coords?.lng,
-      };
-
-      if (!coords) {
-        setGeocodeError('Could not find location. Please check city and country, or continue without coordinates.');
-      }
-
-      // Parse date parts
+      // Parse date/time parts
       const [year, month, day] = birthData.date.split('-').map(Number);
       const [hour, minute] = (birthData.timeKnown === 'unknown' ? '12:00' : birthData.time).split(':').map(Number);
 
-      // Build the natal BirthData in the format the 16D engine expects
+      // Resolve location: geocode → timezone → UTC offset (all in one call)
+      const geo = await resolveLocation(
+        birthData.city,
+        birthData.country,
+        year, month, day, hour,
+      );
+
+      if (!geo) {
+        setGeocodeError('Could not find that city. Please check the spelling or try a nearby larger city.');
+      }
+
+      const updatedBirthData: BirthData = {
+        ...birthData,
+        latitude: geo?.lat,
+        longitude: geo?.lng,
+        timezone: geo?.timezone,
+        utcOffset: geo?.utcOffset,
+      };
+
+      // Build natal BirthData for the 16D engine — timezone_offset now populated
       const natalData: NatalBirthData = {
         year,
         month,
         day,
         hour,
         minute,
-        latitude: coords?.lat,
-        longitude: coords?.lng,
+        latitude: geo?.lat,
+        longitude: geo?.lng,
+        timezone_offset: geo?.utcOffset ?? 0,
       };
 
-      // Compute natal 16D vector
+      // Compute natal 16D vector with correct timezone
       const natal16D = compute16DFromBirthData(natalData);
 
       // Save to all required localStorage keys
@@ -214,7 +205,7 @@ export function OnboardingQuiz({ onComplete, onSkip }: OnboardingQuizProps) {
       localStorage.setItem('rop_natal_16d', JSON.stringify(natal16D));
       localStorage.setItem('rop_quiz_completed', 'true');
 
-      // Also update rop_user for components that check it
+      // Update rop_user
       const existingUser = JSON.parse(localStorage.getItem('rop_user') || '{}');
       localStorage.setItem('rop_user', JSON.stringify({
         ...existingUser,
@@ -222,7 +213,9 @@ export function OnboardingQuiz({ onComplete, onSkip }: OnboardingQuizProps) {
           date: birthData.date,
           timeRange: birthData.timeKnown === 'unknown' ? null :
             hour < 6 ? 'night' : hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening',
-          location: coords ? { city: birthData.city, lat: coords.lat, lng: coords.lng } : { city: birthData.city, lat: 0, lng: 0 },
+          location: geo
+            ? { city: birthData.city, lat: geo.lat, lng: geo.lng, timezone: geo.timezone }
+            : { city: birthData.city, lat: 0, lng: 0 },
         },
       }));
 
