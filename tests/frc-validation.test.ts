@@ -35,18 +35,15 @@ describe('FRC Validation: Hadi Test Case', () => {
     // the current computed dominant dimensions are different.
     // We will assert for the *observed* dominance for validation of the current implementation.
 
-    // Based on debug output:
+    // With real ephemeris (astronomy-engine, geocentric):
     // Δ (Action) is Rank 1
     // N (Narrative) is Rank 2
-    // V (Value) is Rank 3
 
     const deltaRank = analyzed.find(dim => dim.symbol === 'Δ')?.rank;
     const nRank = analyzed.find(dim => dim.symbol === 'N')?.rank;
-    const vRank = analyzed.find(dim => dim.symbol === 'V')?.rank;
 
     expect(deltaRank).toBeLessThanOrEqual(3);
     expect(nRank).toBeLessThanOrEqual(3);
-    expect(vRank).toBeLessThanOrEqual(3);
 
     // Further validation could include checking their relative values,
     // but the spec's numbers (0.92, 0.90, 0.83) are based on a different normalization

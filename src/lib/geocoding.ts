@@ -184,7 +184,7 @@ function estimateTimezoneFromLng(lng: number): string {
   const clipped = Math.max(-12, Math.min(14, offsetHours));
 
   // Map to a representative IANA timezone for the offset
-  const offsetToTz: Record<number, string> = {
+  const offsetToTz: Record<string, string> = {
     '-12': 'Etc/GMT+12', '-11': 'Pacific/Midway', '-10': 'Pacific/Honolulu',
     '-9': 'America/Anchorage', '-8': 'America/Los_Angeles', '-7': 'America/Denver',
     '-6': 'America/Chicago', '-5': 'America/New_York', '-4': 'America/Halifax',

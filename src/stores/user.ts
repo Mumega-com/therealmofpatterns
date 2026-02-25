@@ -10,6 +10,7 @@ export interface BirthData {
     city: string;
     lat: number;
     lng: number;
+    timezone?: string;
   } | null;
 }
 
@@ -74,10 +75,11 @@ if (typeof window !== 'undefined') {
           body: JSON.stringify({ email: parsed.email }),
         })
           .then(r => r.ok ? r.json() : null)
-          .then((data: Record<string, unknown> | null) => {
-            if (!data?.success) return;
-            localStorage.setItem('rop_subscription_tier', data.tier as string);
-            $user.setKey('isPro', data.isPro as boolean);
+          .then((data: unknown) => {
+            const d = data as Record<string, unknown> | null;
+            if (!d?.success) return;
+            localStorage.setItem('rop_subscription_tier', d.tier as string);
+            $user.setKey('isPro', d.isPro as boolean);
           })
           .catch(() => { /* silent */ });
       }
