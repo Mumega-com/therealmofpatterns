@@ -21,10 +21,10 @@ export function ProDashboard() {
 
       if (!d.hasBirthData) {
         setState('no-birth-data');
-      } else if (!d.isPro) {
-        setState('free');
       } else {
-        setState('pro');
+        // Show full dashboard for all users with birth data
+        // Pro users get extra features, free users see an upgrade prompt
+        setState(d.isPro ? 'pro' : 'free');
       }
     }, 150);
     return () => clearTimeout(timer);
@@ -34,13 +34,11 @@ export function ProDashboard() {
   if (state === 'no-birth-data') return <NoBirthData />;
   if (!data) return null;
 
-  const blurred = state === 'free';
+  const isFree = state === 'free';
 
   return (
     <div className="pro-dashboard">
-      {blurred && <UpgradeBanner />}
-
-      <div className={blurred ? 'dashboard-blurred' : ''}>
+      <div>
         {/* Section 1: Today's Energy */}
         <section className="dash-section energy-section">
           <h2 className="section-title">Today's Energy</h2>
@@ -176,16 +174,12 @@ export function ProDashboard() {
         </section>
       </div>
 
+      {isFree && <UpgradeBanner />}
+
       <style>{`
         .pro-dashboard {
           max-width: 800px;
           margin: 0 auto;
-        }
-
-        .dashboard-blurred {
-          filter: blur(6px);
-          pointer-events: none;
-          user-select: none;
         }
 
         /* Sections */
