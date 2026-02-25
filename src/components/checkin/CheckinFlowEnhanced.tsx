@@ -1280,7 +1280,7 @@ function getCelebrationStyles(mode: string): string {
 
     .celebration-label {
       font-size: 1rem;
-      color: ${mode === 'sol' ? '#1a1a1a' : '#ffffff'}80;
+      color: ${mode === 'sol' ? '#f0e8d8' : '#ffffff'}80;
       margin-top: 0.5rem;
     }
   `;
@@ -1309,14 +1309,14 @@ function getResultStyles(mode: string): string {
       --gauge-fill: #a78bfa;
     `,
     sol: `
-      --result-bg: #fffbf5;
-      --result-accent: #f59e0b;
-      --result-text: #1a1a1a;
-      --result-muted: rgba(26,26,26,0.5);
-      --result-border: rgba(245,158,11,0.3);
-      --result-card-bg: rgba(245,158,11,0.05);
-      --gauge-track: rgba(245,158,11,0.2);
-      --gauge-fill: #f59e0b;
+      --result-bg: #0a0908;
+      --result-accent: #d4a854;
+      --result-text: #f0e8d8;
+      --result-muted: rgba(240,232,216,0.5);
+      --result-border: rgba(212,168,84,0.25);
+      --result-card-bg: rgba(212,168,84,0.05);
+      --gauge-track: rgba(212,168,84,0.2);
+      --gauge-fill: #d4a854;
     `,
   };
 
@@ -1500,7 +1500,7 @@ function getResultStyles(mode: string): string {
     .action-btn.primary {
       background: var(--result-accent);
       border: none;
-      color: ${mode === 'sol' ? '#fff' : 'var(--result-bg)'};
+      color: ${mode === 'sol' ? '#0a0908' : 'var(--result-bg)'};
     }
     .action-btn.primary:hover {
       opacity: 0.9;
