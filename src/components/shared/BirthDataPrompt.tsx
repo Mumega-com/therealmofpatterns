@@ -37,6 +37,7 @@ export function BirthDataPrompt({ timing = 'after-checkin', autoExpand = false, 
     minute: '0',
     timeKnown: 'approximate' as 'exact' | 'approximate' | 'unknown',
     city: '',
+    country: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -94,12 +95,12 @@ export function BirthDataPrompt({ timing = 'after-checkin', autoExpand = false, 
       // Compute natal 16D vector
       const natal16D = compute16DFromBirthData(birthData);
 
-      // Geocode city to get lat/lng
+      // Geocode city + country to get lat/lng
       let lat = 0;
       let lng = 0;
-      if (formData.city) {
+      if (formData.city && formData.country) {
         try {
-          const query = encodeURIComponent(formData.city);
+          const query = encodeURIComponent(`${formData.city}, ${formData.country}`);
           const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`, {
             headers: { 'User-Agent': 'TheRealmOfPatterns/1.0' },
           });
@@ -122,7 +123,7 @@ export function BirthDataPrompt({ timing = 'after-checkin', autoExpand = false, 
           parseInt(formData.hour) < 6 ? 'night' :
           parseInt(formData.hour) < 12 ? 'morning' :
           parseInt(formData.hour) < 18 ? 'afternoon' : 'evening',
-        location: formData.city ? { city: formData.city, lat, lng } : null,
+        location: formData.city ? { city: `${formData.city}, ${formData.country}`, lat, lng } : null,
       });
 
       // Store natal vector separately for quick access
@@ -284,12 +285,39 @@ export function BirthDataPrompt({ timing = 'after-checkin', autoExpand = false, 
                 </div>
               </div>
 
+              <div className="form-row">
+                <div className="form-group">
+                  <label>
+                    {mode === 'kasra' ? 'BIRTH_CITY' : mode === 'river' ? 'Birthplace' : 'City'}
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.city}
+                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    placeholder={mode === 'kasra' ? 'Enter city' : 'City name'}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>
+                    {mode === 'kasra' ? 'COUNTRY' : 'Country'}
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.country}
+                    onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                    placeholder="Country"
+                    required
+                  />
+                </div>
+              </div>
+
               <div className="form-hint">
                 {mode === 'kasra'
-                  ? 'Time precision affects house calculations. Unknown = 12:00 default.'
+                  ? 'Location + time precision affect house calculations. Unknown time = 12:00 default.'
                   : mode === 'river'
-                  ? "If you don't know your exact time, we'll work with what the cosmos remembers."
-                  : "Don't know your exact time? No worries - we'll use noon as a reasonable estimate."}
+                  ? "Your birthplace determines which stars were overhead. If you don't know your exact time, we'll work with what the cosmos remembers."
+                  : "Your birthplace affects which planets were above the horizon. Don't know your exact time? No worries — we'll use noon."}
               </div>
 
               <div className="form-actions">
