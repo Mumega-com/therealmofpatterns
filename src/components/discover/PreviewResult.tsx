@@ -194,11 +194,19 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
 
       {/* CTA */}
       <div className="cta-section">
-        <button className="cta-button" onClick={onContinueToCheckin}>
-          {ctaText[mode]}
+        <a href="/dashboard" className="cta-button dashboard-btn">
+          {mode === 'kasra' ? 'VIEW_DASHBOARD' : mode === 'river' ? 'Enter Your Sanctuary' : 'Go to Dashboard'}
           <span className="cta-arrow">&rarr;</span>
-        </button>
-        <p className="cta-sub">{ctaSub[mode]}</p>
+        </a>
+        <p className="cta-sub-alt">
+          <button className="cta-link" onClick={onContinueToCheckin}>
+            {ctaText[mode]}
+          </button>
+          <span className="cta-divider">&bull;</span>
+          <a href="/reading" className="cta-link">Daily Reading</a>
+          <span className="cta-divider">&bull;</span>
+          <a href="/journey" className="cta-link">Journey Map</a>
+        </p>
       </div>
 
       <style>{`
@@ -658,10 +666,38 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
           font-size: 1.2rem;
         }
 
-        .cta-sub {
+        .dashboard-btn {
+          text-decoration: none;
+        }
+
+        .cta-sub-alt {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem;
+          margin-top: 1rem;
+          flex-wrap: wrap;
+        }
+
+        .cta-link {
           font-size: 0.85rem;
           color: rgba(240, 232, 216, 0.5);
-          margin-top: 0.75rem;
+          background: none;
+          border: none;
+          cursor: pointer;
+          text-decoration: none;
+          transition: color 0.2s;
+          font-family: inherit;
+          padding: 0;
+        }
+
+        .cta-link:hover {
+          color: #d4a854;
+        }
+
+        .cta-divider {
+          color: rgba(240, 232, 216, 0.2);
+          font-size: 0.75rem;
         }
 
         @media (max-width: 480px) {
