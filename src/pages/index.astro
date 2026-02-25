@@ -297,6 +297,7 @@ import { EmailCapture } from '../components/shared/EmailCapture';
         <p>It takes 30 seconds. No signup required.</p>
         <div class="final-ctas">
           <a href="/reading" class="cta-secondary">☽ Today's Reading</a>
+          <a href="/dashboard" class="cta-secondary dashboard-cta" style="display:none;">◎ Your Dashboard</a>
           <a href="/discover" class="cta-primary">
             <span>Discover Your Pattern</span>
             <span class="arrow">&rarr;</span>
@@ -326,11 +327,35 @@ import { EmailCapture } from '../components/shared/EmailCapture';
 
   loadReadingPreview();
 
-  // Smart routing: returning users with birth data skip /discover
+  // Smart routing: returning users with birth data go to dashboard
   if (localStorage.getItem('rop_birth_data_full')) {
+    // Update hero CTA to go to dashboard
+    const heroCta = document.querySelector('.hero-content .cta-primary') as HTMLAnchorElement;
+    if (heroCta) {
+      heroCta.href = '/dashboard';
+      const label = heroCta.querySelector('span:first-child');
+      if (label) label.textContent = 'Go to Dashboard';
+      const badge = heroCta.querySelector('.badge');
+      if (badge) badge.textContent = '◎';
+    }
+
+    // Update other discover links to checkin
     document.querySelectorAll('a[href="/discover"]').forEach((a) => {
       (a as HTMLAnchorElement).href = '/sol/checkin';
     });
+
+    // Show a welcome-back banner in the hero
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent) {
+      const trustBadge = heroContent.querySelector('.trust-badge');
+      if (trustBadge) {
+        trustBadge.innerHTML = '<span class="pulse"></span><span>Welcome back — your dashboard is ready</span>';
+      }
+    }
+
+    // Show dashboard CTA in final section
+    const dashCta = document.querySelector('.dashboard-cta') as HTMLElement;
+    if (dashCta) dashCta.style.display = '';
   }
 </script>
 

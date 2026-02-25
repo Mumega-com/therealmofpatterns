@@ -94,6 +94,27 @@ export function BirthDataPrompt({ timing = 'after-checkin', autoExpand = false, 
       // Compute natal 16D vector
       const natal16D = compute16DFromBirthData(birthData);
 
+      // Geocode city to get lat/lng
+      let lat = 0;
+      let lng = 0;
+      if (formData.city) {
+        try {
+          const query = encodeURIComponent(formData.city);
+          const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`, {
+            headers: { 'User-Agent': 'TheRealmOfPatterns/1.0' },
+          });
+          const geoData = await geoRes.json() as Array<{ lat: string; lon: string }>;
+          if (geoData && geoData.length > 0) {
+            lat = parseFloat(geoData[0].lat);
+            lng = parseFloat(geoData[0].lon);
+            birthData.latitude = lat;
+            birthData.longitude = lng;
+          }
+        } catch {
+          // Continue without coordinates
+        }
+      }
+
       // Store birth data in user store
       setBirthData({
         date: `${formData.year}-${formData.month.padStart(2, '0')}-${formData.day.padStart(2, '0')}`,
@@ -101,7 +122,7 @@ export function BirthDataPrompt({ timing = 'after-checkin', autoExpand = false, 
           parseInt(formData.hour) < 6 ? 'night' :
           parseInt(formData.hour) < 12 ? 'morning' :
           parseInt(formData.hour) < 18 ? 'afternoon' : 'evening',
-        location: formData.city ? { city: formData.city, lat: 0, lng: 0 } : null,
+        location: formData.city ? { city: formData.city, lat, lng } : null,
       });
 
       // Store natal vector separately for quick access
