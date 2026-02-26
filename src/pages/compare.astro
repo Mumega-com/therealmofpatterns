@@ -1,0 +1,1170 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Pattern Compatibility — See How Two People's Energy Maps Interact"
+  description="Enter two birthdays and see where your patterns flow, where they clash, and what the tension is really about."
+  showHeader={false}
+  showFooter={false}
+>
+<div class="page">
+
+  <div class="bg" aria-hidden="true">
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <!-- ── HEADER ─────────────────────────────────────────── -->
+  <header class="top-bar">
+    <a href="/" class="logo">
+      <span class="logo-sym">◆</span>
+      <span class="logo-txt">Realm of Patterns</span>
+    </a>
+    <div class="header-links">
+      <a href="/hidden-gifts" class="nav-link">Your pattern →</a>
+    </div>
+  </header>
+
+  <!-- ── HERO ─────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <div class="eyebrow">
+        <span>✦</span>
+        <span>Pattern Compatibility</span>
+      </div>
+
+      <h1>
+        The argument you keep having<br>
+        <span class="h1-gold">has a pattern underneath it.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Two birth patterns. One map of where you naturally flow together —
+        and where your shadows keep colliding.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ── FORMS ──────────────────────────────────────────── -->
+  <section class="forms-section">
+    <div class="forms-wrap">
+
+      <!-- Person A -->
+      <div class="person-card" id="card-a">
+        <div class="person-label person-label-a">
+          <span class="person-dot dot-a"></span>
+          Person A
+        </div>
+        <div class="field-group">
+          <label for="a-name">Name</label>
+          <input id="a-name" type="text" placeholder="e.g. Hadi" autocomplete="off" />
+        </div>
+        <div class="field-group">
+          <label for="a-date">Date of birth</label>
+          <input id="a-date" type="date" min="1920-01-01" max="2010-01-01" />
+        </div>
+      </div>
+
+      <!-- Connector -->
+      <div class="connector">
+        <div class="connector-line"></div>
+        <div class="connector-sym">◈</div>
+        <div class="connector-line"></div>
+      </div>
+
+      <!-- Person B -->
+      <div class="person-card" id="card-b">
+        <div class="person-label person-label-b">
+          <span class="person-dot dot-b"></span>
+          Person B
+        </div>
+        <div class="field-group">
+          <label for="b-name">Name</label>
+          <input id="b-name" type="text" placeholder="e.g. Alice" autocomplete="off" />
+        </div>
+        <div class="field-group">
+          <label for="b-date">Date of birth</label>
+          <input id="b-date" type="date" min="1920-01-01" max="2010-01-01" />
+        </div>
+      </div>
+
+    </div>
+
+    <div class="compare-cta">
+      <button class="btn-compare" id="btn-compare" disabled>
+        <span class="btn-text">Read the Patterns</span>
+        <span>→</span>
+      </button>
+      <p class="compare-note">Free preview · No account · Takes 10 seconds</p>
+    </div>
+  </section>
+
+  <!-- ── LOADING ────────────────────────────────────────── -->
+  <div class="loading-state" id="loading-state" hidden>
+    <div class="loading-orbs">
+      <div class="orb orb-a"></div>
+      <div class="orb-gap">
+        <div class="orb-spark" id="orb-spark"></div>
+      </div>
+      <div class="orb orb-b"></div>
+    </div>
+    <p class="loading-text" id="loading-text">Reading planetary positions…</p>
+  </div>
+
+  <!-- ── RESULT ─────────────────────────────────────────── -->
+  <section class="result-section" id="result-section" hidden>
+    <div class="result-wrap">
+
+      <!-- Resonance header -->
+      <div class="resonance-header">
+
+        <div class="arch-badge arch-badge-a">
+          <span class="arch-icon" id="arch-icon-a">◆</span>
+          <span class="arch-name" id="arch-name-a">The Sage</span>
+          <span class="person-name-label" id="person-label-a">—</span>
+        </div>
+
+        <div class="resonance-center">
+          <div class="resonance-score" id="resonance-score">—</div>
+          <div class="resonance-label">resonance</div>
+          <div class="resonance-bar-wrap">
+            <div class="resonance-bar" id="resonance-bar"></div>
+          </div>
+          <div class="dynamic-tag" id="dynamic-tag">—</div>
+        </div>
+
+        <div class="arch-badge arch-badge-b">
+          <span class="arch-icon" id="arch-icon-b">◆</span>
+          <span class="arch-name" id="arch-name-b">The Hero</span>
+          <span class="person-name-label" id="person-label-b">—</span>
+        </div>
+
+      </div>
+
+      <!-- Dynamic description -->
+      <div class="dynamic-desc" id="dynamic-desc">
+        <!-- filled by JS -->
+      </div>
+
+      <!-- Harmony + Tension grid -->
+      <div class="ht-grid">
+
+        <!-- Harmony -->
+        <div class="ht-card ht-harmony">
+          <div class="ht-header">
+            <span class="ht-icon">◈</span>
+            <span class="ht-title">Where you flow</span>
+            <span class="ht-sub">shared strengths</span>
+          </div>
+          <div class="ht-items" id="harmony-items">
+            <!-- filled by JS -->
+          </div>
+        </div>
+
+        <!-- Tension -->
+        <div class="ht-card ht-tension">
+          <div class="ht-header">
+            <span class="ht-icon tension-icon">⚡</span>
+            <span class="ht-title">Where you clash</span>
+            <span class="ht-sub">tension points</span>
+          </div>
+          <div class="ht-items" id="tension-items">
+            <!-- filled by JS — first shown, rest blurred -->
+          </div>
+          <div class="blur-overlay">
+            <p>2 more tension patterns in the full report</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Stage comparison -->
+      <div class="stage-compare" id="stage-compare">
+        <!-- filled by JS -->
+      </div>
+
+      <!-- Shadow collision -->
+      <div class="shadow-collision" id="shadow-collision">
+        <!-- filled by JS -->
+      </div>
+
+      <!-- Full report CTA -->
+      <div class="report-cta">
+        <div class="report-cta-inner">
+          <div class="report-cta-left">
+            <p class="report-cta-eyebrow">✦ Full Compatibility Report</p>
+            <h3 class="report-cta-title">
+              See all 5 tension patterns, the shadow collision map,
+              and exactly how to work with — not against — each other.
+            </h3>
+            <ul class="report-features">
+              <li>Complete 8D overlap map for both patterns</li>
+              <li>All tension points named and explained</li>
+              <li>Shadow collision — what triggers what, and why</li>
+              <li>Stage compatibility — are you in sync right now?</li>
+              <li>How to communicate across the gap</li>
+              <li>AI Context Block for both profiles</li>
+            </ul>
+          </div>
+          <div class="report-cta-right">
+            <div class="report-price">
+              <span class="price-amount">$47</span>
+              <span class="price-note">both profiles included</span>
+            </div>
+            <button class="btn-report" id="btn-report">
+              Get the Full Report →
+            </button>
+            <p class="report-reassurance">One-time · Instant PDF download</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Try again -->
+      <div class="try-again">
+        <button class="btn-try-again" id="btn-try-again">← Compare different people</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ───────────────────────────────────── -->
+  <section class="how-section" id="how-section">
+    <div class="container">
+      <div class="section-label">✦ What the comparison shows</div>
+      <h2 class="section-title">Not a horoscope match. A pattern map.</h2>
+
+      <div class="how-grid">
+        <div class="how-item">
+          <span class="how-icon">◈</span>
+          <h3>Resonance score</h3>
+          <p>Computed from how similar your two 8D energy vectors are. High resonance = natural understanding. Low = more work, more growth.</p>
+        </div>
+        <div class="how-item">
+          <span class="how-icon">⚡</span>
+          <h3>Tension points</h3>
+          <p>Dimensions where one person scores high and the other scores low. This is where the recurring argument lives — the thing you keep circling back to.</p>
+        </div>
+        <div class="how-item">
+          <span class="how-icon">☽</span>
+          <h3>Shadow collision</h3>
+          <p>When Person A's shadow pattern gets activated by Person B's dominant strength. This is the thing that feels personal — but isn't.</p>
+        </div>
+        <div class="how-item">
+          <span class="how-icon">◆</span>
+          <h3>Stage compatibility</h3>
+          <p>Are you both in the same alchemical phase right now? Two people in different stages need different things — and can't always give each other what's needed.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── BUY MODAL ──────────────────────────────────────── -->
+  <div class="modal-backdrop" id="buy-modal" hidden>
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-icon">◈</div>
+      <h3 class="modal-title">Get the Full Compatibility Report</h3>
+      <p class="modal-sub">Enter your email — both profiles + full comparison delivered instantly.</p>
+      <input type="email" id="modal-email" class="modal-input" placeholder="your@email.com" autocomplete="email" />
+      <p class="modal-error" id="modal-error" hidden></p>
+      <button class="modal-btn" id="modal-submit">
+        <span class="modal-btn-text">Continue to Payment →</span>
+      </button>
+      <p class="modal-reassurance">$47 · one-time · secure Stripe checkout</p>
+    </div>
+  </div>
+
+</div>
+</BaseLayout>
+
+<script>
+  // ── Data ─────────────────────────────────────────────────
+  const ARCHETYPES = [
+    { title: 'The Hero',      icon: '☀', dim: 'Identity',   shadow: 'Ego inflation or hiding your light' },
+    { title: 'The Ruler',     icon: '♄', dim: 'Structure',  shadow: 'Rigidity — controlling because letting go feels like collapse' },
+    { title: 'The Sage',      icon: '☿', dim: 'Mind',       shadow: 'Overthinking — living in your head while life passes by' },
+    { title: 'The Creator',   icon: '♀', dim: 'Heart',      shadow: 'Losing yourself in others — codependency as love' },
+    { title: 'The Explorer',  icon: '♃', dim: 'Growth',     shadow: 'Restlessness — always chasing the next thing' },
+    { title: 'The Warrior',   icon: '♂', dim: 'Drive',      shadow: 'Burning out — mistaking aggression for strength' },
+    { title: 'The Caregiver', icon: '☽', dim: 'Connection', shadow: 'Losing your boundaries — giving until nothing remains' },
+    { title: 'The Mystic',    icon: '♅', dim: 'Awareness',  shadow: 'Dissociation — escaping into the transcendent' },
+  ];
+
+  const DIM_NAMES   = ['Identity','Structure','Mind','Heart','Growth','Drive','Connection','Awareness'];
+  const DIM_ICONS   = ['☀','♄','☿','♀','♃','♂','☽','♅'];
+  const DIM_DOMAINS = [
+    'How you express yourself and take up space',
+    'How you create order and handle responsibility',
+    'How you process information and communicate',
+    'How you give and receive love',
+    'How you find meaning and pursue growth',
+    'How you take action and handle conflict',
+    'How you connect and attune to others',
+    'How you sense what cannot be seen',
+  ];
+
+  const STAGES     = ['Nigredo','Albedo','Citrinitas','Rubedo'];
+  const STAGE_TAGS = ['Reset','Clarity','Growth','Flow'];
+  const STAGE_COMPAT: Record<string, string> = {
+    'same':   'You are in the same phase — rare and powerful. You understand what the other needs because you need it too.',
+    'adj':    'Adjacent stages. You can support each other — one of you is slightly ahead on this path.',
+    'opp':    'Opposite phases. This is the hardest combination — one needs stillness while the other needs movement. Name it before it becomes a fight.',
+    'two':    'Two stages apart. There is a gap in where you are right now. Patience and curiosity help more than trying to pull each other into your phase.',
+  };
+
+  // ── Dynamic descriptions (by archetype pair category) ──
+  function getDynamic(idxA: number, idxB: number) {
+    const same = idxA === idxB;
+
+    // Group: Outward (Identity, Growth, Drive) | Inward (Structure, Mind) | Relational (Heart, Connection, Awareness)
+    const OUTWARD    = [0, 4, 5];
+    const INWARD     = [1, 2];
+    const RELATIONAL = [3, 6, 7];
+
+    const groupA = OUTWARD.includes(idxA) ? 'O' : INWARD.includes(idxA) ? 'I' : 'R';
+    const groupB = OUTWARD.includes(idxB) ? 'O' : INWARD.includes(idxB) ? 'I' : 'R';
+    const pair   = [groupA, groupB].sort().join('');
+
+    if (same) return {
+      tag:  'Mirror pair',
+      desc: `Two ${ARCHETYPES[idxA].title} patterns in the same space. You understand each other immediately — and your shared shadow is exactly the same. The gift is deep recognition. The risk is reinforcing each other's blind spots.`,
+    };
+    if (pair === 'OO') return {
+      tag:  'Amplifiers',
+      desc: `Both outward-moving patterns. Together you build, create, and expand. The risk: nobody tends the inner world. You can push each other into burnout without noticing, because neither of you will be the first to stop.`,
+    };
+    if (pair === 'II') return {
+      tag:  'Architects',
+      desc: `Two inward-processing patterns. You think deeply together and rarely rush. The risk: both of you can get lost in analysis while life asks for action. Decisions can stall when both people need certainty first.`,
+    };
+    if (pair === 'RR') return {
+      tag:  'Deep attunement',
+      desc: `Both relational patterns. You feel each other at depth that most couples never reach. The risk: emotional enmeshment — losing your own signal in the other person's. Boundaries need to be actively maintained, not assumed.`,
+    };
+    if (pair === 'OI') return {
+      tag:  'Action meets analysis',
+      desc: `One of you moves first, the other maps before moving. At its best: unstoppable. One has the momentum, the other has the map. At its worst: one feels held back, the other feels dragged along before they're ready.`,
+    };
+    if (pair === 'OR') return {
+      tag:  'Spark and depth',
+      desc: `One of you drives outward, the other feels inward. You bring different gifts to every situation. The recurring tension: one wants to act, the other wants to feel what the action means first. Neither is wrong.`,
+    };
+    // IR
+    return {
+      tag:  'Structure and soul',
+      desc: `One of you builds frameworks, the other navigates by feeling. You balance each other in ways neither could achieve alone. The tension: the framework person wants clarity, the feeling person wants to let things unfold. This is a negotiation that never fully ends — and that's okay.`,
+    };
+  }
+
+  // ── Cosine similarity ────────────────────────────────────
+  function cosine(a: number[], b: number[]): number {
+    const dot  = a.reduce((s, v, i) => s + v * b[i], 0);
+    const magA = Math.sqrt(a.reduce((s, v) => s + v * v, 0));
+    const magB = Math.sqrt(b.reduce((s, v) => s + v * v, 0));
+    if (!magA || !magB) return 0;
+    return dot / (magA * magB);
+  }
+
+  // ── Stage compat key ─────────────────────────────────────
+  function stageCompatKey(si: number, sj: number): string {
+    const d = Math.abs(si - sj);
+    if (d === 0) return 'same';
+    if (d === 1) return 'adj';
+    if (d === 2) return 'two';
+    return 'opp';
+  }
+
+  // ── Fallback vector ──────────────────────────────────────
+  function fallbackVector(year: number, month: number, day: number): number[] {
+    let s = year * 10000 + month * 100 + day;
+    return Array.from({ length: 8 }, () => {
+      s = (s * 1664525 + 1013904223) & 0xffffffff;
+      return 0.3 + (Math.abs(s) / 0xffffffff) * 0.5;
+    });
+  }
+
+  function dominant(v: number[]): number {
+    return v.reduce((b, x, i) => x > v[b] ? i : b, 0);
+  }
+
+  function stageIdx(v: number[]): number {
+    const avg = v.reduce((a, b) => a + b, 0) / v.length;
+    return avg > 0.75 ? 3 : avg > 0.55 ? 2 : avg > 0.35 ? 1 : 0;
+  }
+
+  async function fetchVector(year: number, month: number, day: number): Promise<number[]> {
+    try {
+      const res = await fetch('/api/preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ birth_data: { year, month, day, hour: 12, latitude: 0, longitude: 0 } }),
+      });
+      if (!res.ok) throw new Error();
+      const d = await res.json() as { vector?: number[] };
+      if (d.vector?.length === 8) return d.vector;
+      throw new Error();
+    } catch {
+      return fallbackVector(year, month, day);
+    }
+  }
+
+  // ── Form state ───────────────────────────────────────────
+  const aName = document.getElementById('a-name') as HTMLInputElement;
+  const aDate = document.getElementById('a-date') as HTMLInputElement;
+  const bName = document.getElementById('b-name') as HTMLInputElement;
+  const bDate = document.getElementById('b-date') as HTMLInputElement;
+  const btn   = document.getElementById('btn-compare') as HTMLButtonElement;
+
+  function checkReady() {
+    btn.disabled = !(aDate.value && bDate.value);
+  }
+
+  [aDate, bDate, aName, bName].forEach(el => el.addEventListener('input', checkReady));
+
+  btn.addEventListener('click', runCompare);
+  document.getElementById('btn-try-again')!.addEventListener('click', resetPage);
+
+  // ── Buy modal ────────────────────────────────────────────
+  const modal       = document.getElementById('buy-modal') as HTMLElement;
+  const modalClose  = document.getElementById('modal-close') as HTMLButtonElement;
+  const modalEmail  = document.getElementById('modal-email') as HTMLInputElement;
+  const modalSubmit = document.getElementById('modal-submit') as HTMLButtonElement;
+  const modalError  = document.getElementById('modal-error') as HTMLElement;
+
+  document.getElementById('btn-report')!.addEventListener('click', () => {
+    modal.hidden = false;
+    modalEmail.focus();
+    document.body.style.overflow = 'hidden';
+  });
+
+  function closeModal() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    modalError.hidden = true;
+    modalSubmit.disabled = false;
+    (modalSubmit.querySelector('.modal-btn-text') as HTMLElement).textContent = 'Continue to Payment →';
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+
+  modalSubmit.addEventListener('click', async () => {
+    const email = modalEmail.value.trim();
+    if (!email || !email.includes('@')) {
+      modalError.textContent = 'Please enter a valid email address.';
+      modalError.hidden = false;
+      return;
+    }
+
+    // For now: redirect to hidden-gifts page as the purchase flow
+    // TODO: dedicated /api/create-compare-checkout with $47 price
+    modalError.hidden = true;
+    modalSubmit.disabled = true;
+    (modalSubmit.querySelector('.modal-btn-text') as HTMLElement).textContent = 'Redirecting…';
+
+    try {
+      const dobA = aDate.value;
+      const res = await fetch('/api/create-dna-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          name: `${aName.value || 'A'} & ${bName.value || 'B'}`,
+          dob: dobA,
+        }),
+      });
+      const data = await res.json() as { success: boolean; url?: string; error?: string };
+      if (data.success && data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Checkout failed');
+      }
+    } catch (e: any) {
+      modalError.textContent = e.message || 'Something went wrong. Please try again.';
+      modalError.hidden = false;
+      modalSubmit.disabled = false;
+      (modalSubmit.querySelector('.modal-btn-text') as HTMLElement).textContent = 'Continue to Payment →';
+    }
+  });
+
+  // ── Main compare flow ────────────────────────────────────
+  async function runCompare() {
+    const nameA = aName.value.trim() || 'Person A';
+    const nameB = bName.value.trim() || 'Person B';
+    const [yA, mA, dA] = aDate.value.split('-').map(Number);
+    const [yB, mB, dB] = bDate.value.split('-').map(Number);
+
+    // Show loading
+    document.getElementById('how-section')!.hidden = true;
+    document.getElementById('loading-state')!.hidden = false;
+    document.getElementById('result-section')!.hidden = true;
+
+    const steps = [
+      'Reading planetary positions…',
+      `Computing ${nameA}'s energy pattern…`,
+      `Computing ${nameB}'s energy pattern…`,
+      'Mapping the intersection…',
+    ];
+    let si = 0;
+    const loadingText = document.getElementById('loading-text') as HTMLElement;
+    const ticker = setInterval(() => {
+      si = (si + 1) % steps.length;
+      loadingText.textContent = steps[si];
+    }, 900);
+
+    const spark = document.getElementById('orb-spark') as HTMLElement;
+    spark.classList.add('sparking');
+
+    const [vecA, vecB] = await Promise.all([
+      fetchVector(yA, mA, dA),
+      fetchVector(yB, mB, dB),
+    ]);
+
+    clearInterval(ticker);
+    spark.classList.remove('sparking');
+    document.getElementById('loading-state')!.hidden = true;
+
+    renderResult(nameA, nameB, vecA, vecB);
+  }
+
+  function renderResult(nameA: string, nameB: string, vecA: number[], vecB: number[]) {
+    const domA  = dominant(vecA);
+    const domB  = dominant(vecB);
+    const archA = ARCHETYPES[domA];
+    const archB = ARCHETYPES[domB];
+    const siA   = stageIdx(vecA);
+    const siB   = stageIdx(vecB);
+
+    const res   = Math.round(cosine(vecA, vecB) * 100);
+    const dyn   = getDynamic(domA, domB);
+
+    // Header
+    (document.getElementById('arch-icon-a') as HTMLElement).textContent    = archA.icon;
+    (document.getElementById('arch-name-a') as HTMLElement).textContent    = archA.title;
+    (document.getElementById('person-label-a') as HTMLElement).textContent = nameA;
+    (document.getElementById('arch-icon-b') as HTMLElement).textContent    = archB.icon;
+    (document.getElementById('arch-name-b') as HTMLElement).textContent    = archB.title;
+    (document.getElementById('person-label-b') as HTMLElement).textContent = nameB;
+
+    (document.getElementById('resonance-score') as HTMLElement).textContent = `${res}%`;
+    (document.getElementById('resonance-bar') as HTMLElement).style.width   = `${res}%`;
+    (document.getElementById('dynamic-tag') as HTMLElement).textContent     = dyn.tag;
+    (document.getElementById('resonance-bar') as HTMLElement).className =
+      `resonance-bar ${res >= 70 ? 'bar-high' : res >= 45 ? 'bar-mid' : 'bar-low'}`;
+
+    // Dynamic description
+    (document.getElementById('dynamic-desc') as HTMLElement).innerHTML = `
+      <p>${dyn.desc}</p>
+    `;
+
+    // Harmony items — dimensions where both score high (both > 0.55)
+    const harmonyEl = document.getElementById('harmony-items') as HTMLElement;
+    harmonyEl.innerHTML = '';
+    const harmony = DIM_NAMES
+      .map((_, i) => ({ i, min: Math.min(vecA[i], vecB[i]), diff: Math.abs(vecA[i] - vecB[i]) }))
+      .filter(x => x.min > 0.52)
+      .sort((a, b) => b.min - a.min)
+      .slice(0, 3);
+
+    if (harmony.length === 0) {
+      harmonyEl.innerHTML = `<p class="ht-empty">Your patterns are highly complementary — you each bring what the other lacks. Harmony comes from difference, not similarity.</p>`;
+    } else {
+      harmony.forEach(({ i }) => {
+        const el = document.createElement('div');
+        el.className = 'ht-item';
+        el.innerHTML = `
+          <span class="ht-dim-icon">${DIM_ICONS[i]}</span>
+          <div>
+            <span class="ht-dim-name">${DIM_NAMES[i]}</span>
+            <span class="ht-dim-desc">${DIM_DOMAINS[i]}</span>
+          </div>
+          <div class="ht-bars">
+            <div class="ht-bar-row">
+              <span class="ht-bar-label">${nameA.split(' ')[0]}</span>
+              <div class="ht-bar-wrap"><div class="ht-bar bar-a" style="width:${Math.round(vecA[i]*100)}%"></div></div>
+            </div>
+            <div class="ht-bar-row">
+              <span class="ht-bar-label">${nameB.split(' ')[0]}</span>
+              <div class="ht-bar-wrap"><div class="ht-bar bar-b" style="width:${Math.round(vecB[i]*100)}%"></div></div>
+            </div>
+          </div>
+        `;
+        harmonyEl.appendChild(el);
+      });
+    }
+
+    // Tension items — dimensions with biggest gap
+    const tensionEl = document.getElementById('tension-items') as HTMLElement;
+    tensionEl.innerHTML = '';
+    const tensions = DIM_NAMES
+      .map((_, i) => ({ i, diff: Math.abs(vecA[i] - vecB[i]), aHigh: vecA[i] > vecB[i] }))
+      .sort((a, b) => b.diff - a.diff)
+      .slice(0, 3);
+
+    tensions.forEach(({ i, diff, aHigh }, idx) => {
+      const el = document.createElement('div');
+      el.className = 'ht-item' + (idx > 0 ? ' ht-item-blurred' : '');
+      const high = aHigh ? nameA.split(' ')[0] : nameB.split(' ')[0];
+      const low  = aHigh ? nameB.split(' ')[0] : nameA.split(' ')[0];
+      el.innerHTML = `
+        <span class="ht-dim-icon tension-col">${DIM_ICONS[i]}</span>
+        <div>
+          <span class="ht-dim-name">${DIM_NAMES[i]}</span>
+          <span class="ht-dim-desc">${high} leads here — ${low} follows reluctantly. Gap: ${Math.round(diff*100)}%</span>
+        </div>
+        <div class="ht-bars">
+          <div class="ht-bar-row">
+            <span class="ht-bar-label">${nameA.split(' ')[0]}</span>
+            <div class="ht-bar-wrap"><div class="ht-bar bar-a" style="width:${Math.round(vecA[i]*100)}%"></div></div>
+          </div>
+          <div class="ht-bar-row">
+            <span class="ht-bar-label">${nameB.split(' ')[0]}</span>
+            <div class="ht-bar-wrap"><div class="ht-bar bar-b" style="width:${Math.round(vecB[i]*100)}%"></div></div>
+          </div>
+        </div>
+      `;
+      tensionEl.appendChild(el);
+    });
+
+    // Stage comparison
+    const stageSect = document.getElementById('stage-compare') as HTMLElement;
+    const compatKey = stageCompatKey(siA, siB);
+    stageSect.innerHTML = `
+      <div class="stage-compare-inner">
+        <div class="stage-compare-header">
+          <span class="stage-compare-title">Current stage compatibility</span>
+        </div>
+        <div class="stage-pills">
+          <div class="stage-pill ${siA === siB ? 'stage-match' : ''}">
+            <span class="stage-pill-name">${nameA.split(' ')[0]}</span>
+            <span class="stage-pill-val">${STAGES[siA]} · ${STAGE_TAGS[siA]}</span>
+          </div>
+          <span class="stage-divider">${siA === siB ? '≈' : '≠'}</span>
+          <div class="stage-pill ${siA === siB ? 'stage-match' : ''}">
+            <span class="stage-pill-name">${nameB.split(' ')[0]}</span>
+            <span class="stage-pill-val">${STAGES[siB]} · ${STAGE_TAGS[siB]}</span>
+          </div>
+        </div>
+        <p class="stage-compat-desc">${STAGE_COMPAT[compatKey]}</p>
+      </div>
+    `;
+
+    // Shadow collision
+    const weakA  = vecA.reduce((b, x, i) => x < vecA[b] ? i : b, 0);
+    const weakB  = vecB.reduce((b, x, i) => x < vecB[b] ? i : b, 0);
+    const shadowSect = document.getElementById('shadow-collision') as HTMLElement;
+
+    const collisionA = domB === weakA; // B's strength triggers A's wound
+    const collisionB = domA === weakB; // A's strength triggers B's wound
+
+    if (collisionA || collisionB) {
+      const who    = collisionA ? nameA.split(' ')[0] : nameB.split(' ')[0];
+      const other  = collisionA ? nameB.split(' ')[0] : nameA.split(' ')[0];
+      const dimKey = collisionA ? weakA : weakB;
+
+      shadowSect.innerHTML = `
+        <div class="shadow-collision-inner">
+          <div class="shadow-header">
+            <span class="shadow-icon">⚠</span>
+            <span class="shadow-title">Shadow collision detected</span>
+          </div>
+          <p class="shadow-desc">
+            ${other}'s strongest dimension — <strong>${DIM_NAMES[collisionA ? domB : domA]}</strong> —
+            is exactly where ${who}'s growth edge lives (<strong>${DIM_NAMES[dimKey]}</strong>, ${Math.round((collisionA ? vecA : vecB)[dimKey] * 100)}%).
+            This isn't personal. But it will feel personal every time it happens.
+          </p>
+          <p class="shadow-desc muted">Full shadow map in the complete report →</p>
+        </div>
+      `;
+    } else {
+      shadowSect.innerHTML = `
+        <div class="shadow-collision-inner shadow-safe">
+          <span class="shadow-icon safe-icon">✦</span>
+          <p>No direct shadow collision found. Your dominant strengths don't directly activate each other's wounds — a rare and fortunate pattern.</p>
+        </div>
+      `;
+    }
+
+    document.getElementById('result-section')!.hidden = false;
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function resetPage() {
+    document.getElementById('result-section')!.hidden = true;
+    document.getElementById('how-section')!.hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+<style>
+  .page {
+    --gold:     #d4a854;
+    --gold-dim: rgba(212,168,84,0.25);
+    --gold-lt:  #e8c88a;
+    --dark:     #0a0908;
+    --dark-2:   #111009;
+    --dark-3:   #17150f;
+    --border:   rgba(212,168,84,0.15);
+    --text:     #f0e8d8;
+    --muted:    rgba(240,232,216,0.6);
+    --dim:      rgba(240,232,216,0.32);
+    --green:    #4ade80;
+    --amber:    #fbbf24;
+    --red:      rgba(220,100,100,0.85);
+    --blue:     #93c5fd;
+
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .glow { position: absolute; border-radius: 50%; filter: blur(130px); }
+  .g1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(212,168,84,0.12) 0%, transparent 70%);
+    top: -80px; right: -100px;
+    animation: float 16s ease-in-out infinite;
+  }
+  .g2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(147,197,253,0.07) 0%, transparent 70%);
+    bottom: 20%; left: -80px;
+    animation: float 20s ease-in-out infinite reverse;
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(212,168,84,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,168,84,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  @keyframes float {
+    0%,100% { transform: translate(0,0); }
+    50%      { transform: translate(15px,-20px); }
+  }
+
+  .container { max-width: 1040px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
+  .section-label {
+    font-family: 'Inter', sans-serif; font-size: 0.75rem;
+    font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 400;
+    color: var(--text); margin: 0 0 1rem; line-height: 1.25;
+  }
+
+  /* Header */
+  .top-bar {
+    position: relative; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+  .logo-sym { color: var(--gold); font-size: 1.2rem; }
+  .logo-txt { font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--muted); }
+  .nav-link {
+    font-family: 'Inter', sans-serif; font-size: 0.8rem;
+    color: var(--gold); text-decoration: none; opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .nav-link:hover { opacity: 1; }
+
+  /* Hero */
+  .hero {
+    position: relative; z-index: 1;
+    padding: 5rem 1.5rem 3rem;
+    display: flex; justify-content: center;
+  }
+  .hero-inner { max-width: 640px; width: 100%; text-align: center; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border); border-radius: 100px;
+    font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--gold);
+    margin-bottom: 2rem; background: rgba(212,168,84,0.06);
+  }
+  .hero-inner h1 {
+    font-size: clamp(1.9rem, 5.5vw, 3.2rem); font-weight: 300;
+    line-height: 1.2; margin: 0 0 1.25rem; color: var(--text);
+  }
+  .h1-gold { color: var(--gold); }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--muted);
+    line-height: 1.75; max-width: 500px; margin: 0 auto;
+  }
+
+  /* Forms */
+  .forms-section {
+    position: relative; z-index: 1;
+    padding: 0 1.5rem 3rem;
+    display: flex; flex-direction: column; align-items: center; gap: 2rem;
+  }
+  .forms-wrap {
+    display: flex; align-items: stretch; gap: 0;
+    max-width: 680px; width: 100%;
+  }
+  @media (max-width: 580px) { .forms-wrap { flex-direction: column; } }
+
+  .person-card {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.5rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    transition: border-color 0.2s;
+  }
+  .person-card:focus-within { border-color: var(--gold-dim); }
+
+  .person-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--dim);
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .person-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-a { background: var(--gold); }
+  .dot-b { background: var(--blue); }
+
+  .field-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .field-group label {
+    font-family: 'Inter', sans-serif; font-size: 0.75rem;
+    color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .field-group input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+    color: var(--text); font-family: inherit; font-size: 0.95rem;
+    outline: none; transition: border-color 0.2s;
+    color-scheme: dark;
+  }
+  .field-group input:focus { border-color: rgba(212,168,84,0.45); }
+
+  .connector {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 0 1rem; gap: 0.5rem;
+  }
+  @media (max-width: 580px) {
+    .connector { flex-direction: row; padding: 0.5rem 0; }
+  }
+  .connector-line {
+    flex: 1; min-height: 30px; min-width: 1px;
+    background: linear-gradient(180deg, transparent, var(--border), transparent);
+  }
+  @media (max-width: 580px) {
+    .connector-line { min-height: 1px; min-width: 30px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent); }
+  }
+  .connector-sym { color: var(--gold); font-size: 1.2rem; opacity: 0.6; }
+
+  .compare-cta { text-align: center; }
+  .btn-compare {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, var(--gold), #b8924a);
+    color: #0a0908;
+    font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700;
+    border: none; border-radius: 12px; cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 24px rgba(212,168,84,0.28);
+    margin-bottom: 0.75rem;
+  }
+  .btn-compare:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(212,168,84,0.38); }
+  .btn-compare:disabled { opacity: 0.4; cursor: not-allowed; }
+  .compare-note { font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--dim); margin: 0; }
+
+  /* Loading */
+  .loading-state {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 2rem; padding: 5rem 1.5rem;
+  }
+  .loading-orbs { display: flex; align-items: center; gap: 1rem; }
+  .orb {
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 2px solid var(--border);
+  }
+  .orb-a { border-color: rgba(212,168,84,0.5); animation: pulse-a 2s ease-in-out infinite; }
+  .orb-b { border-color: rgba(147,197,253,0.5); animation: pulse-b 2s ease-in-out infinite 0.3s; }
+  @keyframes pulse-a {
+    0%,100% { box-shadow: 0 0 0 0 rgba(212,168,84,0.3); }
+    50%      { box-shadow: 0 0 20px 8px rgba(212,168,84,0.1); }
+  }
+  @keyframes pulse-b {
+    0%,100% { box-shadow: 0 0 0 0 rgba(147,197,253,0.3); }
+    50%      { box-shadow: 0 0 20px 8px rgba(147,197,253,0.1); }
+  }
+  .orb-gap { width: 60px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .orb-spark {
+    width: 6px; height: 6px; background: var(--gold);
+    border-radius: 50%; opacity: 0.4;
+  }
+  .orb-spark.sparking { animation: spark 0.8s ease-in-out infinite; }
+  @keyframes spark {
+    0%,100% { transform: scale(1); opacity: 0.4; background: var(--gold); }
+    50%      { transform: scale(2.5); opacity: 1; background: white; box-shadow: 0 0 8px white; }
+  }
+  .loading-text {
+    font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--muted);
+    animation: fadeText 0.5s ease;
+  }
+  @keyframes fadeText { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Result */
+  .result-section { position: relative; z-index: 1; padding: 2rem 1.5rem 5rem; }
+  .result-wrap { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; }
+
+  /* Resonance header */
+  .resonance-header {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: 1.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 1.75rem;
+  }
+  .arch-badge { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; }
+  .arch-badge-b { text-align: center; }
+  .arch-icon { font-size: 2.2rem; }
+  .arch-badge-a .arch-icon { color: var(--gold); }
+  .arch-badge-b .arch-icon { color: var(--blue); }
+  .arch-name { font-size: 1rem; color: var(--text); font-weight: 400; }
+  .person-name-label { font-family: 'Inter', sans-serif; font-size: 0.75rem; color: var(--dim); }
+
+  .resonance-center { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+  .resonance-score { font-size: 2.4rem; font-weight: 300; color: var(--text); line-height: 1; }
+  .resonance-label { font-family: 'Inter', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); }
+  .resonance-bar-wrap { width: 80px; height: 3px; background: var(--border); border-radius: 3px; overflow: hidden; margin: 0.25rem 0; }
+  .resonance-bar { height: 100%; border-radius: 3px; transition: width 1s ease; }
+  .bar-high { background: linear-gradient(90deg, var(--gold), var(--gold-lt)); }
+  .bar-mid  { background: linear-gradient(90deg, var(--amber), var(--gold)); }
+  .bar-low  { background: linear-gradient(90deg, rgba(220,100,100,0.7), var(--amber)); }
+  .dynamic-tag {
+    font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--gold); background: rgba(212,168,84,0.1);
+    padding: 0.2rem 0.6rem; border-radius: 4px;
+    border: 1px solid rgba(212,168,84,0.25);
+  }
+
+  /* Dynamic desc */
+  .dynamic-desc {
+    background: rgba(212,168,84,0.04);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 14px 14px 0;
+    padding: 1.25rem 1.5rem;
+  }
+  .dynamic-desc p { font-size: 1rem; color: var(--muted); line-height: 1.8; margin: 0; }
+
+  /* Harmony / Tension grid */
+  .ht-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .ht-grid { grid-template-columns: 1fr; } }
+
+  .ht-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.25rem;
+    position: relative; overflow: hidden;
+  }
+  .ht-tension { border-color: rgba(220,100,100,0.2); }
+  .ht-header {
+    display: flex; align-items: baseline; gap: 0.5rem;
+    margin-bottom: 1rem; padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .ht-icon { color: var(--gold); font-size: 0.9rem; }
+  .tension-icon { color: rgba(220,150,100,0.8); }
+  .ht-title { font-size: 1rem; color: var(--text); }
+  .ht-sub { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--dim); margin-left: auto; }
+
+  .ht-items { display: flex; flex-direction: column; gap: 0.75rem; }
+  .ht-empty { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin: 0; font-style: italic; }
+
+  .ht-item {
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    padding: 0.75rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border); border-radius: 10px;
+  }
+  .ht-item-blurred { filter: blur(4px); pointer-events: none; user-select: none; }
+
+  .ht-dim-icon { font-size: 1.1rem; color: var(--gold); flex-shrink: 0; }
+  .tension-col { color: rgba(220,150,100,0.8); }
+  .ht-dim-name { display: block; font-size: 0.9rem; color: var(--text); margin-bottom: 0.15rem; }
+  .ht-dim-desc { display: block; font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--dim); line-height: 1.5; }
+
+  .ht-bars { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.5rem; min-width: 80px; }
+  .ht-bar-row { display: flex; align-items: center; gap: 0.4rem; }
+  .ht-bar-label { font-family: 'Inter', sans-serif; font-size: 0.65rem; color: var(--dim); width: 2.5rem; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ht-bar-wrap { flex: 1; height: 3px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
+  .ht-bar { height: 100%; border-radius: 3px; }
+  .bar-a { background: var(--gold); }
+  .bar-b { background: var(--blue); }
+
+  .blur-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 70px;
+    background: linear-gradient(0deg, rgba(17,16,9,0.98) 30%, transparent);
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 0.75rem;
+    pointer-events: none;
+  }
+  .blur-overlay p {
+    font-family: 'Inter', sans-serif; font-size: 0.75rem; color: var(--gold);
+    opacity: 0.8;
+  }
+
+  /* Stage */
+  .stage-compare-inner {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.25rem;
+  }
+  .stage-compare-header {
+    margin-bottom: 1rem; padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .stage-compare-title {
+    font-family: 'Inter', sans-serif; font-size: 0.75rem;
+    font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .stage-pills { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .stage-pill {
+    display: flex; flex-direction: column; gap: 0.25rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.6rem 1rem;
+  }
+  .stage-match { border-color: rgba(212,168,84,0.4); background: rgba(212,168,84,0.06); }
+  .stage-pill-name { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: var(--dim); }
+  .stage-pill-val { font-size: 0.9rem; color: var(--text); }
+  .stage-divider { font-size: 1.2rem; color: var(--dim); }
+  .stage-compat-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin: 0; }
+
+  /* Shadow collision */
+  .shadow-collision-inner {
+    background: rgba(220,100,100,0.04);
+    border: 1px solid rgba(220,100,100,0.2);
+    border-radius: 16px; padding: 1.25rem;
+  }
+  .shadow-safe {
+    background: rgba(212,168,84,0.04);
+    border-color: rgba(212,168,84,0.2);
+    display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+  .shadow-safe p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin: 0; }
+  .shadow-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem; }
+  .shadow-icon { font-size: 1.1rem; color: rgba(220,150,100,0.8); }
+  .safe-icon { color: var(--gold); flex-shrink: 0; }
+  .shadow-title { font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(220,150,100,0.9); }
+  .shadow-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin: 0 0 0.5rem; }
+  .shadow-desc.muted { font-size: 0.82rem; color: var(--dim); }
+  .shadow-desc strong { color: var(--text); }
+
+  /* Report CTA */
+  .report-cta {
+    background: rgba(212,168,84,0.04);
+    border: 1px solid rgba(212,168,84,0.3);
+    border-radius: 20px; padding: 2rem;
+  }
+  .report-cta-inner { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; }
+  @media (max-width: 600px) { .report-cta-inner { grid-template-columns: 1fr; } }
+  .report-cta-eyebrow { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); margin: 0 0 0.75rem; }
+  .report-cta-title { font-size: 1.15rem; font-weight: 400; color: var(--text); line-height: 1.5; margin: 0 0 1.25rem; }
+  .report-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+  .report-features li { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--muted); display: flex; gap: 0.5rem; }
+  .report-features li::before { content: '✓'; color: var(--gold); flex-shrink: 0; }
+  .report-cta-right { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; min-width: 180px; }
+  .report-price { display: flex; flex-direction: column; align-items: center; }
+  .price-amount { font-size: 2.2rem; font-weight: 300; color: var(--gold); line-height: 1; }
+  .price-note { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--dim); }
+  .btn-report {
+    width: 100%; padding: 0.9rem 1.5rem;
+    background: linear-gradient(135deg, var(--gold), #b8924a);
+    color: #0a0908;
+    font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700;
+    border: none; border-radius: 12px; cursor: pointer;
+    transition: all 0.3s; box-shadow: 0 4px 20px rgba(212,168,84,0.25);
+    white-space: nowrap;
+  }
+  .btn-report:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,168,84,0.35); }
+  .report-reassurance { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--dim); margin: 0; text-align: center; }
+
+  .try-again { text-align: center; }
+  .btn-try-again {
+    background: none; border: none; color: var(--dim);
+    font-family: 'Inter', sans-serif; font-size: 0.85rem;
+    cursor: pointer; transition: color 0.2s; padding: 0.5rem;
+  }
+  .btn-try-again:hover { color: var(--gold); }
+
+  /* How section */
+  .how-section { position: relative; z-index: 1; padding: 5rem 1.5rem; border-top: 1px solid var(--border); }
+  .how-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
+  .how-item {
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.25rem;
+  }
+  .how-icon { font-size: 1.3rem; color: var(--gold); display: block; margin-bottom: 0.75rem; }
+  .how-item h3 { font-size: 1rem; font-weight: 500; color: var(--text); margin: 0 0 0.5rem; }
+  .how-item p { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--muted); line-height: 1.65; margin: 0; }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(10,9,8,0.88);
+    display: flex; align-items: flex-end; justify-content: center;
+    padding: 0 1rem 1rem;
+  }
+  @media (min-width: 600px) { .modal-backdrop { align-items: center; } }
+  .modal-box {
+    background: #17150f; border: 1px solid rgba(212,168,84,0.3);
+    border-radius: 20px; padding: 2rem;
+    max-width: 440px; width: 100%; position: relative;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none; color: var(--dim);
+    font-size: 1rem; cursor: pointer; transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-icon { font-size: 1.5rem; color: var(--gold); margin-bottom: 0.75rem; }
+  .modal-title { font-size: 1.4rem; font-weight: 400; color: var(--text); margin: 0 0 0.4rem; }
+  .modal-sub { font-size: 0.9rem; color: var(--muted); margin: 0 0 1.5rem; line-height: 1.6; }
+  .modal-input {
+    width: 100%; box-sizing: border-box;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.8rem 1rem;
+    color: var(--text); font-family: inherit; font-size: 1rem;
+    outline: none; margin-bottom: 0.75rem; transition: border-color 0.2s;
+  }
+  .modal-input:focus { border-color: rgba(212,168,84,0.5); }
+  .modal-error { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--red); margin: 0 0 0.75rem; }
+  .modal-btn {
+    width: 100%; padding: 1rem;
+    background: linear-gradient(135deg, var(--gold), #b8924a);
+    color: #0a0908; font-family: 'Inter', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    border: none; border-radius: 12px; cursor: pointer;
+    transition: all 0.3s; box-shadow: 0 4px 20px rgba(212,168,84,0.25);
+    margin-bottom: 0.75rem;
+  }
+  .modal-btn:disabled { opacity: 0.6; cursor: wait; }
+  .modal-reassurance { font-family: 'Inter', sans-serif; font-size: 0.75rem; color: var(--dim); text-align: center; margin: 0; }
+</style>
