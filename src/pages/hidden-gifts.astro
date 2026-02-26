@@ -1,0 +1,1477 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Your Hidden Gift — Find What Your Struggle Is Actually Telling You"
+  description="What you've always seen as your weakness is actually your hidden operating system. Discover yours — built from your birth pattern."
+  showHeader={false}
+  showFooter={false}
+>
+  <div class="page">
+
+    <div class="bg" aria-hidden="true">
+      <div class="glow g1"></div>
+      <div class="glow g2"></div>
+      <div class="grid"></div>
+    </div>
+
+    <!-- ── HEADER ─────────────────────────────────────────── -->
+    <header class="top-bar">
+      <a href="/" class="logo">
+        <span class="logo-sym">◆</span>
+        <span class="logo-txt">Realm of Patterns</span>
+      </a>
+      <div class="trust-pill">
+        <span class="live-dot"></span>
+        <span>2,400+ patterns discovered</span>
+      </div>
+    </header>
+
+    <!-- ── PAIN ENTRY ────────────────────────────────────────
+         Above the fold. No form. Just recognition.
+    ─────────────────────────────────────────────────────── -->
+    <section class="entry-section">
+      <div class="entry-inner">
+
+        <div class="eyebrow">
+          <span class="eyebrow-dot">✦</span>
+          <span>What you've been carrying is not a flaw</span>
+        </div>
+
+        <h1>
+          What if the thing you've always<br>
+          <span class="h1-gold">struggled with the most</span><br>
+          is actually your hidden gift?
+        </h1>
+
+        <p class="entry-sub">
+          Every burden has a pattern underneath it. Every pattern has a name.
+          And every name — when you finally see it — feels like coming home.
+        </p>
+
+        <p class="entry-prompt">What resonates most with you right now?</p>
+
+        <!-- Pain selectors -->
+        <div class="pain-grid" id="pain-grid">
+
+          <button class="pain-card" data-pain="0">
+            <span class="pain-icon">☿</span>
+            <span class="pain-text">I overthink everything.<br>My mind won't stop.</span>
+          </button>
+
+          <button class="pain-card" data-pain="1">
+            <span class="pain-icon">♂</span>
+            <span class="pain-text">I push too hard and burn out.<br>I can't seem to slow down.</span>
+          </button>
+
+          <button class="pain-card" data-pain="2">
+            <span class="pain-icon">♃</span>
+            <span class="pain-text">I feel restless. I know I'm<br>meant for more but I can't find it.</span>
+          </button>
+
+          <button class="pain-card" data-pain="3">
+            <span class="pain-icon">♀</span>
+            <span class="pain-text">I lose myself in others.<br>I give everything and feel empty.</span>
+          </button>
+
+          <button class="pain-card" data-pain="4">
+            <span class="pain-icon">♅</span>
+            <span class="pain-text">I don't feel like I belong here.<br>I see things others seem to miss.</span>
+          </button>
+
+          <button class="pain-card" data-pain="5">
+            <span class="pain-icon">☀</span>
+            <span class="pain-text">I feel invisible or misunderstood.<br>People don't see who I really am.</span>
+          </button>
+
+          <button class="pain-card" data-pain="6">
+            <span class="pain-icon">♄</span>
+            <span class="pain-text">I control everything because<br>letting go terrifies me.</span>
+          </button>
+
+          <button class="pain-card" data-pain="7">
+            <span class="pain-icon">☽</span>
+            <span class="pain-text">I absorb everyone's emotions.<br>I carry burdens that aren't mine.</span>
+          </button>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── GIFT REVEAL ────────────────────────────────────────
+         Shown after pain selection
+    ─────────────────────────────────────────────────────── -->
+    <section class="reveal-section" id="reveal-section" hidden>
+      <div class="reveal-inner">
+
+        <div class="reveal-card" id="reveal-card">
+
+          <div class="reveal-top">
+            <span class="reveal-icon" id="reveal-icon">☿</span>
+            <div class="reveal-eyebrow" id="reveal-eyebrow">The pattern underneath your struggle</div>
+          </div>
+
+          <h2 class="reveal-headline" id="reveal-headline">
+            That's not overthinking. That's The Sage before they found their map.
+          </h2>
+
+          <p class="reveal-body" id="reveal-body">
+            Your mind moves faster than most people's. You see patterns, connections,
+            implications — all at once. The world called it anxiety. It isn't.
+            It's a gift that hasn't been named yet.
+          </p>
+
+          <div class="reveal-gift-box">
+            <div class="gift-label">Your hidden gift</div>
+            <div class="gift-text" id="reveal-gift">
+              You see what others miss — patterns beneath patterns,
+              the thread that connects everything. That's not a burden.
+              That's a rare form of intelligence.
+            </div>
+          </div>
+
+          <p class="reveal-bridge">
+            Your birth pattern reveals exactly which dimension is dominant in you —
+            and what it means for how you work, love, create, and heal.
+          </p>
+
+          <button class="btn-discover" id="btn-discover">
+            Show me my pattern →
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FORM + PREVIEW ──────────────────────────────────────
+         Shown after "Show me my pattern →"
+    ─────────────────────────────────────────────────────── -->
+    <section class="form-section" id="form-section" hidden>
+      <div class="form-inner">
+
+        <div class="form-context" id="form-context">
+          <!-- Filled by JS based on selected pain -->
+        </div>
+
+        <div class="form-card">
+          <p class="form-title">Enter your birthday to see your exact pattern</p>
+          <p class="form-note-small">Your birth moment encoded an energy blueprint. We read it.</p>
+
+          <div class="fields">
+            <div class="field-group">
+              <label for="f-name">Your name</label>
+              <input id="f-name" type="text" placeholder="e.g. Hadi" autocomplete="given-name" />
+            </div>
+            <div class="field-group">
+              <label for="f-date">Date of birth</label>
+              <input id="f-date" type="date" max="2010-01-01" min="1920-01-01" />
+            </div>
+          </div>
+
+          <button class="btn-preview" id="preview-btn" disabled>
+            <span class="btn-text">Reveal My Pattern</span>
+            <span>→</span>
+          </button>
+
+          <p class="form-privacy">No account needed · Private · Takes 10 seconds</p>
+        </div>
+
+        <!-- Live preview result -->
+        <div class="preview-card" id="preview-card" hidden>
+
+          <div class="preview-loading" id="preview-loading">
+            <div class="spinner-ring"></div>
+            <span>Reading your birth pattern…</span>
+          </div>
+
+          <div class="preview-result" id="preview-result" hidden>
+
+            <div class="result-header">
+              <span class="result-arch-icon" id="result-arch-icon">◆</span>
+              <div>
+                <p class="result-name">Your pattern, <strong id="result-name">—</strong></p>
+                <p class="result-arch" id="result-arch">The Sage</p>
+              </div>
+            </div>
+
+            <!-- The transformation: pain → gift confirmed by data -->
+            <div class="pattern-confirm" id="pattern-confirm">
+              <!-- Filled by JS -->
+            </div>
+
+            <div class="result-dims" id="result-dims">
+              <!-- Dimension bars filled by JS -->
+            </div>
+
+            <div class="result-stage-row">
+              <span>Current stage:</span>
+              <span class="result-stage" id="result-stage">Citrinitas · Growth</span>
+            </div>
+
+            <!-- AI Context Block teaser -->
+            <div class="ai-block-preview">
+              <div class="ai-block-label">
+                <span>AI Context Block — preview</span>
+                <span class="ai-badge">paste into ChatGPT or Claude</span>
+              </div>
+              <pre class="ai-block-text" id="ai-block-text"></pre>
+              <div class="ai-block-blur">Full block in the complete profile →</div>
+            </div>
+
+            <button class="btn-buy" id="buy-btn">
+              <span>Get Your Complete Profile — $27</span>
+              <span class="btn-sub">PDF · instant download · includes AI Context Block</span>
+            </button>
+
+            <p class="buy-reassurance">One-time · No subscription · Works with any AI</p>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── STORY / SOCIAL PROOF ───────────────────────────── -->
+    <section class="stories-section" id="stories-section">
+      <div class="container">
+
+        <div class="section-label">✦ What people found</div>
+        <h2 class="section-title">The burden named is the gift revealed</h2>
+
+        <div class="stories-grid">
+
+          <div class="story-card">
+            <div class="story-quote">
+              "I spent 15 years in therapy trying to fix my 'anxiety'. Turns out it's
+              a Sage pattern — hyper-connected perception. I wasn't broken. I was unlabelled."
+            </div>
+            <div class="story-meta">
+              <span class="story-arch">☿ The Sage</span>
+              <span class="story-name">— Maya, 38 · writer</span>
+            </div>
+          </div>
+
+          <div class="story-card">
+            <div class="story-quote">
+              "I always thought my intensity was a problem. The profile showed me it was
+              a Warrior pattern running without direction. Once I named it, I could channel it."
+            </div>
+            <div class="story-meta">
+              <span class="story-arch">♂ The Warrior</span>
+              <span class="story-name">— Reza, 31 · founder</span>
+            </div>
+          </div>
+
+          <div class="story-card">
+            <div class="story-quote">
+              "The AI Context Block alone was worth it. I pasted it into Claude and asked
+              about a career decision. The answer was more accurate than three coaching sessions."
+            </div>
+            <div class="story-meta">
+              <span class="story-arch">♃ The Explorer</span>
+              <span class="story-name">— Lena, 29 · designer</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── WHAT'S INSIDE ──────────────────────────────────── -->
+    <section class="inside-section">
+      <div class="container">
+        <div class="section-label">✦ What's in the profile</div>
+        <h2 class="section-title">Not a chart. A mirror.</h2>
+        <p class="section-sub">
+          Built from real planetary data at your birth. Written in language you can actually feel.
+        </p>
+
+        <div class="pages-grid">
+
+          <div class="page-item">
+            <span class="page-num">01</span>
+            <div>
+              <h3>Your Archetype</h3>
+              <p>The name for who you've always been — and the gift underneath the struggle.</p>
+            </div>
+          </div>
+
+          <div class="page-item">
+            <span class="page-num">02</span>
+            <div>
+              <h3>8-Dimension Map</h3>
+              <p>Every energy dimension scored. Where you're strong, where you're growing, where your shadow lives.</p>
+            </div>
+          </div>
+
+          <div class="page-item">
+            <span class="page-num">03</span>
+            <div>
+              <h3>Your Current Stage</h3>
+              <p>Which alchemical phase you're in right now — and what it's asking of you.</p>
+            </div>
+          </div>
+
+          <div class="page-item">
+            <span class="page-num">04</span>
+            <div>
+              <h3>Patterns & Timing</h3>
+              <p>Your shadow tendency, peak hours, stress signature, and how you actually make decisions.</p>
+            </div>
+          </div>
+
+          <div class="page-item page-item-featured">
+            <span class="page-num gold">05</span>
+            <div>
+              <h3 class="gold">AI Context Block <span class="new-badge">the differentiator</span></h3>
+              <p>A structured, copyable block. Paste it into any AI — ChatGPT, Claude, Gemini — and it understands your pattern, your timing, your shadow. Ask it anything.</p>
+            </div>
+          </div>
+
+          <div class="page-item">
+            <span class="page-num">06</span>
+            <div>
+              <h3>Daily Practice</h3>
+              <p>Simple. One question in the morning. One check before decisions. One use of the AI block each week.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Final CTA -->
+        <div class="final-cta">
+          <h3>Ready to see yours?</h3>
+          <p>Enter your birthday above — the preview is free and instant.</p>
+          <button class="btn-final-scroll" id="btn-scroll-top">
+            Find my pattern →
+          </button>
+          <p class="final-price">$27 · one-time · PDF download</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── FAQ ────────────────────────────────────────────── -->
+    <section class="faq-section">
+      <div class="container faq-container">
+        <div class="section-label">✦ Questions</div>
+        <h2 class="section-title">What people ask before they see their pattern</h2>
+
+        <div class="faq-list">
+
+          <details class="faq-item">
+            <summary class="faq-q">Is this astrology?</summary>
+            <p class="faq-a">It uses planetary positions at your birth as data inputs — the same way a doctor uses your birth date for a baseline. The output is a structured psychological profile, not a horoscope. We call it your energy pattern, not your chart.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">What is the AI Context Block?</summary>
+            <p class="faq-a">A structured block of text — your full profile in a format optimized for AI models. Paste it at the start of any ChatGPT or Claude conversation and the AI calibrates to your energy, your shadow, your timing. Ask it about decisions, relationships, work, writing. It responds with your pattern in mind.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">How is this different from MBTI or Human Design?</summary>
+            <p class="faq-a">MBTI is a self-report questionnaire — you answer how you see yourself (which means your shadow is invisible). Human Design is complex and requires an expert to read. This is computed from birth data, formatted for plain language, and built specifically to feed into AI models as context. It's a different tool for a different era.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">What do I actually get?</summary>
+            <p class="faq-a">A 6-page PDF instantly downloaded after payment. It includes your archetype story, 8-dimension map, current stage, patterns and timing, the AI Context Block, and a daily practice. One-time $27 — no subscription.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">What if I don't resonate with the result?</summary>
+            <p class="faq-a">Email us at support@therealmofpatterns.com and we'll refund you, no questions. We'd rather you find the right mirror than keep one that doesn't fit.</p>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EMAIL / BUY MODAL ──────────────────────────────── -->
+    <div class="modal-backdrop" id="buy-modal" hidden aria-modal="true" role="dialog">
+      <div class="modal-box">
+        <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+
+        <div class="modal-icon">◆</div>
+        <h3 class="modal-title">Almost there</h3>
+        <p class="modal-sub">Enter your email — we'll send your download link there too.</p>
+
+        <input
+          type="email"
+          id="modal-email"
+          class="modal-input"
+          placeholder="your@email.com"
+          autocomplete="email"
+        />
+
+        <p class="modal-error" id="modal-error" hidden></p>
+
+        <button class="modal-btn" id="modal-submit">
+          <span class="modal-btn-text">Continue to Payment →</span>
+        </button>
+
+        <p class="modal-reassurance">$27 · one-time · secure Stripe checkout</p>
+      </div>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════ -->
+<script>
+  // ── Pain → Gift data ─────────────────────────────────────
+  const PAIN_DATA = [
+    {
+      pain:      'I overthink everything.',
+      icon:      '☿',
+      archetype: 'The Sage',
+      headline:  "That's not overthinking. That's The Sage before they found their map.",
+      body:      "Your mind moves faster than most people's. You see patterns, connections, implications — all at once. The world called it anxiety. It isn't. It's a gift that hasn't been named yet.",
+      gift:      "You see what others miss — patterns beneath patterns, the thread connecting everything. That's not a burden. That's a rare form of intelligence.",
+      confirm:   "Your Mind dimension is dominant — you process at depth that most people never reach. The overwhelm you feel is high-bandwidth perception without a container. The profile gives you that container.",
+    },
+    {
+      pain:      'I push too hard and burn out.',
+      icon:      '♂',
+      archetype: 'The Warrior',
+      headline:  "That's not weakness. That's The Warrior running without a direction.",
+      body:      "You have more energy than most people know what to do with. You move when others are frozen. You push through when others give up. The problem isn't the drive — it's that nobody taught you how to aim it.",
+      gift:      "You are a force. The question was never whether you could do it — it was always what you were meant to aim it at. That answer is in your pattern.",
+      confirm:   "Your Drive dimension is high — rare, powerful, and exhausting when misdirected. The profile maps your peak windows so the energy lands where it matters.",
+    },
+    {
+      pain:      "I feel restless. I know I'm meant for more.",
+      icon:      '♃',
+      archetype: 'The Explorer',
+      headline:  "That's not lack of focus. That's The Explorer before they have a map.",
+      body:      "You've always felt like the horizon was just a little further ahead. You expand every room you walk into. You make people think bigger just by being present. The restlessness isn't a problem — it's a compass without a destination yet.",
+      gift:      "You carry the capacity to find meaning in everything — and to bring others into that expanded view. Most people never experience the world the way you do.",
+      confirm:   "Your Growth dimension is your primary frequency — you process experience through expansion and meaning. The profile shows you where to direct that hunger.",
+    },
+    {
+      pain:      'I lose myself in others.',
+      icon:      '♀',
+      archetype: 'The Creator',
+      headline:  "That's not people-pleasing. That's The Creator before they know their worth.",
+      body:      "You walk into a room and feel the emotional temperature before anyone speaks. You make things beautiful. You create harmony where there was only friction. You were told that sensitivity was weakness. It isn't.",
+      gift:      "You create harmony where there was only noise. That's not losing yourself — that's a gift so large it takes your whole self to hold it. The work is learning to hold it without dissolving.",
+      confirm:   "Your Heart dimension is dominant — you feel everything and transmute it. The profile maps where your boundaries need protecting and where your gift is strongest.",
+    },
+    {
+      pain:      "I don't feel like I belong here.",
+      icon:      '♅',
+      archetype: 'The Mystic',
+      headline:  "That's not disconnection. That's The Mystic before they trust what they sense.",
+      body:      "You pick up on things before they're spoken. You know when something is off before any evidence appears. You sense the undercurrent beneath every conversation. The world didn't know what to do with you, so it told you something was wrong.",
+      gift:      "You sense what's coming before anyone else can see it. That's not isolation — it's perception operating at a different frequency. The profile gives it a name.",
+      confirm:   "Your Awareness dimension is rare and extremely high — you process subtle information most people filter out. The profile shows you how to work with that, not against it.",
+    },
+    {
+      pain:      'I feel invisible or misunderstood.',
+      icon:      '☀',
+      archetype: 'The Hero',
+      headline:  "That's not ego. That's The Hero whose light hasn't found its stage yet.",
+      body:      "You have something to say and a particular way of saying it. You feel most alive when you're fully expressed. When you hide — even partially — it feels like betrayal. The world misread that as arrogance. It isn't.",
+      gift:      "You carry authentic creative authority. Not performance — presence. When you're fully expressed, you give other people permission to be the same.",
+      confirm:   "Your Identity dimension is dominant — you're here to be seen and to express something only you can express. The profile clarifies what that is.",
+    },
+    {
+      pain:      'I control everything because letting go terrifies me.',
+      icon:      '♄',
+      archetype: 'The Ruler',
+      headline:  "That's not rigidity. That's The Ruler who was never shown how to trust.",
+      body:      "You build things that last. You hold systems together when others fall apart. You have a gift for structure, for reliability, for being the one people count on. The control isn't the problem — the fear underneath it is.",
+      gift:      "You build things that outlast you. When that gift is integrated — when the structure comes from love instead of fear — there is no one more steady in the world.",
+      confirm:   "Your Structure dimension runs the show — you process everything through order and containment. The profile shows you where that gift is most needed and where it's become a cage.",
+    },
+    {
+      pain:      "I absorb everyone's emotions.",
+      icon:      '☽',
+      archetype: 'The Caregiver',
+      headline:  "That's not weakness. That's The Caregiver before they learned where they end.",
+      body:      "You feel what other people are carrying before they tell you. You sit with people in their darkness without flinching. You make people feel truly seen. You were never taught that this was a gift — only that it cost you.",
+      gift:      "You make people feel truly seen — perhaps the most profound thing one human can offer another. The work is learning to do it without losing yourself in the process.",
+      confirm:   "Your Connection dimension is dominant — deep empathy and relational intelligence. The profile maps your boundary patterns and shows you where the gift becomes a wound.",
+    },
+  ];
+
+  const ARCHETYPES = [
+    { title: 'The Hero',      icon: '☀' },
+    { title: 'The Ruler',     icon: '♄' },
+    { title: 'The Sage',      icon: '☿' },
+    { title: 'The Creator',   icon: '♀' },
+    { title: 'The Explorer',  icon: '♃' },
+    { title: 'The Warrior',   icon: '♂' },
+    { title: 'The Caregiver', icon: '☽' },
+    { title: 'The Mystic',    icon: '♅' },
+  ];
+
+  const DIM_NAMES = ['Identity','Structure','Mind','Heart','Growth','Drive','Connection','Awareness'];
+  const DIM_ICONS = ['☀','♄','☿','♀','♃','♂','☽','♅'];
+  const STAGES    = ['Nigredo','Albedo','Citrinitas','Rubedo'];
+  const STAGE_TAG = ['Reset','Clarity','Growth','Flow'];
+
+  let selectedPain = -1;
+
+  // ── Pain card selection ─────────────────────────────────
+  document.querySelectorAll('.pain-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const idx = parseInt((card as HTMLElement).dataset.pain || '0');
+      selectedPain = idx;
+
+      document.querySelectorAll('.pain-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+
+      showGiftReveal(idx);
+    });
+  });
+
+  function showGiftReveal(idx: number) {
+    const d = PAIN_DATA[idx];
+
+    (document.getElementById('reveal-icon') as HTMLElement).textContent     = d.icon;
+    (document.getElementById('reveal-eyebrow') as HTMLElement).textContent  = 'The pattern underneath your struggle';
+    (document.getElementById('reveal-headline') as HTMLElement).textContent = d.headline;
+    (document.getElementById('reveal-body') as HTMLElement).textContent     = d.body;
+    (document.getElementById('reveal-gift') as HTMLElement).textContent     = d.gift;
+
+    const section = document.getElementById('reveal-section') as HTMLElement;
+    section.hidden = false;
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── "Show me my pattern" → scroll to form ──────────────
+  document.getElementById('btn-discover')!.addEventListener('click', () => {
+    const formSection = document.getElementById('form-section') as HTMLElement;
+    formSection.hidden = false;
+
+    // Fill context blurb above form based on selected pain
+    if (selectedPain >= 0) {
+      const d = PAIN_DATA[selectedPain];
+      const ctx = document.getElementById('form-context') as HTMLElement;
+      ctx.innerHTML = `
+        <div class="form-context-inner">
+          <span class="form-context-icon">${d.icon}</span>
+          <p>${d.confirm}</p>
+        </div>
+      `;
+    }
+
+    formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // ── Scroll-to-top button ────────────────────────────────
+  document.getElementById('btn-scroll-top')?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── Form: enable button only when date filled ───────────
+  const nameInput   = document.getElementById('f-name')    as HTMLInputElement;
+  const dateInput   = document.getElementById('f-date')    as HTMLInputElement;
+  const previewBtn  = document.getElementById('preview-btn') as HTMLButtonElement;
+
+  dateInput.addEventListener('input', () => {
+    previewBtn.disabled = !dateInput.value;
+  });
+
+  previewBtn.addEventListener('click', generatePreview);
+
+  // ── Buy buttons ─────────────────────────────────────────
+  document.getElementById('buy-btn')!.addEventListener('click', openBuyModal);
+
+  // ── Email modal ─────────────────────────────────────────
+  const modal       = document.getElementById('buy-modal')   as HTMLElement;
+  const modalClose  = document.getElementById('modal-close') as HTMLButtonElement;
+  const modalEmail  = document.getElementById('modal-email') as HTMLInputElement;
+  const modalSubmit = document.getElementById('modal-submit') as HTMLButtonElement;
+  const modalError  = document.getElementById('modal-error') as HTMLElement;
+
+  function openBuyModal() {
+    modal.hidden = false;
+    modalEmail.focus();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeBuyModal() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    modalError.hidden = true;
+    modalSubmit.disabled = false;
+    (modalSubmit.querySelector('.modal-btn-text') as HTMLElement).textContent = 'Continue to Payment →';
+  }
+
+  modalClose.addEventListener('click', closeBuyModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeBuyModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeBuyModal(); });
+
+  modalSubmit.addEventListener('click', async () => {
+    const email = modalEmail.value.trim();
+    if (!email || !email.includes('@')) {
+      modalError.textContent = 'Please enter a valid email address.';
+      modalError.hidden = false;
+      return;
+    }
+
+    const dob = dateInput.value;
+    if (!dob) { closeBuyModal(); dateInput.focus(); return; }
+
+    modalError.hidden = true;
+    modalSubmit.disabled = true;
+    (modalSubmit.querySelector('.modal-btn-text') as HTMLElement).textContent = 'Redirecting to payment…';
+
+    try {
+      const res = await fetch('/api/create-dna-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name: nameInput.value.trim() || 'Explorer', dob }),
+      });
+      const data = await res.json() as { success: boolean; url?: string; error?: string };
+      if (data.success && data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Checkout failed');
+      }
+    } catch (e: any) {
+      modalError.textContent = e.message || 'Something went wrong. Please try again.';
+      modalError.hidden = false;
+      modalSubmit.disabled = false;
+      (modalSubmit.querySelector('.modal-btn-text') as HTMLElement).textContent = 'Continue to Payment →';
+    }
+  });
+
+  // ── Generate preview ─────────────────────────────────────
+  async function generatePreview() {
+    const rawDate = dateInput.value;
+    if (!rawDate) return;
+
+    const name = nameInput.value.trim() || 'Explorer';
+    const [year, month, day] = rawDate.split('-').map(Number);
+
+    const previewCard = document.getElementById('preview-card') as HTMLElement;
+    const loadingEl   = document.getElementById('preview-loading') as HTMLElement;
+    const resultEl    = document.getElementById('preview-result') as HTMLElement;
+
+    previewCard.hidden = false;
+    loadingEl.hidden   = false;
+    resultEl.hidden    = true;
+    previewBtn.disabled = true;
+    (previewBtn.querySelector('.btn-text') as HTMLElement).textContent = 'Reading…';
+
+    previewCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    let vector: number[] = [];
+    let dominantIdx = 2;
+
+    try {
+      const res = await fetch('/api/preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ birth_data: { year, month, day, hour: 12, latitude: 0, longitude: 0 } }),
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      vector = data.vector || [];
+      dominantIdx = data.dominant?.index ?? findDominant(vector);
+    } catch {
+      vector = fallbackVector(year, month, day);
+      dominantIdx = findDominant(vector);
+    }
+
+    loadingEl.hidden = true;
+    resultEl.hidden  = false;
+
+    renderResult(name, vector, dominantIdx);
+    (previewBtn.querySelector('.btn-text') as HTMLElement).textContent = 'Pattern revealed ✓';
+  }
+
+  function renderResult(name: string, vector: number[], domIdx: number) {
+    const arch     = ARCHETYPES[domIdx] || ARCHETYPES[2];
+    const weakIdx  = findWeakest(vector);
+    const avg      = vector.reduce((a, b) => a + b, 0) / (vector.length || 1);
+    const stageIdx = avg > 0.75 ? 3 : avg > 0.55 ? 2 : avg > 0.35 ? 1 : 0;
+    const peakHrs  = domIdx <= 2 ? '9–11am, 3–5pm' : domIdx <= 5 ? '10am–12pm, 4–6pm' : '7–9am, 8–10pm';
+
+    (document.getElementById('result-name') as HTMLElement).textContent      = name;
+    (document.getElementById('result-arch') as HTMLElement).textContent      = arch.title;
+    (document.getElementById('result-arch-icon') as HTMLElement).textContent = arch.icon;
+    (document.getElementById('result-stage') as HTMLElement).textContent     = `${STAGES[stageIdx]} · ${STAGE_TAG[stageIdx]}`;
+
+    // Pattern confirmation paragraph — connect to selected pain
+    const confirmEl = document.getElementById('pattern-confirm') as HTMLElement;
+    if (selectedPain >= 0) {
+      const d = PAIN_DATA[selectedPain];
+      confirmEl.innerHTML = `
+        <div class="pattern-confirm-inner">
+          <span class="confirm-icon">✦</span>
+          <p>Your data confirms it — <strong>${arch.title}</strong> pattern,
+             ${DIM_NAMES[domIdx]} dimension dominant at ${Math.round(vector[domIdx]*100)}%.
+             ${d.confirm}</p>
+        </div>
+      `;
+    } else {
+      confirmEl.innerHTML = `
+        <div class="pattern-confirm-inner">
+          <span class="confirm-icon">✦</span>
+          <p>Your dominant pattern: <strong>${arch.title}</strong> —
+             ${DIM_NAMES[domIdx]} at ${Math.round(vector[domIdx]*100)}%.</p>
+        </div>
+      `;
+    }
+
+    // Dimension bars — all 8, sorted
+    const dimsEl = document.getElementById('result-dims') as HTMLElement;
+    dimsEl.innerHTML = '';
+    const sorted = vector.map((v, i) => ({ i, v })).sort((a, b) => b.v - a.v);
+    sorted.forEach(({ i, v }) => {
+      const pct = Math.round(v * 100);
+      const row = document.createElement('div');
+      row.className = 'dim-row' + (i === domIdx ? ' dim-dominant' : '');
+      row.innerHTML = `
+        <span class="dim-icon">${DIM_ICONS[i]}</span>
+        <span class="dim-name">${DIM_NAMES[i]}</span>
+        <div class="dim-bar-wrap">
+          <div class="dim-bar" style="width:${pct}%"></div>
+        </div>
+        <span class="dim-pct">${pct}%</span>
+        ${i === domIdx ? '<span class="dim-tag">primary</span>' : ''}
+        ${i === weakIdx ? '<span class="dim-tag dim-tag-growth">growth</span>' : ''}
+      `;
+      dimsEl.appendChild(row);
+    });
+
+    // AI Context Block preview
+    const aiBlock = document.getElementById('ai-block-text') as HTMLElement;
+    aiBlock.textContent =
+`COSMIC DNA PROFILE — ${name.toUpperCase()}
+Archetype: ${arch.title}  |  Stage: ${STAGES[stageIdx]} (${STAGE_TAG[stageIdx]})
+
+ENERGY DIMENSIONS (top 4):
+${sorted.slice(0,4).map(({ i, v }) =>
+  `  ${DIM_ICONS[i]} ${DIM_NAMES[i].padEnd(12)} ${Math.round(v*100)}%`
+).join('\n')}
+
+SHADOW:  ${DIM_NAMES[weakIdx]} dimension — growth edge
+PEAK WINDOWS: ${peakHrs}
+
+[Full 8-dimension block + shadow analysis in complete profile]`;
+  }
+
+  function findDominant(v: number[]): number {
+    return v.reduce((best, val, i) => val > v[best] ? i : best, 0);
+  }
+
+  function findWeakest(v: number[]): number {
+    return v.reduce((best, val, i) => val < v[best] ? i : best, 0);
+  }
+
+  function fallbackVector(year: number, month: number, day: number): number[] {
+    let s = year * 10000 + month * 100 + day;
+    return Array.from({ length: 8 }, () => {
+      s = (s * 1664525 + 1013904223) & 0xffffffff;
+      return 0.3 + (Math.abs(s) / 0xffffffff) * 0.5;
+    });
+  }
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     STYLES
+═══════════════════════════════════════════════════════════ -->
+<style>
+  .page {
+    --gold:       #d4a854;
+    --gold-light: #e8c88a;
+    --gold-dim:   rgba(212,168,84,0.25);
+    --dark:       #0a0908;
+    --dark-2:     #111009;
+    --dark-3:     #17150f;
+    --border:     rgba(212,168,84,0.15);
+    --text:       #f0e8d8;
+    --muted:      rgba(240,232,216,0.6);
+    --dim:        rgba(240,232,216,0.35);
+    --green:      #4ade80;
+    --red:        rgba(220,100,100,0.8);
+
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Background */
+  .bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .glow {
+    position: absolute; border-radius: 50%; filter: blur(120px);
+  }
+  .g1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(212,168,84,0.15) 0%, transparent 70%);
+    top: -100px; right: -150px;
+    animation: float 16s ease-in-out infinite;
+  }
+  .g2 {
+    width: 450px; height: 450px;
+    background: radial-gradient(circle, rgba(167,139,250,0.08) 0%, transparent 70%);
+    bottom: 15%; left: -100px;
+    animation: float 20s ease-in-out infinite reverse;
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(212,168,84,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,168,84,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  @keyframes float {
+    0%,100% { transform: translate(0,0); }
+    50%      { transform: translate(15px,-25px); }
+  }
+
+  /* Layout */
+  .container {
+    position: relative; z-index: 1;
+    max-width: 1040px; margin: 0 auto; padding: 0 1.5rem;
+  }
+  .section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 400; color: var(--text);
+    margin: 0 0 1rem; line-height: 1.25;
+  }
+  .section-sub {
+    font-size: 1.05rem; color: var(--muted);
+    max-width: 580px; line-height: 1.7; margin: 0 0 3rem;
+  }
+
+  /* Header */
+  .top-bar {
+    position: relative; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+  .logo-sym { color: var(--gold); font-size: 1.2rem; }
+  .logo-txt { font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--muted); }
+  .trust-pill {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--dim);
+  }
+  .live-dot {
+    width: 7px; height: 7px; background: var(--green); border-radius: 50%;
+    animation: pulse 2.5s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.4; transform: scale(1.5); }
+  }
+
+  /* ── ENTRY SECTION ── */
+  .entry-section {
+    position: relative; z-index: 1;
+    padding: 5rem 1.5rem 4rem;
+    display: flex; justify-content: center;
+  }
+  .entry-inner {
+    max-width: 760px; width: 100%; text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border); border-radius: 100px;
+    font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--gold);
+    margin-bottom: 2rem; background: rgba(212,168,84,0.06);
+  }
+  .eyebrow-dot { font-size: 0.65rem; }
+
+  .entry-inner h1 {
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    font-weight: 300; line-height: 1.2;
+    margin: 0 0 1.5rem; color: var(--text);
+  }
+  .h1-gold { color: var(--gold); }
+
+  .entry-sub {
+    font-size: 1.15rem; color: var(--muted);
+    line-height: 1.75; max-width: 560px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .entry-prompt {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.25rem;
+  }
+
+  /* Pain cards */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .pain-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.25rem 1.25rem 1rem;
+    cursor: pointer;
+    display: flex; align-items: flex-start; gap: 1rem;
+    transition: all 0.25s;
+    font-family: inherit;
+    text-align: left;
+  }
+  .pain-card:hover {
+    border-color: var(--gold-dim);
+    background: rgba(212,168,84,0.05);
+    transform: translateY(-2px);
+  }
+  .pain-card.active {
+    border-color: var(--gold);
+    background: rgba(212,168,84,0.08);
+  }
+  .pain-icon {
+    font-size: 1.4rem; color: var(--gold);
+    flex-shrink: 0; margin-top: 0.1rem;
+  }
+  .pain-text {
+    font-size: 0.95rem; color: var(--muted); line-height: 1.5;
+  }
+
+  /* ── REVEAL SECTION ── */
+  .reveal-section {
+    position: relative; z-index: 1;
+    padding: 4rem 1.5rem;
+    display: flex; justify-content: center;
+    background: linear-gradient(180deg, transparent, rgba(212,168,84,0.03) 40%, transparent);
+  }
+  .reveal-inner { max-width: 680px; width: 100%; }
+
+  .reveal-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(212,168,84,0.3);
+    border-radius: 20px;
+    padding: 2.5rem;
+  }
+
+  .reveal-top {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .reveal-icon { font-size: 2rem; color: var(--gold); }
+  .reveal-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
+  .reveal-headline {
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    font-weight: 400; line-height: 1.3;
+    color: var(--text); margin: 0 0 1.25rem;
+  }
+
+  .reveal-body {
+    font-size: 1.05rem; color: var(--muted);
+    line-height: 1.8; margin: 0 0 1.75rem;
+  }
+
+  .reveal-gift-box {
+    background: rgba(212,168,84,0.06);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+  .gift-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--gold); margin-bottom: 0.6rem;
+  }
+  .gift-text {
+    font-size: 1rem; color: var(--text); line-height: 1.7;
+  }
+
+  .reveal-bridge {
+    font-size: 0.95rem; color: var(--muted);
+    line-height: 1.7; margin: 0 0 2rem;
+  }
+
+  .btn-discover {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--gold), #b8924a);
+    color: #0a0908;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    border: none; border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 24px rgba(212,168,84,0.25);
+  }
+  .btn-discover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(212,168,84,0.35);
+  }
+
+  /* ── FORM SECTION ── */
+  .form-section {
+    position: relative; z-index: 1;
+    padding: 3rem 1.5rem 4rem;
+    display: flex; justify-content: center;
+  }
+  .form-inner { max-width: 620px; width: 100%; }
+
+  .form-context {
+    margin-bottom: 1.5rem;
+  }
+  .form-context-inner {
+    display: flex; align-items: flex-start; gap: 1rem;
+    background: rgba(212,168,84,0.05);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.25rem;
+  }
+  .form-context-icon { font-size: 1.5rem; color: var(--gold); flex-shrink: 0; }
+  .form-context-inner p {
+    font-size: 0.95rem; color: var(--muted); line-height: 1.65; margin: 0;
+  }
+
+  .form-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 2rem;
+  }
+  .form-title {
+    font-size: 1.15rem; color: var(--text);
+    margin: 0 0 0.4rem; font-weight: 400;
+  }
+  .form-note-small {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem; color: var(--dim);
+    margin: 0 0 1.5rem;
+  }
+
+  .fields {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  @media (max-width: 480px) { .fields { grid-template-columns: 1fr; } }
+
+  .field-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .field-group label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem; color: var(--dim);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .field-group input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.7rem 1rem;
+    color: var(--text); font-family: inherit; font-size: 1rem;
+    outline: none; transition: border-color 0.2s;
+    color-scheme: dark;
+  }
+  .field-group input:focus { border-color: rgba(212,168,84,0.5); }
+
+  .btn-preview {
+    width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    padding: 0.9rem;
+    background: rgba(212,168,84,0.1);
+    border: 1px solid rgba(212,168,84,0.4);
+    border-radius: 12px; color: var(--gold);
+    font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; transition: all 0.25s;
+    margin-bottom: 0.75rem;
+  }
+  .btn-preview:hover:not(:disabled) {
+    background: rgba(212,168,84,0.15);
+    border-color: var(--gold);
+  }
+  .btn-preview:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .form-privacy {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem; color: var(--dim); text-align: center;
+    margin: 0;
+  }
+
+  /* Preview card */
+  .preview-card {
+    margin-top: 1.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+  }
+
+  .preview-loading {
+    display: flex; align-items: center; gap: 1rem;
+    justify-content: center; padding: 2.5rem;
+    font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--muted);
+  }
+  .spinner-ring {
+    width: 28px; height: 28px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite; flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .preview-result { padding: 1.75rem; }
+
+  .result-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.25rem; padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .result-arch-icon { font-size: 2rem; color: var(--gold); }
+  .result-name {
+    font-size: 0.95rem; color: var(--muted); margin: 0 0 0.2rem;
+  }
+  .result-name strong { color: var(--text); }
+  .result-arch {
+    font-size: 1.2rem; color: var(--gold); margin: 0;
+  }
+
+  .pattern-confirm { margin-bottom: 1.25rem; }
+  .pattern-confirm-inner {
+    display: flex; gap: 0.75rem;
+    background: rgba(212,168,84,0.06);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem;
+    align-items: flex-start;
+  }
+  .confirm-icon { color: var(--gold); flex-shrink: 0; margin-top: 0.1rem; }
+  .pattern-confirm-inner p {
+    font-size: 0.9rem; color: var(--muted);
+    line-height: 1.6; margin: 0;
+  }
+  .pattern-confirm-inner strong { color: var(--text); }
+
+  /* Dimension bars */
+  .result-dims { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1rem; }
+  .dim-row {
+    display: grid;
+    grid-template-columns: 1.4rem 6.5rem 1fr 2.8rem auto;
+    align-items: center; gap: 0.5rem;
+  }
+  .dim-row.dim-dominant .dim-name { color: var(--text); font-weight: 600; }
+  .dim-icon { color: var(--gold); font-size: 0.85rem; }
+  .dim-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem; color: var(--muted);
+  }
+  .dim-bar-wrap {
+    height: 3px; background: rgba(212,168,84,0.1);
+    border-radius: 3px; overflow: hidden;
+  }
+  .dim-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 3px;
+  }
+  .dim-pct {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem; color: var(--gold); text-align: right;
+  }
+  .dim-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 0.1rem 0.4rem;
+    background: rgba(212,168,84,0.12);
+    border: 1px solid rgba(212,168,84,0.3);
+    border-radius: 4px; color: var(--gold);
+  }
+  .dim-tag-growth {
+    background: rgba(100,200,100,0.06);
+    border-color: rgba(100,200,100,0.2);
+    color: #6ee7b7;
+  }
+
+  .result-stage-row {
+    display: flex; gap: 0.5rem; align-items: center;
+    font-family: 'Inter', sans-serif; font-size: 0.8rem;
+    color: var(--dim); margin-bottom: 1.25rem;
+  }
+  .result-stage { color: var(--gold); }
+
+  /* AI Block preview */
+  .ai-block-preview {
+    background: #0c0b08;
+    border: 1px solid rgba(212,168,84,0.3);
+    border-radius: 12px; overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .ai-block-label {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid rgba(212,168,84,0.1);
+    font-family: 'Inter', sans-serif; font-size: 0.75rem; color: var(--dim);
+  }
+  .ai-badge {
+    font-size: 0.68rem; color: var(--gold);
+    background: rgba(212,168,84,0.08);
+    padding: 0.15rem 0.5rem; border-radius: 4px;
+  }
+  .ai-block-text {
+    font-family: 'Courier New', monospace; font-size: 0.72rem;
+    color: rgba(200,185,150,0.8); line-height: 1.7;
+    padding: 1rem; margin: 0;
+    white-space: pre-wrap; word-break: break-word;
+    max-height: 160px; overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 60%, transparent 100%);
+  }
+  .ai-block-blur {
+    padding: 0.5rem 1rem 0.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem; color: var(--gold);
+    text-align: center;
+  }
+
+  .btn-buy {
+    width: 100%;
+    display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    padding: 1.1rem;
+    background: linear-gradient(135deg, var(--gold), #b8924a);
+    color: #0a0908; border: none; border-radius: 12px;
+    cursor: pointer; transition: all 0.3s;
+    box-shadow: 0 4px 24px rgba(212,168,84,0.3);
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 0.75rem;
+  }
+  .btn-buy > span:first-child { font-size: 1rem; font-weight: 700; }
+  .btn-sub { font-size: 0.75rem; opacity: 0.7; }
+  .btn-buy:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(212,168,84,0.4);
+  }
+
+  .buy-reassurance {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem; color: var(--dim); text-align: center; margin: 0;
+  }
+
+  /* ── STORIES ── */
+  .stories-section {
+    position: relative; z-index: 1;
+    padding: 5rem 1.5rem;
+    background: rgba(212,168,84,0.02);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem; margin-top: 2.5rem;
+  }
+  .story-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.75rem;
+  }
+  .story-quote {
+    font-size: 1rem; color: var(--muted);
+    line-height: 1.8; margin-bottom: 1.25rem;
+    font-style: italic;
+  }
+  .story-quote::before { content: '"'; color: var(--gold); font-size: 1.3rem; }
+  .story-meta { display: flex; flex-direction: column; gap: 0.3rem; }
+  .story-arch {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem; color: var(--gold);
+  }
+  .story-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem; color: var(--dim);
+  }
+
+  /* ── INSIDE ── */
+  .inside-section {
+    position: relative; z-index: 1;
+    padding: 5rem 1.5rem;
+  }
+  .pages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem; margin-top: 0.5rem;
+  }
+  .page-item {
+    display: flex; gap: 1rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.25rem;
+  }
+  .page-item-featured {
+    border-color: rgba(212,168,84,0.35);
+    background: rgba(212,168,84,0.04);
+  }
+  .page-num {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem; color: var(--dim);
+    flex-shrink: 0; padding-top: 0.15rem;
+  }
+  .page-num.gold { color: var(--gold); }
+  .page-item h3 {
+    font-size: 1rem; font-weight: 500;
+    color: var(--text); margin: 0 0 0.4rem;
+  }
+  .page-item h3.gold { color: var(--gold); }
+  .page-item p {
+    font-size: 0.88rem; color: var(--muted);
+    line-height: 1.6; margin: 0;
+  }
+  .new-badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 0.15rem 0.5rem;
+    background: rgba(212,168,84,0.15);
+    border: 1px solid rgba(212,168,84,0.35);
+    border-radius: 4px; color: var(--gold);
+    vertical-align: middle;
+  }
+
+  .final-cta {
+    margin-top: 3.5rem;
+    text-align: center;
+    background: rgba(212,168,84,0.04);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 2.5rem;
+  }
+  .final-cta h3 {
+    font-size: 1.8rem; font-weight: 400; color: var(--text);
+    margin: 0 0 0.5rem;
+  }
+  .final-cta > p { font-size: 1rem; color: var(--muted); margin: 0 0 1.5rem; }
+  .btn-final-scroll {
+    padding: 0.9rem 2.5rem;
+    background: linear-gradient(135deg, var(--gold), #b8924a);
+    color: #0a0908;
+    font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700;
+    border: none; border-radius: 12px; cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(212,168,84,0.25);
+    margin-bottom: 1rem;
+  }
+  .btn-final-scroll:hover { transform: translateY(-2px); }
+  .final-price {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem; color: var(--dim); margin: 0;
+  }
+
+  /* ── FAQ ── */
+  .faq-section {
+    position: relative; z-index: 1;
+    padding: 5rem 1.5rem;
+    border-top: 1px solid var(--border);
+    background: rgba(212,168,84,0.02);
+  }
+  .faq-container { max-width: 720px; }
+  .faq-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .faq-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item[open] { border-color: rgba(212,168,84,0.3); }
+
+  .faq-q {
+    list-style: none; cursor: pointer;
+    padding: 1.1rem 1.25rem;
+    font-size: 1rem; color: var(--text);
+    display: flex; justify-content: space-between; align-items: center;
+    user-select: none;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q::after { content: '+'; color: var(--gold); font-size: 1.2rem; }
+  .faq-item[open] .faq-q::after { content: '−'; }
+
+  .faq-a {
+    padding: 0 1.25rem 1.1rem;
+    font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin: 0;
+  }
+
+  /* ── MODAL ── */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(10,9,8,0.88);
+    display: flex; align-items: flex-end; justify-content: center;
+    padding: 0 1rem 1rem;
+  }
+  @media (min-width: 600px) {
+    .modal-backdrop { align-items: center; }
+  }
+  .modal-box {
+    background: #17150f;
+    border: 1px solid rgba(212,168,84,0.3);
+    border-radius: 20px; padding: 2rem;
+    max-width: 440px; width: 100%;
+    position: relative;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none; color: var(--dim);
+    font-size: 1rem; cursor: pointer; padding: 0.25rem;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-icon { font-size: 1.5rem; color: var(--gold); margin-bottom: 0.75rem; }
+  .modal-title { font-size: 1.4rem; font-weight: 400; color: var(--text); margin: 0 0 0.4rem; }
+  .modal-sub { font-size: 0.9rem; color: var(--muted); margin: 0 0 1.5rem; line-height: 1.6; }
+  .modal-input {
+    width: 100%; box-sizing: border-box;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.8rem 1rem;
+    color: var(--text); font-family: inherit; font-size: 1rem;
+    outline: none; margin-bottom: 0.75rem;
+    transition: border-color 0.2s;
+  }
+  .modal-input:focus { border-color: rgba(212,168,84,0.5); }
+  .modal-error {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem; color: var(--red);
+    margin: 0 0 0.75rem;
+  }
+  .modal-btn {
+    width: 100%; padding: 1rem;
+    background: linear-gradient(135deg, var(--gold), #b8924a);
+    color: #0a0908;
+    font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700;
+    border: none; border-radius: 12px; cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(212,168,84,0.25);
+    margin-bottom: 0.75rem;
+  }
+  .modal-btn:disabled { opacity: 0.6; cursor: wait; }
+  .modal-reassurance {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem; color: var(--dim); text-align: center; margin: 0;
+  }
+</style>
