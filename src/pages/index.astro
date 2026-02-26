@@ -178,6 +178,68 @@ import { EmailCapture } from '../components/shared/EmailCapture';
     </section>
 
     <!-- ============================================
+         ARCHETYPE STRIP
+         ============================================ -->
+    <section class="archetypes-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-icon">◈</span>
+          <h2>The 8 Energy Archetypes</h2>
+          <p class="section-desc">
+            Every person carries a dominant pattern. Which one is yours?
+          </p>
+        </div>
+
+        <div class="archetypes-grid">
+          <a href="/archetype/hero" class="archetype-card">
+            <span class="arch-symbol">☀</span>
+            <span class="arch-name">The Hero</span>
+            <span class="arch-planet">Sun</span>
+          </a>
+          <a href="/archetype/ruler" class="archetype-card">
+            <span class="arch-symbol">♄</span>
+            <span class="arch-name">The Ruler</span>
+            <span class="arch-planet">Saturn</span>
+          </a>
+          <a href="/archetype/sage" class="archetype-card">
+            <span class="arch-symbol">☿</span>
+            <span class="arch-name">The Sage</span>
+            <span class="arch-planet">Mercury</span>
+          </a>
+          <a href="/archetype/creator" class="archetype-card">
+            <span class="arch-symbol">♀</span>
+            <span class="arch-name">The Creator</span>
+            <span class="arch-planet">Venus</span>
+          </a>
+          <a href="/archetype/explorer" class="archetype-card">
+            <span class="arch-symbol">♃</span>
+            <span class="arch-name">The Explorer</span>
+            <span class="arch-planet">Jupiter</span>
+          </a>
+          <a href="/archetype/warrior" class="archetype-card">
+            <span class="arch-symbol">♂</span>
+            <span class="arch-name">The Warrior</span>
+            <span class="arch-planet">Mars</span>
+          </a>
+          <a href="/archetype/caregiver" class="archetype-card">
+            <span class="arch-symbol">☽</span>
+            <span class="arch-name">The Caregiver</span>
+            <span class="arch-planet">Moon</span>
+          </a>
+          <a href="/archetype/mystic" class="archetype-card">
+            <span class="arch-symbol">♅</span>
+            <span class="arch-name">The Mystic</span>
+            <span class="arch-planet">Uranus</span>
+          </a>
+        </div>
+
+        <div class="archetypes-cta">
+          <a href="/hidden-gifts" class="cta-secondary">Find my archetype →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
          PRICING
          ============================================ -->
     <section class="pricing-section">
@@ -816,6 +878,75 @@ import { EmailCapture } from '../components/shared/EmailCapture';
   }
 
   .how-cta {
+    text-align: center;
+  }
+
+  /* ==========================================
+     ARCHETYPE STRIP
+     ========================================== */
+  .archetypes-section {
+    background: var(--dark-surface);
+  }
+
+  .archetypes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 640px) {
+    .archetypes-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .archetypes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .archetype-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 18px 8px;
+    background: var(--dark);
+    border: 1px solid rgba(212, 168, 84, 0.12);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .archetype-card:hover {
+    border-color: rgba(212, 168, 84, 0.4);
+    background: rgba(212, 168, 84, 0.05);
+  }
+
+  .arch-symbol {
+    font-size: 22px;
+    color: #d4a854;
+    line-height: 1;
+  }
+
+  .arch-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #e8e4db;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .arch-planet {
+    font-size: 10px;
+    color: #5a5a6c;
+    letter-spacing: 0.06em;
+  }
+
+  .archetypes-cta {
     text-align: center;
   }
 
