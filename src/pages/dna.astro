@@ -332,6 +332,42 @@ PROMPT: "Given my profile above, [your question]..."</pre>
     </section>
 
     <!-- ================================================
+         EMAIL MODAL (buy flow)
+         ================================================ -->
+    <div class="modal-overlay" id="buy-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Complete purchase">
+      <div class="modal-card">
+        <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+
+        <div class="modal-icon">◆</div>
+        <h2 class="modal-title">One more thing</h2>
+        <p class="modal-sub">Where should we send your purchase confirmation?</p>
+
+        <div class="modal-field">
+          <label for="modal-email" class="modal-label">Your email</label>
+          <input
+            id="modal-email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            class="modal-input"
+          />
+        </div>
+
+        <p class="modal-error" id="modal-error" hidden></p>
+
+        <button class="modal-btn" id="modal-submit">
+          <span class="modal-btn-text">Continue to Payment →</span>
+        </button>
+
+        <div class="modal-reassurance">
+          <span>✓ $9 one-time</span>
+          <span>✓ No subscription</span>
+          <span>✓ Secure checkout via Stripe</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================
          FINAL CTA
          ================================================ -->
     <section class="final-section">
@@ -415,20 +451,86 @@ PROMPT: "Given my profile above, [your question]..."</pre>
 
   previewBtn.addEventListener('click', generatePreview);
 
-  // Buy buttons → scroll to form or redirect to payment
-  buyBtn.addEventListener('click', handleBuy);
-  buyBtnFinal.addEventListener('click', handleBuy);
+  // Buy buttons → open email modal
+  buyBtn.addEventListener('click', openBuyModal);
+  buyBtnFinal.addEventListener('click', openBuyModal);
 
-  function handleBuy() {
-    // TODO: replace with Stripe one-time payment URL
-    // For now, route to subscribe page with plan=dna param
-    const name = nameInput.value.trim();
-    const date = dateInput.value;
-    const params = new URLSearchParams({ plan: 'dna' });
-    if (name) params.set('name', name);
-    if (date) params.set('dob', date);
-    window.location.href = `/subscribe?${params.toString()}`;
+  // ── Email modal ──────────────────────────────────────────
+  const modal        = document.getElementById('buy-modal') as HTMLElement;
+  const modalClose   = document.getElementById('modal-close') as HTMLButtonElement;
+  const modalEmail   = document.getElementById('modal-email') as HTMLInputElement;
+  const modalSubmit  = document.getElementById('modal-submit') as HTMLButtonElement;
+  const modalError   = document.getElementById('modal-error') as HTMLElement;
+
+  function openBuyModal() {
+    // Pre-fill email if already entered
+    modal.hidden = false;
+    modal.removeAttribute('aria-hidden');
+    modalEmail.focus();
+    document.body.style.overflow = 'hidden';
   }
+
+  function closeBuyModal() {
+    modal.hidden = true;
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    modalError.hidden = true;
+    modalSubmit.disabled = false;
+    modalSubmit.querySelector('.modal-btn-text')!.textContent = 'Continue to Payment →';
+  }
+
+  modalClose.addEventListener('click', closeBuyModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeBuyModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closeBuyModal();
+  });
+
+  modalSubmit.addEventListener('click', async () => {
+    const email = modalEmail.value.trim();
+    if (!email || !email.includes('@')) {
+      modalError.textContent = 'Please enter a valid email address.';
+      modalError.hidden = false;
+      return;
+    }
+
+    const dob = dateInput.value;
+    if (!dob) {
+      closeBuyModal();
+      dateInput.focus();
+      return;
+    }
+
+    modalError.hidden = true;
+    modalSubmit.disabled = true;
+    modalSubmit.querySelector('.modal-btn-text')!.textContent = 'Redirecting to payment…';
+
+    try {
+      const res = await fetch('/api/create-dna-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          name: nameInput.value.trim() || 'Explorer',
+          dob,
+        }),
+      });
+
+      const data = await res.json() as { success: boolean; url?: string; error?: string };
+
+      if (data.success && data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Checkout failed');
+      }
+    } catch (e: any) {
+      modalError.textContent = e.message || 'Something went wrong. Please try again.';
+      modalError.hidden = false;
+      modalSubmit.disabled = false;
+      modalSubmit.querySelector('.modal-btn-text')!.textContent = 'Continue to Payment →';
+    }
+  });
 
   async function generatePreview() {
     const rawDate = dateInput.value;
@@ -1617,5 +1719,163 @@ PEAK WINDOWS: ${peakHour}
     .pages-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  /* ================================================
+     EMAIL MODAL
+     ================================================ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 9, 8, 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    animation: fade-in 0.2s ease;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .modal-card {
+    position: relative;
+    background: #131109;
+    border: 1px solid rgba(212,168,84,0.3);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    animation: slide-up 0.25s ease;
+  }
+
+  @keyframes slide-up {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    transition: color 0.2s;
+  }
+
+  .modal-close:hover { color: var(--text); }
+
+  .modal-icon {
+    font-size: 1.75rem;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text);
+    margin: 0 0 0.5rem;
+  }
+
+  .modal-sub {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 0 0 1.5rem;
+  }
+
+  .modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-dim);
+  }
+
+  .modal-input {
+    padding: 0.8rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .modal-input:focus { border-color: var(--gold-dim); }
+  .modal-input::placeholder { color: var(--text-dim); }
+
+  .modal-error {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(240, 100, 100, 0.9);
+    margin: 0.5rem 0 0;
+    text-align: left;
+  }
+
+  .modal-btn {
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+    background: linear-gradient(135deg, var(--gold) 0%, #b8924a 100%);
+    color: #0a0908;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(212,168,84,0.25);
+    margin-top: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .modal-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(212,168,84,0.35);
+  }
+
+  .modal-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+  }
+
+  .modal-reassurance {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .modal-reassurance span {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    color: var(--text-dim);
   }
 </style>

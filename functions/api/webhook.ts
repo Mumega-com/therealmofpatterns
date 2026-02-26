@@ -18,8 +18,11 @@ interface StripeObject {
   id: string;
   customer?: string;
   customer_email?: string;
+  customer_details?: { email?: string };
   subscription?: string;
   status?: string;
+  mode?: string;
+  payment_status?: string;
   metadata?: Record<string, string>;
   cancel_at_period_end?: boolean;
   current_period_end?: number;
@@ -52,7 +55,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     switch (event.type) {
       case 'checkout.session.completed':
-        await handleCheckoutCompleted(event, env);
+        if (event.data.object.metadata?.product === 'dna') {
+          await handleDnaPurchase(event, env);
+        } else {
+          await handleCheckoutCompleted(event, env);
+        }
         break;
 
       case 'customer.subscription.updated':
@@ -209,6 +216,29 @@ async function handlePaymentFailed(event: StripeEvent, env: Env) {
   `).bind(emailHash).run();
 
   console.log(`Payment failed for: ${emailHash}`);
+}
+
+async function handleDnaPurchase(event: StripeEvent, env: Env) {
+  const session = event.data.object;
+  const email = session.customer_email || session.customer_details?.email || '';
+  const name = session.metadata?.name || '';
+  const dob  = session.metadata?.dob  || '';
+
+  if (!email) {
+    console.error('[DNA] No email in checkout session');
+    return;
+  }
+
+  const emailHash = await hashEmail(email);
+
+  await env.DB.prepare(`
+    INSERT INTO orders (id, email, email_hash, product_id, amount, status, birth_data, completed_at)
+    VALUES (?, ?, ?, 'dna_profile', 900, 'completed', ?, CURRENT_TIMESTAMP)
+    ON CONFLICT(id) DO UPDATE SET status = 'completed', completed_at = CURRENT_TIMESTAMP
+  `).bind(session.id, email, emailHash, JSON.stringify({ dob, name })).run()
+    .catch((e: Error) => console.warn('[DNA] D1 insert warn:', e.message));
+
+  console.log(`[DNA] Purchase recorded for ${emailHash}`);
 }
 
 // ── Helpers ─────────────────────────────────────────────

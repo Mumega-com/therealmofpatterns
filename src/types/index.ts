@@ -210,6 +210,9 @@ export interface Env {
 
   /** @deprecated Use STRIPE_PRO_MONTHLY_PRICE_ID */
   STRIPE_PRO_PRICE_ID?: string;
+
+  // One-time product: Cosmic DNA Profile ($9)
+  STRIPE_DNA_PRICE_ID?: string;
 }
 
 // ============================================

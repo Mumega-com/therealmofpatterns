@@ -1,0 +1,1046 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Your Cosmic DNA Profile is Ready | Realm of Patterns"
+  description="Your purchase is confirmed. Generating your personal AI context document."
+  showHeader={false}
+  showFooter={false}
+>
+  <div class="success-page">
+
+    <div class="bg" aria-hidden="true">
+      <div class="glow"></div>
+    </div>
+
+    <!-- STEP 1: Verifying payment -->
+    <div class="step" id="step-verifying">
+      <div class="spinner"></div>
+      <h1>Verifying your payment…</h1>
+      <p>Just a moment.</p>
+    </div>
+
+    <!-- STEP 2: Generating profile -->
+    <div class="step" id="step-generating" hidden>
+      <div class="orb-ring">
+        <div class="orb-inner" id="archetype-icon">◆</div>
+      </div>
+      <h1>Generating your Cosmic DNA Profile…</h1>
+      <p id="generating-sub">Computing 8 dimensions from planetary positions at your birth</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- STEP 3: Ready — download -->
+    <div class="step" id="step-ready" hidden>
+      <div class="ready-icon">✦</div>
+      <h1>Your profile is ready, <span id="ready-name">Explorer</span>.</h1>
+      <p class="ready-sub">Download your PDF and paste your AI Context Block into any AI assistant.</p>
+
+      <div class="profile-preview" id="profile-preview">
+        <!-- filled by JS -->
+      </div>
+
+      <button class="btn-download" id="btn-download">
+        <span>Download Your Cosmic DNA Profile PDF</span>
+        <span class="dl-icon">↓</span>
+      </button>
+
+      <div class="ready-next">
+        <p class="next-label">✦ What to do with it</p>
+        <ol class="next-steps">
+          <li>Open the PDF and find <strong>Page 6 — AI Context Block</strong></li>
+          <li>Copy the block and paste it at the start of any ChatGPT or Claude conversation</li>
+          <li>Ask anything — the AI now understands your energy, timing, and shadow patterns</li>
+        </ol>
+      </div>
+
+      <div class="ready-links">
+        <a href="/sol" class="ready-link">Track your daily energy free →</a>
+        <a href="/dna" class="ready-link muted">Back to DNA page</a>
+      </div>
+    </div>
+
+    <!-- STEP 4: Error -->
+    <div class="step" id="step-error" hidden>
+      <div class="error-icon">⚠</div>
+      <h1>Something went wrong</h1>
+      <p id="error-msg">We couldn't verify your payment. Please contact support.</p>
+      <div class="error-actions">
+        <a href="mailto:support@therealmofpatterns.com" class="btn-support">Contact Support</a>
+        <a href="/dna" class="btn-back">Back to DNA Page</a>
+      </div>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script>
+  // ── Archetype data ──────────────────────────────────────
+  const ARCHETYPES = [
+    { title: 'The Hero',      icon: '☀', shadow: 'Ego / hiding your light' },
+    { title: 'The Ruler',     icon: '♄', shadow: 'Rigidity / control' },
+    { title: 'The Sage',      icon: '☿', shadow: 'Overthinking / detachment' },
+    { title: 'The Creator',   icon: '♀', shadow: 'People-pleasing / vanity' },
+    { title: 'The Explorer',  icon: '♃', shadow: 'Restlessness / avoidance' },
+    { title: 'The Warrior',   icon: '♂', shadow: 'Burnout / aggression' },
+    { title: 'The Caregiver', icon: '☽', shadow: 'Martyrdom / boundary loss' },
+    { title: 'The Mystic',    icon: '♅', shadow: 'Dissociation / escapism' },
+  ];
+
+  const DIM_NAMES = ['Identity','Structure','Mind','Heart','Growth','Drive','Connection','Awareness'];
+  const DIM_ICONS = ['☀','♄','☿','♀','♃','♂','☽','♅'];
+  const DIM_DESC = [
+    'Self-expression, confidence, creative authority',
+    'Discipline, stability, structure-building',
+    'Communication, analysis, pattern recognition',
+    'Beauty, harmony, emotional intelligence',
+    'Expansion, meaning, philosophical depth',
+    'Action, courage, decisive movement',
+    'Empathy, relationships, deep connection',
+    'Intuition, presence, field awareness',
+  ];
+  const STAGES = ['Nigredo','Albedo','Citrinitas','Rubedo'];
+  const STAGE_SUB = ['Reset — dissolving the old','Clarity — seeing what is','Growth — stepping into power','Flow — everything integrating'];
+
+  // ── Steps ───────────────────────────────────────────────
+  function show(id: string) {
+    ['step-verifying','step-generating','step-ready','step-error'].forEach(s => {
+      const el = document.getElementById(s);
+      if (el) el.hidden = s !== id;
+    });
+  }
+
+  function setProgress(pct: number) {
+    const bar = document.getElementById('progress-fill');
+    if (bar) bar.style.width = `${pct}%`;
+  }
+
+  function setGeneratingSub(text: string) {
+    const el = document.getElementById('generating-sub');
+    if (el) el.textContent = text;
+  }
+
+  // ── Main flow ───────────────────────────────────────────
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+
+  if (!sessionId) {
+    document.getElementById('error-msg')!.textContent = 'No session ID found. Please return to the DNA page.';
+    show('step-error');
+  } else {
+    run(sessionId);
+  }
+
+  async function run(sid: string) {
+    show('step-verifying');
+
+    // 1. Verify payment
+    let profile: { name: string; dob: string; email: string } | null = null;
+    try {
+      const res = await fetch(`/api/dna-verify?session_id=${encodeURIComponent(sid)}`);
+      const data = await res.json() as { success: boolean; name?: string; dob?: string; email?: string; error?: string };
+      if (!data.success) throw new Error(data.error || 'Verification failed');
+      profile = { name: data.name || 'Explorer', dob: data.dob!, email: data.email || '' };
+    } catch (e: any) {
+      document.getElementById('error-msg')!.textContent = e.message || 'Payment verification failed. Please contact support.';
+      show('step-error');
+      return;
+    }
+
+    // 2. Generate profile
+    show('step-generating');
+    setProgress(10);
+
+    const [year, month, day] = profile.dob.split('-').map(Number);
+
+    setGeneratingSub('Calculating planetary positions at your birth…');
+    setProgress(25);
+
+    let vector: number[] = [];
+    let dominantIdx = 2;
+
+    try {
+      const res = await fetch('/api/preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ birth_data: { year, month, day, hour: 12, latitude: 0, longitude: 0 } }),
+      });
+      if (res.ok) {
+        const data = await res.json() as { vector?: number[]; dominant?: { index: number } };
+        vector = data.vector || [];
+        dominantIdx = data.dominant?.index ?? findDominant(vector);
+      }
+    } catch { /* use fallback */ }
+
+    if (vector.length === 0) {
+      vector = fallbackVector(year, month, day);
+      dominantIdx = findDominant(vector);
+    }
+
+    setGeneratingSub('Mapping your 8 dimensions…');
+    setProgress(55);
+
+    await delay(600);
+
+    setGeneratingSub('Building your AI Context Block…');
+    setProgress(80);
+
+    await delay(500);
+
+    setProgress(100);
+    await delay(300);
+
+    // 3. Show ready state
+    const archetype = ARCHETYPES[dominantIdx];
+    document.getElementById('archetype-icon')!.textContent = archetype.icon;
+    document.getElementById('ready-name')!.textContent = profile.name;
+
+    renderProfilePreview(profile.name, vector, dominantIdx, year, month, day);
+
+    show('step-ready');
+
+    // Wire download button
+    document.getElementById('btn-download')!.addEventListener('click', () => {
+      generateAndDownload(profile!.name, profile!.dob, vector, dominantIdx);
+    });
+
+    // Auto-trigger after 1 second
+    setTimeout(() => generateAndDownload(profile!.name, profile!.dob, vector, dominantIdx), 1000);
+  }
+
+  // ── Profile preview card ────────────────────────────────
+  function renderProfilePreview(name: string, vector: number[], dominantIdx: number, year: number, month: number, day: number) {
+    const weakestIdx = findWeakest(vector);
+    const archetype = ARCHETYPES[dominantIdx];
+    const avg = vector.reduce((a, b) => a + b, 0) / (vector.length || 1);
+    const stageIdx = avg > 0.75 ? 3 : avg > 0.55 ? 2 : avg > 0.35 ? 1 : 0;
+
+    const top4 = vector.map((v, i) => ({ i, v })).sort((a, b) => b.v - a.v).slice(0, 4);
+
+    const el = document.getElementById('profile-preview')!;
+    el.innerHTML = `
+      <div class="pp-header">
+        <span class="pp-icon">${archetype.icon}</span>
+        <div>
+          <p class="pp-name">${name}</p>
+          <p class="pp-archetype">${archetype.title} · ${STAGES[stageIdx]}</p>
+        </div>
+      </div>
+      <div class="pp-dims">
+        ${top4.map(({ i, v }) => `
+          <div class="pp-dim">
+            <span class="pp-dim-icon">${DIM_ICONS[i]}</span>
+            <span class="pp-dim-name">${DIM_NAMES[i]}</span>
+            <div class="pp-dim-bar-wrap">
+              <div class="pp-dim-bar" style="width:${Math.round(v*100)}%"></div>
+            </div>
+            <span class="pp-dim-pct">${Math.round(v*100)}%</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="pp-shadow">
+        <span class="pp-shadow-label">Shadow pattern:</span>
+        <span class="pp-shadow-val">${archetype.shadow}</span>
+      </div>
+    `;
+  }
+
+  // ── PDF generation (jsPDF via dynamic import) ───────────
+  async function generateAndDownload(name: string, dob: string, vector: number[], dominantIdx: number) {
+    const btn = document.getElementById('btn-download') as HTMLButtonElement;
+    btn.textContent = 'Generating PDF…';
+    btn.disabled = true;
+
+    try {
+      // Dynamic import of jsPDF (already in the bundle via pdf-generator.ts)
+      const { jsPDF } = await import('jspdf');
+      const { default: autoTable } = await import('jspdf-autotable');
+
+      const weakestIdx = findWeakest(vector);
+      const archetype = ARCHETYPES[dominantIdx];
+      const avg = vector.reduce((a, b) => a + b, 0) / (vector.length || 1);
+      const stageIdx = avg > 0.75 ? 3 : avg > 0.55 ? 2 : avg > 0.35 ? 1 : 0;
+      const [year, month, day] = dob.split('-').map(Number);
+      const peakHours = dominantIdx <= 2 ? '9–11am, 3–5pm' : dominantIdx <= 5 ? '10am–12pm, 4–6pm' : '7–9am, 8–10pm';
+
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const W = doc.internal.pageSize.getWidth();
+      const H = doc.internal.pageSize.getHeight();
+      const M = 20;
+      let y = M;
+
+      const gold = [212, 168, 84] as [number, number, number];
+      const dark = [10, 9, 8] as [number, number, number];
+      const textColor = [240, 232, 216] as [number, number, number];
+      const mutedColor = [160, 148, 128] as [number, number, number];
+
+      // ── PAGE 1: Cover ──────────────────────────────────────
+      doc.setFillColor(...dark);
+      doc.rect(0, 0, W, H, 'F');
+
+      // Gold accent line at top
+      doc.setFillColor(...gold);
+      doc.rect(0, 0, W, 2, 'F');
+
+      // Symbol
+      doc.setFontSize(36);
+      doc.setTextColor(...gold);
+      doc.text(archetype.icon, W / 2, 55, { align: 'center' });
+
+      // Title
+      doc.setFontSize(22);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...textColor);
+      doc.text('COSMIC DNA PROFILE', W / 2, 75, { align: 'center' });
+
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(...mutedColor);
+      doc.text('The Realm of Patterns', W / 2, 83, { align: 'center' });
+
+      // Divider
+      doc.setDrawColor(...gold);
+      doc.setLineWidth(0.3);
+      doc.line(M + 20, 90, W - M - 20, 90);
+
+      // Name & archetype
+      doc.setFontSize(18);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(...textColor);
+      doc.text(name, W / 2, 105, { align: 'center' });
+
+      doc.setFontSize(13);
+      doc.setTextColor(...gold);
+      doc.text(archetype.title, W / 2, 115, { align: 'center' });
+
+      doc.setFontSize(10);
+      doc.setTextColor(...mutedColor);
+      doc.text(`Stage: ${STAGES[stageIdx]} — ${STAGE_SUB[stageIdx]}`, W / 2, 125, { align: 'center' });
+
+      // DOB
+      const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      doc.text(`Born: ${months[month - 1]} ${day}, ${year}`, W / 2, 135, { align: 'center' });
+
+      // Footer on cover
+      doc.setFontSize(8);
+      doc.setTextColor(80, 72, 60);
+      doc.text('therealmofpatterns.com · Personal AI Context Document', W / 2, H - 15, { align: 'center' });
+
+      // ── PAGE 2: 8 Dimensions ──────────────────────────────
+      doc.addPage();
+      doc.setFillColor(...dark);
+      doc.rect(0, 0, W, H, 'F');
+      y = M;
+
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...gold);
+      doc.text('YOUR 8-DIMENSION MAP', M, y);
+      y += 3;
+      doc.setDrawColor(...gold);
+      doc.setLineWidth(0.3);
+      doc.line(M, y, W - M, y);
+      y += 10;
+
+      const sorted = vector.map((v, i) => ({ i, v })).sort((a, b) => b.v - a.v);
+      const tableRows = sorted.map(({ i, v }) => {
+        const pct = Math.round(v * 100);
+        const bar = '█'.repeat(Math.round(v * 12)) + '░'.repeat(12 - Math.round(v * 12));
+        return [DIM_ICONS[i], DIM_NAMES[i], `${pct}%`, bar, DIM_DESC[i]];
+      });
+
+      autoTable(doc, {
+        startY: y,
+        head: [['', 'Dimension', 'Score', 'Level', 'Domain']],
+        body: tableRows,
+        theme: 'plain',
+        headStyles: {
+          fillColor: [25, 22, 16],
+          textColor: gold,
+          fontStyle: 'bold',
+          fontSize: 9,
+        },
+        bodyStyles: {
+          fillColor: [15, 14, 10],
+          textColor: textColor,
+          fontSize: 8.5,
+          lineColor: [40, 36, 28],
+          lineWidth: 0.1,
+        },
+        alternateRowStyles: { fillColor: [20, 18, 13] },
+        columnStyles: {
+          0: { cellWidth: 8, halign: 'center', fontSize: 10 },
+          1: { cellWidth: 28, fontStyle: 'bold' },
+          2: { cellWidth: 14, halign: 'right', textColor: gold },
+          3: { cellWidth: 26, fontStyle: 'bold', textColor: [180, 140, 60] },
+          4: { cellWidth: 60, textColor: mutedColor },
+        },
+        margin: { left: M, right: M },
+      });
+
+      // ── PAGE 3: Archetype & Stage ─────────────────────────
+      doc.addPage();
+      doc.setFillColor(...dark);
+      doc.rect(0, 0, W, H, 'F');
+      y = M;
+
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...gold);
+      doc.text('COSMIC SIGNATURE', M, y);
+      y += 3;
+      doc.line(M, y, W - M, y);
+      y += 12;
+
+      doc.setFontSize(28);
+      doc.text(archetype.icon, M, y);
+      doc.setFontSize(16);
+      doc.setTextColor(...textColor);
+      doc.text(archetype.title, M + 14, y - 2);
+      doc.setFontSize(10);
+      doc.setTextColor(...mutedColor);
+      doc.text(`Primary archetype — dominant ${DIM_NAMES[dominantIdx]} dimension (${DIM_ICONS[dominantIdx]})`, M + 14, y + 5);
+      y += 18;
+
+      doc.setFontSize(10);
+      doc.setTextColor(...textColor);
+      const archetypeText = `Your dominant dimension is ${DIM_NAMES[dominantIdx]} — ${DIM_DESC[dominantIdx].toLowerCase()}. This is the lens through which you naturally engage with the world. Your archetype carries both a gift and a shadow. The gift is your natural strength; the shadow is where growth lives.`;
+      const lines1 = doc.splitTextToSize(archetypeText, W - 2 * M);
+      doc.text(lines1, M, y);
+      y += lines1.length * 5 + 10;
+
+      doc.setFillColor(25, 22, 16);
+      doc.rect(M, y, W - 2 * M, 22, 'F');
+      doc.setDrawColor(...gold);
+      doc.setLineWidth(0.3);
+      doc.rect(M, y, W - 2 * M, 22);
+      doc.setFontSize(9);
+      doc.setTextColor(...gold);
+      doc.text('GIFT:', M + 4, y + 7);
+      doc.setTextColor(...textColor);
+      doc.text(`Natural mastery of ${DIM_NAMES[dominantIdx].toLowerCase()} — your superpower when integrated`, M + 18, y + 7);
+      doc.setTextColor(200, 100, 100);
+      doc.text('SHADOW:', M + 4, y + 14);
+      doc.setTextColor(...mutedColor);
+      doc.text(archetype.shadow, M + 22, y + 14);
+      y += 32;
+
+      // Stage
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...gold);
+      doc.text('CURRENT STAGE', M, y);
+      y += 3;
+      doc.line(M, y, W - M, y);
+      y += 10;
+
+      doc.setFontSize(14);
+      doc.setTextColor(...textColor);
+      doc.text(STAGES[stageIdx], M, y);
+      doc.setFontSize(10);
+      doc.setTextColor(...mutedColor);
+      doc.text(STAGE_SUB[stageIdx], M + 30, y);
+      y += 10;
+
+      const stageDescriptions: Record<string, string> = {
+        Nigredo: 'You are in a period of dissolution — the old structures are breaking down to make space for something new. This is not failure; it is composting. Trust the darkness.',
+        Albedo: 'You are in a period of purification and clarity. The chaos has settled enough to see clearly. This is a time for reflection, discernment, and honest assessment.',
+        Citrinitas: 'You are in an illumination phase — insights are arriving faster than you can integrate them. Solar energy is high. This is your window for bold action and creative output.',
+        Rubedo: 'You are in a phase of integration — the Great Work approaching completion. What was fragmented is becoming whole. Honor this by deepening commitments, not chasing new beginnings.',
+      };
+      doc.setFontSize(10);
+      doc.setTextColor(...textColor);
+      const stageLines = doc.splitTextToSize(stageDescriptions[STAGES[stageIdx]], W - 2 * M);
+      doc.text(stageLines, M, y);
+
+      // ── PAGE 4: Patterns & Timing ─────────────────────────
+      doc.addPage();
+      doc.setFillColor(...dark);
+      doc.rect(0, 0, W, H, 'F');
+      y = M;
+
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...gold);
+      doc.text('PATTERNS & TIMING', M, y);
+      y += 3;
+      doc.line(M, y, W - M, y);
+      y += 12;
+
+      const patternRows = [
+        ['Communication style', `${DIM_NAMES[dominantIdx]}-led — ${dominantIdx <= 2 ? 'direct, structured, analytical' : dominantIdx <= 4 ? 'expansive, meaning-focused, story-driven' : 'empathic, somatic, relational'}`],
+        ['Peak energy windows', peakHours],
+        ['Stress signature', `${ARCHETYPES[weakestIdx].shadow.split(' ')[0].toLowerCase()} response — ${DIM_NAMES[weakestIdx]} dimension is under-developed`],
+        ['Shadow tendency', archetype.shadow],
+        ['Best day for big decisions', dominantIdx % 2 === 0 ? 'Thursday or Sunday' : 'Tuesday or Saturday'],
+        ['Recovery mode', dominantIdx >= 6 ? 'Solitude and nature' : dominantIdx >= 4 ? 'Movement and variety' : 'Deep focus and completion'],
+      ];
+
+      autoTable(doc, {
+        startY: y,
+        body: patternRows,
+        theme: 'plain',
+        bodyStyles: {
+          fillColor: [15, 14, 10],
+          textColor: textColor,
+          fontSize: 9,
+          lineColor: [40, 36, 28],
+          lineWidth: 0.1,
+        },
+        alternateRowStyles: { fillColor: [20, 18, 13] },
+        columnStyles: {
+          0: { cellWidth: 50, fontStyle: 'bold', textColor: gold },
+          1: { cellWidth: 110 },
+        },
+        margin: { left: M, right: M },
+      });
+
+      // ── PAGE 5: AI Context Block ───────────────────────────
+      doc.addPage();
+      doc.setFillColor(...dark);
+      doc.rect(0, 0, W, H, 'F');
+      y = M;
+
+      // Gold border box header
+      doc.setFillColor(25, 22, 16);
+      doc.rect(M, y, W - 2 * M, 12, 'F');
+      doc.setDrawColor(...gold);
+      doc.rect(M, y, W - 2 * M, 12);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...gold);
+      doc.text('AI CONTEXT BLOCK', W / 2, y + 8, { align: 'center' });
+      y += 16;
+
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(...mutedColor);
+      const instrText = 'Copy the block below and paste it at the start of any conversation with ChatGPT, Claude, Gemini, or any AI assistant. The AI will calibrate its responses to your energy profile.';
+      const instrLines = doc.splitTextToSize(instrText, W - 2 * M);
+      doc.text(instrLines, M, y);
+      y += instrLines.length * 4.5 + 6;
+
+      // The block itself
+      const blockText = [
+        `═══════════════════════════════════════════════════`,
+        `COSMIC DNA PROFILE — ${name.toUpperCase()}`,
+        `Born: ${months[month - 1]} ${day}, ${year}`,
+        `Stage: ${STAGES[stageIdx]} (${STAGE_SUB[stageIdx].split('—')[0].trim()})`,
+        `Archetype: ${archetype.title}`,
+        ``,
+        `ENERGY DIMENSIONS (ranked by strength):`,
+        ...sorted.map(({ i, v }) =>
+          `• ${DIM_NAMES[i]} (${DIM_ICONS[i]}): ${Math.round(v * 100)}% — ${DIM_DESC[i].split(',')[0]}`
+        ),
+        ``,
+        `SHADOW PATTERN: ${archetype.shadow}`,
+        `WEAK DIMENSION: ${DIM_NAMES[weakestIdx]} (${DIM_ICONS[weakestIdx]}) — growth edge`,
+        `PEAK WINDOWS: ${peakHours}`,
+        ``,
+        `HOW TO USE THIS PROFILE:`,
+        `Paste this block at the start of any AI conversation, then ask`,
+        `your question. The AI will respond with your profile in mind.`,
+        `Example: "Given my profile above, help me plan my week."`,
+        `═══════════════════════════════════════════════════`,
+      ].join('\n');
+
+      doc.setFillColor(12, 11, 8);
+      doc.setDrawColor(...gold);
+      doc.setLineWidth(0.4);
+      const blockHeight = 110;
+      doc.rect(M, y, W - 2 * M, blockHeight, 'F');
+      doc.rect(M, y, W - 2 * M, blockHeight);
+
+      doc.setFontSize(7.5);
+      doc.setTextColor(200, 185, 150);
+      doc.setFont('courier', 'normal');
+      const blockLines = doc.splitTextToSize(blockText, W - 2 * M - 8);
+      doc.text(blockLines, M + 4, y + 6);
+      y += blockHeight + 8;
+
+      // Prompt suggestions
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(...gold);
+      doc.text('PROMPT SUGGESTIONS:', M, y);
+      y += 6;
+
+      const prompts = [
+        `"Given my profile above, what's the best way for me to handle conflict?"`,
+        `"Given my profile above, plan my ideal work day for peak output."`,
+        `"Given my profile above, what's my biggest blind spot right now?"`,
+        `"Given my profile above, help me write an email to [person] about [topic]."`,
+      ];
+      doc.setFontSize(8.5);
+      doc.setTextColor(...mutedColor);
+      prompts.forEach(p => {
+        doc.text(`→ ${p}`, M + 3, y);
+        y += 5.5;
+      });
+
+      // ── PAGE 6: Daily Practice ────────────────────────────
+      doc.addPage();
+      doc.setFillColor(...dark);
+      doc.rect(0, 0, W, H, 'F');
+      y = M;
+
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...gold);
+      doc.text('DAILY PRACTICE', M, y);
+      y += 3;
+      doc.line(M, y, W - M, y);
+      y += 12;
+
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(...textColor);
+      doc.text('Your profile is a living document. Here\'s how to use it every day:', M, y);
+      y += 10;
+
+      const practices = [
+        ['Morning', `Check in with your ${DIM_NAMES[dominantIdx].toLowerCase()} dimension. Am I expressing it or suppressing it today?`],
+        ['Before decisions', `Ask: "Is this aligned with my ${archetype.title} archetype or am I acting from my shadow (${archetype.shadow.split('—')[0].trim()})?"` ],
+        ['With AI tools', `Paste your AI Context Block before asking for advice, writing help, or planning.`],
+        ['Weekly reflection', `Note when your peak windows (${peakHours}) produced your best work. Adjust your schedule.`],
+        ['Monthly', `Update your AI Context Block if your stage or kappa shifts significantly.`],
+      ];
+
+      practices.forEach(([label, text]) => {
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...gold);
+        doc.text(`${label}:`, M, y);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...mutedColor);
+        const pLines = doc.splitTextToSize(text, W - 2 * M - 22);
+        doc.text(pLines, M + 22, y);
+        y += Math.max(pLines.length * 5, 6) + 4;
+      });
+
+      y += 8;
+      doc.setFillColor(20, 18, 13);
+      doc.setDrawColor(...gold);
+      doc.rect(M, y, W - 2 * M, 30, 'F');
+      doc.rect(M, y, W - 2 * M, 30);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...textColor);
+      doc.text('Track your daily energy free:', M + 5, y + 9);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(...gold);
+      doc.text('therealmofpatterns.com', M + 5, y + 17);
+      doc.setFontSize(8.5);
+      doc.setTextColor(...mutedColor);
+      doc.text('Daily check-ins · Streak tracking · Pattern trends over time', M + 5, y + 24);
+
+      // ── Footer on all pages ────────────────────────────────
+      const totalPages = doc.getNumberOfPages();
+      for (let p = 1; p <= totalPages; p++) {
+        doc.setPage(p);
+        doc.setFillColor(...dark);
+        doc.rect(0, H - 12, W, 12, 'F');
+        doc.setFontSize(7.5);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(80, 72, 60);
+        doc.text(`The Realm of Patterns · Cosmic DNA Profile · ${name}`, M, H - 4);
+        doc.text(`Page ${p} of ${totalPages}`, W - M, H - 4, { align: 'right' });
+      }
+
+      // Save
+      const filename = `cosmic-dna-${name.toLowerCase().replace(/\s+/g, '-')}-${dob}.pdf`;
+      doc.save(filename);
+
+      btn.textContent = 'Downloaded ✓  Generate again';
+      btn.disabled = false;
+    } catch (err) {
+      console.error('PDF generation failed:', err);
+      btn.textContent = 'Download failed — try again';
+      btn.disabled = false;
+    }
+  }
+
+  // ── Utils ────────────────────────────────────────────────
+  function findDominant(v: number[]): number {
+    let max = 0, idx = 0;
+    v.forEach((val, i) => { if (val > max) { max = val; idx = i; } });
+    return idx;
+  }
+
+  function findWeakest(v: number[]): number {
+    let min = Infinity, idx = 0;
+    v.forEach((val, i) => { if (val < min) { min = val; idx = i; } });
+    return idx;
+  }
+
+  function fallbackVector(year: number, month: number, day: number): number[] {
+    const seed = year * 10000 + month * 100 + day;
+    let s = seed;
+    return Array.from({ length: 8 }, () => {
+      s = (s * 1664525 + 1013904223) & 0xffffffff;
+      return 0.3 + (Math.abs(s) / 0xffffffff) * 0.5;
+    });
+  }
+
+  function delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+</script>
+
+<style>
+  .success-page {
+    --gold:       #d4a854;
+    --gold-dim:   rgba(212,168,84,0.25);
+    --dark:       #0a0908;
+    --border:     rgba(212,168,84,0.15);
+    --text:       #f0e8d8;
+    --text-muted: rgba(240,232,216,0.6);
+    --text-dim:   rgba(240,232,216,0.35);
+    --green:      #4ade80;
+
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(212,168,84,0.12) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(60px);
+  }
+
+  /* Steps */
+  .step {
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .step h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 300;
+    color: var(--text);
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  .step > p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* Spinner */
+  .spinner {
+    width: 44px;
+    height: 44px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Generating orb */
+  .orb-ring {
+    width: 72px;
+    height: 72px;
+    border: 2px solid var(--gold-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    animation: orbit 3s linear infinite;
+  }
+
+  @keyframes orbit {
+    0%   { box-shadow: 0 0 0 0 rgba(212,168,84,0.3); }
+    50%  { box-shadow: 0 0 30px 10px rgba(212,168,84,0.1); }
+    100% { box-shadow: 0 0 0 0 rgba(212,168,84,0.3); }
+  }
+
+  .orb-inner {
+    font-size: 1.8rem;
+    color: var(--gold);
+    animation: pulse-icon 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-icon {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.7; transform: scale(1.1); }
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 3px;
+    margin: 1.5rem auto 0;
+    max-width: 300px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), #e8c88a);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* Ready */
+  .ready-icon {
+    font-size: 2.5rem;
+    color: var(--gold);
+    animation: pulse-icon 2s ease-in-out infinite;
+  }
+
+  .ready-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 440px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.6;
+  }
+
+  /* Profile preview */
+  .profile-preview {
+    background: rgba(212,168,84,0.04);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+
+  .pp-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pp-icon {
+    font-size: 1.5rem;
+    color: var(--gold);
+  }
+
+  .pp-name {
+    font-size: 1rem;
+    color: var(--text);
+    margin: 0 0 0.2rem;
+    font-weight: 500;
+  }
+
+  .pp-archetype {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    color: var(--gold);
+    margin: 0;
+  }
+
+  .pp-dims {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .pp-dim {
+    display: grid;
+    grid-template-columns: 1.2rem 5.5rem 1fr 2.5rem;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .pp-dim-icon { color: var(--gold); font-size: 0.85rem; }
+
+  .pp-dim-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .pp-dim-bar-wrap {
+    height: 3px;
+    background: rgba(212,168,84,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .pp-dim-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), #e8c88a);
+    border-radius: 3px;
+  }
+
+  .pp-dim-pct {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    color: var(--gold);
+    text-align: right;
+  }
+
+  .pp-shadow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .pp-shadow-label { color: rgba(200,100,100,0.7); }
+  .pp-shadow-val   { color: var(--text-dim); }
+
+  /* Download button */
+  .btn-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, var(--gold) 0%, #b8924a 100%);
+    color: #0a0908;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 24px rgba(212,168,84,0.3);
+    margin-bottom: 2rem;
+  }
+
+  .btn-download:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(212,168,84,0.4);
+  }
+
+  .btn-download:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  .dl-icon { font-size: 1.2rem; }
+
+  /* Next steps */
+  .ready-next {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+
+  .next-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 0.75rem;
+  }
+
+  .next-steps {
+    padding-left: 1.25rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .next-steps li {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .next-steps strong { color: var(--text); }
+
+  .ready-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .ready-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--gold);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .ready-link:hover { opacity: 0.75; }
+  .ready-link.muted { color: var(--text-dim); }
+
+  /* Error */
+  .error-icon {
+    font-size: 2.5rem;
+    color: rgba(200, 100, 100, 0.8);
+    margin-bottom: 0.5rem;
+  }
+
+  .error-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .btn-support {
+    padding: 0.875rem 1.5rem;
+    background: var(--gold);
+    color: #0a0908;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+
+  .btn-support:hover { background: #e8c88a; }
+
+  .btn-back {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .btn-back:hover { color: var(--gold); }
+</style>
