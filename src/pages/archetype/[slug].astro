@@ -1,0 +1,1245 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// ─────────────────────────────────────────────────────────
+// ARCHETYPE DATA
+// ─────────────────────────────────────────────────────────
+
+const ARCHETYPES = {
+  sage: {
+    id: 'sage',
+    name: 'The Sage',
+    symbol: '☿',
+    planet: 'Mercury',
+    planetSymbol: '☿',
+    element: 'Air',
+    color: '#a78bfa',
+    searchTitle: 'The Sage Archetype — Mercury Dominant | Realm of Patterns',
+    metaDescription: 'If your mind never stops and you see patterns everywhere, you might carry the Sage archetype. Discover what this Mercury-dominant energy means for your work, relationships, and hidden gift.',
+    headline: 'The mind that never stops is not broken — it\'s a Sage without a map',
+    subheadline: 'If you\'ve ever been told you overthink everything, you may not have an anxiety problem. You may have a Mercury-dominant energy pattern that hasn\'t been named yet.',
+    burdenHeadline: 'What it feels like to carry Sage energy unnamed',
+    burdens: [
+      'Your mind races through every possible outcome before you can act',
+      'You see connections and implications others miss — and feel lonely for it',
+      'People call your depth "overthinking" and your questions "too much"',
+      'You live in your head and sometimes forget you have a body',
+      'You process everything: conversations, ideas, problems — constantly',
+      'You need to understand things before you can trust them',
+    ],
+    giftHeadline: 'The Sage gift: seeing beneath the surface of everything',
+    giftBody: 'What looks like anxiety is actually pattern recognition running at high speed. What feels like overthinking is actually multi-dimensional analysis. The Sage doesn\'t just see what is — they see what could be, what connects, what hides beneath the obvious. This is rare. This is the gift.',
+    giftHighlights: [
+      'Synthesizing complexity into insight',
+      'Teaching and translating — making the complex clear',
+      'Research and deep investigation',
+      'Connecting disparate fields and ideas',
+      'Finding the truth underneath the surface',
+    ],
+    shadowHeadline: 'The Sage shadow: paralysis and detachment',
+    shadowBody: 'The Sage\'s shadow is living in the mind at the expense of the body and the present moment. Analysis becomes paralysis. Understanding becomes a prerequisite for everything — including love, rest, and action. The Sage shadow hoards knowledge without sharing it, or shares it without warmth.',
+    shadowSigns: [
+      'Analysis paralysis — unable to decide or act',
+      'Emotional unavailability (processing instead of feeling)',
+      'Intellectual arrogance or detachment',
+      'Over-explaining, lecturing, correcting',
+      'Never finishing because the research is never complete',
+    ],
+    famousExamples: [
+      { name: 'Nikola Tesla', note: 'Visionary mind that saw what others couldn\'t — and struggled to manifest it' },
+      { name: 'Marie Curie', note: 'Obsessive depth of inquiry, crossing fields others thought unrelated' },
+      { name: 'Alan Watts', note: 'Teaching complex truths through connected patterns and analogy' },
+      { name: 'David Lynch', note: 'Translating the subconscious into visible form through layered meaning' },
+    ],
+    inDailyLife: [
+      { context: 'At work', note: 'You\'re the one who asks "but why does it work this way?" — and you\'re often right.' },
+      { context: 'In relationships', note: 'You love deeply through understanding, but struggle when others don\'t want to be analyzed.' },
+      { context: 'Under stress', note: 'You retreat into research and analysis to avoid feeling the emotion directly.' },
+      { context: 'At your best', note: 'You make the incomprehensible suddenly clear. You change people\'s thinking forever.' },
+    ],
+    relatedArchetypes: ['mystic', 'creator', 'ruler'],
+    cta: 'Your Mercury-dominant pattern shapes how you think, learn, and connect. Discover exactly how it shows up in your 8-dimension map.',
+    painParam: 'sage',
+  },
+
+  hero: {
+    id: 'hero',
+    name: 'The Hero',
+    symbol: '☀',
+    planet: 'Sun',
+    planetSymbol: '☉',
+    element: 'Fire',
+    color: '#fbbf24',
+    searchTitle: 'The Hero Archetype — Sun Dominant | Realm of Patterns',
+    metaDescription: 'If you feel invisible or misunderstood despite everything you give, you may carry Hero archetype energy. Discover what Sun-dominant patterns mean for your identity, purpose, and hidden gift.',
+    headline: 'Feeling invisible is the Hero\'s wound — not their destiny',
+    subheadline: 'If you\'ve always felt like you were made for something bigger but the world keeps looking past you, this is the Sun-dominant pattern most people never learn to read.',
+    burdenHeadline: 'What it feels like to carry Hero energy unnamed',
+    burdens: [
+      'You feel invisible — like people see you but not who you actually are',
+      'You dim yourself to fit in, then resent it',
+      'You carry an inner sense of purpose you can\'t quite articulate',
+      'You lead naturally but feel lonely at the top',
+      'You struggle with self-doubt that doesn\'t match your outer confidence',
+      'You want to be seen — really seen — more than almost anything',
+    ],
+    giftHeadline: 'The Hero gift: igniting what matters in others',
+    giftBody: 'The Hero\'s radiance isn\'t performance — it\'s authentic solar force. When the Hero knows who they are, they don\'t just lead: they illuminate. They make others feel capable, seen, and called toward something greater. The Hero\'s gift is not achievement — it\'s inspiration.',
+    giftHighlights: [
+      'Galvanizing others toward shared purpose',
+      'Embodying courage in visible ways',
+      'Creating presence that changes the energy of a room',
+      'Stepping into leadership when no one else will',
+      'Inspiring by being — not just doing',
+    ],
+    shadowHeadline: 'The Hero shadow: ego and the need to be the center',
+    shadowBody: 'The Hero\'s shadow is the ego that mistakes recognition for identity. When the Hero hasn\'t done the work, they seek attention rather than giving light. Arrogance replaces confidence, performance replaces authenticity, and the need for admiration poisons genuine connection.',
+    shadowSigns: [
+      'Craving validation and recognition constantly',
+      'Feeling threatened by other strong people',
+      'Taking over rather than empowering',
+      'Performing strength while feeling hollow inside',
+      'Difficulty following, collaborating, or admitting weakness',
+    ],
+    famousExamples: [
+      { name: 'Nelson Mandela', note: 'Radiance through suffering — authentic solar force' },
+      { name: 'Malala Yousafzai', note: 'Purpose that burns even under threat' },
+      { name: 'Steve Jobs', note: 'Vision so clear it bent reality (shadow: the tyranny under the vision)' },
+      { name: 'Brené Brown', note: 'Courage to be seen authentically — teaching the Hero wound directly' },
+    ],
+    inDailyLife: [
+      { context: 'At work', note: 'You see the vision clearly and can articulate it — but must resist doing it all yourself.' },
+      { context: 'In relationships', note: 'You want a partner who sees you fully and isn\'t threatened by your light.' },
+      { context: 'Under stress', note: 'You either double down on performance or collapse inward and go quiet.' },
+      { context: 'At your best', note: 'You make people believe they can do things they thought were impossible.' },
+    ],
+    relatedArchetypes: ['warrior', 'ruler', 'explorer'],
+    cta: 'Your Sun-dominant pattern encodes how you express identity, find purpose, and step into leadership. Discover your full 8-dimension map.',
+    painParam: 'hero',
+  },
+
+  ruler: {
+    id: 'ruler',
+    name: 'The Ruler',
+    symbol: '♄',
+    planet: 'Saturn',
+    planetSymbol: '♄',
+    element: 'Earth',
+    color: '#78716c',
+    searchTitle: 'The Ruler Archetype — Saturn Dominant | Realm of Patterns',
+    metaDescription: 'If you control everything because letting go terrifies you, you may carry Ruler archetype energy. Discover what Saturn-dominant patterns mean for your structure, authority, and hidden gift.',
+    headline: 'The need to control everything is the Ruler\'s wound — not their wisdom',
+    subheadline: 'If you\'ve built systems and structures everywhere and still feel like nothing is secure enough, this is the Saturn-dominant pattern that both protects and imprisons.',
+    burdenHeadline: 'What it feels like to carry Ruler energy unnamed',
+    burdens: [
+      'You control everything because chaos feels like a personal failure',
+      'You hold impossibly high standards for yourself and others',
+      'Rest feels unearned — you don\'t know how to stop',
+      'You\'ve built a lot but rarely let yourself enjoy it',
+      'You take responsibility for things that aren\'t yours to carry',
+      'You fear being seen as weak, incompetent, or not enough',
+    ],
+    giftHeadline: 'The Ruler gift: building what lasts',
+    giftBody: 'The Ruler\'s discipline isn\'t rigidity — it\'s the force that turns vision into reality. The Ruler can do what most cannot: hold a long-term commitment in a world of short attention spans. They build institutions, systems, and legacies that outlast them. Structure isn\'t their prison. It\'s their art.',
+    giftHighlights: [
+      'Building systems that scale and endure',
+      'Holding organizations and people accountable with integrity',
+      'Seeing the long game when others chase short wins',
+      'Creating reliable, trustworthy structures others can stand on',
+      'Mastering a domain through sustained, disciplined effort',
+    ],
+    shadowHeadline: 'The Ruler shadow: rigidity and the fear of chaos',
+    shadowBody: 'When the Ruler hasn\'t met their wound, control becomes tyranny. Rules become prisons. The standard becomes a weapon. The Ruler shadow micro-manages, criticizes, and hoards power — not from malice but from the deep, unnamed terror that without control, everything falls apart.',
+    shadowSigns: [
+      'Micro-managing out of distrust, not strategy',
+      'Using rules as weapons to maintain dominance',
+      'Inability to rest, play, or be spontaneous',
+      'Harsh self-criticism and perfectionism',
+      'Difficulty delegating or trusting others',
+    ],
+    famousExamples: [
+      { name: 'Angela Merkel', note: 'Disciplined, structural leadership that built lasting stability' },
+      { name: 'Warren Buffett', note: 'Saturn patience — playing the long game while others chase quick wins' },
+      { name: 'Marcus Aurelius', note: 'Power tempered by philosophy, duty without ego' },
+      { name: 'Anna Wintour', note: 'Structure as aesthetic — order as creative force (with the shadow fully visible)' },
+    ],
+    inDailyLife: [
+      { context: 'At work', note: 'You are the person others rely on completely — which means you carry weight others don\'t see.' },
+      { context: 'In relationships', note: 'You love through reliability and provision — but need to learn that presence matters more than performance.' },
+      { context: 'Under stress', note: 'You double down on control, work harder, systemize more — and wonder why you feel empty.' },
+      { context: 'At your best', note: 'You are the backbone people didn\'t know they needed. You make the impossible sustainable.' },
+    ],
+    relatedArchetypes: ['hero', 'sage', 'warrior'],
+    cta: 'Your Saturn-dominant pattern encodes how you build, commit, and create lasting order. Discover your full 8-dimension map.',
+    painParam: 'ruler',
+  },
+
+  creator: {
+    id: 'creator',
+    name: 'The Creator',
+    symbol: '♀',
+    planet: 'Venus',
+    planetSymbol: '♀',
+    element: 'Earth',
+    color: '#f472b6',
+    searchTitle: 'The Creator Archetype — Venus Dominant | Realm of Patterns',
+    metaDescription: 'If you lose yourself in others and give everything but feel empty, you may carry Creator archetype energy. Discover what Venus-dominant patterns mean for your beauty, connection, and hidden gift.',
+    headline: 'Losing yourself in others is the Creator\'s wound — not their love language',
+    subheadline: 'If beauty, harmony, and connection feel like your deepest needs — and yet you keep ending up depleted — this is the Venus-dominant pattern that gives everything until there\'s nothing left.',
+    burdenHeadline: 'What it feels like to carry Creator energy unnamed',
+    burdens: [
+      'You lose yourself in others — their needs, moods, and worlds',
+      'You feel empty after giving so much of yourself',
+      'You struggle to receive as naturally as you give',
+      'Beauty and meaning matter deeply to you — and feel trivial to others',
+      'You create things that move people, then minimize what you made',
+      'Connection is everything to you, and loneliness is your deepest wound',
+    ],
+    giftHeadline: 'The Creator gift: bringing beauty into being',
+    giftBody: 'The Creator doesn\'t just appreciate beauty — they generate it. From chaos they pull form. From disconnection they build bridges. The Creator\'s gift is not decoration but transformation: turning raw human experience into something that makes people feel less alone. This is the highest form of making.',
+    giftHighlights: [
+      'Translating feeling into form (art, design, writing, music)',
+      'Creating beauty that carries emotional truth',
+      'Building connection between people who felt separate',
+      'Making spaces, relationships, and experiences feel alive',
+      'Seeing the aesthetic dimension of everything',
+    ],
+    shadowHeadline: 'The Creator shadow: self-erasure and approval addiction',
+    shadowBody: 'The Creator\'s shadow is making themselves the offering. When the Creator hasn\'t done the work, they give themselves away in relationships, create for approval rather than truth, and confuse love with self-loss. Beauty becomes a mask. Connection becomes a transaction for validation.',
+    shadowSigns: [
+      'Codependence — losing identity in partnerships',
+      'Creating for approval rather than expression',
+      'Suppressing strong desires to keep peace',
+      'Difficulty saying no to people they love',
+      'Comparing their work to others and feeling inadequate',
+    ],
+    famousExamples: [
+      { name: 'Frida Kahlo', note: 'Creator in full force — pain transformed into undeniable beauty' },
+      { name: 'Coco Chanel', note: 'Beauty as liberation, form as philosophy' },
+      { name: 'James Baldwin', note: 'Love and connection through truth, even when it costs everything' },
+      { name: 'Joni Mitchell', note: 'The Creator shadow and gift fully visible — self-loss and self-creation in equal measure' },
+    ],
+    inDailyLife: [
+      { context: 'At work', note: 'You make everything more beautiful and connected — and rarely get credit for the invisible labor this requires.' },
+      { context: 'In relationships', note: 'You feel everything deeply and need a partner who can meet that depth without being overwhelmed.' },
+      { context: 'Under stress', note: 'You either create obsessively (escape) or give yourself away to someone who needs you (avoidance).' },
+      { context: 'At your best', note: 'You make people feel that beauty is possible in their ordinary life. That\'s a revolution.' },
+    ],
+    relatedArchetypes: ['caregiver', 'mystic', 'sage'],
+    cta: 'Your Venus-dominant pattern encodes how you create, connect, and bring beauty into being. Discover your full 8-dimension map.',
+    painParam: 'creator',
+  },
+
+  explorer: {
+    id: 'explorer',
+    name: 'The Explorer',
+    symbol: '♃',
+    planet: 'Jupiter',
+    planetSymbol: '♃',
+    element: 'Fire',
+    color: '#60a5fa',
+    searchTitle: 'The Explorer Archetype — Jupiter Dominant | Realm of Patterns',
+    metaDescription: 'If you feel restless and know you\'re meant for more but can\'t find it, you may carry Explorer archetype energy. Discover what Jupiter-dominant patterns mean for your expansion, purpose, and hidden gift.',
+    headline: 'Restlessness is the Explorer\'s compass — not their problem',
+    subheadline: 'If you\'ve never been able to stay in one place — physically, intellectually, or spiritually — and something in you knows you\'re meant for something bigger, this is the Jupiter-dominant pattern most people mistake for commitment issues.',
+    burdenHeadline: 'What it feels like to carry Explorer energy unnamed',
+    burdens: [
+      'You feel restless even when life looks good from the outside',
+      'You start things with intensity and lose interest before finishing',
+      'People call you inconsistent — you call it following the signal',
+      'Settling feels like death, but you don\'t know what you\'re looking for',
+      'You\'ve tried more paths than most people have thought about',
+      'The horizon is always more alive than where you are',
+    ],
+    giftHeadline: 'The Explorer gift: expanding what\'s possible for everyone',
+    giftBody: 'The Explorer doesn\'t just find new territory — they make it possible for others to follow. The restlessness isn\'t distraction: it\'s a calibrated signal pointing toward growth that hasn\'t happened yet. The Explorer\'s gift is the willingness to go first, to test the edge, to bring back what they found.',
+    giftHighlights: [
+      'Synthesizing wisdom across fields and traditions',
+      'Opening doors others didn\'t know existed',
+      'Teaching through lived experience, not theory',
+      'Inspiring through the quality of their seeking',
+      'Seeing possibility where others see obstacle',
+    ],
+    shadowHeadline: 'The Explorer shadow: escape and the unfinished life',
+    shadowBody: 'The Explorer\'s shadow mistakes movement for growth. When the work gets hard — or the intimacy gets real — the Explorer disappears into the next adventure. The shadow avoids depth through breadth, avoids commitment through possibility, avoids the self through constant external stimulation.',
+    shadowSigns: [
+      'Abandoning things (projects, relationships, cities) before they mature',
+      'Mistaking novelty for meaning',
+      'Uncomfortable with stillness, silence, or depth',
+      'Making promises they can\'t keep because the future feels open',
+      'Philosophy without practice — knowing without embodying',
+    ],
+    famousExamples: [
+      { name: 'Jack Kerouac', note: 'The Explorer archetype distilled — freedom as both gift and prison' },
+      { name: 'Richard Feynman', note: 'Curiosity without borders, play as the engine of genius' },
+      { name: 'Elizabeth Gilbert', note: 'Turning the Explorer wound into the Explorer gift — publicly' },
+      { name: 'Bruce Lee', note: 'Philosophical explorer who kept moving until he found his own form' },
+    ],
+    inDailyLife: [
+      { context: 'At work', note: 'You thrive in early-stage, possibility-rich environments. You struggle when you have to maintain what you built.' },
+      { context: 'In relationships', note: 'You need a partner who grows with you — and you need to learn that depth requires staying.' },
+      { context: 'Under stress', note: 'You physically or mentally leave. A new project, a new plan, a new idea — anything but sitting with it.' },
+      { context: 'At your best', note: 'You expand what other people believe is possible. You make the future feel closer.' },
+    ],
+    relatedArchetypes: ['hero', 'mystic', 'warrior'],
+    cta: 'Your Jupiter-dominant pattern encodes how you grow, seek, and expand the edges of what\'s possible. Discover your full 8-dimension map.',
+    painParam: 'explorer',
+  },
+
+  warrior: {
+    id: 'warrior',
+    name: 'The Warrior',
+    symbol: '♂',
+    planet: 'Mars',
+    planetSymbol: '♂',
+    element: 'Fire',
+    color: '#f87171',
+    searchTitle: 'The Warrior Archetype — Mars Dominant | Realm of Patterns',
+    metaDescription: 'If you push too hard and burn out because you can\'t seem to slow down, you may carry Warrior archetype energy. Discover what Mars-dominant patterns mean for your drive, direction, and hidden gift.',
+    headline: 'Burning out is the Warrior\'s signal — not their failure',
+    subheadline: 'If you drive harder than anyone around you and still can\'t understand why it doesn\'t feel like enough, this is the Mars-dominant pattern that contains extraordinary force — and is waiting for the right direction.',
+    burdenHeadline: 'What it feels like to carry Warrior energy unnamed',
+    burdens: [
+      'You push past limits until your body forces you to stop',
+      'Rest feels like weakness or falling behind',
+      'Your intensity comes out sideways — as anger, impatience, or control',
+      'You know how to fight but don\'t always know what you\'re fighting for',
+      'People feel your force even when you\'re trying to be gentle',
+      'You\'ve won things that didn\'t satisfy you, and you don\'t know why',
+    ],
+    giftHeadline: 'The Warrior gift: decisive force in service of something real',
+    giftBody: 'The Warrior\'s intensity is not the problem. Intensity without direction is the problem. When the Warrior finds a cause that\'s worth their sword — a real injustice, a genuine challenge, a mountain that needs climbing — they are unstoppable. The Warrior\'s gift is the courage to act when others are still deliberating.',
+    giftHighlights: [
+      'Cutting through ambiguity to decisive action',
+      'Protecting what matters without hesitation',
+      'Completing what others start and abandon',
+      'Holding ground under pressure when others fold',
+      'Making hard things look effortless through sheer will',
+    ],
+    shadowHeadline: 'The Warrior shadow: force without wisdom',
+    shadowBody: 'Force without direction destroys what it was supposed to protect. The Warrior shadow attacks problems that require conversation, wins battles that cost them the war, and mistakes aggression for strength. The shadow Warrior doesn\'t know when to sheathe the sword — and ends up alone in the ruins of what they fought for.',
+    shadowSigns: [
+      'Aggression or impatience that damages relationships',
+      'Fighting for the sake of fighting — losing the larger purpose',
+      'Burnout cycles: drive hard, collapse, repeat',
+      'Difficulty being vulnerable or asking for help',
+      'Competing in contexts that call for collaboration',
+    ],
+    famousExamples: [
+      { name: 'Malala Yousafzai', note: 'Warrior force directed by moral clarity — fighting the right battle' },
+      { name: 'Serena Williams', note: 'Mars discipline and competitive fire transformed into legacy' },
+      { name: 'Che Guevara', note: 'The Warrior shadow made visible — force that overrode wisdom' },
+      { name: 'Winston Churchill', note: 'Warrior energy that found its true purpose only at the last hour' },
+    ],
+    inDailyLife: [
+      { context: 'At work', note: 'You get things done when others talk. But you can exhaust teams if you don\'t pace yourself.' },
+      { context: 'In relationships', note: 'You love protectively and intensely. You need a partner who can handle your force without being flattened by it.' },
+      { context: 'Under stress', note: 'You push harder. Which works until it doesn\'t — and then you crash completely.' },
+      { context: 'At your best', note: 'You are the person people call when it really matters. You show up. You deliver. You protect.' },
+    ],
+    relatedArchetypes: ['hero', 'ruler', 'explorer'],
+    cta: 'Your Mars-dominant pattern encodes where your force comes from and where it needs to go. Discover your full 8-dimension map.',
+    painParam: 'warrior',
+  },
+
+  caregiver: {
+    id: 'caregiver',
+    name: 'The Caregiver',
+    symbol: '☽',
+    planet: 'Moon',
+    planetSymbol: '☽',
+    element: 'Water',
+    color: '#94a3b8',
+    searchTitle: 'The Caregiver Archetype — Moon Dominant | Realm of Patterns',
+    metaDescription: 'If you absorb everyone\'s emotions and carry burdens that aren\'t yours, you may carry Caregiver archetype energy. Discover what Moon-dominant patterns mean for your empathy, care, and hidden gift.',
+    headline: 'Absorbing everyone\'s pain is the Caregiver\'s wound — not their purpose',
+    subheadline: 'If you feel others\' emotions as if they were your own, and you can\'t figure out where you end and they begin, this is the Moon-dominant pattern that makes you the most attuned person in any room — and the most exhausted.',
+    burdenHeadline: 'What it feels like to carry Caregiver energy unnamed',
+    burdens: [
+      'You feel others\' emotions as intensely as your own',
+      'You carry emotional labor that nobody asked you to carry',
+      'You put everyone else\'s needs first and feel guilty when you don\'t',
+      'Boundaries feel like rejection — to you and to others',
+      'You know what people feel before they know themselves',
+      'Emotional exhaustion is your baseline, not your exception',
+    ],
+    giftHeadline: 'The Caregiver gift: the intelligence that holds everything together',
+    giftBody: 'The Caregiver doesn\'t just feel — they attune. This is a form of intelligence that most systems undervalue and yet cannot function without. The Caregiver knows who in the room is struggling before anyone has said a word. They create safety, belonging, and the invisible infrastructure that lets others thrive. This is not soft power. This is the kind of power that builds civilizations.',
+    giftHighlights: [
+      'Creating emotional safety that allows others to open',
+      'Sensing what\'s needed before it\'s asked for',
+      'Healing through presence, not just action',
+      'Building communities and families that actually function',
+      'Holding space for complexity without needing to fix it',
+    ],
+    shadowHeadline: 'The Caregiver shadow: self-erasure and martyrdom',
+    shadowBody: 'The Caregiver\'s shadow mistakes self-sacrifice for love. The shadow Caregiver gives until they\'re empty, then resents those they gave to — and then feels guilty for the resentment. They cannot receive care without discomfort. They enable instead of empowering, and they lose themselves in service to avoid confronting their own needs.',
+    shadowSigns: [
+      'Chronic exhaustion from carrying others\' weight',
+      'Resentment that never gets spoken aloud',
+      'Guilt when saying no or putting needs first',
+      'Enabling others instead of empowering them',
+      'Losing identity in the role of helper or parent',
+    ],
+    famousExamples: [
+      { name: 'Princess Diana', note: 'The Caregiver gift as public force — and the Caregiver wound as tragedy' },
+      { name: 'Fred Rogers', note: 'Emotional attunement as life\'s work — pure Caregiver at its highest' },
+      { name: 'Toni Morrison', note: 'Holding community through storytelling — care as cultural preservation' },
+      { name: 'Thich Nhat Hanh', note: 'Compassion as practice, not martyrdom — the Caregiver healed' },
+    ],
+    inDailyLife: [
+      { context: 'At work', note: 'You hold the team\'s emotional health without a title or compensation for doing it.' },
+      { context: 'In relationships', note: 'You love by anticipating needs. You need to learn to speak yours clearly — they can\'t read you the way you read them.' },
+      { context: 'Under stress', note: 'You care for others more. Because focusing on their needs lets you avoid your own.' },
+      { context: 'At your best', note: 'You create belonging wherever you go. People feel truly seen around you — and they remember it forever.' },
+    ],
+    relatedArchetypes: ['creator', 'mystic', 'sage'],
+    cta: 'Your Moon-dominant pattern encodes your emotional intelligence and how you give, receive, and hold space. Discover your full 8-dimension map.',
+    painParam: 'caregiver',
+  },
+
+  mystic: {
+    id: 'mystic',
+    name: 'The Mystic',
+    symbol: '♅',
+    planet: 'Uranus / Neptune',
+    planetSymbol: '♅',
+    element: 'Water / Air',
+    color: '#818cf8',
+    searchTitle: 'The Mystic Archetype — Uranus Dominant | Realm of Patterns',
+    metaDescription: 'If you feel like you don\'t belong here and see what others seem to miss, you may carry Mystic archetype energy. Discover what Uranus-dominant patterns mean for your perception, purpose, and hidden gift.',
+    headline: 'Not belonging is the Mystic\'s initiation — not their sentence',
+    subheadline: 'If you\'ve always felt like you\'re tuned to a frequency others can\'t quite hear — and you\'ve spent a lifetime wondering if that makes you broken — this is the Uranus-dominant pattern that sees what\'s coming before it arrives.',
+    burdenHeadline: 'What it feels like to carry Mystic energy unnamed',
+    burdens: [
+      'You feel out of place in most rooms, in most conversations',
+      'You perceive undercurrents in situations that others completely miss',
+      'People don\'t quite understand you, even when they like you',
+      'Your knowing arrives as feeling first — you sense before you understand',
+      'You\'ve had experiences that don\'t fit into ordinary categories',
+      'You belong everywhere and nowhere at the same time',
+    ],
+    giftHeadline: 'The Mystic gift: perception that crosses the visible edge',
+    giftBody: 'The Mystic doesn\'t just see differently — they see what hasn\'t happened yet, what exists beneath what\'s visible, and what connects what appears separate. This isn\'t mysticism as fantasy. This is a real cognitive and perceptual capacity that the world needs: the ability to sense the system beneath the surface and name it before others can see it.',
+    giftHighlights: [
+      'Perceiving patterns before they manifest visibly',
+      'Synthesizing across paradigms and belief systems',
+      'Holding paradox and complexity without collapsing it',
+      'Access to non-ordinary knowledge through intuition',
+      'Being the person who names what everyone felt but couldn\'t say',
+    ],
+    shadowHeadline: 'The Mystic shadow: dissociation and the refusal to land',
+    shadowBody: 'The Mystic\'s shadow uses perception as an escape from ordinary human reality. Rather than bringing their gifts back to earth, the shadow Mystic floats above — perpetually receiving, never grounding, building elaborate inner worlds that substitute for actual life. The gift becomes a prison: too sensitive for the world, too special to engage with it.',
+    shadowSigns: [
+      'Dissociation — present in body, absent in reality',
+      'Escaping into spiritual bypassing or endless seeking',
+      'Difficulty with practical, material life (money, logistics, bodies)',
+      'Feeling superior to ordinary concerns',
+      'Knowing but not doing — wisdom without application',
+    ],
+    famousExamples: [
+      { name: 'Carl Jung', note: 'The Mystic who grounded his perception into a practical system for healing' },
+      { name: 'Rumi', note: 'The Mystic gift as language — bringing the invisible into words' },
+      { name: 'Simone Weil', note: 'Mystic perception taken to its extreme — the shadow visible in the gift' },
+      { name: 'Pema Chödrön', note: 'The Mystic who chose to land — bringing the gift back to ordinary human pain' },
+    ],
+    inDailyLife: [
+      { context: 'At work', note: 'You sense what\'s happening in organizations before the data shows it. You\'re rarely wrong — and rarely believed in time.' },
+      { context: 'In relationships', note: 'You need someone who wants to go deep and can handle the full complexity of who you are without simplifying you.' },
+      { context: 'Under stress', note: 'You withdraw into inner worlds — meditation, reading, solitude. You need this, and must learn when it\'s restoration vs. avoidance.' },
+      { context: 'At your best', note: 'You change the frame. You name what was unnamed. You make the invisible visible — and the world shifts.' },
+    ],
+    relatedArchetypes: ['sage', 'creator', 'caregiver'],
+    cta: 'Your Uranus-dominant pattern encodes your perceptual range and the edge you\'re meant to carry. Discover your full 8-dimension map.',
+    painParam: 'mystic',
+  },
+};
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'sage' } },
+    { params: { slug: 'hero' } },
+    { params: { slug: 'ruler' } },
+    { params: { slug: 'creator' } },
+    { params: { slug: 'explorer' } },
+    { params: { slug: 'warrior' } },
+    { params: { slug: 'caregiver' } },
+    { params: { slug: 'mystic' } },
+  ];
+}
+
+const { slug } = Astro.params;
+const arch = ARCHETYPES[slug as keyof typeof ARCHETYPES];
+
+if (!arch) {
+  return Astro.redirect('/404');
+}
+
+const ALL_ARCHETYPES = Object.values(ARCHETYPES);
+const relatedArchs = arch.relatedArchetypes.map(id => ARCHETYPES[id as keyof typeof ARCHETYPES]).filter(Boolean);
+
+// JSON-LD structured data
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": arch.headline,
+  "description": arch.metaDescription,
+  "url": `https://therealmofpatterns.com/archetype/${arch.id}`,
+  "author": {
+    "@type": "Organization",
+    "name": "Realm of Patterns"
+  },
+  "about": {
+    "@type": "Thing",
+    "name": `${arch.name} Archetype`,
+    "description": arch.metaDescription
+  }
+});
+---
+
+<BaseLayout
+  title={arch.searchTitle}
+  description={arch.metaDescription}
+>
+  <script type="application/ld+json" set:html={jsonLd} is:inline />
+
+  <div class="arch-page">
+
+    <div class="bg-layer" aria-hidden="true">
+      <div class="glow g1" style={`--glow-color: ${arch.color}22`}></div>
+      <div class="glow g2"></div>
+    </div>
+
+    <!-- ── BREADCRUMB ─────────────────────────────────────── -->
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="/">Realm of Patterns</a>
+      <span>›</span>
+      <a href="/archetype/sage">Archetypes</a>
+      <span>›</span>
+      <span>{arch.name}</span>
+    </nav>
+
+    <!-- ── HERO ──────────────────────────────────────────── -->
+    <header class="arch-hero">
+      <div class="arch-hero-inner">
+
+        <div class="arch-badge" style={`color: ${arch.color}; border-color: ${arch.color}44; background: ${arch.color}11`}>
+          <span class="arch-symbol">{arch.symbol}</span>
+          <span>{arch.planet} · {arch.element}</span>
+        </div>
+
+        <h1 class="arch-name">{arch.name}</h1>
+        <p class="arch-headline">{arch.headline}</p>
+        <p class="arch-subheadline">{arch.subheadline}</p>
+
+        <div class="hero-ctas">
+          <a href={`/hidden-gifts`} class="btn-primary">
+            Find my archetype →
+          </a>
+          <a href="/dna" class="btn-secondary">
+            Get your full profile — $27
+          </a>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- ── BURDEN SECTION ─────────────────────────────────── -->
+    <section class="content-section burdens-section">
+      <div class="container">
+
+        <div class="section-eyebrow">✦ Recognition</div>
+        <h2 class="section-h2">{arch.burdenHeadline}</h2>
+
+        <div class="burden-grid">
+          {arch.burdens.map(burden => (
+            <div class="burden-item">
+              <span class="burden-check" style={`color: ${arch.color}`}>◆</span>
+              <p>{burden}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="recognition-note">
+          <p>If more than three of these land — you're likely carrying {arch.name} energy. Keep reading.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── GIFT SECTION ───────────────────────────────────── -->
+    <section class="content-section gift-section">
+      <div class="container">
+
+        <div class="section-eyebrow" style={`color: ${arch.color}`}>◈ The Hidden Gift</div>
+        <h2 class="section-h2">{arch.giftHeadline}</h2>
+        <p class="section-body">{arch.giftBody}</p>
+
+        <div class="gift-highlights">
+          {arch.giftHighlights.map(highlight => (
+            <div class="gift-item">
+              <span class="gift-dot" style={`background: ${arch.color}`}></span>
+              <span>{highlight}</span>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── SHADOW SECTION ─────────────────────────────────── -->
+    <section class="content-section shadow-section">
+      <div class="container">
+
+        <div class="section-eyebrow">◉ The Shadow</div>
+        <h2 class="section-h2">{arch.shadowHeadline}</h2>
+        <p class="section-body">{arch.shadowBody}</p>
+
+        <div class="shadow-signs">
+          <p class="shadow-label">Signs the shadow is running:</p>
+          <ul class="shadow-list">
+            {arch.shadowSigns.map(sign => (
+              <li>{sign}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="shadow-note">
+          <p>
+            The shadow isn't the enemy — it's the unmet wound asking for attention.
+            Naming it is the first step to integrating it.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── IN DAILY LIFE ──────────────────────────────────── -->
+    <section class="content-section daily-section">
+      <div class="container">
+
+        <div class="section-eyebrow">✦ In Practice</div>
+        <h2 class="section-h2">How {arch.name} energy shows up in everyday life</h2>
+
+        <div class="daily-grid">
+          {arch.inDailyLife.map(item => (
+            <div class="daily-card">
+              <div class="daily-context" style={`color: ${arch.color}`}>{item.context}</div>
+              <p class="daily-note">{item.note}</p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── FAMOUS EXAMPLES ────────────────────────────────── -->
+    <section class="content-section examples-section">
+      <div class="container">
+
+        <div class="section-eyebrow">◈ Known Carriers</div>
+        <h2 class="section-h2">Famous people with {arch.name} dominant energy</h2>
+
+        <div class="examples-grid">
+          {arch.famousExamples.map(ex => (
+            <div class="example-card">
+              <div class="example-name" style={`color: ${arch.color}`}>{ex.name}</div>
+              <p class="example-note">{ex.note}</p>
+            </div>
+          ))}
+        </div>
+
+        <p class="examples-caveat">
+          Archetype readings are interpretive, not definitive. These examples show how the energy
+          can manifest — not that these individuals would identify this way.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- ── CTA BLOCK ──────────────────────────────────────── -->
+    <section class="cta-section">
+      <div class="container">
+
+        <div class="cta-card">
+          <div class="cta-symbol" style={`color: ${arch.color}`}>{arch.symbol}</div>
+          <h2 class="cta-heading">Is {arch.name} your dominant pattern?</h2>
+          <p class="cta-body">{arch.cta}</p>
+
+          <div class="cta-btns">
+            <a href="/hidden-gifts" class="btn-cta-primary">
+              Find my archetype — free
+            </a>
+            <a href="/dna" class="btn-cta-secondary">
+              Get the full profile — $27
+            </a>
+          </div>
+
+          <div class="cta-reassurance">
+            <span>No signup required</span>
+            <span>·</span>
+            <span>Takes 30 seconds</span>
+            <span>·</span>
+            <span>Based on your birth date</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── COMPARE NUDGE ──────────────────────────────────── -->
+    <section class="compare-nudge-section">
+      <div class="container">
+        <a href="/compare" class="compare-nudge-link">
+          ◈ Want to know if you and someone you love are compatible? Compare your patterns →
+        </a>
+      </div>
+    </section>
+
+    <!-- ── ALL ARCHETYPES ─────────────────────────────────── -->
+    <section class="content-section all-archs-section">
+      <div class="container">
+
+        <div class="section-eyebrow">✦ The 8 Patterns</div>
+        <h2 class="section-h2">Explore all archetypes</h2>
+
+        <div class="archs-grid">
+          {ALL_ARCHETYPES.map(a => (
+            <a
+              href={`/archetype/${a.id}`}
+              class={`arch-card ${a.id === arch.id ? 'arch-card--active' : ''}`}
+              style={`--card-color: ${a.color}`}
+            >
+              <span class="arch-card-symbol">{a.symbol}</span>
+              <span class="arch-card-name">{a.name}</span>
+            </a>
+          ))}
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  /* ── LAYOUT ─────────────────────────────────────────── */
+  .arch-page {
+    min-height: 100vh;
+    background: #0a0a0f;
+    color: #e8e4db;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.4;
+  }
+
+  .g1 {
+    width: 600px; height: 600px;
+    top: -200px; right: -100px;
+    background: var(--glow-color, #d4a85422);
+  }
+
+  .g2 {
+    width: 400px; height: 400px;
+    bottom: 20%; left: -150px;
+    background: #1a1040;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── BREADCRUMB ─────────────────────────────────────── */
+  .breadcrumb {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px 24px 0;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #6b6b7a;
+  }
+
+  .breadcrumb a { color: #6b6b7a; text-decoration: none; }
+  .breadcrumb a:hover { color: #d4a854; }
+
+  /* ── HERO ────────────────────────────────────────────── */
+  .arch-hero {
+    padding: 60px 0 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .arch-hero-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .arch-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    border: 1px solid;
+    border-radius: 100px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .arch-symbol { font-size: 18px; }
+
+  .arch-name {
+    font-size: clamp(40px, 8vw, 72px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    margin: 0 0 24px;
+    color: #f0ead8;
+  }
+
+  .arch-headline {
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 400;
+    line-height: 1.4;
+    margin: 0 0 16px;
+    color: #d4a854;
+  }
+
+  .arch-subheadline {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #9d9bad;
+    max-width: 600px;
+    margin: 0 auto 40px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: #d4a854;
+    color: #0a0a0f;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .btn-primary:hover { opacity: 0.88; }
+
+  .btn-secondary {
+    display: inline-block;
+    background: transparent;
+    color: #d4a854;
+    padding: 14px 28px;
+    border-radius: 8px;
+    border: 1px solid #d4a85444;
+    font-size: 15px;
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: #d4a854; }
+
+  /* ── CONTENT SECTIONS ────────────────────────────────── */
+  .content-section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .burdens-section { background: #0d0d15; }
+  .gift-section { background: #0a0a0f; }
+  .shadow-section { background: #0d0d15; }
+  .daily-section { background: #0a0a0f; }
+  .examples-section { background: #0d0d15; }
+  .all-archs-section { background: #0a0a0f; }
+
+  .section-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #d4a854;
+    margin-bottom: 16px;
+  }
+
+  .section-h2 {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 400;
+    line-height: 1.3;
+    margin: 0 0 24px;
+    color: #f0ead8;
+  }
+
+  .section-body {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #b8b4c8;
+    margin-bottom: 32px;
+  }
+
+  /* ── BURDENS ─────────────────────────────────────────── */
+  .burden-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 560px) {
+    .burden-grid { grid-template-columns: 1fr; }
+  }
+
+  .burden-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #13131e;
+    border: 1px solid #1e1e2e;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .burden-check { font-size: 10px; margin-top: 4px; flex-shrink: 0; }
+
+  .burden-item p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #b8b4c8;
+  }
+
+  .recognition-note {
+    background: #1a1640;
+    border-left: 3px solid #d4a854;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .recognition-note p {
+    margin: 0;
+    font-size: 15px;
+    color: #e8c88a;
+    font-style: italic;
+  }
+
+  /* ── GIFT ────────────────────────────────────────────── */
+  .gift-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .gift-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    color: #d4cfe8;
+  }
+
+  .gift-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── SHADOW ──────────────────────────────────────────── */
+  .shadow-signs {
+    background: #130d0d;
+    border: 1px solid #2a1414;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .shadow-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #f87171;
+    margin: 0 0 16px;
+  }
+
+  .shadow-list {
+    margin: 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .shadow-list li {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #b8b4c8;
+  }
+
+  .shadow-note {
+    background: #13131e;
+    border: 1px solid #2a2a3e;
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+
+  .shadow-note p {
+    margin: 0;
+    font-size: 14px;
+    color: #7a7a8c;
+    font-style: italic;
+  }
+
+  /* ── DAILY LIFE ──────────────────────────────────────── */
+  .daily-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 560px) {
+    .daily-grid { grid-template-columns: 1fr; }
+  }
+
+  .daily-card {
+    background: #13131e;
+    border: 1px solid #1e1e2e;
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .daily-context {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .daily-note {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #b8b4c8;
+  }
+
+  /* ── EXAMPLES ────────────────────────────────────────── */
+  .examples-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 560px) {
+    .examples-grid { grid-template-columns: 1fr; }
+  }
+
+  .example-card {
+    background: #13131e;
+    border: 1px solid #1e1e2e;
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .example-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .example-note {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #7a7a8c;
+    font-style: italic;
+  }
+
+  .examples-caveat {
+    font-size: 12px;
+    color: #4a4a5c;
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* ── CTA SECTION ─────────────────────────────────────── */
+  .cta-section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 1;
+    background: #0d0d15;
+  }
+
+  .cta-card {
+    background: linear-gradient(135deg, #13131e 0%, #0d0820 100%);
+    border: 1px solid #2a2a40;
+    border-radius: 20px;
+    padding: 60px 40px;
+    text-align: center;
+  }
+
+  .cta-symbol {
+    font-size: 48px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .cta-heading {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 400;
+    margin: 0 0 16px;
+    color: #f0ead8;
+  }
+
+  .cta-body {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #9d9bad;
+    max-width: 520px;
+    margin: 0 auto 36px;
+  }
+
+  .cta-btns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .btn-cta-primary {
+    display: inline-block;
+    background: #d4a854;
+    color: #0a0a0f;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .btn-cta-primary:hover { opacity: 0.88; }
+
+  .btn-cta-secondary {
+    display: inline-block;
+    background: transparent;
+    color: #d4a854;
+    padding: 16px 32px;
+    border-radius: 8px;
+    border: 1px solid #d4a85444;
+    font-size: 15px;
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+
+  .btn-cta-secondary:hover { border-color: #d4a854; }
+
+  .cta-reassurance {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    font-size: 12px;
+    color: #4a4a5c;
+    flex-wrap: wrap;
+  }
+
+  /* ── COMPARE NUDGE ───────────────────────────────────── */
+  .compare-nudge-section {
+    padding: 32px 0;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    background: #0a0a0f;
+  }
+
+  .compare-nudge-link {
+    display: inline-block;
+    color: #7a7a8c;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .compare-nudge-link:hover { color: #d4a854; }
+
+  /* ── ALL ARCHETYPES GRID ─────────────────────────────── */
+  .archs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 560px) {
+    .archs-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .arch-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 12px;
+    background: #13131e;
+    border: 1px solid #1e1e2e;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .arch-card:hover {
+    border-color: var(--card-color, #d4a854);
+    background: #1a1a2a;
+  }
+
+  .arch-card--active {
+    border-color: var(--card-color, #d4a854) !important;
+    background: color-mix(in srgb, var(--card-color, #d4a854) 10%, #13131e) !important;
+  }
+
+  .arch-card-symbol {
+    font-size: 24px;
+    color: var(--card-color, #d4a854);
+  }
+
+  .arch-card-name {
+    font-size: 12px;
+    color: #7a7a8c;
+    text-align: center;
+  }
+
+  .arch-card--active .arch-card-name {
+    color: #e8e4db;
+  }
+</style>
