@@ -349,6 +349,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             Find my pattern →
           </button>
           <p class="final-price">$27 · one-time · PDF download</p>
+          <a href="/compare" class="compare-nudge-link">
+            ◈ Want to compare your pattern with someone you love?
+          </a>
         </div>
 
       </div>
@@ -1377,6 +1380,14 @@ PEAK WINDOWS: ${peakHrs}
     font-family: 'Inter', sans-serif;
     font-size: 0.8rem; color: var(--dim); margin: 0;
   }
+
+  .compare-nudge-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem; color: var(--gold);
+    text-decoration: none; opacity: 0.7;
+    transition: opacity 0.2s; margin-top: 0.5rem; display: block;
+  }
+  .compare-nudge-link:hover { opacity: 1; }
 
   /* ── FAQ ── */
   .faq-section {

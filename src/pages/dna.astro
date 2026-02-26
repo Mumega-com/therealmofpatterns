@@ -398,6 +398,12 @@ PROMPT: "Given my profile above, [your question]..."</pre>
           <p class="final-footer-note">
             Powered by real planetary ephemeris · Built on the <a href="/">Realm of Patterns</a> engine
           </p>
+
+          <div class="compare-nudge">
+            <a href="/compare" class="compare-nudge-link">
+              ◈ Want to compare your pattern with someone you love?
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -1656,6 +1662,22 @@ PEAK WINDOWS: ${peakHour}
     color: var(--gold);
     text-decoration: none;
   }
+
+  .compare-nudge {
+    margin-top: 1.25rem;
+    text-align: center;
+  }
+
+  .compare-nudge-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    color: var(--gold);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .compare-nudge-link:hover { opacity: 1; }
 
   /* ================================================
      RESPONSIVE
