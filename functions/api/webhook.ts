@@ -233,7 +233,7 @@ async function handleDnaPurchase(event: StripeEvent, env: Env) {
 
   await env.DB.prepare(`
     INSERT INTO orders (id, email, email_hash, product_id, amount, status, birth_data, completed_at)
-    VALUES (?, ?, ?, 'dna_profile', 900, 'completed', ?, CURRENT_TIMESTAMP)
+    VALUES (?, ?, ?, 'dna_profile', 2700, 'completed', ?, CURRENT_TIMESTAMP)
     ON CONFLICT(id) DO UPDATE SET status = 'completed', completed_at = CURRENT_TIMESTAMP
   `).bind(session.id, email, emailHash, JSON.stringify({ dob, name })).run()
     .catch((e: Error) => console.warn('[DNA] D1 insert warn:', e.message));

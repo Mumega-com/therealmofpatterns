@@ -1,6 +1,6 @@
 /**
  * POST /api/create-dna-checkout
- * Create a Stripe Checkout session for the one-time $9 Cosmic DNA Profile.
+ * Create a Stripe Checkout session for the one-time $27 Cosmic DNA Profile.
  *
  * Body: { email: string, name: string, dob: string }
  * Returns: { success: true, url: string }
