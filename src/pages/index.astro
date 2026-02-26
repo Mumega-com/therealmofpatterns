@@ -303,6 +303,7 @@ import { EmailCapture } from '../components/shared/EmailCapture';
             <span class="arrow">&rarr;</span>
           </a>
         </div>
+        <a href="/compare" class="compare-nudge">◈ Compare your pattern with someone you love →</a>
       </div>
     </section>
   </div>
@@ -1078,6 +1079,18 @@ import { EmailCapture } from '../components/shared/EmailCapture';
     justify-content: center;
     gap: 1rem;
   }
+
+  .compare-nudge {
+    display: block;
+    margin-top: 1.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--gold);
+    text-decoration: none;
+    opacity: 0.65;
+    transition: opacity 0.2s;
+  }
+  .compare-nudge:hover { opacity: 1; }
 
   /* ==========================================
      RESPONSIVE
