@@ -110,8 +110,8 @@ export async function onRequestPost(
 
     let historyContext = '';
     if (previousNarratives.results && previousNarratives.results.length > 0) {
-      historyContext = '\n\nPREVIOUS NARRATIVES (do not repeat themes or phrasing):\n' +
-        previousNarratives.results.map(n => `[${n.date}]: ${n.narrative.slice(0, 150)}...`).join('\n');
+      historyContext = '\n\nPREVIOUS NARRATIVES (acknowledge what has already been said — build forward from it, do not repeat themes or phrasing):\n' +
+        previousNarratives.results.map(n => `[${n.date}]: ${n.narrative.slice(0, 400)}...`).join('\n');
     }
 
     const fullUserPrompt = userPrompt + historyContext;
@@ -121,10 +121,12 @@ export async function onRequestPost(
     let modelUsed = '';
 
     if (isPro) {
-      // Pro: Gemini first
-      narrative = await callGemini(env, systemPrompt, fullUserPrompt);
+      // Weekly synthesis: use most capable model
+      // Daily Pro: Gemini 3 Flash
+      const geminiModel = isWeekly ? 'gemini-2.5-pro' : 'gemini-3-flash-preview';
+      narrative = await callGemini(env, systemPrompt, fullUserPrompt, geminiModel);
       if (narrative) {
-        modelUsed = 'gemini-2.5-flash-lite';
+        modelUsed = geminiModel;
       }
 
       // Pro fallback: OpenAI
@@ -136,7 +138,15 @@ export async function onRequestPost(
       }
     }
 
-    // Free users or all-Pro-models-failed: Workers AI
+    // Free users or all-Pro-models-failed: Gemini 2.5 Flash (better than Workers AI)
+    if (!narrative) {
+      narrative = await callGemini(env, systemPrompt, fullUserPrompt, 'gemini-2.5-flash');
+      if (narrative) {
+        modelUsed = 'gemini-2.5-flash';
+      }
+    }
+
+    // Last resort: Workers AI
     if (!narrative) {
       narrative = await callWorkersAI(env.AI, systemPrompt, fullUserPrompt);
       if (narrative) {
@@ -184,9 +194,9 @@ export async function onRequestPost(
 // ─── Model Calls ───────────────────────────────────────────
 
 /**
- * Call Gemini 2.0 Flash with key rotation.
+ * Call Gemini with key rotation. Model is caller-specified.
  */
-async function callGemini(env: Env, system: string, user: string): Promise<string | null> {
+async function callGemini(env: Env, system: string, user: string, model: string): Promise<string | null> {
   const keys: string[] = [];
   if (env.GEMINI_API_KEY) keys.push(env.GEMINI_API_KEY);
   if (env.GEMINI_API_KEY_2) keys.push(env.GEMINI_API_KEY_2);
@@ -197,7 +207,7 @@ async function callGemini(env: Env, system: string, user: string): Promise<strin
 
   if (keys.length === 0) return null;
 
-  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
   for (let i = 0; i < Math.min(keys.length, 3); i++) {
     try {
