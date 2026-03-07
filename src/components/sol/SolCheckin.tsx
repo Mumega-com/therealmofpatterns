@@ -3,6 +3,7 @@ import { updateForecast, setFailureMode } from '../../stores';
 import { SolCard, SolButton, SolProgress, SolAlert, SolBadge } from './SolCard';
 import { saveCheckin, getTodaysCheckin, getCheckinHistory, getYesterdaysKappa, type CheckinEntry } from '../../lib/checkin-storage';
 import { fetchNarrative, type NarratorResult } from '../../lib/narrator-client';
+import AuthGate from '../auth/AuthGate';
 
 interface CheckinQuestion {
   id: string;
@@ -92,6 +93,19 @@ interface SolCheckinProps {
 }
 
 export function SolCheckin({ onComplete, className = '' }: SolCheckinProps) {
+  return (
+    <AuthGate onAuth={(session) => {
+      // Sync Pro status from session
+      const user = JSON.parse(localStorage.getItem('rop_user') || '{}');
+      user.isPro = session.isPro;
+      localStorage.setItem('rop_user', JSON.stringify(user));
+    }}>
+      <SolCheckinInner onComplete={onComplete} className={className} />
+    </AuthGate>
+  );
+}
+
+function SolCheckinInner({ onComplete, className = '' }: SolCheckinProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [isComplete, setIsComplete] = useState(false);
