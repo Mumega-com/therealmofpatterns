@@ -3,7 +3,6 @@ import { updateForecast, setFailureMode } from '../../stores';
 import { SolCard, SolButton, SolProgress, SolAlert, SolBadge } from './SolCard';
 import { saveCheckin, getTodaysCheckin, getCheckinHistory, getYesterdaysKappa, type CheckinEntry } from '../../lib/checkin-storage';
 import { fetchNarrative, type NarratorResult } from '../../lib/narrator-client';
-import AuthGate from '../auth/AuthGate';
 
 interface CheckinQuestion {
   id: string;
@@ -93,19 +92,6 @@ interface SolCheckinProps {
 }
 
 export function SolCheckin({ onComplete, className = '' }: SolCheckinProps) {
-  return (
-    <AuthGate onAuth={(session) => {
-      // Sync Pro status from session
-      const user = JSON.parse(localStorage.getItem('rop_user') || '{}');
-      user.isPro = session.isPro;
-      localStorage.setItem('rop_user', JSON.stringify(user));
-    }}>
-      <SolCheckinInner onComplete={onComplete} className={className} />
-    </AuthGate>
-  );
-}
-
-function SolCheckinInner({ onComplete, className = '' }: SolCheckinProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [isComplete, setIsComplete] = useState(false);
@@ -239,8 +225,11 @@ function CheckinResult({
       })
       .catch(() => setReadingStatus('error'));
 
-    // If already opted in, silently reschedule for tomorrow
+    // Pre-fill email if previously entered
     const savedEmail = localStorage.getItem('rop_reminder_email');
+    if (savedEmail) setReminderEmail(savedEmail);
+
+    // If already opted in, silently reschedule for tomorrow
     if (savedEmail && localStorage.getItem('rop_reminder_active') === 'true') {
       setIsReminderActive(true);
       scheduleReminder(savedEmail); // fire and forget
@@ -273,6 +262,12 @@ function CheckinResult({
       localStorage.setItem('rop_reminder_active', 'true');
       setIsReminderActive(true);
       setReminderStatus('set');
+      // Background: send magic link so clicking tomorrow's reminder logs them in
+      fetch('/api/auth/magic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, redirect: '/sol/checkin' }),
+      }).catch(() => {});
     } else {
       setReminderStatus('error');
     }
@@ -363,10 +358,10 @@ function CheckinResult({
           borderRadius: '12px',
         }}>
           <div style={{ fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(212,168,84,0.45)', marginBottom: '0.6rem' }}>
-            Return tomorrow
+            Save your practice
           </div>
           <p style={{ margin: '0 0 0.875rem', fontSize: '0.875rem', color: 'rgba(240,232,216,0.5)', lineHeight: '1.5' }}>
-            Get a quiet reminder from Sol each morning.
+            Get tomorrow's reminder from Sol and carry your practice across any device.
           </p>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' as const }}>
             <input
