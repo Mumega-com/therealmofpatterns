@@ -41,7 +41,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         return json({ success: false, error: 'Invalid session' }, 400);
       }
       email = session.customer_email;
-      stripePlan = session.metadata?.plan || null;
+      // founding is a one-time payment — derive plan from metadata.product
+      stripePlan = session.metadata?.product === 'founding'
+        ? 'founding'
+        : session.metadata?.plan || null;
       stripePaid = session.payment_status === 'paid' || session.mode === 'subscription';
     } else if (body.email) {
       email = body.email;
@@ -98,6 +101,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 // ── Helpers ─────────────────────────────────────────────
 
 function mapPlanToTier(plan: string, status: string): { tier: 'free' | 'keeper' | 'circle'; isPro: boolean } {
+  // Founding members never lose access (one-time payment)
+  if (plan === 'founding') {
+    return { tier: 'keeper', isPro: true };
+  }
   if (status === 'canceled') {
     return { tier: 'free', isPro: false };
   }

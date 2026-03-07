@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SoulCompareView } from '../../components/soul/SoulCompareView';
+---
+
+<BaseLayout
+  title="Soul Field Comparison — The Realm of Patterns"
+  description="Compare two soul fields. See the resonance between two natal patterns."
+>
+  <style>
+    main, .page-content {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: none !important;
+    }
+  </style>
+  <SoulCompareView client:load />
+</BaseLayout>

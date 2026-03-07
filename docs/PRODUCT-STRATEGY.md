@@ -1,316 +1,157 @@
-# Product Strategy: The Realm of Patterns
+# Product Strategy — The Realm of Patterns
 
-**Last Updated:** 2026-02-05
-**Status:** Strategic Direction Document
-
----
-
-## Executive Summary
-
-The Realm of Patterns is a **Coherence Intelligence** platform built on the FRC (Fractal Resonance Cognition) framework. Our core differentiator is **failure mode detection** derived from catastrophe theory, combined with a **self-improving feedback loop** (ARL) that increases accuracy over time.
-
-**Not astrology. Not therapy. The early warning system you check every morning.**
+**Last Updated:** 2026-03-05
 
 ---
 
-## Core Value Propositions
+## What We're Building
 
-### 1. Failure Mode Detection (PRIMARY - Unique)
+A daily depth psychology practice powered by a Jungian natal engine and an AI narrator (Sol) who works in the tradition of Liz Greene. The core mechanic: your birth data produces an 8-dimensional psychological profile. Every day, Sol generates a reading that connects that profile to current planetary transits and to what you just told us in your reflection.
 
-No competitor offers this. Derived from real mathematics (catastrophe theory).
+The reading opens with the check-in. That is the design decision that makes this different.
 
-| Mode | Signature | User Benefit |
+---
+
+## The Problem We Solve
+
+Most personal insight tools have the same failure mode: they describe you generically and call it personalization. Your birth sign doesn't tell you why today feels contracted. Your meditation app doesn't know that your attention is scattered specifically in the way that your natal Mercury makes likely under this transit.
+
+We return the user's data to them as something they couldn't have seen themselves. That requires:
+1. An 8D natal profile grounded in Jungian psychological theory
+2. A daily check-in that captures the actual texture of their inner state
+3. A narrator who reads both together and names what is moving
+
+---
+
+## Core Value Proposition
+
+**Sol reads what you just told it, then explains it in terms of your natal pattern and today's sky.**
+
+Not: "Sun in Scorpio means you're intense." That's Co-Star.
+Not: "Your energy is at 72% today." That's a biometric.
+Yes: "Something in you is contracted right now — not as a failure, but as the particular way your natal Saturn meets this moment. The question is what necessity it's pointing toward."
+
+---
+
+## Daily Loop (Shipped)
+
+```
+Birth data → 8D natal vector → archetype assignment
+                                        ↓
+                           Daily reflection (5 questions)
+                           in Sol's voice, geometric scale
+                                        ↓
+                    Field coherence (κ) + delta vs yesterday
+                                        ↓
+                    Sol's reading — OPENS with today's check-in
+                    (natal pattern + transit as depth, not opening)
+                                        ↓
+                         "A question to carry today"
+                         (derived from lowest dimension)
+                                        ↓
+                              Come back tomorrow
+```
+
+---
+
+## Engagement Architecture
+
+### What keeps users coming back
+
+**The delta.** κ vs yesterday. One number. It means something because it's derived from what you actually said.
+
+**The carry question.** A single psychological question derived from the dimension the user scored lowest. Not prescriptive. No answer required. Just something to hold.
+
+**The oracle sentence.** A single transit-derived statement at the top of the Sol dashboard, refreshed daily. Something worth reading before the check-in.
+
+**The reading itself.** When Sol names what you reported — "Scatters immediately" — as a psychological reality rather than a problem, and then connects it to your natal Mind dimension and today's transit, users feel seen in a way generic content can't produce.
+
+### What we're building next
+
+**Weekly synthesis** (after 7 check-ins): A longitudinal reading of the week's arc. What pattern has been moving? What dimension has been consistently withdrawn? This is the primary planned retention feature.
+
+**Integration arc** (30/60/90 days): A shadow tracking narrative. What has appeared repeatedly? What has the user been consistently not looking at? This is the long-term retention mechanic.
+
+**Relationship compare**: Two soul fields side-by-side with a cosine similarity resonance score. The secondary acquisition loop — users share their field, someone else checks theirs.
+
+---
+
+## Check-in Design
+
+5 questions, each framed as a field observation rather than a mood rating:
+
+1. "What is the dominant tone in you right now?" — coherence dimension
+2. "What in you wants to move today?" — energy dimension
+3. "Where does your attention rest when you stop directing it?" — focus dimension
+4. "How present is your body to what the day is asking?" — embodiment dimension
+5. "What does the day feel like it wants from you?" — direction dimension
+
+Options use ◦○◎●◉ geometric scale. No emojis. No "Great!", "Awesome!" language.
+
+The specific words users choose ("Contracted," "Scatters immediately," "Numb or disconnected") are passed verbatim to Sol's context. Sol opens with them.
+
+---
+
+## Sol's Voice (Enforced)
+
+System prompt rules enforced on every generation:
+
+- **Never prescribe.** Never say "you should," "try to," "remember to."
+- **No affirmations.** No gratitude prompts, no motivational language.
+- **No sign names.** No degree positions. No "Sun in Scorpio."
+- **Planets as psychology.** Saturn is necessity, not a planet. Moon is the relational field.
+- **Allowed vocabulary:** shadow, projection, individuation, fate, necessity, the unconscious, the Self — used precisely, never gratuitously.
+- **Structure:** Open with the check-in. Body connects check-in to natal + transit. Close in the territory of soul, not self-improvement.
+
+---
+
+## Personalization Tiers
+
+Sol's depth and context scale with check-in history:
+
+| Tier | Check-ins | Sol's context |
 |------|-----------|--------------|
-| Collapse | RU<10, κ<0.3 | "Burnout alert 5-7 days early" |
-| Inversion | κ<0 | "Self-sabotage pattern detected" |
-| Dissociation | W>2.5, κ<0.5 | "You're in your head, not your body" |
-| Dispersion | RU>45, κ<0.5 | "Scattered energy, no focus" |
-
-**Positioning:** "Know when you're heading toward collapse before it happens."
-
-### 2. Optimal Timing Windows (MONETIZABLE)
-
-The κ coupling metric identifies high-alignment periods.
-
-**Use cases:**
-- Entrepreneurs timing launches
-- Career transition decisions
-- Relationship conversations
-- Any high-stakes choice
-
-**Positioning:** "When should you make the big decision?"
-
-### 3. Self-Improving Accuracy (MOAT)
-
-The ARL (Adaptive Resonance Learning) system means:
-- Predictions improve with every interaction
-- 90 days of data = personalized accuracy no generic system matches
-- Creates switching costs
-
-**Positioning:** "The more you use it, the more it knows you."
+| `intro` | 0 | Template. No natal data. |
+| `early` | 1–3 | Natal + transit + today's check-in |
+| `pattern` | 4–7 | + 7-day kappa patterns, trend |
+| `calibrated` | 8–14 | + dimension sensitivities, which dimensions they overlook |
+| `deep` | 15+ | + shadow addressed directly, individuation arc acknowledged |
 
 ---
 
-## Target Users
+## Technical Status
 
-### Primary: "Optimization-Minded Seekers"
-- Age 28-45
-- Interest in self-development but skeptical of pure woo
-- Biohacker-adjacent (Oura, Whoop, meditation apps)
-- Willing to pay for tools that work
+### Shipped ✅
+- 8D natal vector computation (`src/lib/16d-engine.ts`)
+- Check-in → reading loop (check-in data opens Sol's reading)
+- Cache invalidation by check-in ID (new check-in → fresh reading)
+- Sol's Jungian voice (system prompt + fallback templates)
+- SoulToroid 3D visualization + shareable token
+- Oracle sentence (transit-derived, daily)
+- Delta display (κ vs yesterday)
+- Carry question (derived from lowest dimension)
+- Hero's Journey 8-stage progression
+- Personalization tiers (intro through deep)
 
-### Secondary: "Spiritual But Rigorous"
-- Current astrology app users dissatisfied with vagueness
-- Want something that learns and adapts
-- Appreciate the math even if they don't read it
-
-### Tertiary: "Coaches & Therapists"
-- Need tools to understand clients
-- Failure mode detection is clinically useful
-- B2B revenue opportunity
-
----
-
-## Pricing Strategy
-
-### Recommended Model: Freemium + Subscription
-
-| Tier | Price | Includes |
-|------|-------|----------|
-| **Free** | $0 | Daily κ check, basic failure mode alerts, limited history |
-| **Pro** | $19/mo | Full 16D analysis, optimal windows, unlimited history, weekly insights |
-| **Founding** | $497 one-time | Lifetime Pro + early access + "shape the research" badge |
-
-**Rationale:**
-- Free tier maximizes data collection (needed for validation)
-- Monthly creates habit + predictable revenue
-- Founding tier captures early believers
+### Planned 🔄
+- Weekly synthesis reading (after 7 check-ins)
+- Integration arc (30/60/90 day longitudinal)
+- Relationship compare (two soul fields)
+- Pro subscription gating weekly synthesis
+- Email capture for weekly synthesis
 
 ---
 
-## Daily Engagement Loop
+## What We Stopped Doing
 
-### Morning Check-in (2-3 min)
+The earlier product strategy documents reference features that were either never built or have been superseded:
 
-**Step 1: Pre-Check-in Prediction (if birth data exists)**
-```
-┌─────────────────────────────────┐
-│ TODAY'S FORECAST               │
-│                                │
-│ Predicted Energy: 72%          │
-│ Confidence: 85% (↑ improving)  │
-│                                │
-│ Dominant Transit: ☽ Moon       │
-│ Effect: Amplifying             │
-│                                │
-│ Best Windows Today:            │
-│ • 08:00-10:00 Focused Work     │
-│ • 14:00-16:00 Creative         │
-│                                │
-│    [Start Check-in →]          │
-└─────────────────────────────────┘
-```
+- **$497 PDF reports** — not built, not planned
+- **Kasra/River narrator modes** — removed from UI; Sol is the only narrator
+- **"Coherence Intelligence" positioning** — replaced by depth psychology framing
+- **Failure mode detection** — not shipped, not planned in current roadmap
+- **ARL (Adaptive Resonance Learning)** — research concept, not implemented
+- **DBSCAN attractor basin clustering** — research concept, not implemented
+- **Stripe checkout** — not implemented
 
-**Step 2: 6 Questions (30 sec)**
-- Coherence, energy, focus, embodiment
-- Simple 1-5 scale with mode-specific language
-
-**Step 3: Prediction Comparison**
-```
-┌─────────────────────────────────┐
-│ PREDICTION VALIDATION          │
-│                                │
-│ Predicted: 72% → Actual: 68%   │
-│                                │
-│ ✓ 94% ACCURACY                 │
-│ Calibration: OPTIMIZED         │
-└─────────────────────────────────┘
-```
-
-**Step 4: Results + Insights**
-- κ score, failure mode status
-- Personalized recommendations in user's chosen voice
-
-### Calibration Journey
-```
-Week 1:  "Learning your patterns" (50% confidence)
-Week 2:  "Starting to calibrate" (65% confidence)
-Week 3+: "Tuned to your rhythms" (80%+ confidence)
-```
-
-The system tracks:
-- Which transit dimensions affect you most (Moon, Mercury, etc.)
-- Prediction bias (do we run high or low for you?)
-- Accuracy trends over time
-
-### Weekly Deep Dive (10 min)
-- Trend analysis with visualizations
-- Pattern insights
-- Upcoming optimal windows calendar
-- Dimension sensitivity insights
-- Export option for therapist/coach
-
----
-
-## Credibility Building
-
-### 1. Publish Prediction Accuracy
-```
-"This month's stats:
-- Failure mode alerts: 73% confirmed by users
-- Optimal window recommendations: 68% rated helpful
-- Daily forecasts: 71% resonance rate"
-```
-
-### 2. Show the Math (Optional Toggle)
-- "How was this calculated?" expandable
-- Appeals to skeptics who become evangelists
-- Links to FRC 16D.331 paper
-
-### 3. Academic Partnership
-- Data collected = exactly what Section 6 experiments need
-- Partner with consciousness researchers
-- Publish findings → massive credibility
-
-### 4. Case Studies
-- Real anonymized stories
-- "Detected dissociation 6 days before therapist did"
-- Video testimonials from Founding members
-
----
-
-## Technical Implementation Status
-
-### Complete ✅
-- Diamond Engine (8D consciousness model)
-- Transit Engine (κ coupling, RU, optimal windows)
-- Failure Mode Detector (4 modes + severity)
-- Shadow Detector (pattern recognition)
-- PDF Report Generator
-- Email Service (Resend)
-- Diamond Visualization (3D WebGL)
-- **Daily Check-in Flow** (6 questions → kappa computation)
-- **Birth Data Onboarding** (progressive disclosure, mode-aware UI)
-- **Personal Transit Engine** (natal-transit 16D resonance predictions)
-- **Pre-Check-in Predictions** (show predicted kappa before user reports)
-- **Prediction Comparison** (accuracy display after check-in)
-- **Feedback Calibration System** (learns from predicted vs actual)
-- **Dimension Sensitivity Tracking** (which transits affect user most)
-- **Optimal Windows Calculator** (hourly resonance-based recommendations)
-- **Calibration Dashboard** (user accuracy stats, dimension insights)
-- **History Dashboard** (trend visualizations with bar charts)
-- **Streak Gamification** (consecutive check-in tracking, animated badges)
-- **Tomorrow Teaser** (return hook with next-day forecast preview)
-- **Email Capture** (newsletter signup on landing page)
-- **History Persistence** (localStorage with event dispatch for real-time updates)
-
-### In Progress 🔄
-- Weekly insight summaries
-- Push notifications for optimal windows
-
-### Planned 📋
-- Mobile app (React Native)
-- Therapist/coach portal (B2B)
-- API for integrations
-- Export to therapist/coach (PDF or shareable link)
-
----
-
-## Key Metrics to Track
-
-### Product Metrics
-- DAU/MAU ratio (target: >30%)
-- Check-in completion rate
-- Feedback submission rate
-- Prediction accuracy (self-reported)
-
-### Business Metrics
-- Free → Pro conversion rate
-- Churn rate (monthly)
-- LTV:CAC ratio
-- Founding member count
-
-### Research Metrics
-- Data points collected
-- 16D factor structure validation progress
-- κ predictive validity evidence
-
----
-
-## Competitive Positioning
-
-| Competitor | Their Angle | Our Differentiation |
-|------------|-------------|---------------------|
-| Co-Star | Daily horoscope, social | We learn from feedback, they don't |
-| Pattern | Relationship astrology | We detect failure modes, they describe traits |
-| Headspace | Meditation guidance | We predict states, they react to them |
-| Oura | Sleep/recovery metrics | We model consciousness, they model body |
-
-**Tagline options:**
-- "Netflix for your consciousness" (original)
-- "The early warning system for your mind"
-- "Astrology that learns. Science that cares."
-- "Know yourself. Predict yourself."
-
----
-
-## The Honest Pitch
-
-> "We built a mathematical model of how consciousness fails—and how to catch it early.
->
-> It's based on real neuroscience (coupling dynamics, criticality theory). It learns from your feedback. It gets more accurate the more you use it.
->
-> We're not astrology. We're not therapy. We're the early warning system you check every morning.
->
-> After 90 days, we know your patterns better than you do. That's not a promise—it's math."
-
----
-
-## Next Steps (Priority Order)
-
-1. ~~**Failure Mode Dashboard**~~ ✅ Complete
-2. ~~**Daily Check-in Flow**~~ ✅ Complete
-3. ~~**Prediction Accuracy Tracker**~~ ✅ Complete (CalibrationDashboard)
-4. **Optimal Windows Calendar** - "Best days for X this month"
-5. **Free Tier Launch** - Maximize data collection
-6. **Founding Member Campaign** - Early revenue + evangelists
-7. **Weekly Email Digest** - Automated insights via Resend
-8. **Mobile PWA** - Installable progressive web app
-
----
-
-## References
-
-### Documentation
-- `/docs/squad/00-VISION.md` - Core identity
-- `/docs/squad/34-DIAMOND-ONTOLOGY.md` - Technical framework
-- `/docs/FAILURE_MODES.md` - Clinical taxonomy
-- `/docs/ARCHITECTURE.md` - System architecture
-- `/docs/16D-IMPLEMENTATION-SPEC.md` - Full mathematics
-- FRC 16D.331 paper - Academic foundation
-
-### Core Libraries
-- `/src/lib/16d-engine.ts` - Core 16D vector computation
-- `/src/lib/failure-detector.ts` - Failure mode detection
-- `/src/lib/transit-engine.ts` - κ coupling calculations
-- `/src/lib/personal-transit.ts` - Natal-transit resonance engine
-- `/src/lib/prediction-calibration.ts` - Feedback learning system
-- `/src/lib/history.ts` - History persistence with event dispatch
-
-### UI Components
-- `/src/components/shared/BirthDataPrompt.tsx` - Birth data collection UI
-- `/src/components/shared/PredictionCard.tsx` - Pre-check-in predictions
-- `/src/components/shared/CalibrationDashboard.tsx` - Accuracy stats display
-- `/src/components/shared/HistoryDashboard.tsx` - Trend visualizations
-- `/src/components/shared/StreakBadge.tsx` - Gamification badge
-- `/src/components/checkin/CheckinFlowEnhanced.tsx` - Full check-in flow
-
-### Pages
-- `/src/pages/history.astro` - History dashboard page
-- `/src/pages/profile.astro` - Profile with calibration stats
-- `/src/pages/forecast/[date].astro` - Daily forecast with tomorrow teaser
-
----
-
-*Strategy document maintained by Kasra (Builder)*
-*Last updated: 2026-02-05*
+The product is simpler and more focused than the early research docs suggest. That is intentional.

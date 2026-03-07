@@ -16,18 +16,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <header class="sol-header">
       <div class="header-content">
         <div class="greeting-section">
-          <div class="wave-emoji">&#128075;</div>
           <div class="greeting-text">
-            <h1 class="greeting-title">Hey there!</h1>
+            <h1 class="greeting-title" id="greeting-title">What moves in you today</h1>
             <p class="greeting-subtitle" id="greeting"></p>
           </div>
         </div>
 
         <a href="/sol/checkin" class="checkin-btn">
-          <span class="btn-emoji">&#128221;</span>
-          <span class="btn-text">Quick check-in</span>
-          <span class="btn-badge">1 min</span>
+          <span class="btn-text">Daily reflection</span>
+          <span class="btn-badge">5 min</span>
         </a>
+      </div>
+
+      <!-- Oracle sentence -->
+      <div class="oracle-sentence" id="oracle-sentence">
+        The field is quiet. Return when you are ready to listen.
       </div>
 
       <!-- Energy Overview -->
@@ -41,21 +44,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <div class="energy-value" id="energy-value">--</div>
           </div>
           <div class="energy-info">
-            <span class="energy-label">Today's Energy</span>
-            <span class="energy-status" id="energy-status">Loading...</span>
+            <span class="energy-label">Field alignment</span>
+            <span class="energy-status" id="energy-status">Reading...</span>
           </div>
         </div>
 
         <div class="quick-stats">
           <div class="quick-stat">
-            <span class="stat-emoji">&#127793;</span>
+            <span class="stat-sym">◑</span>
             <span class="stat-value" id="best-time">Morning</span>
-            <span class="stat-label">Best time today</span>
+            <span class="stat-label">Peak window</span>
           </div>
           <div class="quick-stat">
-            <span class="stat-emoji">&#10024;</span>
+            <span class="stat-sym">◈</span>
             <span class="stat-value" id="streak">--</span>
-            <span class="stat-label">Check-in streak</span>
+            <span class="stat-label">Days of reflection</span>
           </div>
         </div>
       </div>
@@ -67,8 +70,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <!-- Forecast Section -->
         <section class="content-card forecast-card">
           <div class="card-header">
-            <span class="card-emoji">&#127774;</span>
-            <h2 class="card-title">Your Daily Forecast</h2>
+            <span class="card-emoji">◎</span>
+            <h2 class="card-title">Today's Reading</h2>
           </div>
           <div class="card-content" id="sol-forecast"></div>
         </section>
@@ -76,20 +79,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <!-- Windows Section -->
         <section class="content-card windows-card">
           <div class="card-header">
-            <span class="card-emoji">&#9200;</span>
-            <h2 class="card-title">Best Times Today</h2>
+            <span class="card-emoji">⧗</span>
+            <h2 class="card-title">Field Windows</h2>
           </div>
           <div class="card-content" id="sol-windows"></div>
         </section>
       </div>
 
+      <!-- Weekly Synthesis -->
+      <div id="weekly-synthesis"></div>
+
+      <!-- Pro upgrade nudge (shown only to free users, injected by JS) -->
+      <div id="pro-nudge"></div>
+
       <!-- Tips Section -->
       <section class="tips-section">
         <div class="tip-card" id="daily-tip">
-          <span class="tip-emoji">&#128161;</span>
           <div class="tip-content">
-            <strong>Today's tip:</strong>
-            <span id="tip-text">Focus on your most important task during your peak energy window.</span>
+            <span class="tip-label">Field note</span>
+            <span id="tip-text">Notice where your attention naturally moves today — that is the field speaking.</span>
           </div>
         </div>
       </section>
@@ -118,7 +126,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <!-- Footer -->
     <footer class="sol-footer">
       <p class="footer-text">
-        Made with <span class="heart">&#128154;</span> to help you have better days
+        Sol reads the field. What you do with it is yours.
       </p>
     </footer>
   </div>
@@ -259,6 +267,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     color: rgba(240, 232, 216, 0.6);
   }
 
+  .oracle-sentence {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: rgba(212, 168, 84, 0.75);
+    line-height: 1.6;
+    text-align: center;
+    padding: 0.75rem 1.5rem;
+    margin: 0.5rem 0 1.25rem;
+    border-left: 2px solid rgba(212, 168, 84, 0.25);
+    border-right: 2px solid rgba(212, 168, 84, 0.25);
+    animation: oracle-fade-in 1.2s ease-out;
+  }
+
+  @keyframes oracle-fade-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .checkin-btn {
     display: flex;
     align-items: center;
@@ -389,8 +416,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     border-radius: 16px;
   }
 
-  .stat-emoji {
-    font-size: 1.5rem;
+  .stat-sym {
+    font-size: 1.25rem;
+    color: rgba(212, 168, 84, 0.5);
     margin-bottom: 0.5rem;
   }
 
@@ -462,29 +490,53 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .tip-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
     padding: 1.25rem 1.5rem;
-    background: rgba(212, 168, 84, 0.08);
-    border: 1px solid rgba(212, 168, 84, 0.15);
+    background: rgba(212, 168, 84, 0.06);
+    border: 1px solid rgba(212, 168, 84, 0.12);
     border-radius: 16px;
   }
 
-  .tip-emoji {
-    font-size: 1.5rem;
-    flex-shrink: 0;
-  }
-
   .tip-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
     font-size: 0.95rem;
-    color: rgba(240, 232, 216, 0.7);
-    line-height: 1.5;
+    color: rgba(240, 232, 216, 0.65);
+    line-height: 1.6;
+    font-style: italic;
   }
 
-  .tip-content strong {
-    color: #d4a854;
+  .tip-label {
+    font-size: 0.7rem;
+    font-style: normal;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(212, 168, 84, 0.6);
   }
+
+  /* Pro nudge */
+  .pro-nudge-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 800px;
+    margin: 1rem auto;
+    padding: 0.875rem 1.25rem;
+    background: rgba(212, 168, 84, 0.04);
+    border: 1px solid rgba(212, 168, 84, 0.12);
+    text-decoration: none;
+    color: rgba(240, 232, 216, 0.55);
+    font-size: 0.875rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .pro-nudge-link:hover {
+    border-color: rgba(212, 168, 84, 0.25);
+    color: rgba(240, 232, 216, 0.8);
+  }
+  .pro-nudge-icon { color: rgba(212, 168, 84, 0.5); }
+  .pro-nudge-text { flex: 1; }
+  .pro-nudge-cta { color: #d4a854; white-space: nowrap; }
 
   /* Footer */
   .sol-footer {
@@ -570,28 +622,67 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <script>
   import { createElement } from 'react';
   import { createRoot } from 'react-dom/client';
-  import { DashboardEnhanced } from '../../components/dashboard/DashboardEnhanced';
+  import { NarratorCard } from '../../components/shared/NarratorCard';
   import { SolWindows } from '../../components/sol/SolWindows';
-  import { setMode, $forecast } from '../../stores';
+  import { WeeklySynthesis } from '../../components/sol/WeeklySynthesis';
+  import { setMode, $forecast } from '../../stores'; // $forecast used by energy ring
   import { getCheckinHistory } from '../../lib/checkin-storage';
+  import { computeFromBirthData } from '../../lib/16d-engine';
 
   // Set mode to Sol
   setMode('sol');
+
+  // Oracle sentence — derived from today's dominant transit dimension
+  const ORACLE_SENTENCES = [
+    "Sun illuminates something at the center of you that has been waiting to be acknowledged.",
+    "Saturn is present in the field. What you have agreed to carry — does it still belong to you?",
+    "Mercury quickens the mind today. Notice what it is circling but not quite naming.",
+    "Venus draws attention to what you value. Something there has not been fully honoured.",
+    "Jupiter opens a question of becoming. What would you grow toward if you stopped managing the risk?",
+    "Mars moves in the dimension of drive. The energy that wants to act — what keeps redirecting it?",
+    "The Moon is active in the field of connection. What relationship is quietly asking something of you?",
+    "Something at the edge of awareness presses toward consciousness. The field is listening.",
+  ];
+
+  function setOracleSentence() {
+    const el = document.getElementById('oracle-sentence');
+    if (!el) return;
+    try {
+      const stored = localStorage.getItem('rop_birth_data_full');
+      if (!stored) {
+        el.textContent = ORACLE_SENTENCES[new Date().getDay() % ORACLE_SENTENCES.length];
+        return;
+      }
+      const birthData = JSON.parse(stored);
+      const now = new Date();
+      const todayBirth = {
+        year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate(),
+        hour: now.getHours(), minute: now.getMinutes(),
+        latitude: birthData.latitude, longitude: birthData.longitude,
+        timezone_offset: -now.getTimezoneOffset() / 60,
+      };
+      const tv = Array.from(computeFromBirthData(todayBirth)).slice(0, 8) as number[];
+      const dominant = tv.indexOf(Math.max(...tv));
+      el.textContent = ORACLE_SENTENCES[dominant];
+    } catch {
+      el.textContent = ORACLE_SENTENCES[new Date().getDay() % ORACLE_SENTENCES.length];
+    }
+  }
 
   // Create floating shapes
   function createFloatingShapes() {
     const container = document.getElementById('floating-shapes');
     if (!container) return;
 
-    const shapes = ['&#9733;', '&#9679;', '&#9670;', '&#9675;'];
+    const shapes = ['◦', '○', '◎', '◌'];
 
     for (let i = 0; i < 8; i++) {
       const span = document.createElement('span');
       span.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
       span.style.left = `${Math.random() * 100}%`;
       span.style.top = `${Math.random() * 100}%`;
-      span.style.fontSize = `${16 + Math.random() * 24}px`;
-      span.style.color = ['#fbbf24', '#f59e0b', '#ec4899', '#8b5cf6'][Math.floor(Math.random() * 4)];
+      span.style.fontSize = `${12 + Math.random() * 18}px`;
+      span.style.color = `rgba(212, 168, 84, ${0.1 + Math.random() * 0.2})`;
       span.style.animationDelay = `${Math.random() * 15}s`;
       span.style.animationDuration = `${12 + Math.random() * 8}s`;
       container.appendChild(span);
@@ -604,10 +695,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     if (!greetingEl) return;
 
     const hour = new Date().getHours();
-    let greeting = "Here's how your day is looking.";
-    if (hour < 12) greeting = "Good morning! Here's your forecast for today.";
-    else if (hour < 17) greeting = "Good afternoon! Here's how your day is going.";
-    else greeting = "Good evening! Here's a snapshot of your day.";
+    let greeting = "The field is read. The rest is yours.";
+    if (hour < 6)  greeting = "Something in you is awake before the rest of you. That is worth attending to.";
+    else if (hour < 12) greeting = "The morning carries a particular quality of attention. What is present before the day's noise arrives?";
+    else if (hour < 17) greeting = "The afternoon often reveals what the morning concealed. What has clarified since you began?";
+    else greeting = "The day settles. What did it ask of you? What did you answer?";
     greetingEl.textContent = greeting;
   }
 
@@ -631,20 +723,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     // Update status
     const statusEl = document.getElementById('energy-status');
     if (statusEl) {
-      if (kappa >= 0.8) statusEl.textContent = "You're on fire today! &#127775;";
-      else if (kappa >= 0.6) statusEl.textContent = "Good vibes ahead &#128522;";
-      else if (kappa >= 0.4) statusEl.textContent = "A steady day &#128578;";
-      else statusEl.textContent = "Take it easy today &#128588;";
+      if (kappa >= 0.8) statusEl.textContent = "Strong coherence — the field is aligned";
+      else if (kappa >= 0.6) statusEl.textContent = "The currents are favorable";
+      else if (kappa >= 0.4) statusEl.textContent = "The psyche is consolidating";
+      else statusEl.textContent = "Something has withdrawn — that is information";
     }
   }
 
-  // Daily tips
+  // Daily field notes (rotate by day)
   const tips = [
-    "Focus on your most important task during your peak energy window.",
-    "Stay hydrated - it helps maintain focus and energy levels.",
-    "A short walk can help reset your energy in the afternoon.",
-    "Batch similar tasks together to maintain flow state.",
-    "Use low-energy times for routine or administrative tasks.",
+    "Notice where your attention naturally moves today — that is the field speaking.",
+    "Psychological resistance often appears as fatigue. What are you approaching that you would rather not?",
+    "The dimension you feel least today often carries the most unconscious material.",
+    "What you are avoiding in the outer world frequently mirrors what is unresolved in the inner one.",
+    "High coherence is not always the goal. Sometimes the field needs to break down before it reorganizes.",
   ];
 
   function setDailyTip() {
@@ -669,6 +761,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   document.addEventListener('DOMContentLoaded', () => {
     createFloatingShapes();
     setGreeting();
+    setOracleSentence();
     setDailyTip();
     updateStreak();
 
@@ -694,12 +787,31 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     // Mount React components
     const forecastEl = document.getElementById('sol-forecast');
     if (forecastEl) {
-      createRoot(forecastEl).render(createElement(DashboardEnhanced));
+      createRoot(forecastEl).render(createElement(NarratorCard, { compact: true }));
     }
 
     const windowsEl = document.getElementById('sol-windows');
     if (windowsEl) {
       createRoot(windowsEl).render(createElement(SolWindows));
+    }
+
+    const weeklyEl = document.getElementById('weekly-synthesis');
+    if (weeklyEl) {
+      createRoot(weeklyEl).render(createElement(WeeklySynthesis));
+    }
+
+    // Pro nudge — only for free users
+    const user = JSON.parse(localStorage.getItem('rop_user') || '{}');
+    if (!user.isPro) {
+      const nudgeEl = document.getElementById('pro-nudge');
+      if (nudgeEl) {
+        nudgeEl.innerHTML = `
+          <a href="/subscribe" class="pro-nudge-link">
+            <span class="pro-nudge-icon">◎</span>
+            <span class="pro-nudge-text">Sol goes deeper for Pro members — weekly synthesis, richer readings</span>
+            <span class="pro-nudge-cta">Learn more →</span>
+          </a>`;
+      }
     }
   });
 </script>

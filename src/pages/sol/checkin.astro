@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Quick Check-in | Sol" description="A quick check-in to see how you're doing">
+<BaseLayout title="Daily Reflection | Sol" description="Five dimensions of the field. A brief daily encounter with what is actually moving in you.">
   <div class="sol-checkin-page">
     <!-- Warm Background -->
     <div class="warm-bg">
@@ -20,16 +20,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </a>
 
       <div class="header-content">
-        <div class="emoji-container">
-          <span class="main-emoji bouncing">&#128221;</span>
-          <span class="sparkle sparkle-1">&#10024;</span>
-          <span class="sparkle sparkle-2">&#10024;</span>
-          <span class="sparkle sparkle-3">&#10024;</span>
+        <div class="symbol-container">
+          <span class="field-symbol">◉</span>
         </div>
-        <h1 class="page-title">Quick Check-in</h1>
+        <h1 class="page-title">Daily Reflection</h1>
         <p class="page-subtitle">
-          Just a few quick questions to see how you're doing.
-          <br />It takes less than a minute!
+          Five dimensions of the field.<br />What does each ask of you today?
         </p>
       </div>
 
@@ -42,7 +38,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <span class="progress-dot"></span>
           <span class="progress-dot"></span>
         </div>
-        <span class="progress-label">5 quick questions</span>
+        <span class="progress-label">5 dimensions</span>
       </div>
     </header>
 
@@ -54,10 +50,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <!-- Info Footer -->
     <footer class="sol-footer">
       <div class="footer-card">
-        <span class="footer-icon">&#128161;</span>
         <p class="footer-tip">
-          <strong>Tip:</strong> Regular check-ins help you notice patterns in how you feel
-          throughout the day. Try checking in at the same time each day!
+          The field does not need you to get it right. It only asks that you meet it honestly.
         </p>
       </div>
     </footer>
@@ -185,40 +179,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     margin-bottom: 1.5rem;
   }
 
-  .emoji-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 1rem;
+  .symbol-container {
+    margin-bottom: 1.25rem;
   }
 
-  .main-emoji {
-    font-size: 4rem;
+  .field-symbol {
+    font-size: 3rem;
+    color: rgba(212, 168, 84, 0.7);
     display: block;
+    animation: field-pulse 4s ease-in-out infinite;
   }
 
-  .main-emoji.bouncing {
-    animation: gentle-bounce 2s ease-in-out infinite;
-  }
-
-  @keyframes gentle-bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-
-  .sparkle {
-    position: absolute;
-    font-size: 1rem;
-    opacity: 0;
-    animation: sparkle-pop 3s ease-in-out infinite;
-  }
-
-  .sparkle-1 { top: -5px; right: -10px; animation-delay: 0s; }
-  .sparkle-2 { bottom: 0; left: -15px; animation-delay: 1s; }
-  .sparkle-3 { top: 50%; right: -20px; animation-delay: 2s; }
-
-  @keyframes sparkle-pop {
-    0%, 80%, 100% { opacity: 0; transform: scale(0.5); }
-    40% { opacity: 1; transform: scale(1); }
+  @keyframes field-pulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.06); }
   }
 
   .page-title {
@@ -289,29 +263,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .footer-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 1rem;
+    padding: 1rem 1.25rem;
     background: rgba(26, 24, 20, 0.6);
     border-radius: 16px;
     border: 1px solid rgba(212, 168, 84, 0.1);
   }
 
-  .footer-icon {
-    font-size: 1.25rem;
-    flex-shrink: 0;
-  }
-
   .footer-tip {
     font-size: 0.875rem;
-    color: rgba(240, 232, 216, 0.5);
-    line-height: 1.5;
+    color: rgba(240, 232, 216, 0.45);
+    line-height: 1.6;
     margin: 0;
-  }
-
-  .footer-tip strong {
-    color: #d4a854;
+    font-style: italic;
   }
 
   /* Confetti */
@@ -370,29 +333,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   // Set mode to Sol
   setMode('sol');
 
-  // Create sparkle effects
-  function createSparkles() {
-    const container = document.getElementById('sparkles');
-    if (!container) return;
-
-    for (let i = 0; i < 12; i++) {
-      const span = document.createElement('span');
-      span.textContent = ['✨', '⭐', '💫', '✦'][Math.floor(Math.random() * 4)];
-      span.style.left = `${10 + Math.random() * 80}%`;
-      span.style.top = `${10 + Math.random() * 80}%`;
-      span.style.fontSize = `${10 + Math.random() * 14}px`;
-      span.style.animationDelay = `${Math.random() * 4}s`;
-      container.appendChild(span);
-    }
-  }
-
-  // Confetti explosion on completion
+  // Subtle particle drift on completion
   function triggerConfetti() {
     const container = document.getElementById('confetti-container');
     if (!container) return;
 
     container.innerHTML = '';
-    const colors = ['#fbbf24', '#f59e0b', '#ec4899', '#8b5cf6', '#10b981', '#3b82f6'];
+    const colors = ['#d4a854', '#c49a4a', '#e8c87a', '#a8834a', '#f0d89a', '#b89060'];
 
     for (let i = 0; i < 50; i++) {
       const confetti = document.createElement('div');
@@ -426,8 +373,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   // Initialize
   document.addEventListener('DOMContentLoaded', () => {
-    createSparkles();
-
     const checkinEl = document.getElementById('sol-checkin');
     if (checkinEl) {
       createRoot(checkinEl).render(

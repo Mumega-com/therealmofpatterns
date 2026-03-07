@@ -1,164 +1,124 @@
 # Technical Architecture
 
-**Agent:** Engineer
-**Version:** 2.0.0
-**Last Updated:** 2026-02-02
+**Last Updated:** 2026-03-05
 
 ## System Overview
 
-**The Realm of Patterns** is a Lambda-field probe built on Cloudflare's edge infrastructure.
-
-### Infrastructure Stack
+The Realm of Patterns is an Astro + React application deployed on Cloudflare Pages. All personal data lives in localStorage — no login required. Server infrastructure handles AI narration and optional sync only.
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                  Cloudflare Edge                     │
-├─────────────────────────────────────────────────────┤
-│  Pages (Static)  │  Workers (Compute)  │  D1 (DB)   │
-│  - Static HTML   │  - API Routes       │  - SQLite  │
-│  - Vanilla JS    │  - Scheduled Jobs   │  - Vectors │
-├──────────────────┴─────────────────────┴────────────┤
-│  KV (Cache)      │  R2 (Storage)       │  Analytics │
-└─────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│                  Astro Frontend                   │
+│  Static HTML + React islands (client:load)        │
+│  All personal data in localStorage               │
+├──────────────────────────────────────────────────┤
+│              Cloudflare Pages Functions           │
+│  /api/narrator — AI reading generation (Claude)  │
+│  /api/preview  — Archetype matching              │
+│  /api/privacy  — Optional server sync            │
+├──────────────────────────────────────────────────┤
+│  Cloudflare D1 (optional sync) + KV (rate limit) │
+└──────────────────────────────────────────────────┘
 ```
+
+**Privacy-first:** No login required. All check-in history, birth data, and patterns live in localStorage. Server sync is opt-in.
 
 ---
 
-## 16D Vector Representation
+## 8D Vector Representation
+
+The core data structure. Computed from birth data via planetary positions.
 
 ```typescript
-interface Vector16D {
-  // 8 Inner (Karma) + 8 Outer (Dharma) dimensions
-  dimensions: number[];  // 16 values, each 0.0 to 1.0
-  timestamp: number;
-  metadata?: VectorMetadata;
-}
-
-interface UserCoherenceSignature {
-  user_id: string;
-  mean_vector: Vector16D;
-  covariance_matrix: number[][];  // 16x16
-  total_feedback: number;
-  learning_rate: number;
-  last_updated: string;
-}
+// 8 values, each normalized 0..1
+// [Identity, Structure, Mind, Heart, Growth, Drive, Connection, Awareness]
+type NatalVector = [number, number, number, number, number, number, number, number];
 ```
+
+Computed in `src/lib/16d-engine.ts` using `computeFromBirthData(birthData: BirthData)`.
+
+The same function is used twice per reading:
+1. Birth data → natal vector (static, cached after first compute)
+2. Today's date/time at birth location → transit vector (changes daily)
 
 ---
 
-## Adaptive Resonance Learning (ARL)
+## Narrator Pipeline
 
-```typescript
-interface ARLConfig {
-  initial_learning_rate: 0.3;
-  min_learning_rate: 0.01;
-  decay_factor: 0.995;
-  momentum: 0.1;
-}
+The core data flow that produces Sol's reading:
 
-function updateCoherenceSignature(
-  signature: UserCoherenceSignature,
-  feedbackVector: Vector16D,
-  isPositive: boolean,
-  config: ARLConfig
-): UserCoherenceSignature {
-  const lr = Math.max(
-    config.min_learning_rate,
-    signature.learning_rate * config.decay_factor
-  );
-
-  if (isPositive) {
-    const delta = subtractVectors(feedbackVector, signature.mean_vector);
-    const update = scaleVector(delta, lr);
-    return { ...signature, mean_vector: addVectors(signature.mean_vector, update) };
-  }
-  // Negative: move slightly away
-  return signature;
-}
 ```
+localStorage (birth data, check-in history)
+    ↓
+buildNarratorContext()       [narrator-context.ts]
+    ↓
+buildSystemPrompt(tier)      [narrator-context.ts]
+buildUserPrompt(context)     [narrator-context.ts]
+    ↓
+POST /api/narrator           [functions/api/narrator.ts]
+    ↓
+Claude API (claude-haiku or claude-sonnet)
+    ↓
+NarratorResult { narrative, tier, model, cached }
+    ↓
+localStorage cache           [key: date + checkin ID]
+```
+
+**Cache invalidation:** The cache key includes the check-in ID from today's entry. A new check-in produces a fresh reading; the same check-in returns the cached result.
 
 ---
 
-## DBSCAN Clustering for Attractor Basins
+## API Endpoints
+
+### POST /api/narrator
+Generates Sol's daily narrative.
 
 ```typescript
-interface ClusterConfig {
-  epsilon: 2.5;        // Radius in 16D space
-  minPoints: 3;        // Minimum cluster size
-  maxClusters: 12;     // Zodiac-aligned maximum
+interface NarratorRequest {
+  userHash: string;
+  context: NarratorContext;
+  tier: PersonalizationTier;
+  systemPrompt: string;
+  userPrompt: string;
+  isPro: boolean;
 }
 
-function detectAttractorBasins(
-  feedbackVectors: Array<{vector: Vector16D, score: number}>,
-  config: ClusterConfig
-): Cluster[] {
-  const positiveVectors = feedbackVectors
-    .filter(f => f.score > 60)
-    .map(f => f.vector);
-
-  return dbscan(positiveVectors, config.epsilon, config.minPoints);
+interface NarratorResponse {
+  narrative: string;
+  tier: string;
+  model: string;
+  cached: boolean;
 }
 ```
+
+### POST /api/preview
+Returns archetype match for a birth vector (used on /discover).
 
 ---
 
-## API Specifications
+## Personalization Tiers
 
-### POST /api/compute
-```typescript
-interface ComputeRequest {
-  birth_date: string;      // ISO 8601
-  birth_time: string;      // HH:MM
-  birth_place: string;
-  timezone: string;
-}
+Sol's system prompt and context depth scale with check-in history:
 
-interface ComputeResponse {
-  proposal: { moment: string; coherence_score: number; vector: Vector16D; };
-  birth_chart: { sun_sign: string; moon_sign: string; ascendant: string; };
-  user_id: string;
-}
-```
-
-### POST /api/feedback
-```typescript
-interface FeedbackRequest {
-  user_id: string;
-  proposal_id: string;
-  rating: 'resonant' | 'neutral' | 'dissonant';
-}
-```
-
-### GET /api/history
-### POST /api/report
-### GET /api/weather
+| Tier | Check-ins | What changes |
+|------|-----------|--------------|
+| `intro` | 0 | Template fallback, no natal data |
+| `early` | 1–3 | Natal + transit context |
+| `pattern` | 4–7 | + 7-day check-in patterns, kappa trend |
+| `calibrated` | 8–14 | + dimension sensitivities, feedback accuracy |
+| `deep` | 15+ | + shadow direct address, individuation arc |
 
 ---
 
-## Scheduled Jobs
+## localStorage Schema
 
-```typescript
-// /functions/scheduled.ts
-export default {
-  async scheduled(event: ScheduledEvent, env: Env) {
-    if (event.cron === '0 0 * * *') {
-      await generateDailyProposals(env);  // 00:00 UTC
-    } else if (event.cron === '0 6 * * *') {
-      await updateAttractorBasins(env);   // 06:00 UTC
-    }
-  }
-};
 ```
-
----
-
-## Caching Strategy
-
-```typescript
-// KV Keys
-`proposal:${user_id}:${date}` -> ComputeResponse (TTL: 2 days)
-`weather:${lat}:${lon}` -> WeatherResponse (TTL: 15 min)
-`chart:${birth_hash}` -> BirthChart (permanent)
+rop_birth_data_full    BirthData JSON
+rop_checkin_history    CheckinHistory JSON (all entries)
+rop_device_hash        Anonymous device identifier
+rop_user               { isPro: boolean }
+rop_narrative_{date}_{checkinId}   Cached narrative result
+rop_calibration        CalibrationProfile JSON
 ```
 
 ---
@@ -167,17 +127,37 @@ export default {
 
 | File | Purpose |
 |------|---------|
-| `/src/lib/16d-engine-full.ts` | Full vector computation with ephemeris |
-| `/src/lib/arl-engine.ts` | Adaptive Resonance Learning |
-| `/src/lib/shadow-detector.ts` | Shadow pattern detection |
-| `/functions/scheduled.ts` | Daily cron jobs |
-| `/functions/api/compute-full.ts` | Main computation API |
-| `/functions/api/checkout.ts` | Stripe checkout |
-| `/functions/api/webhook.ts` | Stripe webhook + report generation |
+| `src/lib/16d-engine.ts` | 8D natal vector computation from birth data |
+| `src/lib/narrator-context.ts` | Context builder: aggregates localStorage → AI prompt |
+| `src/lib/narrator-client.ts` | Fetch + cache AI narrative, template fallback |
+| `src/lib/checkin-storage.ts` | localStorage check-in persistence, kappa helpers |
+| `src/lib/archetype-engine.ts` | Archetype assignment from natal vector |
+| `src/lib/journey-engine.ts` | 8-stage Hero's Journey state |
+| `src/lib/prediction-calibration.ts` | Dimension sensitivity tracking |
+| `src/components/charts/SoulToroid.tsx` | 3D toroid visualization (@react-three/fiber) |
+| `src/components/sol/SolCheckin.tsx` | 5-question check-in flow |
+| `functions/api/narrator.ts` | Cloudflare Pages Function → Claude API |
 
 ---
 
-**Architecture Principles:**
-1. Edge-First - Compute at the edge for <50ms latency
-2. Privacy-First - No unnecessary data collection
-3. Learning-First - System improves with every interaction
+## SoulToroid
+
+3D toroid visualization encoding the natal 8D vector into geometry. Built with `@react-three/fiber`.
+
+Encoding map:
+- Tube radius → Identity (Sun)
+- Spin speed → Drive (Mars)
+- Helix amplitude → Growth (Jupiter)
+- Particle density → Connection (Moon)
+- Chakra node positions → all 8 dimensions
+
+Modes: widget (embedded in dashboard), full (`/soul`), compare (two fields with cosine similarity), share (`/soul/[token]` — base64 birth data in URL, decoded client-side, no server required).
+
+---
+
+## Architecture Principles
+
+1. **Privacy-first** — No login, no server-side user data except optional sync
+2. **Client-heavy** — All computation runs in the browser; server is API gateway only
+3. **Graceful degradation** — Template fallback when API is unavailable
+4. **Cache by content** — Narrative cache key includes check-in ID, not just date

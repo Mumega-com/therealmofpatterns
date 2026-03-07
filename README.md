@@ -1,228 +1,183 @@
 # The Realm of Patterns
 
-**Know your energy. Shape your day.**
+**A daily depth psychology practice, powered by Jungian astrology and a 8-dimensional natal engine.**
 
-A personalized energy reading platform based on real planetary data. Enter your birthday, see your unique 8-dimensional energy profile, and check in daily to track how cosmic patterns affect you.
+Sol reads your field. The rest is yours.
 
 ---
 
-## Overview
+## What It Is
+
+Not a horoscope app. Not a mood tracker. A daily encounter with the patterns that actually shape how you move through the world — derived from your natal chart, read through the lens of Jungian depth psychology, and refined by what you report each day.
+
+The core mechanic: your birth data produces an 8-dimensional psychological profile. Every day, Sol — an AI narrator working in the tradition of Liz Greene — generates a reading that connects your natal pattern to the current planetary transits and, critically, to what you just told us in your daily reflection.
+
+The more you use it, the more it sees.
+
+---
+
+## Live
 
 | | |
 |---|---|
-| **Live** | [therealmofpatterns.com](https://therealmofpatterns.com) |
-| **Discover** | [/discover](https://therealmofpatterns.com/discover) — Enter your birthday, see your pattern |
-| **Today's Reading** | [/reading](https://therealmofpatterns.com/reading) — Daily cosmic energy forecast |
-| **Check-in** | [/sol/checkin](https://therealmofpatterns.com/sol/checkin) — 1-minute daily energy check |
-| **Forecast** | [/forecast](https://therealmofpatterns.com/forecast) — Personal daily forecast |
-| **History** | [/history](https://therealmofpatterns.com/history) — Your energy trends over time |
-| **Weather** | [/weather](https://therealmofpatterns.com/weather) — Today's planetary conditions |
-| **Stack** | Astro + Cloudflare Pages + D1 + KV + Workers |
+| **Production** | [therealmofpatterns.com](https://therealmofpatterns.com) |
+| **Discover** | `/discover` — Enter your birthday, see your 8D pattern |
+| **Sol** | `/sol` — Your daily practice dashboard |
+| **Check-in** | `/sol/checkin` — Daily 5-question field reflection |
+| **Reading** | `/reading` — Sol's AI-generated daily narrative |
+| **Soul Field** | `/soul` — 3D toroid visualization of your natal field |
+| **Share** | `/soul/[token]` — Shareable soul field (no server required) |
+| **Journey** | `/journey` — 8-stage Hero's Journey progression |
+| **Stack** | Astro + React + Cloudflare Pages + @react-three/fiber |
 
 ---
 
 ## The 8 Dimensions
 
-Your energy profile is computed from planetary positions at your birth:
+Computed from planetary positions at birth. Each dimension corresponds to a psychological force in the Jungian tradition:
 
-| Symbol | Dimension | Domain | Ruler |
-|--------|-----------|--------|-------|
-| ☀ | **Identity** | Self-expression, confidence | Sun |
-| ♄ | **Structure** | Stability, discipline | Saturn |
-| ☿ | **Mind** | Communication, learning | Mercury |
-| ♀ | **Heart** | Love, beauty, harmony | Venus |
-| ♃ | **Growth** | Exploration, meaning | Jupiter |
-| ♂ | **Drive** | Energy, action, courage | Mars |
-| ☽ | **Connection** | Relationships, empathy | Moon |
-| ♅ | **Awareness** | Intuition, presence | Uranus/Neptune |
-
-### Visualizations
-
-- **Radar Chart** — Animated SVG spider chart showing your dimensional shape at a glance
-- **Natal Wheel** — Simplified birth chart with zodiac ring, planet positions, and ascendant
-- **Dimension Bars** — Detailed percentage breakdown of each dimension
-- **Sparkline** — Historical trend of your alignment score
-- **Weekly Rings** — 7-day circular progress indicators
+| Symbol | Dimension | Psychological Domain | Planet |
+|--------|-----------|----------------------|--------|
+| ☀ | **Identity** | The shape of the self; what seeks expression | Sun |
+| ♄ | **Structure** | Necessity; what you must build and maintain | Saturn |
+| ☿ | **Mind** | The mental function; directed attention | Mercury |
+| ♀ | **Heart** | Eros; what you value and how you relate to beauty | Venus |
+| ♃ | **Growth** | Expansion; the narrative of becoming | Jupiter |
+| ♂ | **Drive** | Libido; the energy that wants to act | Mars |
+| ☽ | **Connection** | The relational field; bonds and empathy | Moon |
+| ♅ | **Awareness** | The transcendent function; what exceeds the ego | Uranus/Neptune |
 
 ---
 
-## The Four Stages
+## The Daily Loop
 
-Based on your alignment score, your current energy maps to four stages:
+```
+Birth data → 8D natal vector → archetype assignment
+                                        ↓
+                           Daily reflection (5 questions)
+                                        ↓
+                    Field coherence score (κ) + delta vs yesterday
+                                        ↓
+                    Sol's reading — personalized to today's check-in
+                                        ↓
+                         "A question to carry today"
+                                        ↓
+                              Come back tomorrow
+```
 
-| Stage | Symbol | Meaning |
-|-------|--------|---------|
-| **Reset** | ☽ | Breaking down to rebuild |
-| **Clarity** | ✧ | Seeing things as they are |
-| **Growth** | ☼ | Stepping into your power |
-| **Flow** | ◆ | Everything clicking into place |
-
----
-
-## Engagement Features
-
-| Feature | Description |
-|---------|-------------|
-| **Discover Flow** | Birthday-first onboarding: enter birth date, see radar chart + natal wheel + archetype match |
-| **Daily Check-in** | 6-question flow computing your alignment score |
-| **Personalized Forecasts** | Predictions based on birth data + today's transits |
-| **Energy History** | Visual trend charts showing your alignment over time |
-| **Streak Tracking** | Consecutive check-in days with animated badges |
-| **Tomorrow Teaser** | "Come back tomorrow" hooks with next-day preview |
-| **Calibration System** | Self-improving predictions that learn from your feedback |
-| **Email Capture** | Newsletter signup for daily forecasts |
+The reading is not generic. Sol receives the exact words the user chose in their check-in ("Contracted," "Scatters immediately," "Numb or disconnected") and opens there — naming the withdrawn dimension as a psychological reality, not a problem.
 
 ---
 
-## Product Tiers
+## Soul Field (SoulToroid)
 
-| Tier | Price | Features |
-|------|-------|----------|
-| **Free** | $0 | Daily reading, basic check-ins, 8D preview |
-| **Pro** | $9/mo ($7/mo annual) | Complete personality breakdown, optimal action windows, early alerts, pattern trends |
-| **Team** | $29/seat/mo ($23/seat annual) | Team sync dashboard, shared profiles, optimal meeting windows, facilitator tools |
+A 3D toroid visualization of the natal 8D vector, built with @react-three/fiber. Encodes all 8 dimensions into geometry: tube radius, spin, helix amplitude, particle density, chakra node positions.
 
-*7-day free trial for Pro. 14-day free trial for Team.*
+- **Widget mode** — embedded in dashboard
+- **Full mode** — `/soul` page with anatomy panel
+- **Compare mode** — two fields side-by-side with cosine similarity resonance score
+- **Share** — base64 birth data token in URL, decoded and computed client-side. No server required.
+
+---
+
+## Sol's Voice
+
+Sol works in the tradition of Jungian depth psychology — Liz Greene in sensibility, not style. The natal chart as a map of the psyche. Planets as autonomous psychological forces. Transits as moments when something unconscious seeks to become conscious.
+
+Voice rules (enforced in system prompt):
+- Never prescribe. Never advise. Observe and illuminate.
+- No sign names, no degree positions.
+- No affirmations, no self-help language, no therapeutic reassurance.
+- Allowed: shadow, projection, individuation, fate, necessity — used precisely.
 
 ---
 
 ## Architecture
 
-**Astro + Cloudflare Edge**
+```
+┌──────────────────────────────────────────────────┐
+│                  Astro Frontend                   │
+│  Static HTML + React islands (client:load)        │
+│  All personal data in localStorage               │
+├──────────────────────────────────────────────────┤
+│              Cloudflare Pages Functions           │
+│  /api/narrator — AI reading generation (Claude)  │
+│  /api/preview  — Archetype matching              │
+│  /api/privacy  — Optional server sync            │
+├──────────────────────────────────────────────────┤
+│  Cloudflare D1 (optional sync) + KV (cache)      │
+└──────────────────────────────────────────────────┘
+```
+
+**Privacy-first:** No login required. All check-in history, birth data, and patterns live in localStorage. Server sync is opt-in.
+
+---
+
+## Key Files
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    ASTRO FRONTEND                                │
-├─────────────────────────────────────────────────────────────────┤
-│  /               Homepage with reading preview + pricing        │
-│  /discover       Birthday-first onboarding (radar + natal)      │
-│  /reading        Daily cosmic reading with dimension spotlight   │
-│  /sol            Friendly mode landing                          │
-│  /forecast/*     Personal daily forecasts                       │
-│  /weather        Daily cosmic weather                           │
-│  /history        Energy trend dashboard                         │
-│  /subscribe      SaaS pricing (Pro / Team)                      │
-│  /blog           SEO content articles                           │
-│  /learn          CMS content index                              │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-┌─────────────────────────────────────────────────────────────────┐
-│                  CLOUDFLARE PAGES FUNCTIONS                      │
-├─────────────────────────────────────────────────────────────────┤
-│  /api/preview         Free 8D preview                           │
-│  /api/compute-full    Full 16D analysis                         │
-│  /api/weather         Cosmic weather data                       │
-│  /api/cms/page        CMS content fetch                         │
-│  /api/cms/list        CMS content listing                       │
-│  /[lang]/dimension/*  Dynamic dimension guides                  │
-│  /[lang]/figure/*     Historical figure pages                   │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-┌───────────────┬─────────────┬───────────────┐
-│      D1       │      KV     │      R2       │
-│   Database    │    Cache    │   Storage     │
-├───────────────┼─────────────┼───────────────┤
-│ • Users       │ • Sessions  │ • PDFs        │
-│ • CMS content │ • Tokens    │ • Images      │
-│ • Analytics   │ • Cache     │ • Sitemaps    │
-└───────────────┴─────────────┴───────────────┘
+src/
+├── pages/
+│   ├── sol/index.astro          # Daily practice dashboard
+│   ├── sol/checkin.astro        # 5-question reflection flow
+│   ├── soul.astro               # Soul field full view
+│   ├── soul/[token].astro       # Public shareable soul field
+│   ├── reading/index.astro      # Daily AI reading
+│   ├── dashboard.astro          # Main dashboard
+│   ├── journey.astro            # 8-stage journey map
+│   └── discover.astro           # Birthday onboarding
+│
+├── components/
+│   ├── charts/SoulToroid.tsx    # 3D toroid (@react-three/fiber)
+│   ├── soul/SoulView.tsx        # Authenticated soul page
+│   ├── soul/SoulShareView.tsx   # Public share view
+│   ├── sol/SolCheckin.tsx       # Check-in questions + result
+│   ├── dashboard/ProDashboard.tsx
+│   └── shared/NarratorCard.tsx  # Sol reading display
+│
+└── lib/
+    ├── 16d-engine.ts            # 8D natal vector computation
+    ├── narrator-context.ts      # Context builder for AI prompt
+    ├── narrator-client.ts       # Fetch + cache AI narrative
+    ├── checkin-storage.ts       # localStorage check-in persistence
+    ├── journey-engine.ts        # 8-stage Hero's Journey logic
+    ├── archetype-engine.ts      # Archetype assignment from vector
+    └── prediction-calibration.ts # Dimension sensitivity tracking
 ```
 
 ---
 
-## Project Structure
+## Roadmap
 
-```
-therealmofpatterns/
-├── src/
-│   ├── pages/              # Astro pages
-│   │   ├── index.astro     # Homepage
-│   │   ├── discover.astro  # Birthday-first onboarding
-│   │   ├── reading/        # Daily cosmic reading
-│   │   ├── forecast/       # Personal forecasts
-│   │   ├── weather/        # Cosmic weather
-│   │   ├── history.astro   # Energy trends
-│   │   ├── subscribe.astro # Pricing (Pro / Team)
-│   │   ├── sol/            # Friendly mode
-│   │   ├── kasra/          # Technical mode
-│   │   ├── river/          # Poetic mode
-│   │   ├── blog/           # SEO content
-│   │   └── en/             # SEO pages (dimensions, figures)
-│   │
-│   ├── components/         # React components
-│   │   ├── charts/         # Data visualizations
-│   │   │   ├── RadarChart.tsx    # 8D spider chart (SVG)
-│   │   │   └── NatalWheel.tsx    # Birth chart wheel (SVG)
-│   │   ├── discover/       # Onboarding flow
-│   │   │   ├── DiscoverFlow.tsx  # Birthday → preview → checkin
-│   │   │   └── PreviewResult.tsx # Radar + natal + archetype
-│   │   ├── reading/        # Daily reading components
-│   │   ├── checkin/        # Check-in flow
-│   │   ├── shared/         # Header, Footer, Streak, Email
-│   │   └── dashboard/      # Dashboard with gauges + sparklines
-│   │
-│   ├── lib/                # Core engines
-│   │   ├── 16d-engine.ts          # 8D/16D vector computation
-│   │   ├── ephemeris-fallback.ts  # Client-side planetary positions
-│   │   ├── transit-engine.ts      # Transit calculations
-│   │   ├── preview-compute.ts     # Client-side preview wrapper
-│   │   ├── prediction-calibration.ts  # ARL feedback learning
-│   │   └── history.ts             # localStorage history
-│   │
-│   ├── stores/             # Nanostores state management
-│   ├── layouts/            # Astro layouts
-│   └── styles/             # Global CSS + design tokens
-│
-├── functions/              # Cloudflare Pages Functions
-├── public/assets/          # Static assets (brand, riso illustrations)
-├── e2e/                    # Playwright e2e tests
-└── docs/                   # Documentation
-```
+| Priority | Feature | Status |
+|----------|---------|--------|
+| ✅ Done | Check-in → reading loop closed (Sol reads today's check-in first) | Shipped |
+| ✅ Done | SoulToroid 3D visualization + shareable | Shipped |
+| ✅ Done | Jungian/Liz Greene narrator voice (Sol) | Shipped |
+| ✅ Done | Oracle sentence (transit-derived, daily) | Shipped |
+| 🔄 Next | Weekly synthesis reading (after 7 check-ins) | Planned |
+| 🔄 Next | Integration arc — longitudinal shadow tracking | Planned |
+| 🔄 Next | Relationship compare (two soul fields) | Planned |
+| 📋 Later | Email gate for weekly synthesis | Planned |
+| 📋 Later | Pro subscription | Planned |
 
 ---
 
 ## Quick Start
 
 ```bash
-# Install dependencies
 npm install
-
-# Local development
-npm run dev
-
-# Build
+npm run dev      # localhost:4321
 npm run build
-
-# Deploy
-npm run deploy
-
-# Run e2e tests
-E2E_STATIC_DIST=1 npx playwright test
+npm run deploy   # Cloudflare Pages
 ```
-
----
-
-## Documentation
-
-| Document | Description |
-|----------|-------------|
-| [Design Vision](docs/DESIGN-VISION.md) | Visual language and mode specifications |
-| [API Reference](docs/API.md) | Endpoint documentation |
-| [Content Strategy](docs/CONTENT-STRATEGY-2026.md) | Multi-language CMS plan |
 
 ---
 
 ## Philosophy
 
-> The cosmos encoded a pattern at your birth.
-> This pattern is not fate — it's a starting point.
-> You can tune yourself.
-> The field responds to attention.
+The natal chart is not fate. It is the particular psychological task you came here to engage.
 
-The Realm of Patterns doesn't tell you who you are.
-It shows you the shape you're starting from.
-The journey is yours.
+Sol does not tell you who you are. It names what is moving in you — and trusts you to meet it.
 
----
-
-**The algorithm is open. The transformation is yours.**
+The data the user gives is returned to them as something they couldn't have seen themselves. That is the only thing worth building.

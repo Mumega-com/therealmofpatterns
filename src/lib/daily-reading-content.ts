@@ -2,16 +2,16 @@
  * Daily Reading Content Library
  *
  * Hand-written reading templates for each dominant dimension.
- * Each dimension has multiple variants rotated by date hash,
- * plus an "action of the day" pool.
+ * Each dimension has 4 variants rotated by date hash,
+ * plus a reflection prompt pool.
  *
- * Design notes for AI content generators:
- * - Voice: Sol mode — warm, grounded, encouraging. Like a wise friend, not a guru.
- * - Length: Each reading paragraph is 2-4 sentences. Total reading is ~150-250 words.
- * - Avoid: jargon, astrology lingo beyond basics, doom language, absolute predictions.
- * - Always: offer a concrete suggestion, acknowledge both challenge and opportunity.
- * - Dimensions: Identity (Sun), Structure (Saturn), Mind (Mercury), Heart (Venus),
- *   Growth (Jupiter), Drive (Mars), Connection (Moon), Awareness (Neptune).
+ * Voice: Sol — depth psychological, Jungian/Liz Greene in sensibility.
+ * The chart as map of the psyche. Planets as psychological forces.
+ * Transits as moments when something unconscious seeks to become conscious.
+ * No prescriptions. No affirmations. Literary prose that trusts the reader.
+ *
+ * Dimensions: Identity (Sun), Structure (Saturn), Mind (Mercury), Heart (Venus),
+ *   Growth (Jupiter), Drive (Mars), Connection (Moon), Awareness (Uranus/Neptune).
  */
 
 export interface DailyReadingTemplate {
@@ -39,272 +39,273 @@ export const READING_TEMPLATES: DailyReadingTemplate[][] = [
   // ── Identity (Sun) ──────────────────────────────────────
   [
     {
-      opening: "Today the spotlight turns inward. The energy is asking a simple but powerful question: who are you when nobody's watching? This is an Identity day — a day when your sense of self gets a little louder, a little clearer.",
-      body: "You might feel a pull to express something authentic, even if it's uncomfortable. Maybe it's saying what you actually think in a meeting, wearing something that feels like you, or just noticing where you've been performing instead of living. Small acts of self-honesty have outsized impact today.",
-      closing: "Trust the version of you that shows up when you stop trying so hard."
+      opening: "Something at the center of you wants to be known today — not displayed, but genuinely recognised. The Sun principle, when it moves strongly, illuminates the gap between the person you present to the world and the one who waits quietly underneath. This is not a comfortable gap to look at clearly.",
+      body: "The psyche's movement toward authentic identity is rarely a triumphant march. More often it arrives as restlessness — a vague dissatisfaction with things that used to feel fine, a sense that a mask that once fit has grown too tight. This is not a sign that something is wrong. It is the Self insisting on being consulted. Where today are you speaking in a voice that is almost but not quite yours?",
+      closing: "The Self is not something you become. It is something you gradually stop hiding."
     },
     {
-      opening: "There's a warmth at the center of today's energy field — a quiet confidence humming beneath the surface. Identity is in the spotlight, and with it comes the urge to step forward rather than blend in.",
-      body: "This isn't about ego or attention-seeking. It's about alignment. When your outer actions match your inner truth, everything flows more easily. Pay attention to moments where you feel most alive today — they're showing you something important about who you're becoming.",
-      closing: "You don't need permission to take up space. You already belong here."
+      opening: "Today has a quality of illumination — not the warm kind, but the precise kind, the kind that shows you what is actually there rather than what you hoped was. The Sun, as a psychological principle, has no interest in flattery. It simply shows.",
+      body: "You may notice a small but significant discomfort in situations where you have been performing rather than living — where your outer behaviour has drifted from your actual values without your full consent. The psyche registers these discrepancies before the conscious mind does, usually as a muted restlessness or a feeling that something is slightly off. This signal is worth following rather than suppressing.",
+      closing: "Courage, in its most ordinary form, is choosing the honest response over the convenient one."
     },
     {
-      opening: "Today's energy is all about presence. Not the curated kind — the raw, unfiltered version of you. Identity days have a way of burning away pretense, leaving you face-to-face with what actually matters to you.",
-      body: "If you've been drifting on autopilot, this energy will nudge you awake. It might come as restlessness, a sudden clarity about what you want, or even frustration with a situation that used to feel fine. These are all signals that your identity is evolving. Don't resist it.",
-      closing: "The boldest thing you can do today is simply be honest about what you feel."
+      opening: "The Hero's journey is not an adventure story. It is the interior process of becoming more fully oneself — which is slow, unglamorous, and entirely necessary. On days like today, that process quietly accelerates.",
+      body: "What you have borrowed from other people's ideas of who you should be — their ambitions, their definitions of success, their sense of what is worthy — tends to chafe more acutely when the Sun principle is dominant. Not because those ideas are wrong, but because they are not yours. The friction is diagnostic. Notice where today the performance costs you more than it returns.",
+      closing: "The person you are becoming is already present. They simply need room."
     },
     {
-      opening: "Your core energy is running strong today. Think of it like the sun clearing the clouds — suddenly you can see yourself more clearly, and the view is better than you expected.",
-      body: "Identity days are perfect for decisions that define direction. Not the small stuff — the 'who do I want to be?' kind. If there's a conversation you've been avoiding, a project you've been circling, or a version of yourself you've been hiding, today's energy supports making a move.",
-      closing: "Shine without apology. The world adjusts to people who know who they are."
+      opening: "There is a solar quality to today's energy: it asks for presence — not the managed kind, but the kind where your actual face shows. The persona, Jung observed, is a necessary adaptation to life. It is also the thing the Self most consistently tries to see through.",
+      body: "Identity days often feel like a quiet pressure from within — as though something is testing the seams of the version of yourself you've been presenting. Where have you been saying things you don't mean, agreeing to things that diminish you, going along with something that quietly costs you your self-respect? These are not small questions. The psyche is never tired of asking them.",
+      closing: "What is most authentically you does not need permission. It needs acknowledgment."
     },
   ],
 
   // ── Structure (Saturn) ──────────────────────────────────
   [
     {
-      opening: "Today has a grounding quality to it. The energy favors building, organizing, and committing. If yesterday felt scattered, today brings the scaffolding.",
-      body: "Structure days reward the unglamorous work: clearing your inbox, finishing what you started, setting up systems that future-you will thank you for. The key is to resist the temptation to do everything and instead pick one thing to solidify. A single finished task beats ten half-started ones.",
-      closing: "The foundation you build today holds more weight than you think."
+      opening: "Saturn is the great realist. When its principle moves strongly through the day, it tends to strip away what is convenient and reveal what is necessary. Something quietly demanding is in the air — not punishing, but exacting.",
+      body: "The question Saturn always poses is not what you want but what you are prepared to build, and at what cost. Where have you been substituting wishes for commitment? Where has the avoidance of difficulty become its own kind of suffering? The psyche does not grow without edges, and Saturn is the force that insists on their existence.",
+      closing: "Limitation is not the enemy of the soul. It is the form the soul must take to become real."
     },
     {
-      opening: "There's a steadiness in the air today — a quiet invitation to get your house in order, literally or metaphorically. Structure energy doesn't rush. It builds.",
-      body: "This is a great day for boundaries too. Where have you been saying yes when you mean no? Where do you need more discipline, not less? Structure isn't about rigidity — it's about creating containers that let the important things grow.",
-      closing: "Discipline is just love made consistent. Build something that lasts."
+      opening: "There is a Saturnian quality to today that calls for honesty rather than inspiration. The energy favors what endures over what dazzles — structure, completion, the satisfaction of a thing done properly rather than impressively.",
+      body: "Saturn represents the encounter with necessity: the moment when the ego discovers that the world will not simply accommodate its wishes. This is not a defeat — it is the beginning of maturity. What would it look like today to work honestly within the limits you actually have, rather than the ones you wish you had?",
+      closing: "Reality is not an obstacle to your life. It is the material from which your life is made."
     },
     {
-      opening: "The energy today is practical, patient, and persistent. Think of it like the difference between dreaming about a garden and actually turning the soil. Structure days favor action over vision.",
-      body: "If you've been procrastinating on something boring but necessary — taxes, health checkup, that difficult conversation about logistics — today is your day. The resistance you feel is temporary. The relief you'll feel after is real.",
-      closing: "Small commitments, kept consistently, change everything."
+      opening: "The Saturn principle teaches through friction. When something feels heavy, slow, or resistant today, the instinct is to push harder or to retreat. The third option — to listen to what the resistance is saying — is usually the one the psyche actually needs.",
+      body: "Somewhere in your life there is a structure that needs to be built or a boundary that needs to be held. You likely already know what it is. There is a kind of integrity in following through with what is yours to do — not because it feels good, but because you have recognized it as necessary.",
+      closing: "What you build on honest ground holds. What you build on evasion eventually asks to be rebuilt."
     },
     {
-      opening: "Today asks you to be an architect. Not of grand plans, but of the quiet systems that hold your life together. Structure days have a sober clarity that cuts through noise.",
-      body: "Pay attention to what keeps breaking in your routine — that's where structure is needed most. It might be your morning, your finances, or how you manage your energy through the day. One good decision about structure saves a hundred future decisions.",
-      closing: "Build the container. Then let life fill it."
+      opening: "Saturn was traditionally the Lord of Time — not because it makes things slow, but because it asks you to take time seriously. What is committed to today is not a cage. It is a container in which something real can grow.",
+      body: "The shadow of Saturn is not discipline — it is the refusal to accept limitation, which paradoxically produces the most rigid and joyless existence. The gift is the discovery that within appropriate constraint, the true self is not diminished but clarified. What limits are you currently fighting that might, if accepted, become a kind of freedom?",
+      closing: "The soul does not grow in all directions at once. Let today have edges."
     },
   ],
 
   // ── Mind (Mercury) ──────────────────────────────────────
   [
     {
-      opening: "Your mind is electric today. Ideas come faster, connections appear where there were none before, and communication flows with unusual ease. This is a Mind day — use it.",
-      body: "Whether it's writing that email you've been drafting in your head, having the conversation that clears the air, or simply learning something new — your mental bandwidth is expanded today. The one thing to watch: don't mistake speed for depth. Slow down enough to let the best ideas fully form.",
-      closing: "Speak clearly. Listen deeply. The space between is where understanding lives."
+      opening: "Mercury is the psyche's messenger — the function that moves between worlds, connects disparate things, makes visible what was previously only sensed. On days when this energy is strong, the mind becomes an instrument rather than an obstacle.",
+      body: "Pay attention to the connections you make today, the associations that arrive unbidden, the ideas that seem to come from elsewhere. The unconscious communicates through symbol and coincidence, and Mercury days are when that signal comes through most clearly. Something wants to be thought — a recognition you have been circling, a question finally ready to be asked.",
+      closing: "The mind that notices everything teaches itself, in time, to see."
     },
     {
-      opening: "There's a sharpness to today's energy. Your perception is heightened, your curiosity is active, and your ability to articulate what you feel is stronger than usual.",
-      body: "Mind days are perfect for problem-solving, brainstorming, and untangling things that felt confusing yesterday. If you've been stuck on a decision, today brings the clarity to see all the angles. Write things down — your thoughts today are worth capturing.",
-      closing: "Your mind is a gift. Today it's especially well-tuned."
+      opening: "There is a quickening in the air today — a quality of attention that sharpens and seeks. When the Mind dimension is dominant, something in the psyche moves toward clarity, toward naming what has been formless.",
+      body: "Words have particular weight on days like this. The right question can reframe everything; the honest observation can land like a key in a lock. Watch what captures your attention without effort. The psyche's interest is never random — it points toward what matters, whether or not the conscious mind has caught up yet.",
+      closing: "To name something clearly is to meet it honestly. What has been waiting to be named?"
     },
     {
-      opening: "Information flows like water today. You might find yourself drawn to books, conversations, podcasts, or rabbit holes of curiosity. Let yourself explore — Mind energy rewards the curious.",
-      body: "The best use of this energy isn't consuming more but synthesizing what you already know. What patterns do you see? What connections have you missed? Sometimes the breakthrough comes not from new information but from looking at old information with fresh eyes.",
-      closing: "Stay curious. The next good idea is closer than you think."
+      opening: "Mercury rules the threshold — the in-between spaces where things are neither one thing nor another and yet full of possibility. Today has something of that quality: a readiness to think differently, to release the conclusion you arrived at yesterday.",
+      body: "The danger on Mercury days is over-analysis — mistaking the map for the territory, or believing that naming something is the same as understanding it. What the mind most usefully does today is not to solve but to receive: to sit with the incomplete thought long enough to discover what it is actually about.",
+      closing: "Understanding arrives when we stop forcing it. Some things need to remain unresolved a little longer."
     },
     {
-      opening: "Today favors the thinkers, the talkers, and the writers. Mind energy is humming, and the world feels a little more legible than usual.",
-      body: "If you need to persuade someone, teach something, or simply get your point across — today is your window. But this energy also supports the quieter side of mind: journaling, reflecting, sorting through mental clutter. Give your thoughts room to breathe and they'll reward you with surprising clarity.",
-      closing: "A clear mind isn't empty — it's organized around what matters."
+      opening: "The trickster quality of Mercury is this: what the mind thinks it is looking for is rarely what it actually finds. Today's energy invites a looser kind of attention — following the thread of curiosity rather than the predetermined plan.",
+      body: "In psychological terms, Mercury mediates between opposites — the capacity to hold two contradictory things without collapsing them into one. You may find yourself today in exactly that position. This is not confusion. It is the beginning of a more complex and more accurate understanding.",
+      closing: "The mind that can hold contradiction without panic is the mind that genuinely learns."
     },
   ],
 
   // ── Heart (Venus) ────────────────────────────────────────
   [
     {
-      opening: "Beauty is louder today. Colors seem richer, music hits differently, and you might find yourself moved by small moments that usually pass unnoticed. Heart energy is in the lead.",
-      body: "This is a day for tending your relationships — not through grand gestures but through genuine presence. Tell someone what they mean to you. Cook something with care. Notice what you find beautiful and let it matter. The Heart dimension reminds you that life isn't just about doing; it's about feeling.",
-      closing: "Love isn't a feeling you wait for. It's a practice you choose. Choose it today."
+      opening: "Venus represents not romantic love as it is popularly imagined, but Eros — the soul's capacity to be moved, to be drawn toward what it values. On days when this energy is prominent, something in the psyche wants to feel its way toward what is genuinely meaningful.",
+      body: "What you love reveals who you are. This sounds simple and is one of the most difficult things to know clearly. We project our need for beauty, belonging, and meaning onto people and things, and then wonder why satisfaction does not last. The question today is not what you want but what you value when you are most honestly yourself.",
+      closing: "What you love is not separate from you. It is a dimension of yourself, waiting to be recognised."
     },
     {
-      opening: "Today carries a gentleness to it. The hard edges soften, and the energy invites you to lead with your heart rather than your head.",
-      body: "Heart days are about values — what you hold dear, what you'd fight for, what makes life worth living. If you've been neglecting the things that nourish your soul (art, nature, connection, play), today is your invitation to return. Productivity can wait. Meaning can't.",
-      closing: "The most productive thing you can do today might be nothing at all — just being present with someone you love."
+      opening: "There is a quality of longing in today's energy — not lack, but attunement, the heart moving toward what resonates. When the Heart dimension is dominant, the psyche becomes more sensitive to beauty, to resonance, to the quality of being genuinely in the right place.",
+      body: "The shadow of Venus is idealisation that prevents real contact: loving the image of a person rather than the person, pursuing beauty that keeps you at a safe emotional distance from the actual. Notice today where you are drawn to the idea of something rather than its reality. The genuine article is usually messier and considerably more alive.",
+      closing: "To love what is actually in front of you — that is the harder and more valuable practice."
     },
     {
-      opening: "Your emotional intelligence is heightened today. You can sense what others need before they say it, and you're more attuned to the quality of your connections.",
-      body: "Use this energy to repair what's frayed. A simple apology, an unexpected compliment, a moment of full attention — these small acts of heart reshape relationships in ways that last. Also: don't forget to direct some of that care inward. What do you need that you've been too busy to notice?",
-      closing: "Tenderness isn't weakness. It's the bravest thing we do."
+      opening: "The Venusian principle in depth psychology is not merely aesthetic — it is the capacity for relationship as a form of self-knowledge. We discover who we are through what and whom we love, and even more revealingly through what we project onto them.",
+      body: "On days like today the psyche tends to be more permeable, more available to being touched. This is also when projection is most active — seeing in another what we have not yet recognised in ourselves. If someone or something arrests your attention with unusual force today, it is worth asking: what is this showing me about my own unlived life?",
+      closing: "Projection is not a failure of perception. It is an invitation to own what you see."
     },
     {
-      opening: "There's a magnetic pull toward pleasure today — not the escapist kind, but the kind that fills you up. Good food, good company, good music. Heart energy knows what feeds the soul.",
-      body: "If you've been running on empty, today is a refueling day. Surround yourself with what you love and let it work its quiet magic. This isn't indulgence; it's maintenance. You can't pour from an empty cup, and Heart days are for filling yours back up.",
-      closing: "You deserve the beauty you so easily give to others."
+      opening: "Venus asks: can you receive? Not take, not earn — but allow. This is more difficult than it sounds for those who have learned to manage their own needs by becoming indispensable to others.",
+      body: "The energy today has a yielding quality. Something in you may be asking to be met — to be seen, appreciated, held with genuine care. The work is to let that need be real without converting it into performance or demand. What would it mean to ask for what you need today, simply and without theatre?",
+      closing: "The heart that does not ask eventually forgets how to receive. Today, ask."
     },
   ],
 
   // ── Growth (Jupiter) ────────────────────────────────────
   [
     {
-      opening: "Expansion is the word of the day. Something in you wants to grow — to learn, to reach, to become more than you were yesterday. Growth energy doesn't settle for comfortable.",
-      body: "This might show up as an urge to travel, explore a new idea, or question a belief you've held for years. Whatever form it takes, follow it. Growth happens at the edges of what you know. The risk today isn't doing too much — it's playing too safe.",
-      closing: "Think bigger. The universe tends to meet you where your ambition is."
+      opening: "Jupiter is the principle of meaning — the force in the psyche that refuses to accept that life is merely what it appears to be at its most mechanical. When this energy is strong, something in you expands beyond the usual boundaries of what you believe yourself to be.",
+      body: "The question Jupiter always poses is: what do you believe? Not in any doctrinal sense but at the level of the organising myth that gives your life its shape. The shadow of Jupiter is inflation — the grandiosity that substitutes a sense of limitless possibility for the harder work of becoming specifically, concretely real. The gift is genuine: the capacity to hold a larger view, to find meaning even in what resists it.",
+      closing: "What you are reaching for today is real. Let it also be grounded."
     },
     {
-      opening: "Today feels spacious. The walls pull back, the ceiling lifts, and suddenly there's room for something larger. Growth energy is generous — it wants you to expand.",
-      body: "This is a great day for long-term thinking: where do you want to be in a year? What skill, relationship, or understanding would change everything? Growth days favor the visionary over the pragmatist. Dream first, plan later.",
-      closing: "The future is wider than you think. Give yourself permission to want more."
+      opening: "There is an expansive quality to today — a sense of possibility that the mind tends to outrun. When Growth is the dominant dimension, the psyche is genuinely seeking something larger than itself: a vision, a meaning, a horizon that justifies the difficulty of being alive.",
+      body: "The danger is not ambition but disconnection — becoming so absorbed in what might be that contact with what is is lost. Jupiter's gifts require Saturn's ground. Something today is asking you to dream with your feet on the earth. What would it look like to take your vision seriously enough to make one concrete, irreversible move toward it?",
+      closing: "The future becomes real only when you act as though it already matters."
     },
     {
-      opening: "Your appetite for meaning is strong today. Superficial answers won't satisfy — you want to understand why. Growth energy pushes you past the surface.",
-      body: "This could mean picking up a book that's been sitting on your shelf, having a deeper conversation than usual, or finally exploring that subject that keeps calling your name. Growth isn't always dramatic. Sometimes it's just choosing curiosity over comfort, one question at a time.",
-      closing: "Every master was once a beginner who refused to stop asking 'why?'"
+      opening: "Jupiter in Jungian terms is associated with the puer aeternus — the eternal youth who lives in possibility but flees commitment. On days when this energy is dominant, this quality is available as gift or shadow, and the difference lies in what you do with it.",
+      body: "If you feel restless, dissatisfied, hungry for something you cannot name — this is Jupiter moving. The question is not whether the hunger is valid but what it is actually hungry for. The soul wants meaning. The ego wants comfort. These are not always the same thing, and today they may be in useful tension.",
+      closing: "Meaning is not found. It is made — out of the material of an honestly lived life."
     },
     {
-      opening: "There's a restless optimism in the air today. Growth energy makes everything feel possible, which is both its gift and its trap. Channel it wisely.",
-      body: "The best use of this energy is to make one meaningful move in the direction you want to grow. Not five — one. Sign up for that course. Send that message. Start that project. Growth energy without focus scatters into a dozen unfinished ideas. With focus, it becomes transformation.",
-      closing: "Growth doesn't ask for perfect conditions. It asks for one brave step."
+      opening: "Growth days bring an unusual quality of faith — the sense that things can be different, that the story is not yet written, that there is genuine room for something new. This is not delusion. It is one of the psyche's most important capacities.",
+      body: "Faith without form evaporates. The psyche's largest movements require containers. A vision without structure is merely mood. What would it take today to take one of your larger intuitions and give it something to stand on — a decision, a conversation, a commitment? Not the whole edifice. One stone.",
+      closing: "Begin where you are, with what is yours. The rest follows from that."
     },
   ],
 
   // ── Drive (Mars) ─────────────────────────────────────────
   [
     {
-      opening: "You can feel it — that restless energy that wants to move, build, and conquer. Drive is today's dominant force, and it's not interested in sitting still.",
-      body: "This is a doing day, not a thinking day. Start the workout. Ship the thing. Have the confrontation you've been avoiding. Drive energy rewards action and punishes hesitation. The trick is to channel it deliberately — raw Drive without direction becomes frustration. Pick your target, then go.",
-      closing: "Momentum is on your side today. Use it before it moves on."
+      opening: "Mars is the principle of desire in its most direct form — not what you think you should want, but what you actually want, the way hunger is not a preference but a fact. On days when Drive is dominant, this force moves closer to the surface.",
+      body: "The shadow of Mars is not aggression — it is the denial of desire, the long suppression of genuine will that eventually expresses itself as bitterness, passive hostility, or a resentment with no clear object. What have you been pretending not to want? What are you afraid to fight for because naming it would make it real, and real things can be lost?",
+      closing: "Your desire is not a problem to be managed. It is a signal worth following honestly."
     },
     {
-      opening: "Energy is high and patience is low. That's the signature of a Drive day — everything moves faster, including your temper. Use the fuel, but mind the fire.",
-      body: "The best outlet for this energy is physical: exercise, building, cleaning, anything that lets your body spend what your mind can't hold. If you must channel it mentally, tackle the hard problem — the one that's been sitting there because it's intimidating. Drive days eat intimidation for breakfast.",
-      closing: "You're stronger than the thing you're afraid of. Prove it today."
+      opening: "There is a particular quality to Mars energy: it demands honesty about what you actually want, not what you believe you should want. This is harder than it sounds in a life shaped by others' expectations about which desires are acceptable.",
+      body: "When Drive is strong, the psyche clarifies — the compromises that were tolerable yesterday begin to chafe. This is not regression or selfishness. It is the soul insisting on being consulted. Notice today where your energy rises without effort and where it drains without apparent reason. Energy is a kind of moral compass — it tells you what is and is not yours.",
+      closing: "What you are drawn toward without permission — that is worth examining closely."
     },
     {
-      opening: "Today feels like a starting gun. Something inside you is ready to sprint — toward a goal, away from stagnation, or simply into motion for its own sake.",
-      body: "Drive energy is perfect for breaking through blocks. That project stuck at 80%? Finish it. That habit you keep meaning to start? Day one is today. The key is to match intensity with intention — don't just do more, do what matters most. When Drive is focused, it moves mountains.",
-      closing: "Completion is its own reward. Cross something off the list today."
+      opening: "The warrior principle in depth psychology is not about combat but about the capacity to assert — to take up the space that is genuinely yours, to name what belongs to you, to decline what diminishes you.",
+      body: "Where have you been accommodating something that costs more than it returns? Where have you been saying yes in a voice that means no? This energy is not an invitation to aggression. It is an invitation to honesty about your own needs — and to act from that honesty rather than around it, which is the harder and more dignified path.",
+      closing: "Standing for something is not selfishness. It is the beginning of integrity."
     },
     {
-      opening: "Mars energy is running hot today, filling you with a raw motivation that cuts through excuse and overthinking. This is fuel — what will you spend it on?",
-      body: "A word of caution: Drive days can make you impatient with others and short with yourself. Not everything responds to force. Some things need a firm hand; others need a soft touch. The art of Drive is knowing which. Compete with yesterday's version of yourself, not with the people around you.",
-      closing: "The best battles are the ones you fight with yourself — and win."
+      opening: "Mars rules what we go after and what we defend. On days when this principle is dominant, both capacities are available: the force to pursue what is genuinely desired and the courage to protect what genuinely matters.",
+      body: "The unconscious often stores frustrated desire as physical tension, restlessness, or urgency without a clear target. If you feel this today — a bottled energy that doesn't know where to go — it is worth asking what legitimate action it wants to become. The psyche will express itself one way or another. The question is whether you will choose the form.",
+      closing: "The force in you wants to serve something real. Give it something worthy."
     },
   ],
 
   // ── Connection (Moon) ────────────────────────────────────
   [
     {
-      opening: "Today the energy turns relational. You'll feel the quality of your connections more acutely — who lifts you up, who drains you, and where you've been neglecting the bonds that matter.",
-      body: "Connection days are for showing up. Call the friend you've been meaning to call. Ask how someone is actually doing — and wait for the real answer. These tiny acts of care don't just help others; they feed a part of you that can't be nourished by achievement alone.",
-      closing: "The people in your life are your life. Tend to them today."
+      opening: "The Moon in Jungian psychology represents the realm of the mother — not the personal mother, but the archetypal source of feeling, instinct, belonging, and the rhythmic pulse of the body. On days when Connection is dominant, this layer of the psyche rises toward the surface.",
+      body: "You may find yourself more permeable than usual — more affected by the mood of a room, more aware of what is unspoken in a conversation, more attuned to what others carry without saying. This is not weakness. It is the lunar quality: the capacity to feel what is actually present rather than what is supposed to be present. The question is whether you will honour that capacity or override it.",
+      closing: "What you feel today is information. Let it matter before you explain it away."
     },
     {
-      opening: "Your emotional antenna is especially sensitive today. You might pick up on moods, undercurrents, and unspoken needs that usually fly under your radar. Connection energy makes you permeable.",
-      body: "This heightened sensitivity is a superpower if you use it well. Listen between the lines. Notice who needs encouragement. But also: set boundaries where you need them. Being connected doesn't mean absorbing everyone's pain. You can care deeply and still protect your energy.",
-      closing: "Being seen and being safe aren't opposites. You can have both."
+      opening: "The Moon's domain is not emotion as something that happens to us. It is the felt sense of life, the body's intelligence, the relational instinct that knows things before the mind arrives to name them.",
+      body: "Today's energy tends toward connection — to other people, to the body, to memory and the past. The psyche on lunar days is more receptive: the usual separations between self and other soften. This brings richness, and also vulnerability. What relationships are asking for your real attention today — not managed attention, but genuine presence?",
+      closing: "To be genuinely present with another person is one of the rarest things we offer. You have it in you."
     },
     {
-      opening: "Home, family, roots — something pulls you toward the familiar today. Connection energy is about belonging, and belonging starts with feeling safe enough to be yourself.",
-      body: "If you've been running hard, this might be the day to slow down and remember what you're running toward. Cook a meal. Share a story. Sit in comfortable silence with someone who knows you. Connection isn't always about talking — sometimes it's about being in the same room, fully present.",
-      closing: "Belonging isn't something you earn. It's something you build, one honest moment at a time."
+      opening: "When the Moon principle is strong, what the psyche wants is not achievement but belonging — the fundamental comfort of being known and accepted not for what you produce but for what you are. This need is not regressive. It is primary.",
+      body: "The mother complex, in all its forms, tends to become active on lunar days. What do you need from the people in your life that you have been too self-sufficient or too proud to ask for? Where have you been managing your need for connection by making yourself the one who manages, who gives, who does not need? The genuine need is allowed.",
+      closing: "To need is not to be weak. It is to be honestly human."
     },
     {
-      opening: "The space between you and others feels thinner today. Empathy flows more easily, vulnerability feels less risky, and there's a quiet hunger for real connection — not likes and replies, but the kind that feeds your soul.",
-      body: "Today is an invitation to go deeper with someone. Share what you've been holding. Ask the question you've been afraid to ask. The Connection dimension reminds us that we're not meant to carry everything alone — and that asking for help is its own kind of strength.",
-      closing: "No one makes it through this life alone. Reach out. You'll be glad you did."
+      opening: "The lunar quality of today brings something that resists linear description — a knowing that arrives through feeling, through the body, through what resonates rather than through what makes rational sense.",
+      body: "Trust your instincts today more than your analysis. Not because analysis is wrong, but because what the Moon illuminates is the portion of experience that analysis tends to flatten or miss entirely. If something feels off — in a relationship, in a direction, in yourself — that feeling is worth taking seriously even before you can explain it.",
+      closing: "The body knows before the mind does. Listen early."
     },
   ],
 
-  // ── Awareness (Neptune) ──────────────────────────────────
+  // ── Awareness (Uranus/Neptune) ────────────────────────────
   [
     {
-      opening: "Today has a dreamy, spacious quality — as if the usual boundaries between you and the world have thinned. Awareness energy invites you to observe rather than react.",
-      body: "This is a day for noticing. What patterns keep showing up in your life? What does your intuition whisper when your mind gets quiet? Awareness days aren't about doing — they're about seeing clearly. Meditation, journaling, time in nature, or simply sitting in stillness can unlock insights that action never could.",
-      closing: "The deepest answers don't come from thinking harder. They come from getting quiet enough to hear."
+      opening: "The outer planets point toward something larger than the personal — the transpersonal dimension of experience, where individual fate meets the deeper patterns of the collective. When Awareness is prominent, the psyche is reaching toward the edge of what is known.",
+      body: "Today's energy has a quality of dissolving — of boundaries becoming more permeable, of the usual certainties feeling slightly less solid than yesterday. This can be disorienting if you resist it, or profoundly clarifying if you allow it. Something is asking to be seen from a vantage point you do not ordinarily occupy. What would it mean to step back far enough to look?",
+      closing: "What is on the edge of your awareness is usually more significant than what is at its centre."
     },
     {
-      opening: "The noise dims today. Not the outer noise — the inner kind. The constant narration, the planning, the judging. Awareness energy creates space between stimulus and response, and in that space lives something precious: choice.",
-      body: "Use this energy to step back from the story you've been telling yourself. Is it true, or just familiar? Are you reacting to what's actually happening, or to a pattern from the past? Awareness days help you catch the difference. This isn't about being perfect — it's about being present.",
-      closing: "You are not your thoughts. You are the one watching them."
+      opening: "Neptune in psychological terms is related to the dissolution of ego boundaries — the experience of something larger than personal identity. This can manifest as inspiration, compassion, and genuine spiritual opening, or as confusion and loss of direction if the ego is not ready.",
+      body: "Today you may find that the usual separation between yourself and others, between your inner life and the outer world, feels thinner than usual. Pay attention to what arrives in this thinness: intuitions, images, unexpected sympathies. The psyche at its edges communicates in symbols and resonance rather than clear propositions. What image returns? What feeling persists without explanation?",
+      closing: "What dissolves is always the container. What it was containing remains."
     },
     {
-      opening: "Something subtle is happening today. You might not be able to name it, but you can feel it — a shift in perspective, a widening of the lens. Awareness energy works below the surface.",
-      body: "Don't force clarity today. Let it come to you. Walk without a destination. Read without a goal. Let your mind wander and see where it goes. The Awareness dimension connects you to the bigger picture, and the bigger picture reveals itself to those who stop trying to control it.",
-      closing: "Trust the process. Not everything needs to be understood to be meaningful."
+      opening: "Uranus is the principle of individuation at its most sudden — the moment when the pattern you have been living stops fitting and something new must emerge, wanted or not. These moments are rarely comfortable and are never entirely chosen.",
+      body: "If something feels ready to break open today — a belief, a habit, a way you have understood yourself — this is not necessarily a crisis. It may be the psyche doing exactly what it does at the right moment: forcing the expansion that the comfortable self would never voluntarily choose. What has been stable for too long? What is quietly insisting on being reconsidered?",
+      closing: "What breaks is always something that needed to break. Trust the emergence, even before you understand it."
     },
     {
-      opening: "Today invites you to be the witness. Not the actor, not the director — the one in the audience, watching the whole play of your life with compassion and curiosity.",
-      body: "Awareness days are ideal for reflection: What has this week taught you? Where are you growing? Where are you stuck? The answers live in the spaces between your busy moments. Give yourself ten minutes of genuine silence and see what surfaces. You might be surprised.",
-      closing: "Stillness isn't empty. It's full of answers you've been too busy to hear."
+      opening: "On days when Awareness is the dominant frequency, the psyche reaches beyond the personal — toward the archetypal, the collective, the layer of experience that belongs to everyone because it belongs to the deepest human nature.",
+      body: "Neptune's longing is for the experience of union — the dissolution of the isolated ego into something larger than itself. This longing is real, and it cannot ultimately be satisfied by substances, relationships, or spiritual practice, though all will be tried. What it wants is a genuine opening: to be the particular person you are, and simultaneously to be part of something that makes that particularity meaningful.",
+      closing: "You are both the individual story and the pattern beneath all stories. Neither cancels the other."
     },
   ],
 ];
 
 /**
- * Actions of the day per dimension.
- * Each dimension has 6 actions, rotated independently from readings.
+ * Reflection prompts per dimension.
+ * Each dimension has 6 prompts, rotated independently from readings.
+ * Voice: psychological depth, not instruction. Questions that open rather than direct.
  */
 export const DAILY_ACTIONS: DailyAction[][] = [
   // Identity
   [
-    { title: "Express yourself", description: "Share an opinion, a creative idea, or a personal truth you've been keeping quiet. Authenticity builds identity." },
-    { title: "Make one bold choice", description: "Choose something that feels like 'you' — even if it's small. Wear what you want. Say what you mean." },
-    { title: "Notice where you perform", description: "Catch one moment today where you adjust yourself for someone else's comfort. Just notice it. That's enough." },
-    { title: "Write your values", description: "List 3 things that matter most to you right now. No editing, no judging. Just truth." },
-    { title: "Take the lead", description: "Volunteer to go first — in a conversation, a project, or a decision. Leading builds self-trust." },
-    { title: "Celebrate a win", description: "Name one thing you did well recently. Say it out loud. You're allowed to be proud of yourself." },
+    { title: "Notice the mask", description: "Observe one moment today where you adjusted yourself for someone else's comfort. No judgment — just notice what it cost you." },
+    { title: "One honest thing", description: "Say or write something true that you have been keeping carefully vague. The precision matters more than the size." },
+    { title: "What feels most like you?", description: "Pay attention today to the moments when you feel most genuinely yourself. These are not random. They are pointing at something." },
+    { title: "Where did the persona come from?", description: "Trace one habitual self-presentation back to its origin. Whose idea of you are you still carrying?" },
+    { title: "The unlived version", description: "Consider a version of yourself you abandoned for good reasons. Is any part of it still worth retrieving?" },
+    { title: "Speak in your own voice", description: "In one conversation today, resist the urge to soften, qualify, or perform. Say what you actually mean." },
   ],
   // Structure
   [
-    { title: "Finish one thing", description: "Pick the task that's been sitting at 90% done. Complete it. The relief is worth more than starting something new." },
-    { title: "Set one boundary", description: "Where do you need to say no? Find it and say it — kindly, clearly, firmly." },
-    { title: "Organize your space", description: "Spend 15 minutes decluttering your desk, inbox, or closet. Outer order creates inner calm." },
-    { title: "Build a routine", description: "Choose one small habit and commit to it for this week. Just this week. That's enough." },
-    { title: "Plan your tomorrow", description: "Before bed, write down your 3 priorities for tomorrow. Waking up with a plan changes everything." },
-    { title: "Fix what's broken", description: "That squeaky door, that awkward process, that thing you work around every day — fix it. Small repairs compound." },
+    { title: "What is the resistance saying?", description: "When you feel resistance to a necessary task today, pause before overriding it. What is it trying to tell you?" },
+    { title: "One real commitment", description: "Make one commitment today that you actually intend to keep — not because you should, but because it is genuinely yours to do." },
+    { title: "Where is the container needed?", description: "Identify one area of your life where the absence of structure is costing you more than the discomfort of creating it." },
+    { title: "Finish something", description: "Complete one thing you have been circling. The psyche accumulates unfinished business as a kind of static." },
+    { title: "The necessary no", description: "Find one place today where saying no is honest. Say it without elaborate justification." },
+    { title: "Sit with limitation", description: "Choose one constraint in your life that you have been fighting and sit with it for five minutes without trying to solve it." },
   ],
   // Mind
   [
-    { title: "Learn something new", description: "Spend 20 minutes exploring a topic that has nothing to do with your work. Cross-pollination sparks creativity." },
-    { title: "Write it down", description: "Capture your thoughts in writing. Journal, note, or voice memo — externalize what's in your head." },
-    { title: "Have a real conversation", description: "Talk to someone about an idea, not a task. Discussion sharpens thinking better than solo reflection." },
-    { title: "Solve the puzzle", description: "Take on the problem you've been avoiding. Your mind is sharp today — use it on something worthy." },
-    { title: "Read deeply", description: "Choose one article or chapter and read it slowly, with full attention. Depth beats breadth today." },
-    { title: "Teach someone", description: "Explain something you know well to someone who doesn't. Teaching is the highest form of understanding." },
+    { title: "Follow the thread", description: "Notice what your attention is drawn to today without effort. That interest is not random — follow it and see where it leads." },
+    { title: "Name what is formless", description: "There is something you know but have not yet put into words. Spend ten minutes trying to name it precisely." },
+    { title: "Hold the contradiction", description: "Identify two things you believe that are in tension with each other. Sit with both without resolving them." },
+    { title: "Slow down one thought", description: "Choose one idea you have been moving past quickly and spend real time with it. Depth is not the same as accumulation." },
+    { title: "What is the question?", description: "Before seeking an answer today, spend time with the question itself. Premature answers close things that should stay open." },
+    { title: "Write the unsorted thought", description: "Set a timer for ten minutes and write whatever is in your mind without editing. The unguarded thought often contains the real one." },
   ],
   // Heart
   [
-    { title: "Reach out with kindness", description: "Send a message to someone you appreciate. Not because you need something — just because they matter." },
-    { title: "Create something beautiful", description: "Cook a meal, arrange flowers, draw, sing, or style an outfit. Let beauty be the point." },
-    { title: "Listen fully", description: "Give someone your complete attention for 5 minutes. No phone, no formulating your response. Just listen." },
-    { title: "Enjoy without guilt", description: "Do something purely for pleasure. No productivity justification needed. Rest is not laziness." },
-    { title: "Forgive one thing", description: "Let go of a small grudge or self-criticism. Not because they deserve it, but because you deserve peace." },
-    { title: "Notice beauty", description: "Find three beautiful things today — in nature, in people, in ordinary moments. Train your eye for what's good." },
+    { title: "What do you love?", description: "Name three things you love without justification or utility. Not what you should love — what you actually do." },
+    { title: "Where is the projection?", description: "If someone or something arrested your attention today with unusual intensity, ask what it is showing you about yourself." },
+    { title: "Ask for what you need", description: "Identify one genuine need and make it known to someone — simply, without the theatre of apology or self-sufficiency." },
+    { title: "Let something move you", description: "Allow yourself to be affected today by something beautiful, sad, or true. Do not manage the feeling before it has arrived." },
+    { title: "What do you value?", description: "Beneath what you pursue, what do you actually value? Spend a few minutes with the gap between the two." },
+    { title: "Genuine reception", description: "When something good arrives today — a compliment, an offer, a moment of connection — let it in rather than deflecting it." },
   ],
   // Growth
   [
-    { title: "Think bigger", description: "Spend 10 minutes imagining your life one year from now. What would make you proud? Let yourself want it." },
-    { title: "Question a belief", description: "Pick one thing you assume is true about yourself or the world. Ask: is it? Really?" },
-    { title: "Explore the unfamiliar", description: "Try a new restaurant, read an opposing viewpoint, or talk to someone outside your usual circle." },
-    { title: "Start before you're ready", description: "That thing you've been 'almost ready' to begin? Start it today. Imperfect action beats perfect planning." },
-    { title: "Seek a mentor", description: "Identify someone who's where you want to be. Reach out. Ask one question. Growth accelerates with guidance." },
-    { title: "Invest in yourself", description: "Buy the book. Take the course. Book the session. Investing in your growth isn't selfish — it's essential." },
+    { title: "Question the organising myth", description: "What story do you tell yourself about where you are going and why? Is it still true, or has it outlived its usefulness?" },
+    { title: "What does the hunger want?", description: "If you feel restless or dissatisfied today, sit with the feeling long enough to ask what it is actually hungry for." },
+    { title: "One step toward the vision", description: "Identify one concrete action that would move you toward something you genuinely believe in. Not the whole edifice — one stone." },
+    { title: "Where is the inflation?", description: "Notice any place today where your sense of possibility has outrun your willingness to do the specific, unglamorous work." },
+    { title: "The unlived life", description: "What have you not yet become that still calls to you? Is it still genuinely calling, or have you been carrying an old dream out of loyalty?" },
+    { title: "What do you believe?", description: "Not what you profess — what you actually believe, demonstrated by how you spend your time and where you place your attention." },
   ],
   // Drive
   [
-    { title: "Move your body", description: "Exercise, walk, stretch, dance — anything that gets your blood moving. Physical energy unlocks mental energy." },
-    { title: "Do the hard thing first", description: "Start your day with the task you're most tempted to avoid. Everything after that feels easier." },
-    { title: "Set a deadline", description: "Give yourself a time limit for a task and race the clock. Urgency creates focus." },
-    { title: "Ship something", description: "Send the email. Publish the draft. Submit the application. Done beats perfect." },
-    { title: "Compete with yesterday", description: "Do one more rep, one more page, one more minute than you did last time. Progress is the only comparison that matters." },
-    { title: "Channel frustration", description: "If you're angry or restless, point that energy at something constructive. Clean, build, create, solve." },
+    { title: "What do you actually want?", description: "Beneath what you think you should want, beneath the performance of desire, what do you actually want today?" },
+    { title: "The suppressed will", description: "Where have you been containing your will to accommodate others? Is the containment still appropriate, or has it become a habit?" },
+    { title: "Name the desire", description: "Write down one thing you genuinely desire but have been reluctant to name, as though naming it would make its absence more painful." },
+    { title: "Channel the energy", description: "If you feel restless, impatient, or charged today, ask what legitimate action that energy wants to become." },
+    { title: "What are you defending?", description: "Notice where you feel the impulse to defend or protect something today. What is it, and is it actually worth defending?" },
+    { title: "One direct move", description: "Choose one thing you have been approaching indirectly and approach it directly instead. The directness is the point." },
   ],
   // Connection
   [
-    { title: "Check in on someone", description: "Send a quick 'thinking of you' message to someone you haven't talked to in a while. It means more than you know." },
-    { title: "Share something vulnerable", description: "Tell someone how you actually feel — not the polished version. Vulnerability deepens connection." },
-    { title: "Eat with someone", description: "Share a meal, even if it's just coffee. Breaking bread is one of humanity's oldest bonding rituals." },
-    { title: "Ask for help", description: "Let someone support you today. It's not weakness — it's trust. And it strengthens the bond for both of you." },
-    { title: "Put the phone down", description: "For one conversation today, be fully present. No screen, no multitasking. Just two humans, connecting." },
-    { title: "Express gratitude", description: "Tell someone specifically what you appreciate about them. Not generic — specific. 'I love how you always...' " },
+    { title: "What do you need?", description: "Name one thing you genuinely need from someone in your life that you have been managing around rather than asking for." },
+    { title: "Presence, not performance", description: "In one conversation today, resist the urge to be useful, insightful, or impressive. Simply be present with what is actually happening." },
+    { title: "Notice the projection", description: "If someone evokes a strong response today — positive or negative — sit with the question: what am I seeing that is actually mine?" },
+    { title: "The unlived belonging", description: "Where in your life have you been substituting independence for the belonging you actually need? Name it, at least to yourself." },
+    { title: "Ask the real question", description: "In one relationship today, ask how someone is — and wait for the real answer, without rushing to fill the silence or solve anything." },
+    { title: "Receive without deflecting", description: "When something is offered to you today — care, recognition, help — let it actually land rather than redirecting it back outward." },
   ],
   // Awareness
   [
-    { title: "Sit in silence", description: "Give yourself 10 minutes with no input — no phone, no music, no tasks. Just breathe and observe your mind." },
-    { title: "Take a mindful walk", description: "Walk for 15 minutes paying attention to your senses. What do you see, hear, smell, feel?" },
-    { title: "Journal without a prompt", description: "Open a blank page and write whatever comes. Don't edit, don't judge. Let your subconscious speak." },
-    { title: "Observe your patterns", description: "Notice one habit or reaction you repeat on autopilot. You don't need to change it — just see it clearly." },
-    { title: "Practice non-reaction", description: "When something irritates you today, pause before responding. That pause is where your freedom lives." },
-    { title: "Look at the sky", description: "Step outside and look up for 60 seconds. Let the vastness of the sky remind you of perspective." },
+    { title: "What is on the edge?", description: "Spend five minutes attending to what is at the periphery of your awareness today — the thing you keep almost thinking." },
+    { title: "Sit with the unknown", description: "Identify one area of your life that is genuinely unresolved and resist the urge to resolve it today. Let it be unfinished." },
+    { title: "Follow the image", description: "If a recurring image, dream fragment, or symbolic coincidence surfaces today, write it down and sit with it rather than explaining it." },
+    { title: "Notice the pattern", description: "Step back from one recurring situation in your life and observe it as a pattern rather than an event. What is it consistently trying to show you?" },
+    { title: "The witness position", description: "For ten minutes today, observe your own thoughts and feelings as though you were watching someone else — with interest rather than judgment." },
+    { title: "What dissolves?", description: "Notice what feels less certain today than it did a week ago. Something is dissolving. Before you rebuild it, ask whether it needed to dissolve." },
   ],
 ];
 

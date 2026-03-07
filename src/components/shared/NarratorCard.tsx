@@ -69,30 +69,23 @@ export function NarratorCard({ archetypeTitle, compact = false }: NarratorCardPr
         <div className="narrator-archetype">{archetypeTitle}</div>
       )}
 
-      <h3 className="narrator-title">Your Story</h3>
-
       <div className="narrator-body">
         {compact
-          ? <p className="narrator-text">{result.narrative.slice(0, 300)}{result.narrative.length > 300 ? '...' : ''}</p>
+          ? <p className="narrator-text">{result.narrative.slice(0, 280)}{result.narrative.length > 280 ? '…' : ''}</p>
           : <p className="narrator-text">{result.narrative}</p>
         }
       </div>
 
-      <div className="narrator-meta">
-        <span className="narrator-tier">
-          {tierLabels[result.tier] || result.tier}
-          {result.tier !== 'intro' && !result.fromFallback && (
-            <> &middot; Personalized</>
-          )}
-        </span>
-        {result.fromFallback && (
-          <span className="narrator-fallback">Template reading</span>
-        )}
-      </div>
-
-      {compact && result.narrative.length > 300 && (
-        <a href="/profile#narrator" className="narrator-readmore">Read full story &rarr;</a>
+      {compact && (
+        <a href="/reading" className="narrator-readmore">Read Sol's full reading &rarr;</a>
       )}
+
+      <div className="narrator-meta">
+        {result.fromFallback
+          ? <span className="narrator-fallback">Template reading</span>
+          : <span className="narrator-tier">{tierLabels[result.tier] || result.tier} · Personalized</span>
+        }
+      </div>
 
       <style>{narratorStyles}</style>
     </div>

@@ -1,3 +1,10 @@
+# Soul field share — serve all /soul/TOKEN paths as the share page (token read client-side)
+/soul/:token /soul/share/ 200
+
+# /compare → soul compare (no token, user adds their own)
+/compare /soul/compare 301
+/compare/ /soul/compare 301
+
 # Redirects for removed pages (Cloudflare Pages format)
 /theater /reading/ 301
 /theater/ /reading/ 301

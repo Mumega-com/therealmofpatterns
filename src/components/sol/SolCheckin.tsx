@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { updateForecast, setFailureMode } from '../../stores';
 import { SolCard, SolButton, SolProgress, SolAlert, SolBadge } from './SolCard';
-import { saveCheckin, getTodaysCheckin, getCheckinHistory, type CheckinEntry } from '../../lib/checkin-storage';
+import { saveCheckin, getTodaysCheckin, getCheckinHistory, getYesterdaysKappa, type CheckinEntry } from '../../lib/checkin-storage';
+import { fetchNarrative, type NarratorResult } from '../../lib/narrator-client';
 
 interface CheckinQuestion {
   id: string;
@@ -15,70 +16,70 @@ interface CheckinQuestion {
 const CHECKIN_QUESTIONS: CheckinQuestion[] = [
   {
     id: 'mood',
-    emoji: '😊',
-    question: 'How are you feeling right now?',
+    emoji: '○',
+    question: 'What is the dominant tone in you right now?',
     options: [
-      { label: 'Struggling', emoji: '😔', value: 1 },
-      { label: 'Meh', emoji: '😐', value: 2 },
-      { label: 'Okay', emoji: '🙂', value: 3 },
-      { label: 'Good', emoji: '😊', value: 4 },
-      { label: 'Great!', emoji: '🌟', value: 5 },
+      { label: 'Contracted', emoji: '◦', value: 1 },
+      { label: 'Restless', emoji: '○', value: 2 },
+      { label: 'Muted', emoji: '◎', value: 3 },
+      { label: 'Present', emoji: '●', value: 4 },
+      { label: 'Open', emoji: '◉', value: 5 },
     ],
     dimension: 'coherence',
     weight: 1.2,
   },
   {
     id: 'energy',
-    emoji: '⚡',
-    question: "What's your energy level?",
+    emoji: '◈',
+    question: 'What in you wants to move today?',
     options: [
-      { label: 'Exhausted', emoji: '🪫', value: 1 },
-      { label: 'Tired', emoji: '😴', value: 2 },
-      { label: 'Normal', emoji: '🔋', value: 3 },
-      { label: 'Energized', emoji: '⚡', value: 4 },
-      { label: 'Supercharged', emoji: '🚀', value: 5 },
+      { label: 'Nothing stirs', emoji: '◦', value: 1 },
+      { label: 'Something reluctant', emoji: '○', value: 2 },
+      { label: 'A slow current', emoji: '◎', value: 3 },
+      { label: 'A clear impulse', emoji: '●', value: 4 },
+      { label: 'Strong momentum', emoji: '◉', value: 5 },
     ],
     dimension: 'energy',
     weight: 1.0,
   },
   {
     id: 'focus',
-    emoji: '🎯',
-    question: 'How focused do you feel?',
+    emoji: '◉',
+    question: 'Where does your attention rest when you stop directing it?',
     options: [
-      { label: 'Very scattered', emoji: '🌪️', value: 1 },
-      { label: 'Distracted', emoji: '👀', value: 2 },
-      { label: 'So-so', emoji: '😶', value: 3 },
-      { label: 'Focused', emoji: '🎯', value: 4 },
-      { label: 'Laser-sharp', emoji: '⚡', value: 5 },
+      { label: 'It scatters immediately', emoji: '◦', value: 1 },
+      { label: 'It drifts and circles', emoji: '○', value: 2 },
+      { label: 'It settles loosely', emoji: '◎', value: 3 },
+      { label: 'It finds a natural anchor', emoji: '●', value: 4 },
+      { label: 'It rests with clarity', emoji: '◉', value: 5 },
     ],
     dimension: 'focus',
     weight: 1.1,
   },
   {
     id: 'body',
-    emoji: '🧘',
-    question: 'How connected do you feel to your body?',
+    emoji: '◌',
+    question: 'How present is your body to what the day is asking?',
     options: [
-      { label: 'Disconnected', emoji: '🌫️', value: 1 },
-      { label: 'A bit floaty', emoji: '☁️', value: 2 },
-      { label: 'Normal', emoji: '🙂', value: 3 },
-      { label: 'Grounded', emoji: '🌳', value: 4 },
-      { label: 'Very present', emoji: '🧘', value: 5 },
+      { label: 'Absent — I am elsewhere', emoji: '◦', value: 1 },
+      { label: 'Numb or disconnected', emoji: '○', value: 2 },
+      { label: 'Dimly aware', emoji: '◎', value: 3 },
+      { label: 'Grounded and present', emoji: '●', value: 4 },
+      { label: 'Fully awake in it', emoji: '◉', value: 5 },
     ],
     dimension: 'embodiment',
     weight: 0.8,
   },
   {
     id: 'direction',
-    emoji: '🧭',
-    question: 'Do you have a clear sense of direction today?',
+    emoji: '◎',
+    question: 'What does the day feel like it wants from you?',
     options: [
-      { label: 'Totally lost', emoji: '❓', value: 1 },
-      { label: 'Uncertain', emoji: '🤔', value: 2 },
-      { label: 'Somewhat', emoji: '🙂', value: 3 },
-      { label: 'Clear', emoji: '🧭', value: 4 },
-      { label: 'Crystal clear', emoji: '✨', value: 5 },
+      { label: 'Nothing — silence', emoji: '◦', value: 1 },
+      { label: 'I cannot read it', emoji: '○', value: 2 },
+      { label: 'A quiet direction', emoji: '◎', value: 3 },
+      { label: 'Something specific', emoji: '●', value: 4 },
+      { label: 'An unmistakable pull', emoji: '◉', value: 5 },
     ],
     dimension: 'coherence',
     weight: 1.0,
@@ -136,6 +137,7 @@ export function SolCheckin({ onComplete, className = '' }: SolCheckinProps) {
         kappa={result.kappa}
         message={result.message}
         emoji={result.emoji}
+        scores={scores}
         onReset={handleReset}
         className={className}
       />
@@ -175,9 +177,9 @@ export function SolCheckin({ onComplete, className = '' }: SolCheckinProps) {
         </div>
       </SolCard>
 
-      {/* Skip hint */}
+      {/* Hint */}
       <p className="text-sol-caption text-sol-muted text-center mt-4">
-        Just go with your gut feeling! 💭
+        First response. No analysis needed.
       </p>
     </div>
   );
@@ -187,61 +189,250 @@ function CheckinResult({
   kappa,
   message,
   emoji,
+  scores,
   onReset,
   className,
 }: {
   kappa: number;
   message: string;
   emoji: string;
+  scores: Record<string, number>;
   onReset: () => void;
   className: string;
 }) {
   const percent = Math.round(kappa * 100);
   const [history, setHistory] = useState<{ streak: number; entries: CheckinEntry[] }>({ streak: 0, entries: [] });
+  const [delta, setDelta] = useState<number | null>(null);
+  const [reading, setReading] = useState<NarratorResult | null>(null);
+  const [readingStatus, setReadingStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+
+  // Reminder opt-in state
+  const [reminderEmail, setReminderEmail] = useState('');
+  const [reminderStatus, setReminderStatus] = useState<'idle' | 'saving' | 'set' | 'error'>('idle');
+  const [isReminderActive, setIsReminderActive] = useState(false);
 
   useEffect(() => {
     const h = getCheckinHistory();
     setHistory({ streak: h.streak, entries: h.entries.slice(0, 7) });
+    const yk = getYesterdaysKappa();
+    if (yk !== null) setDelta(Math.round((kappa - yk) * 100));
+
+    // Fetch Sol's reading immediately — will be ready by the time they finish reading the score
+    fetchNarrative()
+      .then((result) => {
+        setReading(result);
+        setReadingStatus('ready');
+      })
+      .catch(() => setReadingStatus('error'));
+
+    // If already opted in, silently reschedule for tomorrow
+    const savedEmail = localStorage.getItem('rop_reminder_email');
+    if (savedEmail && localStorage.getItem('rop_reminder_active') === 'true') {
+      setIsReminderActive(true);
+      scheduleReminder(savedEmail); // fire and forget
+    }
   }, []);
+
+  async function scheduleReminder(email: string) {
+    try {
+      const res = await fetch('/api/remind', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          timezoneOffset: new Date().getTimezoneOffset(),
+        }),
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  }
+
+  async function handleReminderSubmit() {
+    const email = reminderEmail.trim().toLowerCase();
+    if (!email || !email.includes('@')) return;
+    setReminderStatus('saving');
+    const ok = await scheduleReminder(email);
+    if (ok) {
+      localStorage.setItem('rop_reminder_email', email);
+      localStorage.setItem('rop_reminder_active', 'true');
+      setIsReminderActive(true);
+      setReminderStatus('set');
+    } else {
+      setReminderStatus('error');
+    }
+  }
+
+  const carryQuestion = getCarryQuestion(scores);
 
   return (
     <div className={`space-y-4 ${className}`}>
+      {/* Coherence score */}
       <SolCard variant="highlight" className="text-center">
-        <span className="text-6xl mb-4 block">{emoji}</span>
-        <h2 className="text-sol-h1 text-sol-text mb-2">Check-in Complete!</h2>
-        <p className="text-sol-body text-sol-muted mb-4">{message}</p>
-
-        <div className="py-4">
-          <div className="text-sol-caption text-sol-muted mb-2">Your energy score</div>
-          <div className="text-5xl font-bold text-sol-accent">{percent}%</div>
-        </div>
-
-        <SolProgress value={percent} showValue={false} className="mt-2" />
-
-        {/* Streak badge */}
-        {history.streak > 1 && (
-          <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-sol-accent/10 rounded-full">
-            <span>🔥</span>
-            <span className="text-sol-caption text-sol-accent font-medium">
-              {history.streak} day streak!
-            </span>
+        <span className="text-4xl mb-3 block" style={{ fontFamily: 'monospace' }}>{emoji}</span>
+        <div className="py-3">
+          <div className="text-sol-caption text-sol-muted mb-1">Field coherence</div>
+          <div className="flex items-baseline justify-center gap-2">
+            <span className="text-5xl font-bold text-sol-accent">{percent}%</span>
+            {delta !== null && (
+              <span className={`text-lg font-normal ${delta >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                {delta >= 0 ? `↑${delta}` : `↓${Math.abs(delta)}`}
+              </span>
+            )}
           </div>
+          {delta !== null && (
+            <div className="text-sol-caption text-sol-muted mt-0.5">vs. yesterday</div>
+          )}
+        </div>
+        <SolProgress value={percent} showValue={false} className="mt-2" />
+        <p className="text-sol-body text-sol-muted mt-4 leading-relaxed">{message}</p>
+      </SolCard>
+
+      {/* Sol's reading — inline, fetched immediately on mount */}
+      <SolCard className="!p-5">
+        <div className="text-[0.7rem] tracking-widest uppercase text-sol-muted mb-4">Sol's reading</div>
+
+        {readingStatus === 'loading' && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
+            <span style={{
+              display: 'inline-block',
+              width: '16px', height: '16px',
+              border: '1.5px solid rgba(212,168,84,0.2)',
+              borderTopColor: 'rgba(212,168,84,0.7)',
+              borderRadius: '50%',
+              animation: 'sol-spin 1s linear infinite',
+              flexShrink: 0,
+            }} />
+            <span style={{ fontSize: '0.875rem', color: 'rgba(240,232,216,0.4)', fontStyle: 'italic' }}>
+              Sol is reading the field…
+            </span>
+            <style>{`@keyframes sol-spin { to { transform: rotate(360deg); } }`}</style>
+          </div>
+        )}
+
+        {readingStatus === 'ready' && reading && (
+          <div style={{ animation: 'sol-fade 0.7s ease-out' }}>
+            <style>{`@keyframes sol-fade { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }`}</style>
+            {reading.narrative.split('\n\n').filter(Boolean).map((para, i) => (
+              <p key={i} style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: '1.1rem',
+                lineHeight: '1.85',
+                color: 'rgba(240,232,216,0.88)',
+                marginBottom: '1.2em',
+              }}>{para}</p>
+            ))}
+          </div>
+        )}
+
+        {readingStatus === 'error' && (
+          <p style={{ fontSize: '0.875rem', color: 'rgba(240,232,216,0.4)', fontStyle: 'italic', margin: 0 }}>
+            The field is quiet today.{' '}
+            <a href="/reading" style={{ color: '#d4a854', textDecoration: 'none' }}>Open reading →</a>
+          </p>
         )}
       </SolCard>
 
-      {/* Recent check-ins mini chart */}
+      {/* Carry question */}
+      <SolCard className="!p-5">
+        <div className="text-[0.7rem] tracking-widest uppercase text-sol-muted mb-2">A question to carry today</div>
+        <p className="text-sol-body text-sol-text italic leading-relaxed">{carryQuestion}</p>
+      </SolCard>
+
+      {/* Reminder opt-in */}
+      {!isReminderActive && reminderStatus !== 'set' && (
+        <div style={{
+          padding: '1rem 1.25rem',
+          background: 'rgba(212,168,84,0.04)',
+          border: '1px solid rgba(212,168,84,0.12)',
+          borderRadius: '12px',
+        }}>
+          <div style={{ fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(212,168,84,0.45)', marginBottom: '0.6rem' }}>
+            Return tomorrow
+          </div>
+          <p style={{ margin: '0 0 0.875rem', fontSize: '0.875rem', color: 'rgba(240,232,216,0.5)', lineHeight: '1.5' }}>
+            Get a quiet reminder from Sol each morning.
+          </p>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' as const }}>
+            <input
+              type="email"
+              placeholder="your@email.com"
+              value={reminderEmail}
+              onChange={(e) => setReminderEmail(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleReminderSubmit()}
+              style={{
+                flex: 1,
+                minWidth: '160px',
+                padding: '0.6rem 0.875rem',
+                background: 'rgba(5,6,10,0.8)',
+                border: '1px solid rgba(212,168,84,0.2)',
+                borderRadius: '8px',
+                color: '#f0e8d8',
+                fontSize: '0.875rem',
+                fontFamily: 'inherit',
+                outline: 'none',
+              }}
+            />
+            <button
+              onClick={handleReminderSubmit}
+              disabled={reminderStatus === 'saving'}
+              style={{
+                padding: '0.6rem 1rem',
+                background: 'rgba(212,168,84,0.12)',
+                border: '1px solid rgba(212,168,84,0.3)',
+                borderRadius: '8px',
+                color: '#d4a854',
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                whiteSpace: 'nowrap' as const,
+                opacity: reminderStatus === 'saving' ? 0.6 : 1,
+              }}
+            >
+              {reminderStatus === 'saving' ? '…' : 'Remind me →'}
+            </button>
+          </div>
+          {reminderStatus === 'error' && (
+            <p style={{ margin: '0.5rem 0 0', fontSize: '0.75rem', color: 'rgba(240,100,100,0.6)' }}>
+              Couldn't set reminder. Try again later.
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Reminder confirmed */}
+      {(isReminderActive || reminderStatus === 'set') && (
+        <div style={{
+          padding: '0.875rem 1.25rem',
+          background: 'rgba(212,168,84,0.04)',
+          border: '1px solid rgba(212,168,84,0.12)',
+          borderRadius: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem',
+        }}>
+          <span style={{ color: 'rgba(212,168,84,0.6)', fontSize: '1rem' }}>◎</span>
+          <span style={{ fontSize: '0.875rem', color: 'rgba(240,232,216,0.45)', fontStyle: 'italic' }}>
+            Sol will reach out tomorrow morning.
+          </span>
+        </div>
+      )}
+
+      {/* Arc of the week */}
       {history.entries.length > 1 && (
         <SolCard className="!p-4">
-          <div className="text-sol-caption text-sol-muted mb-3">Your week at a glance</div>
-          <div className="flex items-end justify-between gap-1 h-16">
-            {history.entries.slice(0, 7).reverse().map((entry, i) => (
+          <div className="text-sol-caption text-sol-muted mb-3">The arc of your week</div>
+          <div className="flex items-end justify-between gap-1 h-14">
+            {history.entries.slice(0, 7).reverse().map((entry) => (
               <div key={entry.id} className="flex-1 flex flex-col items-center gap-1">
                 <div
-                  className="w-full bg-sol-accent/80 rounded-t transition-all"
+                  className="w-full bg-sol-accent/70 rounded-t transition-all"
                   style={{ height: `${entry.kappa * 100}%` }}
                   title={`${Math.round(entry.kappa * 100)}%`}
                 />
-                <span className="text-[10px] text-sol-muted">
+                <span className="text-[9px] text-sol-muted">
                   {new Date(entry.timestamp).toLocaleDateString('en', { weekday: 'short' }).charAt(0)}
                 </span>
               </div>
@@ -250,22 +441,34 @@ function CheckinResult({
         </SolCard>
       )}
 
-      <SolAlert
-        type="tip"
-        title="What this means"
-        message={getAdvice(kappa)}
-      />
-
+      {/* Actions */}
       <div className="flex gap-3">
         <SolButton variant="secondary" onClick={onReset} className="flex-1">
-          Check in again
+          Reflect again
         </SolButton>
         <SolButton href="/sol" className="flex-1">
-          View dashboard
+          Return to Sol
         </SolButton>
       </div>
     </div>
   );
+}
+
+function getCarryQuestion(scores: Record<string, number>): string {
+  const dims: Record<string, number> = {
+    coherence: ((scores.mood || 3) + (scores.direction || 3)) / 2,
+    energy: scores.energy || 3,
+    focus: scores.focus || 3,
+    embodiment: scores.body || 3,
+  };
+  const lowestDim = Object.entries(dims).sort((a, b) => a[1] - b[1])[0][0];
+  const questions: Record<string, string> = {
+    coherence: "What in you is seeking coherence right now that you have not yet found words for?",
+    energy: "Where is your vitality actually going — not where you direct it, but where you notice it leaving?",
+    focus: "What are you avoiding giving your full attention to, and what does that avoidance protect?",
+    embodiment: "What is your body already knowing that your thinking has not yet caught up with?",
+  };
+  return questions[lowestDim];
 }
 
 function calculateKappa(scores: Record<string, number>): number {
@@ -315,29 +518,29 @@ function detectAndSetFailureMode(scores: Record<string, number>) {
 
 function getResultInfo(kappa: number): { message: string; emoji: string } {
   if (kappa >= 0.8) {
-    return { message: "You're having an amazing day! Keep riding this wave.", emoji: '🌟' };
+    return { message: "The field shows strong coherence. Something in you is aligned with the current moment.", emoji: '◉' };
   } else if (kappa >= 0.6) {
-    return { message: "You're doing well! Good energy and focus today.", emoji: '😊' };
+    return { message: "The currents are favorable. The parts of you that usually pull in different directions have found a temporary accord.", emoji: '◎' };
   } else if (kappa >= 0.4) {
-    return { message: "A pretty normal day. Nothing wrong with that!", emoji: '🙂' };
+    return { message: "A day of mixed signals — neither collapse nor clarity. The psyche is processing something it has not yet named.", emoji: '○' };
   } else if (kappa >= 0.2) {
-    return { message: "Not your best day, and that's okay. Be kind to yourself.", emoji: '🌱' };
+    return { message: "The field shows tension. What is not working in you is asking to be seen. This is not disorder — it is information.", emoji: '◌' };
   } else {
-    return { message: "Tough day. Remember: every day is different. Rest if you can.", emoji: '🤗' };
+    return { message: "Something has withdrawn. When the field collapses this far, it is rarely random. What does the withdrawal know that the conscious mind does not?", emoji: '·' };
   }
 }
 
 function getAdvice(kappa: number): string {
   if (kappa >= 0.8) {
-    return "Great time for important tasks, creative work, or meaningful conversations!";
+    return "High coherence days often carry a shadow: the temptation to avoid what disrupts the feeling of flow. Notice what you are deferring.";
   } else if (kappa >= 0.6) {
-    return "You've got good momentum. Tackle your priority tasks while you're in the zone.";
+    return "The alignment you feel is real, but partial. Where is it absent? That gap is the most interesting thing about today.";
   } else if (kappa >= 0.4) {
-    return "Pace yourself today. Focus on must-do's and don't overcommit.";
+    return "The mid-range is where most genuine psychological work happens — not in crisis, not in ease. What is the field consolidating?";
   } else if (kappa >= 0.2) {
-    return "Keep things simple. It's okay to postpone non-urgent stuff.";
+    return "Low coherence often precedes a shift. Something that no longer fits is losing its grip. What have you been carrying that does not belong to you?";
   } else {
-    return "Focus on basics: rest, nourishment, maybe a walk. Tomorrow's another day.";
+    return "The psyche sometimes needs to contract before it can expand. What the field shows as depletion may be preparation. Rest is not absence — it is a different kind of movement.";
   }
 }
 

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SoulView } from '../components/soul/SoulView';
+---
+
+<BaseLayout
+  title="Your Soul Field — The Realm of Patterns"
+  description="Explore the living 3D geometry of your energy field. A map of your soul anatomy, shaped by your natal pattern."
+>
+  <style>
+    /* Remove the default page padding for full-screen experience */
+    main, .page-content {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: none !important;
+    }
+  </style>
+  <SoulView client:load />
+</BaseLayout>

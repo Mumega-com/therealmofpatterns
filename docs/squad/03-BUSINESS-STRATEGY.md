@@ -1,160 +1,109 @@
-# Business Strategy - The Realm of Patterns
+# Business Strategy — The Realm of Patterns
 
-**Agent:** Business
-**Version:** 2.0.0
-**Last Updated:** 2026-02-02
-
-## Executive Summary
-
-**The Realm of Patterns** pioneers **Coherence Intelligence** - a new category at the intersection of AI, ancient wisdom systems, and personalized guidance.
-
-**Market Opportunity:** $12.8B+ TAM across astrology ($2.8B), wellness ($4.5B), and self-development ($5.5B).
-
-**Business Model:** Premium one-time purchases with high-ticket positioning. Content-led SEO driving organic traffic to paid reports.
+**Last Updated:** 2026-03-05
 
 ---
 
-## Market Analysis
+## What We Are
 
-| Segment | Market Size | CAGR | Our Angle |
-|---------|-------------|------|-----------|
-| Astrology Apps | $2.8B | 12.5% | Coherence > Horoscopes |
-| Wellness Tech | $4.5B | 23.1% | Personalized guidance |
-| Self-Development | $5.5B | 5.8% | Pattern recognition |
+A daily depth psychology practice. An 8-dimensional natal engine produces a psychological profile at birth. Every day, Sol — an AI narrator working in the tradition of Liz Greene — generates a reading that connects the natal pattern to current transits and, critically, to what the user just reported in their daily reflection.
 
-**SAM:** $3.2B (English-speaking, 18-45, digitally native)
-**SOM:** $32M (1% of SAM in Year 3)
+The more you use it, the more it sees.
 
 ---
 
-## Customer Segments
+## Market Position
 
-1. **Curious Skeptic (40%)** - Wants depth, hates woo-woo
-2. **Modern Mystic (35%)** - Established practice, wants synthesis
-3. **Wellness Professional (15%)** - Coaches, therapists, healers
-4. **Enterprise Seeker (10%)** - Executives seeking clarity
+**Category:** Personal depth practice (not astrology, not wellness, not therapy)
+**Primary differentiator:** The reading is not generic. Sol opens with what you just told it — "Contracted," "Numb," "Scatters immediately" — and names the withdrawn dimension as a psychological reality. No other product does this.
 
----
-
-## Pricing Model
-
-### Premium Products (One-Time Purchase)
-
-| Product | Price | Includes |
-|---------|-------|----------|
-| **Premium 16D Report** | $497 | 40+ page luxury PDF, full 16D analysis, historical figure matches, sacred art |
-| **Complete Bundle** | $697 | Premium Report + Art Print + Physical Booklet |
-
-### Free Content (SEO & Lead Gen)
-
-| Content Type | Purpose |
-|--------------|---------|
-| Daily Cosmic Weather | 6 languages, engagement |
-| Dimension Guides | 48 pages, SEO authority |
-| Historical Figures | Pattern recognition demos |
-| Free Mini-Reading | Lead capture, conversion |
+**Who this is for:**
+- Adults 28–45 who have outgrown generic horoscope apps
+- Psychology-curious users who want depth without therapy-speak
+- Existing Jungian / depth psychology enthusiasts who want a daily practice tool
 
 ---
 
-## Revenue Model
+## Business Model
 
-### Year 1 Projections
+### Current: Free with Pro upgrade
 
-| Metric | Target |
-|--------|--------|
-| Monthly Site Visitors | 50,000 |
-| Free Mini-Reading Signups | 5,000/mo |
-| Conversion to Premium | 2% |
-| Premium Sales/Month | 100 |
-| Avg Order Value | $550 |
-| **Monthly Revenue** | **$55,000** |
-| **Annual Revenue** | **$660,000** |
+| Tier | Price | What you get |
+|------|-------|--------------|
+| **Free** | $0 | Full check-in loop, Sol's daily reading (standard model), SoulToroid, journey map |
+| **Pro** | ~$12/mo | Priority AI model, weekly synthesis readings, longitudinal tracking, relationship compare |
 
-### Year 2 Projections
-- Monthly Visitors: 200,000
-- Premium Sales/Month: 400
-- **Annual Revenue:** $2.64M
+**Revenue timing:** Pro feature set is being built. Free tier is fully functional and is the acquisition vehicle.
 
----
-
-## Unit Economics
-
-| Metric | Value |
-|--------|-------|
-| Average Order Value | $550 |
-| Cost of Goods (AI, PDF, hosting) | $5 |
-| Gross Margin | 99% |
-| CAC (organic SEO) | $15 |
-| CAC (paid, if needed) | $80 |
-| **LTV:CAC (organic)** | **36:1** |
-| Payback Period | Immediate |
-
----
-
-## Go-to-Market Strategy
-
-### Content-Led SEO Funnel
+### Acquisition Loop
 
 ```
-Free Content (720+ pages) → Mini-Reading → Email Capture → Premium Report
-         ↓                        ↓              ↓              ↓
-   Organic Traffic           Trust Build    Nurture       $497-697
+/discover (birthday → 8D pattern) → daily check-in → Sol reading → share soul field
+                                                                           ↓
+                                                               Viral acquisition
 ```
 
-### Phases
-
-1. **Content Foundation (M1-2):** 720+ SEO pages, 6 languages
-2. **Launch (M3):** Product Hunt, first 50 sales
-3. **Scale (M4-12):** SEO compounding, $50K+ MRR
-4. **Expand (M13+):** Physical products, B2B licensing
+The shareable soul field (`/soul/[token]`) is the organic growth vector. No login required to view someone's field — just a base64 URL.
 
 ---
 
-## Category Creation: "Coherence Intelligence"
+## Retention Mechanics
 
-**Definition:** The practice of recognizing patterns across time, systems, and lived experience to make sense of your life.
+The product is designed around return-the-next-day compulsion, not notifications:
 
-**Positioning:**
-- Never say "astrology" - always "Coherence Intelligence"
-- Multi-System (Vedic + Tarot + I Ching)
-- Pattern Recognition, not fortune-telling
-- Personal, not generic horoscopes
+1. **Delta** — Check-in shows κ score vs yesterday. One number that means something.
+2. **Carry question** — Sol leaves a single psychological question derived from the user's lowest dimension. Unprescribed. No answer required.
+3. **Weekly synthesis** *(planned)* — After 7 check-ins, a longitudinal reading of the week's arc.
+4. **Integration arc** *(planned)* — At 30/60/90 days, a shadow tracking narrative.
 
----
-
-## Shadow Analysis (What Could Kill Us)
-
-| Risk | Probability | Mitigation |
-|------|-------------|------------|
-| Astrology Backlash | 40% | Position as "pattern recognition" |
-| AI Model Commoditization | 60% | Multi-system moat + memory |
-| Privacy Scandal | 15% | SOC 2 compliance, local-first |
-| Founder Burnout | 30% | Hire VP Eng by Month 6 |
-| Unit Economics Fail | 25% | Organic-first, test pricing |
+The daily practice is the product. Everything else supports it.
 
 ---
 
 ## Competitive Moats
 
-1. **Multi-System Intelligence** (Technical)
-2. **Memory Architecture** (Data)
-3. **Coherence Language** (Brand)
-4. **Sovereign AI** (Distribution)
-5. **Taste & Craft** (Experience)
+1. **Jungian voice fidelity** — Sol's voice is enforced by system prompt rules that prevent it from becoming a wellness app. Difficult to replicate without the same philosophical grounding.
+2. **Check-in → reading loop** — The reading is personalized to what you just told it, not to your static natal chart. This requires architectural work most competitors skip.
+3. **Privacy-first architecture** — All data in localStorage. No account required. This is a trust moat.
+4. **SoulToroid** — A genuinely beautiful 3D artifact derived from your data. Shareable, no login required.
 
 ---
 
-## Success Metrics
+## Key Metrics
 
-**North Star:** % of users who report "life feels more coherent" after 30 days (Target: >60%)
+**North Star:** % of users who return for a second check-in within 48 hours.
 
-| Category | Metric | Target Y1 |
-|----------|--------|-----------|
-| Acquisition | MAU | 100K |
-| Activation | Day 7 retention | >40% |
-| Revenue | MRR | $410K |
-| Engagement | DAU/MAU | >30% |
+| Metric | Target |
+|--------|--------|
+| Day 2 retention | >40% |
+| Day 7 retention | >25% |
+| Check-in completion rate | >70% |
+| Narrative satisfaction (implicit, from re-reads) | Track |
+| Soul field shares | Track (acquisition signal) |
 
 ---
 
-**The real win:** Helping people make sense of their lives. Everything else is just business.
+## Roadmap Priority
+
+| Priority | Feature | Why |
+|----------|---------|-----|
+| ✅ Done | Check-in → reading loop closed | Core value prop |
+| ✅ Done | SoulToroid + shareable | Acquisition |
+| ✅ Done | Sol's Jungian voice | Differentiation |
+| 🔄 Next | Weekly synthesis reading | Primary retention feature |
+| 🔄 Next | Integration arc (30/60/90) | Long-term retention |
+| 🔄 Next | Relationship compare | Second acquisition loop |
+| 📋 Later | Pro subscription launch | Revenue |
+| 📋 Later | Email gate for weekly synthesis | List building |
+
+---
+
+## What We Are Not Doing
+
+- $497 one-time PDF reports
+- "Coherence Intelligence" category creation
+- Multi-system synthesis (Vedic + Tarot + I Ching)
+- Failure mode detection as a medical/clinical product
+- B2B therapist portal in the near term
+
+The product is focused. One thing done well: a daily practice that returns the user's own data to them as something they couldn't have seen themselves.

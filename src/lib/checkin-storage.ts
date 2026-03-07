@@ -124,6 +124,18 @@ export function getTodaysCheckin(): CheckinEntry | null {
 }
 
 /**
+ * Get yesterday's kappa score, or null if no check-in exists
+ */
+export function getYesterdaysKappa(): number | null {
+  const history = getCheckinHistory();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toDateString();
+  const entry = history.entries.find(e => new Date(e.timestamp).toDateString() === yesterdayStr);
+  return entry ? entry.kappa : null;
+}
+
+/**
  * Get check-ins for a specific date range
  */
 export function getCheckinsInRange(startDate: Date, endDate: Date): CheckinEntry[] {

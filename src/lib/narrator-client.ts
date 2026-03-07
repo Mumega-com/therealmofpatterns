@@ -5,7 +5,8 @@
  * Includes localStorage caching and template fallback.
  */
 
-import { buildNarratorContext, buildSystemPrompt, buildUserPrompt, type PersonalizationTier } from './narrator-context';
+import { buildNarratorContext, buildSystemPrompt, buildUserPrompt, buildWeeklySynthesisSystemPrompt, buildWeeklySynthesisUserPrompt, type PersonalizationTier } from './narrator-context';
+import { getTodaysCheckin, getCheckinHistory, getRecentCheckins } from './checkin-storage';
 
 export interface NarratorResult {
   narrative: string;
@@ -22,7 +23,9 @@ const CACHE_PREFIX = 'rop_narrative_';
  */
 export async function fetchNarrative(): Promise<NarratorResult> {
   const today = new Date().toISOString().split('T')[0];
-  const cacheKey = CACHE_PREFIX + today;
+  // Cache key includes today's check-in ID so it invalidates after a new check-in
+  const todayEntry = getTodaysCheckin();
+  const cacheKey = CACHE_PREFIX + today + (todayEntry ? '_' + todayEntry.id : '');
 
   // 1. Check localStorage cache
   if (typeof window !== 'undefined') {
@@ -59,6 +62,7 @@ export async function fetchNarrative(): Promise<NarratorResult> {
         systemPrompt,
         userPrompt,
         isPro,
+        checkinId: todayEntry?.id || null,
       }),
     });
 
@@ -98,11 +102,11 @@ function getFallbackNarrative(): NarratorResult {
   const { tier } = buildNarratorContext();
 
   const templates: Record<PersonalizationTier, string> = {
-    intro: "Welcome to The Realm of Patterns. Your unique energy profile is like a fingerprint in the cosmos — no one else has quite the same combination. Today's sky is sending a gentle nudge to pay attention to what feels natural. Trust your instincts, and notice the moments where things click into place. Your journey is just beginning, and there's so much to discover about how you move through the world.",
-    early: "You're starting to see how this works. Each check-in adds another data point, and the patterns are beginning to emerge. Today, pay attention to the energy that feels strongest — that's your profile resonating with the sky above. Keep checking in, and you'll start to notice your own rhythms more clearly.",
-    pattern: "Your check-in history is telling a story. The patterns in your energy are becoming clearer with each day. Today's sky brings a shift worth paying attention to. Notice how your energy moves through the day — the peaks and valleys have meaning. Trust what you're learning about yourself.",
-    calibrated: "The system is learning your rhythms, and the readings are getting more accurate. Today's energy is shaped by transits that interact with your unique sensitivities. Pay extra attention to the dimension that's been most active for you lately — there's a message in how strongly you feel it.",
-    deep: "You've been on this path long enough to know: the patterns are real, and they're deeply personal. Today's sky is speaking directly to where you are in your journey. Your shadow work is showing results, and the spiral continues. Trust the process — you know how to read your own energy now.",
+    intro: "Something in you already knows that the outer life is a reflection of an inner one — that the recurring tensions, the patterns that keep returning, are not random. They have a shape. This work begins with that shape: the configuration of forces present at your birth, which the Jungian tradition reads not as fate but as the particular psychological task you came here to engage. The field is quiet today, waiting for you to begin listening. What you notice first is rarely accidental.",
+    early: "The map is beginning to take form. Each time you return, the field becomes more legible — not because the patterns change, but because you are learning to read them. Something in today's sky touches a dimension of your natal profile that is worth sitting with. The work at this stage is simply to notice: what feels familiar in an uncomfortable way? What has appeared before, wearing different clothes? The pattern you keep meeting is the one most worth understanding.",
+    pattern: "The field has started speaking in your particular frequency. What was abstract is becoming personal — you are beginning to recognize the specific shape of your own psychological weather. Today carries a current worth attending to. Not as something to manage or optimize, but as information about what is moving in the deeper layers. The psyche communicates through pattern, and yours is becoming visible. What the week has shown you is not coincidence.",
+    calibrated: "You are in sustained contact with this work, and the field reflects that. The dimensions you feel most acutely and those you tend to overlook have become clearer — both to the system and, more importantly, to you. Today's transit touches something in your natal structure that has been active beneath the surface. The shadow material is often what we feel least, not most — the dimensions that seem irrelevant are frequently where the most significant unconscious content lives. What have you been not quite looking at?",
+    deep: "The individuation process does not move in straight lines. What you are encountering now is not a regression but a deeper layer of the same essential work — the spiral returning to familiar territory at a new depth. You have been here long enough to know the difference between genuine movement and the psyche's capacity for sophisticated avoidance. The field today confirms something you have probably already sensed. The question is not whether you know it, but whether you are willing to let it change something.",
   };
 
   return {
@@ -112,6 +116,98 @@ function getFallbackNarrative(): NarratorResult {
     cached: false,
     fromFallback: true,
   };
+}
+
+const WEEKLY_CACHE_PREFIX = 'rop_weekly_';
+
+function getWeekStart(): string {
+  const d = new Date();
+  const day = d.getDay(); // 0=Sun
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Monday
+  const monday = new Date(d.setDate(diff));
+  return monday.toISOString().split('T')[0];
+}
+
+export interface WeeklySynthesisResult {
+  narrative: string;
+  weekStart: string;
+  checkinCount: number;
+  cached: boolean;
+}
+
+/**
+ * Fetch weekly synthesis. Generated once per calendar week after 7+ check-ins.
+ * Returns null if not enough data yet.
+ */
+export async function fetchWeeklySynthesis(): Promise<WeeklySynthesisResult | null> {
+  const history = getCheckinHistory();
+  if (history.entries.length < 7) return null;
+
+  const weekStart = getWeekStart();
+  const cacheKey = WEEKLY_CACHE_PREFIX + weekStart;
+
+  // Check local cache
+  if (typeof window !== 'undefined') {
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        return { ...JSON.parse(cached), cached: true };
+      }
+    } catch { /* continue */ }
+  }
+
+  // Build context from last 7 check-ins
+  const recentEntries = getRecentCheckins(7);
+  if (recentEntries.length < 7) return null;
+
+  let userHash = 'anonymous';
+  let isPro = false;
+  if (typeof window !== 'undefined') {
+    try {
+      userHash = localStorage.getItem('rop_device_hash') || localStorage.getItem('rop_user_hash') || 'anonymous';
+      const user = localStorage.getItem('rop_user');
+      if (user) isPro = JSON.parse(user).isPro === true;
+    } catch { /* default */ }
+  }
+
+  try {
+    const systemPrompt = buildWeeklySynthesisSystemPrompt();
+    const userPrompt = buildWeeklySynthesisUserPrompt(recentEntries);
+
+    const response = await fetch('/api/narrator', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userHash,
+        tier: 'weekly',
+        systemPrompt,
+        userPrompt,
+        isPro,
+        weekStart,
+        type: 'weekly',
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json() as { narrative: string };
+      const result: WeeklySynthesisResult = {
+        narrative: data.narrative,
+        weekStart,
+        checkinCount: recentEntries.length,
+        cached: false,
+      };
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(result));
+        } catch { /* ignore */ }
+      }
+      return result;
+    }
+  } catch (e) {
+    console.warn('[WEEKLY] API call failed:', e);
+  }
+
+  return null;
 }
 
 /**

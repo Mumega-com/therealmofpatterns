@@ -16,32 +16,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <span class="step-num">1</span>
             <div>
               <strong>Check your email</strong>
-              <p>We sent a confirmation with your login details.</p>
+              <p>A confirmation is on its way from Stripe.</p>
             </div>
           </li>
           <li>
             <span class="step-num">2</span>
             <div>
-              <strong>Discover your full profile</strong>
-              <p>Enter your birth data to see your complete energy breakdown.</p>
+              <strong>Do your check-in today</strong>
+              <p>Sol reads your field fresh each day. The depth begins with the first check-in.</p>
             </div>
           </li>
           <li>
             <span class="step-num">3</span>
             <div>
-              <strong>Get your daily reading</strong>
-              <p>Personalized forecasts start tomorrow morning.</p>
+              <strong>After seven days, read the arc</strong>
+              <p>Sol will offer a weekly synthesis — the pattern across your full week.</p>
             </div>
           </li>
         </ol>
       </div>
 
       <div class="cta-group">
-        <a href="/discover/" class="cta-primary" id="primary-cta">
-          <span id="primary-cta-text">Discover Your Pattern</span>
+        <a href="/sol/checkin" class="cta-primary" id="primary-cta">
+          <span id="primary-cta-text">Begin today's check-in</span>
           <span class="arrow">&rarr;</span>
         </a>
-        <a href="/sol/checkin" class="cta-secondary">Start a Check-in</a>
+        <a href="/sol/" class="cta-secondary">Go to Sol</a>
         <a href="/" class="cta-secondary">Back to Home</a>
       </div>
 
@@ -55,10 +55,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <script>
   // Personalize based on URL params
   const params = new URLSearchParams(window.location.search);
-  const plan = params.get('plan');
+  const plan    = params.get('plan');
+  const product = params.get('product'); // 'founding' for one-time purchase
   const subtitle = document.getElementById('subtitle');
 
-  if (subtitle && plan === 'squad') {
+  if (product === 'founding') {
+    if (subtitle) subtitle.textContent = "Welcome, founding member. Sol is yours — permanently.";
+    // Update step 3 text for founding members
+    const steps = document.querySelectorAll('.next-steps li');
+    if (steps[2]) {
+      const strong = steps[2].querySelector('strong');
+      const p = steps[2].querySelector('p');
+      if (strong) strong.textContent = 'Your access never expires';
+      if (p) p.textContent = 'Founding members keep Pro access forever — no renewals, no expiry.';
+    }
+  } else if (subtitle && plan === 'squad') {
     subtitle.textContent = 'Your Team plan is active. Invite your members from the dashboard.';
   } else if (subtitle) {
     subtitle.textContent = 'Your Pro trial has started. Enjoy the full experience for 7 days free.';
@@ -88,22 +99,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
-  // Smart CTA based on birth data
+  // Smart CTA: go to Sol if birth data exists
   const hasBirthData = localStorage.getItem('rop_birth_data_full');
   if (hasBirthData) {
     const primaryCta = document.getElementById('primary-cta');
     const primaryCtaText = document.getElementById('primary-cta-text');
-    if (primaryCta) primaryCta.setAttribute('href', '/dashboard');
-    if (primaryCtaText) primaryCtaText.textContent = 'Go to Your Dashboard';
-
-    // Update step 2 text
-    const steps = document.querySelectorAll('.next-steps li');
-    if (steps[1]) {
-      const strong = steps[1].querySelector('strong');
-      const p = steps[1].querySelector('p');
-      if (strong) strong.textContent = 'Explore your full dashboard';
-      if (p) p.textContent = 'Your personalized energy breakdown is ready.';
-    }
+    if (primaryCta) primaryCta.setAttribute('href', '/sol/checkin');
+    if (primaryCtaText) primaryCtaText.textContent = "Begin today's check-in";
   }
 </script>
 

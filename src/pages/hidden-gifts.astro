@@ -26,6 +26,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <span class="live-dot"></span>
         <span>2,400+ patterns discovered</span>
       </div>
+      <a href="/sol/" class="header-sol-link">Try Sol — free →</a>
     </header>
 
     <!-- ── PAIN ENTRY ────────────────────────────────────────
@@ -349,8 +350,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             Find my pattern →
           </button>
           <p class="final-price">$27 · one-time · PDF download</p>
-          <a href="/compare" class="compare-nudge-link">
-            ◈ Want to compare your pattern with someone you love?
+          <a href="/soul/compare" class="compare-nudge-link">
+            ◈ Want to compare your soul field with someone?
           </a>
         </div>
 
@@ -872,6 +873,10 @@ PEAK WINDOWS: ${peakHrs}
     display: flex; align-items: center; gap: 0.5rem;
     font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--dim);
   }
+  .header-sol-link {
+    font-size: 0.78rem; color: rgba(212,168,84,0.6); text-decoration: none; transition: color 0.2s;
+  }
+  .header-sol-link:hover { color: #d4a854; }
   .live-dot {
     width: 7px; height: 7px; background: var(--green); border-radius: 50%;
     animation: pulse 2.5s infinite;

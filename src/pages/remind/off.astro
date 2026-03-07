@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Reminders off — The Realm of Patterns"
+  description="You've unsubscribed from Sol reminders."
+  showHeader={false}
+  showFooter={false}
+>
+  <div class="off-page">
+    <div class="off-inner">
+      <span class="off-icon">◎</span>
+      <h1>Reminders off.</h1>
+      <p>Sol won't send any more check-in reminders.</p>
+      <p class="sub">The practice is here whenever you return.</p>
+      <a href="/sol/checkin" class="off-link">Begin today's check-in →</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .off-page {
+    min-height: 100vh;
+    background: #0a0908;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: #f0e8d8;
+    padding: 2rem;
+  }
+  .off-inner {
+    max-width: 400px;
+    text-align: center;
+  }
+  .off-icon {
+    display: block;
+    font-size: 2.5rem;
+    color: rgba(212,168,84,0.4);
+    margin-bottom: 1.5rem;
+  }
+  h1 {
+    font-size: 2rem;
+    font-weight: 300;
+    margin: 0 0 0.75rem;
+  }
+  p {
+    font-size: 1rem;
+    color: rgba(240,232,216,0.55);
+    margin: 0 0 0.5rem;
+    line-height: 1.6;
+  }
+  .sub {
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+  .off-link {
+    color: #d4a854;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .off-link:hover { opacity: 0.7; }
+</style>
+
+<script>
+  // Clear reminder opt-in from localStorage
+  localStorage.removeItem('rop_reminder_email');
+  localStorage.removeItem('rop_reminder_active');
+</script>

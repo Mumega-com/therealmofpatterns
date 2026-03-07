@@ -57,6 +57,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       case 'checkout.session.completed':
         if (event.data.object.metadata?.product === 'dna') {
           await handleDnaPurchase(event, env);
+        } else if (event.data.object.metadata?.product === 'founding') {
+          await handleFoundingPurchase(event, env);
         } else {
           await handleCheckoutCompleted(event, env);
         }
@@ -216,6 +218,41 @@ async function handlePaymentFailed(event: StripeEvent, env: Env) {
   `).bind(emailHash).run();
 
   console.log(`Payment failed for: ${emailHash}`);
+}
+
+async function handleFoundingPurchase(event: StripeEvent, env: Env) {
+  const session = event.data.object;
+  const email = session.customer_email || session.customer_details?.email || '';
+  const customerId = session.customer;
+
+  if (!email) {
+    console.error('[Founding] No email in checkout session');
+    return;
+  }
+
+  const emailHash = await hashEmail(email);
+
+  // Upsert subscriber with plan 'founding' — permanent Pro access
+  await env.DB.prepare(`
+    INSERT INTO subscribers (email_hash, email, plan, status, stripe_customer_id, created_at)
+    VALUES (?, ?, 'founding', 'active', ?, CURRENT_TIMESTAMP)
+    ON CONFLICT(email_hash) DO UPDATE SET
+      plan = 'founding',
+      status = 'active',
+      stripe_customer_id = excluded.stripe_customer_id
+  `).bind(emailHash, email, customerId || null).run()
+    .catch((e: Error) => console.warn('[Founding] D1 warn:', e.message));
+
+  // Cache for quick auth lookup
+  if (customerId) {
+    await env.CACHE.put(
+      `stripe:customer:${customerId}`,
+      JSON.stringify({ emailHash, plan: 'founding', status: 'active' }),
+      { expirationTtl: 86400 * 365 * 10 }, // 10 years
+    );
+  }
+
+  console.log(`[Founding] Member activated: ${emailHash}`);
 }
 
 async function handleDnaPurchase(event: StripeEvent, env: Env) {

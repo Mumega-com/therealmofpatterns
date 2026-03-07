@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { RadarChart } from '../charts/RadarChart';
+import { SoulToroid } from '../charts/SoulToroid';
 import { KappaSparkline } from './KappaSparkline';
 import { NarratorCard } from '../shared/NarratorCard';
 import { getDashboardData, type DashboardData } from '../../lib/dashboard-utils';
@@ -44,21 +44,18 @@ export function ProDashboard() {
           <h2 className="section-title">Today's Energy</h2>
 
           <div className="energy-grid">
-            {/* Radar chart */}
+            {/* Soul Toroid widget */}
             <div className="chart-col">
               {data.natalVector && (
-                <RadarChart
-                  values={data.natalVector}
-                  overlay={data.transitVector || undefined}
-                  size={260}
-                  showLabels={true}
-                  dominantIndex={data.archetype?.dominantIndex}
-                />
+                <a href="/soul" className="toroid-link" title="View your full soul field">
+                  <SoulToroid
+                    natal={data.natalVector}
+                    transit={data.transitVector || undefined}
+                    mode="widget"
+                  />
+                  <span className="toroid-hint">View full field →</span>
+                </a>
               )}
-              <div className="chart-legend">
-                <span className="legend-item legend-natal">Your profile</span>
-                <span className="legend-item legend-transit">Today's sky</span>
-              </div>
             </div>
 
             {/* Stats col */}
@@ -170,6 +167,10 @@ export function ProDashboard() {
               <span className="action-icon">⚜</span>
               <span className="action-label">Journey Map</span>
             </a>
+            <a href="/soul" className="action-card action-card-soul">
+              <span className="action-icon">◎</span>
+              <span className="action-label">Soul Field</span>
+            </a>
           </div>
         </section>
       </div>
@@ -193,6 +194,25 @@ export function ProDashboard() {
           font-weight: 400;
           color: #d4a854;
           margin: 0 0 1.25rem;
+        }
+
+        /* Toroid link wrapper */
+        .toroid-link {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 6px;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .toroid-hint {
+          font-size: 0.72rem;
+          color: rgba(212, 168, 84, 0.55);
+          letter-spacing: 0.04em;
+          transition: color 0.2s;
+        }
+        .toroid-link:hover .toroid-hint {
+          color: rgba(212, 168, 84, 0.9);
         }
 
         /* Energy Section */
@@ -429,13 +449,13 @@ export function ProDashboard() {
         /* Quick Actions */
         .actions-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 1rem;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 0.75rem;
         }
 
         @media (max-width: 640px) {
           .actions-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
           }
         }
 
@@ -455,6 +475,13 @@ export function ProDashboard() {
         .action-card:hover {
           border-color: rgba(212, 168, 84, 0.3);
           transform: translateY(-2px);
+        }
+
+        .action-card-soul {
+          border-color: rgba(100, 140, 255, 0.15);
+        }
+        .action-card-soul:hover {
+          border-color: rgba(100, 140, 255, 0.45);
         }
 
         .action-icon {

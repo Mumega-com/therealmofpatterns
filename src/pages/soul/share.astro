@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SoulShareView } from '../../components/soul/SoulShareView';
+---
+
+<BaseLayout
+  title="Soul Field — The Realm of Patterns"
+  description="A shared soul field geometry. See the living 3D map of someone's natal energy pattern."
+>
+  <style>
+    main, .page-content {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: none !important;
+    }
+  </style>
+  <!-- Token is read from the URL path client-side -->
+  <SoulShareView client:load />
+</BaseLayout>

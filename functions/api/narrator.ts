@@ -21,11 +21,14 @@ interface Env {
 
 interface NarratorRequest {
   userHash: string;
-  context: Record<string, unknown>;
+  context?: Record<string, unknown>;
   tier: string;
   systemPrompt: string;
   userPrompt: string;
   isPro?: boolean;
+  checkinId?: string | null;
+  type?: 'daily' | 'weekly';
+  weekStart?: string;
 }
 
 interface NarratorResponse {
@@ -54,7 +57,7 @@ export async function onRequestPost(
 
   try {
     const body = await request.json() as NarratorRequest;
-    const { userHash, tier, systemPrompt, userPrompt, isPro } = body;
+    const { userHash, tier, systemPrompt, userPrompt, isPro, checkinId, type, weekStart } = body;
 
     if (!userHash || !systemPrompt || !userPrompt) {
       return new Response(
@@ -64,7 +67,11 @@ export async function onRequestPost(
     }
 
     const today = new Date().toISOString().split('T')[0];
-    const cacheKey = `narrator:${userHash}:${today}`;
+    // For weekly: key by week start. For daily: key by date + checkin ID so new check-ins bust the cache.
+    const isWeekly = type === 'weekly';
+    const cacheKey = isWeekly
+      ? `narrator:weekly:${userHash}:${weekStart || today}`
+      : `narrator:${userHash}:${today}${checkinId ? ':' + checkinId : ''}`;
 
     // 1. Check KV cache
     const cached = await env.CACHE.get(cacheKey);

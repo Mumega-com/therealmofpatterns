@@ -123,17 +123,17 @@ const LABELS = {
     celebration: 'The pattern recognizes you',
   },
   sol: {
-    low: 'Low',
-    mid: 'Okay',
-    high: 'Great!',
-    progress: 'Check-in Progress',
-    skip: 'Skip this one',
-    complete: 'All done!',
-    kappa: 'Your Energy Today',
-    coherence: 'How aligned you are',
-    retry: 'Start Over',
-    dashboard: 'See Dashboard',
-    celebration: 'Great work today!',
+    low: 'Withdrawn',
+    mid: 'Present',
+    high: 'Coherent',
+    progress: 'Field Reflection',
+    skip: 'Pass through neutral',
+    complete: 'The field is read',
+    kappa: 'Field Coherence',
+    coherence: 'Alignment with the current',
+    retry: 'Reflect again',
+    dashboard: 'Return to Sol',
+    celebration: 'The field has been witnessed',
   },
 };
 
@@ -451,7 +451,7 @@ function CelebrationOverlay({
         <div className="celebration-ring ring-2" />
         <div className="celebration-ring ring-3" />
         <div className="celebration-icon">
-          {mode === 'kasra' ? '✓' : mode === 'river' ? '◈' : '✨'}
+          {mode === 'kasra' ? '✓' : mode === 'river' ? '◈' : '◉'}
         </div>
       </div>
 
@@ -924,7 +924,7 @@ function getDimensionIcon(dimension: string, mode: string): string {
   const icons: Record<string, Record<string, string>> = {
     kasra: { coherence: '◈', energy: '⚡', focus: '◉', embodiment: '▣' },
     river: { coherence: '☽', energy: '☀', focus: '★', embodiment: '⬡' },
-    sol: { coherence: '💭', energy: '⚡', focus: '🎯', embodiment: '🧘' },
+    sol: { coherence: '◎', energy: '◈', focus: '◉', embodiment: '○' },
   };
   return icons[mode]?.[dimension] || '○';
 }

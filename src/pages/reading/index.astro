@@ -1,78 +1,25 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { approximateLongitudes, compute8D, getDominant } from '../../lib/16d-engine';
-import { getCosmicEvents, getDaySigns } from '../../lib/cosmic-events';
-import { DIMENSION_METADATA } from '../../types';
-import { CosmicCalendar } from '../../components/reading/CosmicCalendar';
-import { DailyReading } from '../../components/reading/DailyReading';
-
-// Today's data
-const today = new Date();
-const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-
-const birthData = { year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate() };
-const longitudes = approximateLongitudes(birthData);
-const vector = compute8D(longitudes);
-const dominant = getDominant(vector);
-const events = getCosmicEvents(today);
-const signs = getDaySigns(today);
-
-const formattedDate = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-const monthYear = today.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-
-// SEO
-const title = `Daily Cosmic Reading for ${formattedDate} | Realm of Patterns`;
-const description = `Today's cosmic energy reading: Sun in ${signs.sunSign}, Moon in ${signs.moonSign}. ${dominant.name} dimension leads — ${dominant.domain.toLowerCase()}. Free daily horoscope and astrology forecast.`;
-const eventNames = events.map(e => e.name).join(', ');
-
-// JSON-LD structured data
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": `${formattedDate} Cosmic Reading`,
-  "datePublished": dateStr,
-  "dateModified": dateStr,
-  "author": { "@type": "Organization", "name": "The Realm of Patterns" },
-  "publisher": { "@type": "Organization", "name": "The Realm of Patterns", "url": "https://therealmofpatterns.com" },
-  "description": description,
-  "mainEntityOfPage": `https://therealmofpatterns.com/reading`,
-};
 ---
 
 <BaseLayout
-  title={title}
-  description={description}
-  ogImage="/assets/brand/riso/hero.png"
+  title="Today's Reading | Sol"
+  description="Sol's personalized daily reading — derived from your natal pattern, today's transits, and your reflection."
 >
   <div class="reading-page">
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-
-    <!-- Navigation -->
     <nav class="reading-nav">
-      <a href="/" class="back-link">&larr; Home</a>
-      <span class="nav-title">Daily Reading</span>
-      <a href={`/reading/${dateStr}`} class="today-link">Today</a>
+      <a href="/sol" class="back-link">← Sol</a>
+      <span class="nav-title">Today's Reading</span>
+      <a href="/sol/checkin" class="checkin-link">Daily reflection</a>
     </nav>
 
-    <div class="reading-layout">
-      <!-- Sidebar: Calendar -->
-      <aside class="reading-sidebar">
-        <CosmicCalendar currentDate={dateStr} client:load />
-      </aside>
+    <main class="reading-main" id="reading-main">
+      <!-- Mounted by React -->
+    </main>
 
-      <!-- Main Content -->
-      <main class="reading-main">
-        <DailyReading
-          date={dateStr}
-          events={JSON.stringify(events)}
-          vector={JSON.stringify(Array.from(vector))}
-          dominantIndex={dominant.index}
-          sunSign={signs.sunSign}
-          moonSign={signs.moonSign}
-          client:load
-        />
-      </main>
-    </div>
+    <footer class="reading-footer">
+      <a href="/sol" class="return-link">Return to Sol</a>
+    </footer>
   </div>
 </BaseLayout>
 
@@ -80,60 +27,66 @@ const jsonLd = {
   .reading-page {
     min-height: 100vh;
     background: #0a0908;
-    padding: 5rem 1.5rem 3rem;
+    color: #f0e8d8;
+    padding: 2rem 1.5rem 4rem;
+    font-family: 'Inter', -apple-system, sans-serif;
   }
 
   .reading-nav {
-    max-width: 1000px;
-    margin: 0 auto 2rem;
+    max-width: 680px;
+    margin: 0 auto 3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
-  .back-link, .today-link {
+  .back-link, .checkin-link {
     font-size: 0.85rem;
-    color: rgba(240, 232, 216, 0.4);
+    color: rgba(240, 232, 216, 0.35);
     text-decoration: none;
     transition: color 0.2s;
   }
-  .back-link:hover, .today-link:hover { color: #d4a854; }
+  .back-link:hover, .checkin-link:hover { color: #d4a854; }
 
   .nav-title {
-    font-size: 0.75rem;
-    color: rgba(212, 168, 84, 0.4);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    color: rgba(212, 168, 84, 0.35);
   }
 
-  .reading-layout {
-    max-width: 1000px;
+  .reading-main {
+    max-width: 680px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 2rem;
-    align-items: start;
+    min-height: 300px;
   }
 
-  .reading-sidebar {
-    position: sticky;
-    top: 5rem;
+  .reading-footer {
+    max-width: 680px;
+    margin: 3rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(212, 168, 84, 0.08);
+    text-align: center;
   }
 
-  @media (max-width: 768px) {
-    .reading-page { padding: 4.5rem 1rem 2rem; }
-
-    .reading-layout {
-      grid-template-columns: 1fr;
-    }
-
-    .reading-sidebar {
-      position: static;
-      order: 2;
-    }
-
-    .reading-main {
-      order: 1;
-    }
+  .return-link {
+    font-size: 0.875rem;
+    color: rgba(212, 168, 84, 0.4);
+    text-decoration: none;
+    transition: color 0.2s;
   }
+  .return-link:hover { color: #d4a854; }
 </style>
+
+<script>
+  import { createElement } from 'react';
+  import { createRoot } from 'react-dom/client';
+  import { SolReading } from '../../components/reading/SolReading';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('reading-main');
+    if (el) {
+      createRoot(el).render(createElement(SolReading));
+    }
+  });
+</script>

@@ -1,16 +1,7 @@
 import { useState } from 'react';
 import { usePrivacyStorage } from '../../hooks/usePrivacyStorage';
-import { useStore } from '@nanostores/react';
-import { $mode, setMode, type Mode } from '../../stores';
-
-const MODE_INFO: Record<Mode, { icon: string; color: string; label: string }> = {
-  kasra: { icon: '⌘', color: '#22d3ee', label: 'Kasra' },
-  river: { icon: '◈', color: '#8b5cf6', label: 'River' },
-  sol: { icon: '☀', color: '#fbbf24', label: 'Sol' },
-};
 
 export function SettingsPanel() {
-  const mode = useStore($mode);
   const {
     isLoading,
     isInitialized,
@@ -127,29 +118,6 @@ export function SettingsPanel() {
           <button onClick={() => setMessage(null)} className="close-btn">×</button>
         </div>
       )}
-
-      {/* Mode Selection */}
-      <section className="settings-section">
-        <h2>Voice Mode</h2>
-        <p className="section-desc">Choose how the patterns speak to you</p>
-        <div className="mode-grid">
-          {(['kasra', 'river', 'sol'] as Mode[]).map((m) => {
-            const info = MODE_INFO[m];
-            const isActive = mode === m;
-            return (
-              <button
-                key={m}
-                onClick={() => setMode(m)}
-                className={`mode-card ${isActive ? 'active' : ''}`}
-                style={{ '--mode-color': info.color } as React.CSSProperties}
-              >
-                <span className="mode-icon">{info.icon}</span>
-                <span className="mode-label">{info.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
 
       {/* Data & Privacy */}
       <section className="settings-section">

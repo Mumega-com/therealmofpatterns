@@ -2,12 +2,60 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Go Pro - The Realm of Patterns" description="Upgrade to Pro ($9/mo) or Team ($29/seat/mo) for complete personality breakdowns, daily forecasts, and more.">
+<BaseLayout title="Sol Pro — The Realm of Patterns" description="Go deeper with Sol. Weekly synthesis, a more capable model, and the full arc of your inner pattern.">
   <div class="subscribe-page">
     <div class="subscribe-content">
       <div class="page-header">
-        <h1>Go Pro</h1>
-        <p>Unlock your complete energy profile and daily forecasts</p>
+        <h1>Sol — the deeper practice</h1>
+        <p>Seven days of check-ins isn't where it ends. It's where the real pattern begins.</p>
+      </div>
+
+      <!-- Founding Member — one-time option -->
+      <div class="founding-block" id="foundingBlock">
+        <div class="founding-inner">
+          <div class="founding-left">
+            <span class="founding-badge">Founding Member</span>
+            <p class="founding-headline">One payment. Pro access. Permanent.</p>
+            <p class="founding-sub">
+              No subscription. No renewal. Lock in before the price goes up —
+              and support an independent practice you believe in.
+            </p>
+            <ul class="founding-features">
+              <li>Everything in Sol Pro — forever</li>
+              <li>Weekly synthesis, deeper model, soul field comparison</li>
+              <li>Your name in the founding member list (optional)</li>
+            </ul>
+          </div>
+          <div class="founding-right">
+            <div class="founding-price">
+              <span class="founding-amount">$49</span>
+              <span class="founding-period">one-time</span>
+            </div>
+            <button class="founding-btn" id="foundingBtn">
+              Become a Founding Member →
+            </button>
+            <p class="founding-note">Secure checkout via Stripe</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Founding checkout form -->
+      <div class="founding-form" id="foundingForm" style="display:none;">
+        <div class="founding-form-inner">
+          <p class="founding-form-label">Your email — to send you access confirmation</p>
+          <div class="founding-form-row">
+            <input type="email" id="foundingEmail" placeholder="you@example.com" class="founding-email-input" />
+            <button class="founding-submit-btn" id="foundingSubmit">
+              <span id="foundingSubmitText">Pay $49 →</span>
+              <span id="foundingSubmitSpinner" style="display:none;">…</span>
+            </button>
+          </div>
+          <p class="founding-cancel-link" id="foundingCancel">← Back to plans</p>
+        </div>
+      </div>
+
+      <div class="plans-divider">
+        <span>or choose a subscription</span>
       </div>
 
       <!-- Billing Toggle -->
@@ -26,7 +74,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="plan-card" data-plan="individual">
           <div class="plan-header">
             <h2>Pro</h2>
-            <p class="plan-desc">Your complete energy toolkit</p>
+            <p class="plan-desc">Sol's full depth, for those ready to go further</p>
           </div>
 
           <div class="plan-price">
@@ -37,37 +85,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
           <div class="value-highlight">
             <span class="value-icon">◎</span>
-            <span>Know your optimal windows before they pass</span>
+            <span>Sol reads deeper — a more capable model, trained to hold complexity</span>
           </div>
 
           <ul class="plan-features">
             <li>
               <span class="icon">✦</span>
-              <span><strong>Complete personality breakdown</strong> — see both your light and shadow sides, not just the surface</span>
+              <span><strong>Deeper model</strong> — Sol uses a more capable AI for Pro members, with richer language and more nuanced reflection</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span><strong>Daily personalized forecasts</strong> — know what each day holds for your unique pattern</span>
+              <span><strong>Weekly synthesis</strong> — after seven check-ins, Sol reads the arc of the week as a whole, not just each day</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span><strong>Optimal action windows</strong> — get alerts when conditions favor your key decisions</span>
+              <span><strong>Soul field comparison</strong> — compare your natal geometry with anyone else who shares their field</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span><strong>Pattern trend dashboard</strong> — track your 30/90/365-day evolution</span>
+              <span><strong>Longer arc readings</strong> — 30 and 60-day pattern synthesis coming soon</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span><strong>Early alerts before rough patches</strong> — get a heads up before your energy dips</span>
+              <span><strong>Everything from the free tier</strong> — daily check-in, Sol's daily reading, soul toroid, soul field sharing</span>
             </li>
             <li>
               <span class="icon">✦</span>
-              <span><strong>Unlock deeper insights as you grow</strong> — the longer you use it, the more you discover</span>
-            </li>
-            <li>
-              <span class="icon">✦</span>
-              <span><strong>Historical figure matches</strong> — see which famous figures share your pattern</span>
+              <span><strong>Support the work</strong> — this is an independent practice. Your membership keeps Sol alive and evolving</span>
             </li>
           </ul>
 
@@ -98,7 +142,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
           <div class="value-highlight">
             <span class="value-icon">⬡</span>
-            <span>See when your team is in sync and at their best</span>
+            <span>Every member gets their own Sol — and you can see how your fields relate</span>
           </div>
 
           <div class="seats-selector">
@@ -266,8 +310,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="faq-item">
           <h4>What's included in the free tier?</h4>
           <p>
-            Free users get daily energy readings, a basic dimension breakdown,
-            and can see which historical figures share their pattern. No account required.
+            Free members get the full daily check-in, Sol's personalized narrative reading,
+            the 3D soul toroid, and the ability to share their soul field with others.
+            No account required to begin.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>What does Pro actually change?</h4>
+          <p>
+            Pro unlocks a more capable language model for Sol's readings — the difference
+            is in depth, nuance, and the quality of reflection. You also get the weekly
+            synthesis (Sol reads the arc of seven days) and soul field comparison.
           </p>
         </div>
 
@@ -275,8 +329,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <h4>How does the free trial work?</h4>
           <p>
             Pro includes a 7-day free trial. Team plans get 14 days.
-            You'll get full access to all features. We only charge after your
-            trial ends, and you can cancel anytime before that.
+            You get full access immediately. We only charge after the trial ends,
+            and you can cancel anytime before that.
           </p>
         </div>
 
@@ -289,29 +343,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
 
         <div class="faq-item">
-          <h4>What's the Team plan?</h4>
-          <p>
-            The Team plan is for groups who want to use this together — coaches with clients,
-            work teams, friend groups, or communities. You can share energy profiles,
-            see when your group is in sync, and find optimal times to meet.
-          </p>
-        </div>
-
-        <div class="faq-item">
           <h4>Do I need birth data?</h4>
           <p>
-            Yes, we calculate your pattern from your birth date, time, and location.
-            More precise data = more accurate readings. If you don't know your exact
-            birth time, you can use 12:00 noon as an estimate.
+            Yes — Sol computes your natal field from your birth date, time, and place.
+            The more precise the data, the more resonant the geometry. If you don't know
+            your exact birth time, noon is a reasonable starting point.
           </p>
         </div>
 
         <div class="faq-item">
-          <h4>What about Enterprise plans?</h4>
+          <h4>What's the Team plan?</h4>
           <p>
-            For organizations with 50+ practitioners, we offer custom Enterprise plans
-            with dedicated support, SSO/SAML, custom integrations, and volume discounts.
-            Contact enterprise@therealmofpatterns.com to learn more.
+            The Team plan is for coaches, therapists, communities, or any group
+            who want to use this together. Each member gets their own Sol practice,
+            and you can compare soul fields across the group.
           </p>
         </div>
       </div>
@@ -355,6 +400,183 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .page-header p {
     font-size: 1.1rem;
     color: var(--text-muted);
+  }
+
+  /* Founding Member block */
+  .founding-block {
+    background: linear-gradient(135deg, rgba(212, 168, 84, 0.08) 0%, rgba(212, 168, 84, 0.03) 100%);
+    border: 1px solid rgba(212, 168, 84, 0.35);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .founding-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .founding-inner {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .founding-left { flex: 1; min-width: 260px; }
+  .founding-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 180px;
+  }
+  .founding-badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    background: rgba(212, 168, 84, 0.15);
+    border: 1px solid rgba(212, 168, 84, 0.3);
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .founding-headline {
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: var(--text);
+    margin: 0 0 0.5rem;
+    line-height: 1.3;
+  }
+  .founding-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+    line-height: 1.6;
+  }
+  .founding-features {
+    list-style: none;
+    padding: 0; margin: 0;
+    font-size: 0.875rem;
+    color: rgba(240, 232, 216, 0.55);
+  }
+  .founding-features li::before { content: '✦ '; color: var(--gold); font-size: 0.7rem; }
+  .founding-features li { margin-bottom: 0.3rem; }
+  .founding-price {
+    text-align: center;
+  }
+  .founding-amount {
+    display: block;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--gold);
+    font-family: 'Geist Mono', monospace;
+    line-height: 1;
+  }
+  .founding-period {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .founding-btn {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .founding-btn:hover {
+    background: #e5b865;
+    box-shadow: 0 0 24px var(--gold-glow);
+  }
+  .founding-note {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* Founding checkout inline form */
+  .founding-form {
+    background: rgba(212, 168, 84, 0.04);
+    border: 1px solid rgba(212, 168, 84, 0.2);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .founding-form-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin: 0 0 0.75rem;
+  }
+  .founding-form-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .founding-email-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.75rem 1rem;
+    background: var(--dark);
+    border: 1px solid rgba(212, 168, 84, 0.25);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  .founding-email-input::placeholder { color: rgba(240,232,216,0.3); }
+  .founding-email-input:focus { outline: none; border-color: var(--gold); }
+  .founding-submit-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .founding-submit-btn:hover:not(:disabled) {
+    background: #e5b865;
+  }
+  .founding-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .founding-cancel-link {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .founding-cancel-link:hover { color: var(--gold); }
+
+  /* Divider between founding and plans */
+  .plans-divider {
+    text-align: center;
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  .plans-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 1px;
+    background: rgba(212, 168, 84, 0.08);
+  }
+  .plans-divider span {
+    position: relative;
+    background: var(--dark);
+    padding: 0 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: rgba(240, 232, 216, 0.25);
   }
 
   .billing-toggle {
@@ -908,6 +1130,65 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </style>
 
 <script>
+  // ── Founding Member flow ────────────────────────────────
+  const foundingBtn    = document.getElementById('foundingBtn');
+  const foundingForm   = document.getElementById('foundingForm') as HTMLDivElement;
+  const foundingBlock  = document.getElementById('foundingBlock') as HTMLDivElement;
+  const foundingSubmit = document.getElementById('foundingSubmit') as HTMLButtonElement;
+  const foundingSubmitText    = document.getElementById('foundingSubmitText');
+  const foundingSubmitSpinner = document.getElementById('foundingSubmitSpinner');
+  const foundingCancel = document.getElementById('foundingCancel');
+
+  foundingBtn?.addEventListener('click', () => {
+    foundingBlock.style.display = 'none';
+    foundingForm.style.display  = 'block';
+    foundingForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    (document.getElementById('foundingEmail') as HTMLInputElement)?.focus();
+  });
+
+  foundingCancel?.addEventListener('click', () => {
+    foundingForm.style.display  = 'none';
+    foundingBlock.style.display = 'block';
+  });
+
+  foundingSubmit?.addEventListener('click', async () => {
+    const email = (document.getElementById('foundingEmail') as HTMLInputElement)?.value?.trim();
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    foundingSubmit.disabled = true;
+    if (foundingSubmitText) foundingSubmitText.style.display = 'none';
+    if (foundingSubmitSpinner) foundingSubmitSpinner.style.display = 'inline';
+
+    try {
+      const res = await fetch('/api/create-founding-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Checkout unavailable');
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Something went wrong. Please try again.';
+      alert(message);
+      foundingSubmit.disabled = false;
+      if (foundingSubmitText) foundingSubmitText.style.display = 'inline';
+      if (foundingSubmitSpinner) foundingSubmitSpinner.style.display = 'none';
+    }
+  });
+
+  // Allow Enter key in email field
+  document.getElementById('foundingEmail')?.addEventListener('keydown', (e) => {
+    if ((e as KeyboardEvent).key === 'Enter') foundingSubmit?.click();
+  });
+
+  // ── Subscription plans ──────────────────────────────────
   // Get URL params
   const urlParams = new URLSearchParams(window.location.search);
   const planParam = urlParams.get('plan');
