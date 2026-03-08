@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { $mode, $forecast, updateForecast, setFailureMode } from '../../stores';
 import { saveCheckin, getCheckinHistory } from '../../lib/checkin-storage';
-import { SyncPrompt } from '../shared/SyncPrompt';
+import { fetchNarrative } from '../../lib/narrator-client';
 import { BirthDataPrompt } from '../shared/BirthDataPrompt';
 import { PredictionCard } from '../shared/PredictionCard';
 import { hasPersonalizedData, getNatal16D, getTodayTransit16D } from '../../lib/personal-transit';
@@ -487,6 +487,17 @@ function ResultsView({
   const isHealthy = results.failureMode === 'healthy';
   const dimensionScores = getDimensionScores(results.scores);
 
+  // Sol's reading
+  const [narrative, setNarrative] = useState<string | null>(null);
+  const [narrativeStatus, setNarrativeStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+
+  useEffect(() => {
+    if (mode !== 'sol') return;
+    fetchNarrative()
+      .then(r => { setNarrative(r.narrative); setNarrativeStatus('ready'); })
+      .catch(() => setNarrativeStatus('error'));
+  }, [mode]);
+
   return (
     <div className={`results-view results-view--${mode} ${className}`}>
       {/* Warning if not healthy */}
@@ -592,8 +603,47 @@ function ResultsView({
         />
       )}
 
-      {/* Sync Prompt - encourages enabling sync */}
-      <SyncPrompt />
+      {/* Sol's reading - sol mode only */}
+      {mode === 'sol' && (
+        <div className="result-card sol-reading">
+          <div className="result-header" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", letterSpacing: '0.12em', fontSize: '0.65rem' }}>
+            Sol's reading
+          </div>
+          {narrativeStatus === 'loading' && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
+              <span style={{
+                display: 'inline-block', width: '14px', height: '14px',
+                border: '1.5px solid rgba(212,168,84,0.2)', borderTopColor: 'rgba(212,168,84,0.7)',
+                borderRadius: '50%', animation: 'sol-spin 1s linear infinite', flexShrink: 0,
+              }} />
+              <span style={{ fontSize: '0.875rem', color: 'rgba(240,232,216,0.4)', fontStyle: 'italic' }}>
+                Sol is reading the field…
+              </span>
+              <style>{`@keyframes sol-spin { to { transform: rotate(360deg); } }`}</style>
+            </div>
+          )}
+          {narrativeStatus === 'ready' && narrative && (
+            <div style={{ animation: 'sol-fade 0.7s ease-out' }}>
+              <style>{`@keyframes sol-fade { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }`}</style>
+              {narrative.split('\n\n').filter(Boolean).map((para, i) => (
+                <p key={i} style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontSize: '1.05rem', lineHeight: '1.85',
+                  color: 'rgba(240,232,216,0.88)', marginBottom: '1.1em',
+                }}>{para}</p>
+              ))}
+            </div>
+          )}
+          {narrativeStatus === 'error' && (
+            <p style={{ fontSize: '0.875rem', color: 'rgba(240,232,216,0.4)', fontStyle: 'italic', margin: 0 }}>
+              The field is quiet today.
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Save prompt */}
+      <SavePrompt />
 
       {/* Actions */}
       <div className="result-actions">
@@ -933,6 +983,133 @@ function getKappaClass(kappa: number): string {
   if (kappa >= 0.7) return 'optimal';
   if (kappa >= 0.4) return 'nominal';
   return 'critical';
+}
+
+// ============================================
+// SavePrompt — replaces SyncPrompt
+// Email field: schedules reminder + sends magic link silently
+// ============================================
+
+function SavePrompt() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'saving' | 'done' | 'error'>('idle');
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('rop_reminder_email');
+    if (saved) setEmail(saved);
+    if (saved && localStorage.getItem('rop_reminder_active') === 'true') {
+      setIsActive(true);
+      // Silently reschedule
+      fetch('/api/remind', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: saved, timezoneOffset: new Date().getTimezoneOffset() }),
+      }).catch(() => {});
+    }
+  }, []);
+
+  async function handleSubmit() {
+    const trimmed = email.trim().toLowerCase();
+    if (!trimmed || !trimmed.includes('@')) return;
+    setStatus('saving');
+
+    try {
+      const res = await fetch('/api/remind', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmed, timezoneOffset: new Date().getTimezoneOffset() }),
+      });
+      if (!res.ok) throw new Error();
+
+      localStorage.setItem('rop_reminder_email', trimmed);
+      localStorage.setItem('rop_reminder_active', 'true');
+      setIsActive(true);
+      setStatus('done');
+
+      // Background: magic link so clicking reminder email logs them in
+      fetch('/api/auth/magic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmed, redirect: '/sol/checkin' }),
+      }).catch(() => {});
+    } catch {
+      setStatus('error');
+    }
+  }
+
+  if (isActive || status === 'done') {
+    return (
+      <div style={{
+        margin: '1rem 0',
+        padding: '0.875rem 1.25rem',
+        background: 'rgba(212,168,84,0.04)',
+        border: '1px solid rgba(212,168,84,0.12)',
+        borderRadius: '12px',
+        display: 'flex', alignItems: 'center', gap: '0.75rem',
+      }}>
+        <span style={{ color: 'rgba(212,168,84,0.6)', fontSize: '1rem' }}>◎</span>
+        <span style={{ fontSize: '0.875rem', color: 'rgba(240,232,216,0.45)', fontStyle: 'italic' }}>
+          Sol will reach out tomorrow morning.
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      margin: '1rem 0',
+      padding: '1rem 1.25rem',
+      background: 'rgba(212,168,84,0.04)',
+      border: '1px solid rgba(212,168,84,0.12)',
+      borderRadius: '12px',
+    }}>
+      <div style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: 'rgba(212,168,84,0.45)', marginBottom: '0.5rem' }}>
+        Save your practice
+      </div>
+      <p style={{ margin: '0 0 0.875rem', fontSize: '0.875rem', color: 'rgba(240,232,216,0.5)', lineHeight: '1.5' }}>
+        Get tomorrow's reminder from Sol and carry your practice across any device.
+      </p>
+      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' as const }}>
+        <input
+          type="email"
+          placeholder="your@email.com"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+          style={{
+            flex: 1, minWidth: '160px',
+            padding: '0.6rem 0.875rem',
+            background: 'rgba(5,6,10,0.8)',
+            border: '1px solid rgba(212,168,84,0.2)',
+            borderRadius: '8px',
+            color: '#f0e8d8', fontSize: '0.875rem', fontFamily: 'inherit', outline: 'none',
+          }}
+        />
+        <button
+          onClick={handleSubmit}
+          disabled={status === 'saving'}
+          style={{
+            padding: '0.6rem 1rem',
+            background: 'rgba(212,168,84,0.12)',
+            border: '1px solid rgba(212,168,84,0.3)',
+            borderRadius: '8px',
+            color: '#d4a854', fontSize: '0.875rem', fontWeight: 500,
+            cursor: 'pointer', fontFamily: 'inherit',
+            whiteSpace: 'nowrap' as const,
+            opacity: status === 'saving' ? 0.6 : 1,
+          }}
+        >
+          {status === 'saving' ? '…' : 'Remind me →'}
+        </button>
+      </div>
+      {status === 'error' && (
+        <p style={{ margin: '0.5rem 0 0', fontSize: '0.75rem', color: 'rgba(240,100,100,0.6)' }}>
+          Couldn't save. Try again later.
+        </p>
+      )}
+    </div>
+  );
 }
 
 function getFailureModeAdvice(mode: string, uiMode: string): string {
