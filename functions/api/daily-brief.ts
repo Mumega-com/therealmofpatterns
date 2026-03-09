@@ -7,7 +7,8 @@
  */
 
 import type { Env } from '../../src/types';
-import { approximateLongitudes, compute8D, getDominant } from '../../src/lib/16d-engine';
+import { compute8D, getDominant } from '../../src/lib/16d-engine';
+import { getPlanetaryLongitudes } from '../../src/lib/ephemeris';
 import { DIMENSION_METADATA } from '../../src/types';
 
 const CORS = {
@@ -122,7 +123,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ env, request }) => {
   }
 
   // Compute today's 8D field vector from planetary positions
-  const lons = approximateLongitudes(today);
+  const lons = getPlanetaryLongitudes(today);
   const vector = compute8D(lons);
   const dominant = getDominant(vector);
   const meta = DIMENSION_METADATA[dominant.index];
