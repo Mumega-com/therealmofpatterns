@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  macOS launchd job — runs publish-daily.mjs every day at 7:00 AM local time.
+
+  Install:
+    cp video/scripts/daily-brief.plist ~/Library/LaunchAgents/com.therealmofpatterns.daily-brief.plist
+    launchctl load ~/Library/LaunchAgents/com.therealmofpatterns.daily-brief.plist
+
+  Uninstall:
+    launchctl unload ~/Library/LaunchAgents/com.therealmofpatterns.daily-brief.plist
+
+  Check logs:
+    tail -f /tmp/rop-daily.log
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.therealmofpatterns.daily-brief</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/node</string>
+    <string>/Users/hadi/Development/Mumega/therealmofpatterns/video/scripts/publish-daily.mjs</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/hadi/Development/Mumega/therealmofpatterns/video</string>
+
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>7</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/rop-daily.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/tmp/rop-daily-error.log</string>
+
+  <key>RunAtLoad</key>
+  <false/>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+</dict>
+</plist>

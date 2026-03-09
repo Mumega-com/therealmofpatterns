@@ -1,0 +1,41 @@
+{
+  "name": "video",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "studio": "remotion studio src/index.tsx",
+    "render": "remotion render HomepageVideo out/homepage.mp4",
+    "render:daily": "remotion render DailyWeather out/daily-weather-30s.mp4",
+    "publish": "node scripts/publish-daily.mjs",
+    "publish:vps": "node scripts/publish-daily.mjs --vps",
+    "publish:lambda": "node scripts/publish-daily.mjs --lambda",
+    "vps:setup": "node scripts/vps-setup.mjs",
+    "vps:render": "node scripts/render-vps.mjs DailyWeather",
+    "assets:generate": "node scripts/generate-assets.mjs",
+    "assets:planets": "node scripts/generate-assets.mjs planets",
+    "assets:dims": "node scripts/generate-assets.mjs dimensions",
+    "assets:force": "node scripts/generate-assets.mjs --force",
+    "lambda:setup": "node scripts/lambda-deploy.mjs setup",
+    "lambda:deploy": "node scripts/lambda-deploy.mjs deploy",
+    "lambda:info": "node scripts/lambda-deploy.mjs info",
+    "voiceover:daily": "node scripts/generate-daily-voiceover.mjs",
+    "auth:youtube": "node scripts/youtube-auth.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@remotion/cli": "^4.0.434",
+    "@remotion/lambda": "^4.0.434",
+    "@remotion/noise": "^4.0.434",
+    "@remotion/transitions": "^4.0.434",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.434",
+    "typescript": "^5.9.3"
+  }
+}
