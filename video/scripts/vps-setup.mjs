@@ -1,7 +1,7 @@
 /**
  * vps-setup.mjs
- * One-time setup of Hetzner VPS for Remotion headless rendering.
- * Installs Node.js 22, npm, Chromium, and project dependencies.
+ * One-time setup of Hetzner VPS for Docker-based Remotion rendering.
+ * Installs Docker, pulls ghcr.io/remotion-dev/base, and syncs project.
  *
  * Usage:
  *   node scripts/vps-setup.mjs
@@ -53,11 +53,11 @@ function remote(cmd, label) {
 }
 
 async function main() {
-  log(`\n🖥  Setting up Hetzner VPS for Remotion rendering`);
+  log(`\n🖥  Setting up Hetzner VPS for Docker-based Remotion rendering`);
   log(`   Host: ${USER}@${VPS}\n`);
 
   // Test connectivity
-  log('1/6 Testing SSH connection...');
+  log('1/5 Testing SSH connection...');
   try {
     execSync(`${SSH} "echo connected"`, { stdio: 'pipe' });
     log('   ✓ SSH connection OK\n');
@@ -66,51 +66,50 @@ async function main() {
     process.exit(1);
   }
 
-  // Update apt
-  log('2/6 Updating package lists...');
-  remote('apt-get update -qq', 'apt-get update');
+  // Update apt + install Docker
+  log('2/5 Installing Docker...');
+  remote(
+    'apt-get update -qq && apt-get install -y ca-certificates curl && ' +
+    'install -m 0755 -d /etc/apt/keyrings && ' +
+    'curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && ' +
+    'chmod a+r /etc/apt/keyrings/docker.asc && ' +
+    'echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] ' +
+      'https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" ' +
+      '> /etc/apt/sources.list.d/docker.list && ' +
+    'apt-get update -qq && apt-get install -y docker-ce docker-ce-cli containerd.io',
+    'Install Docker CE'
+  );
+  remote('docker --version', 'Verify Docker');
   log('   ✓\n');
 
-  // Install Node.js 22 via NodeSource
-  log('3/6 Installing Node.js 22...');
-  remote(
-    'curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt-get install -y nodejs',
-    'Install Node.js 22'
-  );
-  remote('node --version && npm --version', 'Verify versions');
-  log('   ✓\n');
-
-  // Install Chromium + deps for Remotion
-  log('4/6 Installing Chromium and rendering dependencies...');
-  remote(
-    'apt-get install -y chromium-browser ca-certificates fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 lsb-release wget xdg-utils 2>/dev/null || true',
-    'Install Chromium + deps'
-  );
+  // Pull Remotion base image (has Chromium + all deps pre-baked)
+  log('3/5 Pulling ghcr.io/remotion-dev/base (~1.5 GB, one-time)...');
+  remote('docker pull ghcr.io/remotion-dev/base', 'docker pull remotion-dev/base');
   log('   ✓\n');
 
   // Create project directory
-  log('5/6 Creating project directory...');
-  remote(`mkdir -p /opt/therealmofpatterns/video/out`, 'mkdir /opt/therealmofpatterns/video');
-  remote(`mkdir -p /opt/therealmofpatterns/video/public/assets`, 'mkdir public/assets');
+  log('4/5 Creating project directory...');
+  remote('mkdir -p /opt/therealmofpatterns/video/out', 'mkdir project dirs');
+  remote('mkdir -p /opt/therealmofpatterns/video/public/assets', 'mkdir public/assets');
   log('   ✓\n');
 
-  // Initial rsync + npm install
-  log('6/6 Syncing project and installing dependencies...');
+  // Initial rsync + docker build
+  log('5/5 Syncing project and building Docker image...');
   const rsyncKey = KEY ? `--rsh="ssh -i ${KEY} -o StrictHostKeyChecking=no"` : '';
   execSync(
     `rsync -az --exclude node_modules --exclude out ${rsyncKey} "${ROOT}/" "${USER}@${VPS}:/opt/therealmofpatterns/video/"`,
     { cwd: ROOT, stdio: 'inherit' }
   );
   remote(
-    'cd /opt/therealmofpatterns/video && npm install 2>&1 | tail -3',
-    'npm install'
+    'cd /opt/therealmofpatterns/video && docker build -t rop-video . 2>&1 | tail -5',
+    'docker build rop-video'
   );
   log('   ✓\n');
 
   log('✅ VPS setup complete!\n');
   log('   Test render:');
   log('   node scripts/publish-daily.mjs --vps\n');
-  log('   Full daily pipeline (render on VPS + upload YouTube):');
+  log('   Daily pipeline:');
   log('   npm run publish:vps\n');
 }
 

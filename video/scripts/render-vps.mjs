@@ -1,7 +1,12 @@
 /**
  * render-vps.mjs
- * Renders a Remotion composition on the Hetzner VPS.
- * Syncs source → renders remotely → downloads output.
+ * Renders a Remotion composition on the Hetzner VPS using Docker.
+ *
+ * Pipeline:
+ *   1. rsync source → VPS
+ *   2. docker build (cached after first run — only rebuilds if package.json changes)
+ *   3. docker run → renders inside ghcr.io/remotion-dev/base container
+ *   4. rsync output → local
  *
  * Usage (direct):
  *   node scripts/render-vps.mjs DailyWeather out/daily-2026-03-09.mp4 .render-props.json
@@ -77,25 +82,29 @@ export async function renderOnVPS(composition, localOutPath, propsFile) {
   );
   log('   ✓ Synced');
 
-  // 2. Ensure npm install is up to date (only if package.json changed)
+  // 2. Build Docker image (layer-cached — fast if only src changed, slow only when package.json changes)
+  log('   Building Docker image (cached after first run)...');
   execSync(
-    `${SSH} "cd ${REMOTE} && \
-      if [ package.json -nt node_modules ]; then \
-        echo 'Running npm install...'; npm install 2>&1 | tail -3; \
-      fi"`,
+    `${SSH} "cd ${REMOTE} && docker build -t rop-video . 2>&1 | tail -5"`,
     { stdio: 'inherit' }
   );
+  log('   ✓ Image ready');
 
   // 3. Create out dir on VPS
   execSync(`${SSH} "mkdir -p ${REMOTE}/out"`, { stdio: 'pipe' });
 
-  // 4. Run Remotion render on VPS
-  log(`   Rendering ${composition} on VPS (4 CPU / 16GB)...`);
+  // 4. Run Remotion render inside Docker container
+  log(`   Rendering ${composition} in Docker (4 CPU / 16GB)...`);
   const startTime = Date.now();
   execSync(
     `${SSH} "cd ${REMOTE} && \
-      npx remotion render ${composition} \
-        'out/${outName}' \
+      docker run --rm \
+        --cpus=4 \
+        --memory=12g \
+        -v ${REMOTE}/out:/app/out \
+        -v ${REMOTE}/.render-props.json:/app/.render-props.json:ro \
+        rop-video \
+        ${composition} 'out/${outName}' \
         --props='.render-props.json' \
         --log=error \
         --concurrency=4"`,

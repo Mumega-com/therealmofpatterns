@@ -12,6 +12,8 @@
     "publish:lambda": "node scripts/publish-daily.mjs --lambda",
     "vps:setup": "node scripts/vps-setup.mjs",
     "vps:render": "node scripts/render-vps.mjs DailyWeather",
+    "docker:build": "docker build -t rop-video .",
+    "docker:render": "docker run --rm -v $(pwd)/out:/app/out -v $(pwd)/.render-props.json:/app/.render-props.json:ro rop-video DailyWeather out/daily.mp4 --props=.render-props.json --log=error --concurrency=4",
     "assets:generate": "node scripts/generate-assets.mjs",
     "assets:planets": "node scripts/generate-assets.mjs planets",
     "assets:dims": "node scripts/generate-assets.mjs dimensions",
