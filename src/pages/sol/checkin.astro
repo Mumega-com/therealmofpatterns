@@ -371,10 +371,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     });
   }
 
-  // Initialize
-  document.addEventListener('DOMContentLoaded', () => {
+  // Initialize — mount immediately if DOM is ready (module scripts can run after DOMContentLoaded)
+  function mountCheckin() {
     const checkinEl = document.getElementById('sol-checkin');
-    if (checkinEl) {
+    if (checkinEl && checkinEl.childNodes.length === 0) {
       createRoot(checkinEl).render(
         createElement(CheckinFlowEnhanced, {
           onComplete: (results) => {
@@ -384,5 +384,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         })
       );
     }
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountCheckin);
+  } else {
+    mountCheckin();
+  }
 </script>

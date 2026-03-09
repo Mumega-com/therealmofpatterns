@@ -1,36 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// 404 messages per mode
-const messages = {
-  kasra: {
-    title: 'SIGNAL_LOST',
-    subtitle: '404 :: PATH_NOT_FOUND',
-    description: 'The requested coordinate does not exist in this matrix. The pattern you seek has either been relocated or never existed in this timeline.',
-    cta: 'REINITIALIZE_CONNECTION',
-    symbol: '⌬',
-  },
-  river: {
-    title: 'The Path Dissolves',
-    subtitle: 'A wandering in the mist...',
-    description: 'You have stepped beyond the mapped territories. Perhaps this is not loss, but invitation—the pattern reveals itself when we stop seeking.',
-    cta: 'Return to the Grove',
-    symbol: '☽',
-  },
-  sol: {
-    title: 'Page Not Found',
-    subtitle: "This page doesn't exist",
-    description: "The page you're looking for has moved or doesn't exist. Let's get you back on track.",
-    cta: 'Go Home',
-    symbol: '◎',
-  },
-};
-
 const suggestions = [
-  { href: '/theater', label: 'Visit the Theater', icon: '◎', desc: 'Watch the cosmic scene unfold' },
-  { href: '/learn', label: 'Explore the Library', icon: '◈', desc: 'Discover dimensions and concepts' },
-  { href: '/squad', label: 'Meet the Voices', icon: '☉', desc: 'Kasra, River, and Sol await' },
-  { href: '/sol/checkin', label: 'Start a Check-in', icon: '✦', desc: 'Explore your current pattern' },
+  { href: '/reading/', label: 'Get a Reading', icon: '◎', desc: 'Explore your current pattern' },
+  { href: '/sol/checkin', label: 'Start a Check-in', icon: '✦', desc: 'Begin your daily practice' },
+  { href: '/about/', label: 'About the Realm', icon: '◈', desc: 'Learn how it works' },
+  { href: '/subscribe/', label: 'Go Pro', icon: '☉', desc: 'Unlock deeper insights' },
 ];
 ---
 
@@ -40,80 +15,29 @@ const suggestions = [
   showFooter={false}
 >
   <div class="min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden">
-    <!-- Background Effects -->
+    <!-- Background -->
     <div class="absolute inset-0 pointer-events-none">
-      <!-- Kasra Mode: Grid pattern -->
-      <div class="kasra-bg absolute inset-0 opacity-0 transition-opacity duration-500" data-mode="kasra">
-        <div class="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(0,255,255,0.08)_0%,transparent_70%)]"></div>
-      </div>
-
-      <!-- River Mode: Mystical mist -->
-      <div class="river-bg absolute inset-0 opacity-0 transition-opacity duration-500" data-mode="river">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.1)_0%,transparent_50%)]"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(212,168,84,0.08)_0%,transparent_40%)]"></div>
-      </div>
-
-      <!-- Sol Mode: Warm glow -->
-      <div class="sol-bg absolute inset-0 opacity-0 transition-opacity duration-500" data-mode="sol">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse,rgba(212,168,84,0.1)_0%,transparent_70%)]"></div>
-      </div>
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse,rgba(212,168,84,0.1)_0%,transparent_70%)]"></div>
     </div>
 
     <!-- Content -->
     <div class="relative z-10 text-center max-w-2xl mx-auto">
-      <!-- Symbol -->
-      <div class="mb-6">
-        <span class="symbol-kasra hidden text-6xl text-[#00ffff] font-mono animate-pulse">⌬</span>
-        <span class="symbol-river hidden text-6xl text-[#8b5cf6]">☽</span>
-        <span class="symbol-sol hidden text-6xl text-[#d4a854]">◎</span>
-      </div>
+      <div class="mb-6 text-6xl text-[#d4a854]">◎</div>
 
-      <!-- 404 Number -->
       <div class="mb-8">
-        <span class="text-[120px] md:text-[180px] font-mono leading-none tracking-tighter">
-          <span class="num-kasra hidden text-[#00ffff] opacity-80 [text-shadow:0_0_30px_rgba(0,255,255,0.5)]">404</span>
-          <span class="num-river hidden text-[#8b5cf6]/60 font-serif">404</span>
-          <span class="num-sol hidden text-[#d4a854]/40">404</span>
-        </span>
+        <span class="text-[120px] md:text-[180px] font-mono leading-none tracking-tighter text-[#d4a854]/40">404</span>
       </div>
 
-      <!-- Title -->
-      <h1 class="mb-3">
-        <span class="title-kasra hidden text-2xl md:text-3xl font-mono text-[#00ffff] tracking-wider">SIGNAL_LOST</span>
-        <span class="title-river hidden text-3xl md:text-4xl font-serif text-[#f0e8d8] italic">The Path Dissolves</span>
-        <span class="title-sol hidden text-2xl md:text-3xl font-serif text-[#f0e8d8]">Page Not Found</span>
-      </h1>
+      <h1 class="mb-3 text-2xl md:text-3xl font-serif text-[#f0e8d8]">Page Not Found</h1>
 
-      <!-- Subtitle -->
-      <p class="mb-6">
-        <span class="sub-kasra hidden text-sm font-mono text-[#00ffff]/60">404 :: PATH_NOT_FOUND</span>
-        <span class="sub-river hidden text-lg text-[#8b5cf6]/70 italic">A wandering in the mist...</span>
-        <span class="sub-sol hidden text-lg text-[#f0e8d8]/50">This page doesn't exist</span>
+      <p class="mb-6 text-lg text-[#f0e8d8]/50">This page doesn't exist</p>
+
+      <p class="mb-10 max-w-md mx-auto text-[#f0e8d8]/60 leading-relaxed">
+        The page you're looking for has moved or doesn't exist. Let's get you back on track.
       </p>
 
-      <!-- Description -->
-      <p class="mb-10 max-w-md mx-auto">
-        <span class="desc-kasra hidden text-sm font-mono text-[#f0e8d8]/50 leading-relaxed">
-          The requested coordinate does not exist in this matrix. The pattern you seek has either been relocated or never existed in this timeline.
-        </span>
-        <span class="desc-river hidden text-[#f0e8d8]/60 leading-relaxed">
-          You have stepped beyond the mapped territories. Perhaps this is not loss, but invitation—the pattern reveals itself when we stop seeking.
-        </span>
-        <span class="desc-sol hidden text-[#f0e8d8]/60 leading-relaxed">
-          The page you're looking for has moved or doesn't exist. Let's get you back on track.
-        </span>
-      </p>
-
-      <!-- CTA Button -->
-      <a href="/" class="inline-block mb-16 group">
-        <span class="cta-kasra hidden px-6 py-3 border border-[#00ffff]/50 text-[#00ffff] font-mono text-sm hover:bg-[#00ffff]/10 hover:border-[#00ffff] transition-all duration-300">
-          &gt; REINITIALIZE_CONNECTION
-        </span>
-        <span class="cta-river hidden px-8 py-3 bg-gradient-to-r from-[#8b5cf6]/20 to-[#d4a854]/20 border border-[#8b5cf6]/30 text-[#f0e8d8] rounded-full hover:border-[#8b5cf6]/60 transition-all duration-300">
-          Return to the Grove
-        </span>
-        <span class="cta-sol hidden px-6 py-3 bg-[#d4a854] text-[#0a0908] rounded-lg font-medium hover:bg-[#e5b964] transition-colors">
+      <a href="/" class="inline-block mb-16">
+        <span class="px-6 py-3 bg-[#d4a854] text-[#0a0908] rounded-lg font-medium hover:bg-[#e5b964] transition-colors">
           Go Home
         </span>
       </a>
@@ -140,42 +64,4 @@ const suggestions = [
       </div>
     </div>
   </div>
-
-  <script>
-    function updateMode() {
-      const mode = document.documentElement.dataset.mode || 'sol';
-
-      // Hide all mode-specific elements
-      document.querySelectorAll('[class*="-kasra"], [class*="-river"], [class*="-sol"]').forEach(el => {
-        el.classList.add('hidden');
-      });
-
-      // Show elements for current mode
-      document.querySelectorAll(`[class*="-${mode}"]`).forEach(el => {
-        el.classList.remove('hidden');
-      });
-
-      // Update backgrounds
-      document.querySelectorAll('[data-mode]').forEach(el => {
-        if (el.getAttribute('data-mode') === mode) {
-          el.classList.remove('opacity-0');
-          el.classList.add('opacity-100');
-        } else {
-          el.classList.add('opacity-0');
-          el.classList.remove('opacity-100');
-        }
-      });
-    }
-
-    // Initial update
-    updateMode();
-
-    // Listen for mode changes
-    window.addEventListener('modechange', updateMode);
-
-    // Also check on visibility change (for tab switches)
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) updateMode();
-    });
-  </script>
 </BaseLayout>

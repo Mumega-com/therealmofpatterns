@@ -1,0 +1,249 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Your Natal Chart · Sol" showHeader={true} showFooter={false} mode="sol">
+  <div id="chart-page" style="min-height:100vh;background:#080706;color:#f0e8d8;font-family:'Helvetica Neue',Arial,sans-serif;">
+
+    <!-- Header -->
+    <div style="max-width:540px;margin:0 auto;padding:60px 24px 0;">
+      <a href="/sol" style="display:inline-flex;align-items:center;gap:8px;color:rgba(212,168,84,0.6);font-size:13px;letter-spacing:0.12em;text-decoration:none;margin-bottom:48px;">
+        ← Sol
+      </a>
+
+      <div style="margin-bottom:12px;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(212,168,84,0.5);">
+        The Realm of Patterns
+      </div>
+      <h1 style="font-family:Georgia,serif;font-size:36px;font-weight:400;margin:0 0 12px;line-height:1.2;">
+        Your Natal Chart
+      </h1>
+      <p style="color:rgba(240,232,216,0.55);font-size:15px;line-height:1.7;margin:0 0 48px;">
+        Enter your birth data to receive readings personal to your pattern.
+        Birth time and location unlock your rising sign and house placements.
+      </p>
+    </div>
+
+    <!-- Form -->
+    <div style="max-width:540px;margin:0 auto;padding:0 24px 80px;">
+      <form id="natal-form">
+
+        <!-- Birth Date -->
+        <div style="margin-bottom:32px;">
+          <label style="display:block;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(212,168,84,0.7);margin-bottom:12px;">
+            Birth Date <span style="color:#d4a854;">*</span>
+          </label>
+          <input
+            type="date" id="birth-date" required
+            style="width:100%;background:rgba(212,168,84,0.05);border:1px solid rgba(212,168,84,0.2);border-radius:12px;padding:16px 20px;color:#f0e8d8;font-size:16px;box-sizing:border-box;outline:none;-webkit-appearance:none;"
+          />
+        </div>
+
+        <!-- Birth Time -->
+        <div style="margin-bottom:32px;">
+          <label style="display:block;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(212,168,84,0.7);margin-bottom:8px;">
+            Birth Time <span style="color:rgba(240,232,216,0.3);font-size:10px;letter-spacing:0.1em;text-transform:none;">(optional — unlocks rising sign)</span>
+          </label>
+          <input
+            type="time" id="birth-time"
+            style="width:100%;background:rgba(212,168,84,0.05);border:1px solid rgba(212,168,84,0.2);border-radius:12px;padding:16px 20px;color:#f0e8d8;font-size:16px;box-sizing:border-box;outline:none;"
+          />
+        </div>
+
+        <!-- Birth Location -->
+        <div style="margin-bottom:32px;">
+          <label style="display:block;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(212,168,84,0.7);margin-bottom:8px;">
+            Birth City <span style="color:rgba(240,232,216,0.3);font-size:10px;letter-spacing:0.1em;text-transform:none;">(optional)</span>
+          </label>
+          <input
+            type="text" id="birth-location" placeholder="e.g. Tehran, Tehran Province"
+            style="width:100%;background:rgba(212,168,84,0.05);border:1px solid rgba(212,168,84,0.2);border-radius:12px;padding:16px 20px;color:#f0e8d8;font-size:16px;box-sizing:border-box;outline:none;"
+          />
+        </div>
+
+        <!-- Timezone -->
+        <div style="margin-bottom:48px;">
+          <label style="display:block;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(212,168,84,0.7);margin-bottom:12px;">
+            Timezone Offset
+          </label>
+          <select id="birth-tz"
+            style="width:100%;background:#0f0e0c;border:1px solid rgba(212,168,84,0.2);border-radius:12px;padding:16px 20px;color:#f0e8d8;font-size:16px;box-sizing:border-box;outline:none;-webkit-appearance:none;appearance:none;">
+            <option value="-12">UTC−12</option>
+            <option value="-11">UTC−11</option>
+            <option value="-10">UTC−10 (Hawaii)</option>
+            <option value="-9">UTC−9 (Alaska)</option>
+            <option value="-8">UTC−8 (PST)</option>
+            <option value="-7">UTC−7 (MST)</option>
+            <option value="-6">UTC−6 (CST)</option>
+            <option value="-5">UTC−5 (EST)</option>
+            <option value="-4">UTC−4 (Atlantic)</option>
+            <option value="-3.5">UTC−3:30 (Newfoundland)</option>
+            <option value="-3">UTC−3 (Buenos Aires)</option>
+            <option value="-2">UTC−2</option>
+            <option value="-1">UTC−1</option>
+            <option value="0" selected>UTC±0 (London)</option>
+            <option value="1">UTC+1 (Paris, Berlin)</option>
+            <option value="2">UTC+2 (Cairo, Kyiv)</option>
+            <option value="3">UTC+3 (Moscow, Istanbul)</option>
+            <option value="3.5">UTC+3:30 (Tehran)</option>
+            <option value="4">UTC+4 (Dubai, Baku)</option>
+            <option value="4.5">UTC+4:30 (Kabul)</option>
+            <option value="5">UTC+5 (Karachi)</option>
+            <option value="5.5">UTC+5:30 (India)</option>
+            <option value="5.75">UTC+5:45 (Nepal)</option>
+            <option value="6">UTC+6 (Dhaka)</option>
+            <option value="6.5">UTC+6:30 (Yangon)</option>
+            <option value="7">UTC+7 (Bangkok, Jakarta)</option>
+            <option value="8">UTC+8 (Singapore, Beijing)</option>
+            <option value="9">UTC+9 (Tokyo, Seoul)</option>
+            <option value="9.5">UTC+9:30 (Adelaide)</option>
+            <option value="10">UTC+10 (Sydney)</option>
+            <option value="11">UTC+11 (Solomon Islands)</option>
+            <option value="12">UTC+12 (Auckland)</option>
+          </select>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" id="submit-btn"
+          style="width:100%;padding:20px;background:linear-gradient(135deg,#d4a854,#c49a4a);border:none;border-radius:16px;color:#080706;font-size:17px;font-weight:700;letter-spacing:0.04em;cursor:pointer;">
+          Compute My Chart
+        </button>
+
+        <div id="form-error" style="display:none;margin-top:16px;color:#f87171;font-size:14px;text-align:center;"></div>
+      </form>
+
+      <!-- Result preview (shown after save) -->
+      <div id="chart-result" style="display:none;margin-top:48px;">
+        <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,84,0.3),transparent);margin-bottom:40px;"></div>
+
+        <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(212,168,84,0.6);margin-bottom:24px;">
+          Your Pattern
+        </div>
+
+        <div id="chart-summary" style="background:rgba(212,168,84,0.04);border:1px solid rgba(212,168,84,0.15);border-radius:20px;padding:32px;"></div>
+
+        <a href="/sol/today" id="go-today"
+          style="display:block;margin-top:24px;padding:18px;background:rgba(212,168,84,0.08);border:1px solid rgba(212,168,84,0.2);border-radius:14px;text-align:center;color:#d4a854;text-decoration:none;font-size:15px;letter-spacing:0.06em;">
+          Read today's personal field →
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('natal-form') as HTMLFormElement;
+  const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const errEl = document.getElementById('form-error') as HTMLDivElement;
+  const resultEl = document.getElementById('chart-result') as HTMLDivElement;
+  const summaryEl = document.getElementById('chart-summary') as HTMLDivElement;
+
+  // Auto-detect timezone
+  const tzSelect = document.getElementById('birth-tz') as HTMLSelectElement;
+  const tzOffset = -new Date().getTimezoneOffset() / 60;
+  const matchingOption = Array.from(tzSelect.options).find(o => parseFloat(o.value) === tzOffset);
+  if (matchingOption) tzSelect.value = matchingOption.value;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errEl.style.display = 'none';
+    btn.textContent = 'Computing...';
+    btn.disabled = true;
+
+    const date = (document.getElementById('birth-date') as HTMLInputElement).value;
+    const time = (document.getElementById('birth-time') as HTMLInputElement).value || undefined;
+    const location = (document.getElementById('birth-location') as HTMLInputElement).value || undefined;
+    const tz = parseFloat(tzSelect.value);
+
+    try {
+      const res = await fetch('/api/natal-chart/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date, time, location, tz }),
+      });
+
+      if (res.status === 401) {
+        // Not logged in — save to localStorage and redirect to auth
+        localStorage.setItem('rop_pending_natal', JSON.stringify({ date, time, location, tz }));
+        window.location.href = '/sol?auth=1&redirect=/sol/chart';
+        return;
+      }
+
+      const data = await res.json() as { ok?: boolean; chart?: any; error?: string };
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error ?? 'Failed to save chart');
+      }
+
+      const chart = data.chart;
+
+      // Save summary to localStorage for quick access
+      const existing = JSON.parse(localStorage.getItem('rop_user') ?? '{}');
+      existing.birthData = { date, time, location, tz };
+      existing.natalSummary = chart.summary;
+      localStorage.setItem('rop_user', JSON.stringify(existing));
+
+      // Show result
+      form.style.display = 'none';
+      resultEl.style.display = 'block';
+
+      const s = chart.summary;
+      const planets = chart.planets;
+      const stelliumText = s.stelliums?.length > 0
+        ? `<div style="margin-top:16px;padding:14px 18px;background:rgba(212,168,84,0.08);border-radius:10px;font-size:13px;color:rgba(212,168,84,0.9);">
+            ✦ Stellium: ${s.stelliums.join(' · ')}
+           </div>`
+        : '';
+
+      summaryEl.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+          ${renderPlanetRow('☉ Sun', planets.Sun?.degree + '° ' + planets.Sun?.sign)}
+          ${renderPlanetRow('☽ Moon', planets.Moon?.degree + '° ' + planets.Moon?.sign)}
+          ${s.risingSign ? renderPlanetRow('↑ Rising', s.risingSign) : ''}
+          ${renderPlanetRow('⚸ Lilith', s.lilithSign)}
+          ${renderPlanetRow('☊ North Node', s.northNodeSign)}
+          ${renderPlanetRow('♃ Jupiter', planets.Jupiter?.degree + '° ' + planets.Jupiter?.sign + (planets.Jupiter?.isRetrograde ? ' ℞' : ''))}
+          ${renderPlanetRow('♄ Saturn', planets.Saturn?.degree + '° ' + planets.Saturn?.sign + (planets.Saturn?.isRetrograde ? ' ℞' : ''))}
+        </div>
+        ${stelliumText}
+        <div style="margin-top:20px;font-size:13px;color:rgba(240,232,216,0.5);line-height:1.7;font-style:italic;">
+          "${s.keyTheme}"
+        </div>
+      `;
+
+    } catch (err) {
+      errEl.textContent = err instanceof Error ? err.message : 'Something went wrong';
+      errEl.style.display = 'block';
+    } finally {
+      btn.textContent = 'Compute My Chart';
+      btn.disabled = false;
+    }
+  });
+
+  function renderPlanetRow(label: string, value: string): string {
+    return `
+      <div style="padding:14px 16px;background:rgba(240,232,216,0.03);border-radius:10px;">
+        <div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(212,168,84,0.5);margin-bottom:6px;">${label}</div>
+        <div style="font-size:15px;color:#f0e8d8;font-family:Georgia,serif;">${value ?? '—'}</div>
+      </div>`;
+  }
+</script>
+
+<style>
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.7) sepia(1) saturate(2) hue-rotate(5deg);
+    cursor: pointer;
+  }
+  input:focus, select:focus {
+    border-color: rgba(212,168,84,0.5) !important;
+    box-shadow: 0 0 0 3px rgba(212,168,84,0.08);
+  }
+  button:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+</style>

@@ -758,7 +758,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   // Initialize
-  document.addEventListener('DOMContentLoaded', () => {
+  function initDashboard() {
     createFloatingShapes();
     setGreeting();
     setOracleSentence();
@@ -806,12 +806,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       const nudgeEl = document.getElementById('pro-nudge');
       if (nudgeEl) {
         nudgeEl.innerHTML = `
-          <a href="/subscribe" class="pro-nudge-link">
+          <a href="/subscribe?plan=individual" class="pro-nudge-link">
             <span class="pro-nudge-icon">◎</span>
             <span class="pro-nudge-text">Sol goes deeper for Pro members — weekly synthesis, richer readings</span>
             <span class="pro-nudge-cta">Learn more →</span>
           </a>`;
       }
     }
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDashboard);
+  } else {
+    initDashboard();
+  }
 </script>

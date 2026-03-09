@@ -123,7 +123,7 @@ export async function onRequestPost(
     if (isPro) {
       // Weekly synthesis: use most capable model
       // Daily Pro: Gemini 3 Flash
-      const geminiModel = isWeekly ? 'gemini-2.5-pro' : 'gemini-3-flash-preview';
+      const geminiModel = isWeekly ? 'gemini-3-flash-preview' : 'gemini-3-flash-preview';
       narrative = await callGemini(env, systemPrompt, fullUserPrompt, geminiModel);
       if (narrative) {
         modelUsed = geminiModel;

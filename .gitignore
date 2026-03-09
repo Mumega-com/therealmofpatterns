@@ -52,3 +52,5 @@ node_modules/
 # Secrets
 *.pem
 *.key
+dist_functions_test/
+video/public/preview-frame*.png

@@ -63,7 +63,7 @@ export function ModeToggle({ className = '' }: ModeToggleProps) {
     <div className={`relative ${className}`}>
       {/* Main Toggle */}
       <div className="flex items-center rounded-lg bg-[rgba(26,24,20,0.8)] border border-[rgba(212,168,84,0.15)] p-0.5">
-        {(['kasra', 'river', 'sol'] as Mode[]).map((m) => {
+        {(['sol'] as Mode[]).map((m) => {
           const info = MODE_INFO[m];
           const isActive = mode === m;
           return (
@@ -108,7 +108,7 @@ export function ModeToggle({ className = '' }: ModeToggleProps) {
             Each voice offers a unique perspective on your patterns. Try them all!
           </p>
           <div className="space-y-1.5 text-xs">
-            {(['kasra', 'river', 'sol'] as Mode[]).map((m) => {
+            {(['sol'] as Mode[]).map((m) => {
               const info = MODE_INFO[m];
               return (
                 <div key={m} className="flex items-center gap-2" style={{ color: info.color }}>
@@ -119,9 +119,6 @@ export function ModeToggle({ className = '' }: ModeToggleProps) {
               );
             })}
           </div>
-          <p className="text-[#f0e8d8]/40 text-xs mt-3">
-            Tip: Press K, R, or S to switch modes
-          </p>
         </div>
       )}
 

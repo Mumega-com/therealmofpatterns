@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { $mode, $forecast, updateForecast, setFailureMode } from '../../stores';
-import { saveCheckin, getCheckinHistory } from '../../lib/checkin-storage';
+import { saveCheckin, getCheckinHistory, getTodaysCheckin } from '../../lib/checkin-storage';
 import { fetchNarrative } from '../../lib/narrator-client';
 import { BirthDataPrompt } from '../shared/BirthDataPrompt';
 import { PredictionCard } from '../shared/PredictionCard';
@@ -145,6 +145,10 @@ export function CheckinFlowEnhanced({ onComplete, className = '' }: CheckinFlowE
   const mode = useStore($mode);
   const labels = LABELS[mode];
 
+  // Check if already checked in today — skip to done state
+  const todayEntry = getTodaysCheckin();
+  const [alreadyDone] = useState(() => !!getTodaysCheckin());
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [isComplete, setIsComplete] = useState(false);
@@ -230,6 +234,28 @@ export function CheckinFlowEnhanced({ onComplete, className = '' }: CheckinFlowE
 
   // Get question text for current mode
   const questionText = currentQuestion?.[mode] || currentQuestion?.sol;
+
+  // Already checked in today
+  if (alreadyDone) {
+    return (
+      <div className={`checkin-flow checkin-flow--${mode} ${className}`}>
+        <style>{getStyles(mode)}</style>
+        <div style={{ textAlign: 'center', padding: '3rem 1.5rem' }}>
+          <div style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--checkin-accent)' }}>◎</div>
+          <h2 style={{ fontFamily: mode === 'kasra' ? "'Geist Mono', monospace" : "'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: '1.4rem', color: 'var(--checkin-text)', marginBottom: '0.75rem' }}>
+            {mode === 'kasra' ? 'CALIBRATION_COMPLETE' : mode === 'river' ? 'The field has been read today.' : 'You\'ve already checked in today.'}
+          </h2>
+          <p style={{ fontSize: '0.9rem', color: 'rgba(240,232,216,0.45)', marginBottom: '2rem' }}>
+            {mode === 'kasra' ? 'Return tomorrow for next calibration cycle.' : 'Come back tomorrow to continue your practice.'}
+          </p>
+          <a href={mode === 'kasra' ? '/kasra' : mode === 'river' ? '/river' : '/sol'} style={{ display: 'inline-block', padding: '0.65rem 1.5rem', background: 'rgba(212,168,84,0.12)', border: '1px solid rgba(212,168,84,0.3)', borderRadius: '8px', color: '#d4a854', fontSize: '0.875rem', textDecoration: 'none' }}>
+            {mode === 'kasra' ? '[VIEW_METRICS]' : 'View your dashboard →'}
+          </a>
+        </div>
+        <SavePrompt />
+      </div>
+    );
+  }
 
   // Celebration overlay
   if (showCelebration) {
@@ -990,7 +1016,31 @@ function getKappaClass(kappa: number): string {
 // Email field: schedules reminder + sends magic link silently
 // ============================================
 
+const SAVE_COPY = {
+  sol: {
+    label: 'Save your practice',
+    body: "Get tomorrow's reminder from Sol and carry your practice across any device.",
+    confirmed: 'Sol will reach out tomorrow morning.',
+    redirect: '/sol/checkin',
+  },
+  river: {
+    label: 'Return to the pattern',
+    body: 'Let the field find you again tomorrow. Enter your email to carry the thread forward.',
+    confirmed: 'River will return at dawn.',
+    redirect: '/river/checkin',
+  },
+  kasra: {
+    label: 'SCHEDULE_CALIBRATION',
+    body: 'Set a daily recalibration prompt. Your coherence signal will be waiting tomorrow.',
+    confirmed: 'REMINDER_SET · TOMORROW_08:00',
+    redirect: '/kasra/checkin',
+  },
+};
+
 function SavePrompt() {
+  const mode = useStore($mode);
+  const copy = SAVE_COPY[mode as keyof typeof SAVE_COPY] || SAVE_COPY.sol;
+
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'saving' | 'done' | 'error'>('idle');
   const [isActive, setIsActive] = useState(false);
@@ -1031,7 +1081,7 @@ function SavePrompt() {
       fetch('/api/auth/magic', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: trimmed, redirect: '/sol/checkin' }),
+        body: JSON.stringify({ email: trimmed, redirect: copy.redirect }),
       }).catch(() => {});
     } catch {
       setStatus('error');
@@ -1050,7 +1100,7 @@ function SavePrompt() {
       }}>
         <span style={{ color: 'rgba(212,168,84,0.6)', fontSize: '1rem' }}>◎</span>
         <span style={{ fontSize: '0.875rem', color: 'rgba(240,232,216,0.45)', fontStyle: 'italic' }}>
-          Sol will reach out tomorrow morning.
+          {copy.confirmed}
         </span>
       </div>
     );
@@ -1065,10 +1115,10 @@ function SavePrompt() {
       borderRadius: '12px',
     }}>
       <div style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: 'rgba(212,168,84,0.45)', marginBottom: '0.5rem' }}>
-        Save your practice
+        {copy.label}
       </div>
       <p style={{ margin: '0 0 0.875rem', fontSize: '0.875rem', color: 'rgba(240,232,216,0.5)', lineHeight: '1.5' }}>
-        Get tomorrow's reminder from Sol and carry your practice across any device.
+        {copy.body}
       </p>
       <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' as const }}>
         <input

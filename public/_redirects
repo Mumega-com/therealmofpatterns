@@ -1,3 +1,13 @@
+# River and Kasra temporarily hidden — redirect to Sol
+/river /sol/checkin 301
+/river/ /sol/checkin 301
+/river/checkin /sol/checkin 301
+/river/checkin/ /sol/checkin 301
+/kasra /sol/checkin 301
+/kasra/ /sol/checkin 301
+/kasra/checkin /sol/checkin 301
+/kasra/checkin/ /sol/checkin 301
+
 # Soul field share — serve all /soul/TOKEN paths as the share page (token read client-side)
 /soul/:token /soul/share/ 200
 

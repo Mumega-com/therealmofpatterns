@@ -33,6 +33,9 @@ const MODES: { id: Mode; icon: string; name: string; vibe: string; color: string
  * Only shows once per user (tracks in localStorage)
  */
 export function ModeDiscovery() {
+  // River and Kasra modes hidden — Sol only for now
+  return null;
+
   const [isVisible, setIsVisible] = useState(false);
   const [selectedMode, setSelectedMode] = useState<Mode | null>(null);
 

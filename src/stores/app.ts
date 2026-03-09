@@ -16,7 +16,7 @@ if (typeof window !== 'undefined') {
   requestAnimationFrame(() => {
     if (window.location.pathname === '/profile') {
       const savedMode = localStorage.getItem('rop_mode') as Mode;
-      if (savedMode && ['kasra', 'river', 'sol'].includes(savedMode)) {
+      if (savedMode && savedMode === 'sol') {
         $mode.set(savedMode);
         document.documentElement.dataset.mode = savedMode;
       }

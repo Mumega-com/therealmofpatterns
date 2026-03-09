@@ -1,0 +1,774 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="The Field Today | Sol"
+  description="Today's cosmic energy, active archetypes, and field frequency."
+>
+  <div class="today-page">
+
+    <!-- Background -->
+    <div class="today-bg">
+      <div class="bg-glow"></div>
+    </div>
+
+    <!-- Loading state -->
+    <div id="today-loading" class="loading-state">
+      <span class="loading-spinner"></span>
+    </div>
+
+    <!-- Main content (hidden until loaded) -->
+    <div id="today-content" class="today-content" style="display:none">
+
+      <!-- Header -->
+      <header class="today-header">
+        <a href="/sol" class="back-link">← Sol</a>
+        <div class="realm-label">The Realm of Patterns</div>
+      </header>
+
+      <!-- Date + Moon -->
+      <section class="date-section">
+        <div class="moon-row">
+          <span id="moon-emoji" class="moon-emoji"></span>
+          <span id="moon-phase" class="moon-phase-text"></span>
+        </div>
+        <h1 id="date-display" class="date-display"></h1>
+        <div class="planet-row">
+          <span class="planet-label">Ruling the field today</span>
+          <span id="planet-name" class="planet-name"></span>
+        </div>
+      </section>
+
+      <!-- Frequency wave -->
+      <section class="freq-section">
+        <canvas id="freq-canvas" class="freq-canvas" width="340" height="72"></canvas>
+        <div class="freq-label">
+          <span id="freq-hz" class="freq-hz"></span>
+          <span class="freq-sep">·</span>
+          <span id="freq-planet" class="freq-planet-label"></span>
+        </div>
+      </section>
+
+      <!-- Divider -->
+      <div class="divider"></div>
+
+      <!-- Archetypes -->
+      <section class="archetypes-section">
+        <p class="section-eyebrow">Active archetypes</p>
+        <div class="archetypes-grid">
+          <div class="archetype-card" id="archetype-primary">
+            <div class="archetype-polarity" id="polarity-primary"></div>
+            <div class="archetype-symbol" id="symbol-primary"></div>
+            <div class="archetype-name" id="name-primary"></div>
+            <div class="archetype-quality" id="quality-primary"></div>
+          </div>
+          <div class="archetype-card secondary" id="archetype-secondary">
+            <div class="archetype-polarity secondary" id="polarity-secondary"></div>
+            <div class="archetype-symbol secondary" id="symbol-secondary"></div>
+            <div class="archetype-name" id="name-secondary"></div>
+            <div class="archetype-quality" id="quality-secondary"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Divider -->
+      <div class="divider"></div>
+
+      <!-- Sol's reading -->
+      <section class="narrative-section">
+        <div class="sol-label">
+          <span class="sol-icon">☉</span>
+          <span>Sol's field reading</span>
+        </div>
+        <p id="narrative-text" class="narrative-text"></p>
+      </section>
+
+      <!-- Dimension detail -->
+      <section class="dimension-section">
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <span id="dim-symbol" class="dim-symbol"></span>
+            <div>
+              <div id="dim-name" class="dim-name"></div>
+              <div id="dim-domain" class="dim-domain"></div>
+            </div>
+          </div>
+          <div class="dimension-bar-wrap">
+            <div class="dimension-bar-bg">
+              <div id="dimension-bar" class="dimension-bar"></div>
+            </div>
+            <span id="dim-value" class="dim-value"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Personal Reading (shown only if user has natal chart) -->
+      <section id="personal-section" style="display:none;padding:0 24px 8px;max-width:560px;margin:0 auto;">
+        <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,84,0.25),transparent);margin-bottom:36px;"></div>
+
+        <div style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(212,168,84,0.55);margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+          <span>Your Pattern Today</span>
+          <span id="personal-chart-ruler" style="color:rgba(212,168,84,0.35);"></span>
+        </div>
+
+        <!-- Activations -->
+        <div id="personal-activations" style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;"></div>
+
+        <!-- Sol's personal narrative -->
+        <div id="personal-narrative"
+          style="font-family:Georgia,serif;font-size:17px;line-height:1.75;color:rgba(240,232,216,0.92);padding:24px;background:rgba(212,168,84,0.04);border-left:2px solid rgba(212,168,84,0.3);border-radius:0 12px 12px 0;margin-bottom:20px;min-height:60px;">
+        </div>
+
+        <a href="/sol/chart" style="font-size:12px;color:rgba(212,168,84,0.45);text-decoration:none;letter-spacing:0.1em;">
+          Edit birth data →
+        </a>
+      </section>
+
+      <!-- No chart CTA (shown if no natal chart) -->
+      <section id="no-chart-section" style="display:none;padding:0 24px 8px;max-width:560px;margin:0 auto;">
+        <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,84,0.2),transparent);margin-bottom:32px;"></div>
+        <a href="/sol/chart"
+          style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:rgba(212,168,84,0.05);border:1px solid rgba(212,168,84,0.15);border-radius:16px;text-decoration:none;color:#f0e8d8;">
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:4px;color:#d4a854;">Make it personal</div>
+            <div style="font-size:12px;color:rgba(240,232,216,0.45);">Add your birth data for readings specific to your chart</div>
+          </div>
+          <span style="color:rgba(212,168,84,0.6);font-size:20px;">→</span>
+        </a>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <p class="cta-hint">How does this land for you today?</p>
+        <a href="/sol/checkin" class="cta-btn" id="checkin-btn">
+          <span>Check in now</span>
+          <span class="cta-arrow">→</span>
+        </a>
+        <p class="cta-sub">One minute · Five dimensions</p>
+      </section>
+
+      <!-- Share -->
+      <section class="share-section">
+        <button id="share-btn" class="share-btn">
+          <span>Share today's field</span>
+          <span class="share-icon">↗</span>
+        </button>
+      </section>
+
+    </div><!-- /today-content -->
+  </div>
+</BaseLayout>
+
+<style>
+  .today-page {
+    min-height: 100vh;
+    background: #0a0908;
+    color: #f0e8d8;
+    font-family: 'Inter', -apple-system, sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .today-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-glow {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(212,168,84,0.07) 0%, transparent 70%);
+  }
+
+  /* Loading */
+  .loading-state {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(212,168,84,0.2);
+    border-top-color: #d4a854;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: block;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Content */
+  .today-content {
+    position: relative;
+    z-index: 1;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 4rem;
+    animation: fade-up 0.5s ease-out both;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Header */
+  .today-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+  }
+
+  .back-link {
+    font-size: 0.875rem;
+    color: rgba(240,232,216,0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: #d4a854; }
+
+  .realm-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(212,168,84,0.45);
+  }
+
+  /* Date section */
+  .date-section {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .moon-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .moon-emoji { font-size: 1.25rem; }
+
+  .moon-phase-text {
+    font-size: 0.8rem;
+    color: rgba(240,232,216,0.45);
+    letter-spacing: 0.04em;
+  }
+
+  .date-display {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: #f0e8d8;
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  .planet-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .planet-label { color: rgba(240,232,216,0.35); }
+
+  .planet-name {
+    color: #d4a854;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  /* Frequency */
+  .freq-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .freq-canvas {
+    width: 100%;
+    max-width: 340px;
+    height: 72px;
+  }
+
+  .freq-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: rgba(240,232,216,0.4);
+    letter-spacing: 0.06em;
+  }
+
+  .freq-hz { color: #d4a854; font-weight: 500; }
+  .freq-sep { opacity: 0.4; }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,168,84,0.15), transparent);
+    margin: 1.75rem 0;
+  }
+
+  /* Archetypes */
+  .archetypes-section { margin-bottom: 0; }
+
+  .section-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(212,168,84,0.55);
+    margin: 0 0 1rem;
+  }
+
+  .archetypes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .archetype-card {
+    background: rgba(26,24,20,0.7);
+    border: 1px solid rgba(212,168,84,0.15);
+    border-radius: 16px;
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .archetype-card.secondary {
+    border-color: rgba(167,139,250,0.12);
+  }
+
+  .archetype-polarity {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #d4a854;
+    background: rgba(212,168,84,0.1);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .archetype-polarity.secondary {
+    color: rgba(167,139,250,0.85);
+    background: rgba(167,139,250,0.08);
+  }
+
+  .archetype-symbol {
+    font-size: 2rem;
+    color: #d4a854;
+    line-height: 1;
+  }
+
+  .archetype-symbol.secondary {
+    color: rgba(167,139,250,0.8);
+  }
+
+  .archetype-name {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #f0e8d8;
+  }
+
+  .archetype-quality {
+    font-size: 0.72rem;
+    color: rgba(240,232,216,0.45);
+    line-height: 1.5;
+  }
+
+  /* Narrative */
+  .narrative-section { margin-bottom: 0; }
+
+  .sol-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(212,168,84,0.6);
+    margin-bottom: 0.875rem;
+  }
+
+  .sol-icon { font-size: 1rem; }
+
+  .narrative-text {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.2rem;
+    line-height: 1.85;
+    color: rgba(240,232,216,0.85);
+    margin: 0;
+  }
+
+  /* Dimension */
+  .dimension-section { margin-top: 0; }
+
+  .dimension-card {
+    background: rgba(20,18,16,0.6);
+    border: 1px solid rgba(212,168,84,0.08);
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .dimension-header {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .dim-symbol {
+    font-size: 1.5rem;
+    color: rgba(212,168,84,0.6);
+    width: 32px;
+    text-align: center;
+  }
+
+  .dim-name {
+    font-size: 0.9rem;
+    color: #f0e8d8;
+    font-weight: 500;
+  }
+
+  .dim-domain {
+    font-size: 0.75rem;
+    color: rgba(240,232,216,0.4);
+    margin-top: 2px;
+  }
+
+  .dimension-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .dimension-bar-bg {
+    flex: 1;
+    height: 4px;
+    background: rgba(212,168,84,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .dimension-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #d4a854, #e8c87a);
+    border-radius: 4px;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0%;
+  }
+
+  .dim-value {
+    font-size: 0.75rem;
+    color: rgba(212,168,84,0.7);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+
+  .cta-hint {
+    font-size: 0.875rem;
+    color: rgba(240,232,216,0.45);
+    margin: 0 0 1rem;
+    font-style: italic;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 2rem;
+    background: linear-gradient(135deg, #d4a854 0%, #c49a4a 100%);
+    color: #0a0908;
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition: all 0.2s;
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212,168,84,0.3);
+  }
+
+  .cta-arrow { font-size: 1.1rem; }
+
+  .cta-sub {
+    font-size: 0.75rem;
+    color: rgba(240,232,216,0.3);
+    margin: 0.75rem 0 0;
+  }
+
+  /* Share */
+  .share-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: 1px solid rgba(212,168,84,0.2);
+    color: rgba(240,232,216,0.45);
+    font-size: 0.8rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .share-btn:hover {
+    border-color: rgba(212,168,84,0.5);
+    color: #d4a854;
+  }
+
+  .share-icon { font-size: 0.9rem; }
+</style>
+
+<script>
+  interface Brief {
+    date: string;
+    dateFormatted: string;
+    planet: string;
+    frequency: number;
+    dimension: { name: string; symbol: string; domain: string; value: number };
+    archetypes: {
+      primary:   { name: string; symbol: string; quality: string; polarity: string };
+      secondary: { name: string; symbol: string; quality: string; polarity: string };
+    };
+    moonPhase: string;
+    moonEmoji: string;
+    narrative: string;
+    isYangDay: boolean;
+  }
+
+  // ── Frequency wave on canvas ──────────────────────────────
+  function animateWave(canvas: HTMLCanvasElement, freq: number) {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const W = canvas.width;
+    const H = canvas.height;
+    let t = 0;
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      const grad = ctx.createLinearGradient(0, 0, W, 0);
+      grad.addColorStop(0,    'transparent');
+      grad.addColorStop(0.15, 'rgba(212,168,84,0.5)');
+      grad.addColorStop(0.5,  'rgba(212,168,84,0.9)');
+      grad.addColorStop(0.85, 'rgba(212,168,84,0.5)');
+      grad.addColorStop(1,    'transparent');
+
+      ctx.beginPath();
+      ctx.strokeStyle = grad as any;
+      ctx.lineWidth = 1.8;
+
+      for (let i = 0; i <= W; i++) {
+        const x = i;
+        const p = i / W;
+        const envelope = Math.sin(p * Math.PI);
+        const y = H / 2
+          + Math.sin(p * Math.PI * 5 + t * 2.2) * 14 * envelope
+          + Math.sin(p * Math.PI * 11 + t * 3.4 + freq * 0.01) * 7 * envelope
+          + Math.sin(p * Math.PI * 2.5 + t * 0.8) * 10 * envelope;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      t += 0.04;
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  // ── Populate page ─────────────────────────────────────────
+  function populate(b: Brief) {
+    const set = (id: string, val: string) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
+    set('moon-emoji',        b.moonEmoji);
+    set('moon-phase',        b.moonPhase);
+    set('date-display',      b.dateFormatted);
+    set('planet-name',       b.planet);
+    set('freq-hz',           b.frequency + ' Hz');
+    set('freq-planet-label', b.dimension.name + ' dimension');
+    set('narrative-text',    b.narrative);
+    set('dim-symbol',        b.dimension.symbol);
+    set('dim-name',          b.dimension.name);
+    set('dim-domain',        b.dimension.domain);
+    set('dim-value',         Math.round(b.dimension.value * 100) + '%');
+
+    // Archetypes
+    set('polarity-primary',   b.archetypes.primary.polarity.toUpperCase());
+    set('symbol-primary',     b.archetypes.primary.symbol);
+    set('name-primary',       b.archetypes.primary.name);
+    set('quality-primary',    b.archetypes.primary.quality);
+    set('polarity-secondary', b.archetypes.secondary.polarity.toUpperCase());
+    set('symbol-secondary',   b.archetypes.secondary.symbol);
+    set('name-secondary',     b.archetypes.secondary.name);
+    set('quality-secondary',  b.archetypes.secondary.quality);
+
+    // Dimension bar animation
+    setTimeout(() => {
+      const bar = document.getElementById('dimension-bar');
+      if (bar) bar.style.width = Math.round(b.dimension.value * 100) + '%';
+    }, 300);
+
+    // Animate frequency wave
+    const canvas = document.getElementById('freq-canvas') as HTMLCanvasElement;
+    if (canvas) animateWave(canvas, b.frequency);
+
+    // Share button
+    document.getElementById('share-btn')?.addEventListener('click', () => {
+      const text = `Today's field: ${b.archetypes.primary.name} meets ${b.archetypes.secondary.name}. ${b.frequency} Hz. ${b.moonEmoji} ${b.moonPhase}.\n\ntherealm ofpatterns.com/sol/today`;
+      if (navigator.share) {
+        navigator.share({ title: `The Field — ${b.dateFormatted}`, text });
+      } else {
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = document.getElementById('share-btn');
+          if (btn) { btn.textContent = 'Copied ✓'; setTimeout(() => { btn.innerHTML = '<span>Share today\'s field</span><span class="share-icon">↗</span>'; }, 2000); }
+        });
+      }
+    });
+  }
+
+  // ── Personal reading ──────────────────────────────────────
+  async function loadPersonalReading() {
+    const user = JSON.parse(localStorage.getItem('rop_user') ?? '{}');
+    const hasBirthData = !!user.birthData || !!user.natalSummary;
+
+    if (!hasBirthData) {
+      // Show "make it personal" CTA
+      const noChart = document.getElementById('no-chart-section');
+      if (noChart) noChart.style.display = 'block';
+      return;
+    }
+
+    const personalSection = document.getElementById('personal-section')!;
+    personalSection.style.display = 'block';
+
+    // Show skeleton while loading
+    const narEl = document.getElementById('personal-narrative')!;
+    narEl.style.opacity = '0.4';
+    narEl.textContent = 'Reading your pattern…';
+
+    try {
+      const res = await fetch('/api/personal-reading', { method: 'POST' });
+
+      if (res.status === 401) {
+        // Not logged in — show generic no-chart CTA
+        personalSection.style.display = 'none';
+        const noChart = document.getElementById('no-chart-section');
+        if (noChart) noChart.style.display = 'block';
+        return;
+      }
+
+      if (res.status === 404) {
+        // No natal chart saved server-side yet
+        personalSection.style.display = 'none';
+        const noChart = document.getElementById('no-chart-section');
+        if (noChart) noChart.style.display = 'block';
+        return;
+      }
+
+      if (!res.ok) throw new Error('reading failed');
+
+      const reading = await res.json() as {
+        narrative: string;
+        activations: { description: string; intensity: string }[];
+        chart: { sunSign?: string; moonSign?: string; risingSign?: string; stelliums?: string[] };
+      };
+
+      // Render narrative
+      narEl.style.opacity = '1';
+      narEl.textContent = reading.narrative;
+
+      // Render chart ruler label
+      const rulerEl = document.getElementById('personal-chart-ruler');
+      if (rulerEl && reading.chart?.sunSign) {
+        rulerEl.textContent = `☉ ${reading.chart.sunSign}${reading.chart.moonSign ? ' · ☽ ' + reading.chart.moonSign : ''}${reading.chart.risingSign ? ' · ↑ ' + reading.chart.risingSign : ''}`;
+      }
+
+      // Render activations
+      const actEl = document.getElementById('personal-activations')!;
+      if (reading.activations?.length > 0) {
+        actEl.innerHTML = reading.activations.slice(0, 3).map(a => {
+          const isPeak = a.intensity === 'peak';
+          return `<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:${isPeak ? 'rgba(212,168,84,0.08)' : 'rgba(240,232,216,0.03)'};border-radius:10px;border-left:2px solid ${isPeak ? 'rgba(212,168,84,0.5)' : 'rgba(240,232,216,0.1)'};">
+            <span style="font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:${isPeak ? '#d4a854' : 'rgba(240,232,216,0.35)'};white-space:nowrap;padding-top:2px;">${a.intensity}</span>
+            <span style="font-size:13px;color:rgba(240,232,216,0.75);line-height:1.5;">${a.description}</span>
+          </div>`;
+        }).join('');
+      }
+
+    } catch (err) {
+      narEl.style.opacity = '0.5';
+      narEl.textContent = 'Could not load personal reading.';
+    }
+  }
+
+  // ── Fetch + render ────────────────────────────────────────
+  async function init() {
+    try {
+      const res = await fetch('/api/daily-brief');
+      if (!res.ok) throw new Error('fetch failed');
+      const brief = await res.json() as Brief;
+
+      document.getElementById('today-loading')!.style.display = 'none';
+      const content = document.getElementById('today-content')!;
+      content.style.display = 'block';
+      populate(brief);
+
+      // Load personal reading in parallel (non-blocking)
+      loadPersonalReading();
+    } catch (e) {
+      console.error('[today] failed to load brief:', e);
+      document.getElementById('today-loading')!.innerHTML =
+        '<p style="color:rgba(240,232,216,0.4);font-size:0.875rem;">Could not load today\'s brief. <a href="/sol" style="color:#d4a854">Back to Sol</a></p>';
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

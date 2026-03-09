@@ -140,9 +140,6 @@ export interface WeeklySynthesisResult {
  * Returns null if not enough data yet.
  */
 export async function fetchWeeklySynthesis(): Promise<WeeklySynthesisResult | null> {
-  const history = getCheckinHistory();
-  if (history.entries.length < 7) return null;
-
   const weekStart = getWeekStart();
   const cacheKey = WEEKLY_CACHE_PREFIX + weekStart;
 
