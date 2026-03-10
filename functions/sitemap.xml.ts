@@ -1,19 +1,7 @@
 /**
- * Public Sitemap Endpoint for The Realm of Patterns
- *
- * Priority order:
- * 1. Serve from R2 storage (uploaded by /api/sitemap-analytics cron job)
- * 2. Serve from KV cache
- * 3. Dynamically generate from cms_cosmic_content
- *
- * Features:
- * - loc (full URL)
- * - lastmod (updated_at)
- * - changefreq (based on content_type)
- * - priority (based on content_type)
- * - hreflang alternates for multilingual content
- *
- * Supports up to 50,000 URLs per sitemap (Google limit)
+ * Content Sitemap for The Realm of Patterns
+ * Dynamically generated from cms_cosmic_content (English, published only).
+ * Static shell pages are in /sitemaps/static.xml.
  */
 
 import type { Env } from '../src/types';
@@ -24,7 +12,6 @@ interface ContentRow {
   content_type: string;
   language: string;
   updated_at: string | null;
-  hreflang_map: string | null;
 }
 
 // Priority mapping based on content type
@@ -67,45 +54,25 @@ const CHANGEFREQ_MAP: Record<string, string> = {
   'home': 'daily',
 };
 
-// Supported languages
-const SUPPORTED_LANGUAGES = ['en', 'pt-br', 'pt-pt', 'es-mx', 'es-ar', 'es-es'];
-
-// Base URL for the site
 const BASE_URL = 'https://therealmofpatterns.com';
-
-// Maximum URLs per sitemap (Google limit)
 const MAX_URLS = 50000;
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
-  const { env, request } = context;
-  const url = new URL(request.url);
-
-  // Check for lang query parameter to serve language-specific sitemap
-  const langParam = url.searchParams.get('lang');
-  const sitemapKey = langParam ? `sitemap-${langParam}.xml` : 'sitemap.xml';
+  const { env } = context;
 
   try {
-    // 1. Try to serve from R2 storage first (uploaded by /api/sitemap-analytics cron job)
+    // 1. Try R2 (uploaded by cron)
     try {
-      const r2Object = await env.STORAGE.get(sitemapKey);
+      const r2Object = await env.STORAGE.get('sitemap.xml');
       if (r2Object) {
-        const sitemapXml = await r2Object.text();
-        return new Response(sitemapXml, {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/xml; charset=utf-8',
-            'Cache-Control': 'public, max-age=3600',
-            'X-Sitemap-Source': 'r2',
-          },
+        return new Response(await r2Object.text(), {
+          headers: { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=3600', 'X-Sitemap-Source': 'r2' },
         });
       }
-    } catch (r2Error) {
-      console.log('[SITEMAP] R2 fetch failed, trying cache:', r2Error);
-    }
+    } catch { /* fallthrough */ }
 
-    // 2. Check KV cache
-    const cacheKey = langParam ? `sitemap:${langParam}` : 'sitemap:all';
-    const cached = await env.CACHE.get(cacheKey);
+    // 2. KV cache
+    const cached = await env.CACHE.get('sitemap:en');
     if (cached) {
       return new Response(cached, {
         status: 200,
@@ -117,31 +84,22 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       });
     }
 
-    // 3. Dynamically generate from cms_cosmic_content
-    let query = `
-      SELECT id, slug, content_type, language, updated_at, hreflang_map
+    // 3. Dynamically generate from cms_cosmic_content (English only)
+    const query = `
+      SELECT id, slug, content_type, language, updated_at
       FROM cms_cosmic_content
-      WHERE published = 1
+      WHERE published = 1 AND language = 'en'
+      ORDER BY updated_at DESC LIMIT ${MAX_URLS}
     `;
 
-    // Filter by language if specified
-    if (langParam && SUPPORTED_LANGUAGES.includes(langParam)) {
-      query += ` AND language = ?`;
-    }
-
-    query += ` ORDER BY updated_at DESC LIMIT ${MAX_URLS}`;
-
-    const stmt = langParam && SUPPORTED_LANGUAGES.includes(langParam)
-      ? env.DB.prepare(query).bind(langParam)
-      : env.DB.prepare(query);
+    const stmt = env.DB.prepare(query);
 
     const { results } = await stmt.all<ContentRow>();
 
     // Generate XML sitemap
     const xml = generateSitemapXml(results || []);
 
-    // Cache for 1 hour
-    await env.CACHE.put(cacheKey, xml, { expirationTtl: 3600 });
+    await env.CACHE.put('sitemap:en', xml, { expirationTtl: 3600 });
 
     return new Response(xml, {
       status: 200,
@@ -176,112 +134,29 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }
 };
 
-/**
- * Generate XML sitemap from content rows
- */
 function generateSitemapXml(rows: ContentRow[]): string {
   const today = new Date().toISOString().split('T')[0];
 
-  // Start with XML declaration and urlset
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 `;
 
-  // Add homepage for each language
-  for (const lang of SUPPORTED_LANGUAGES) {
-    const langPrefix = lang === 'en' ? '' : `/${lang}`;
-    xml += `  <url>
-    <loc>${BASE_URL}${langPrefix}/</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-${generateHreflangLinks('')}
-  </url>
-`;
-  }
-
-  // Add each content page
   for (const row of rows) {
     const priority = PRIORITY_MAP[row.content_type] || 0.5;
     const changefreq = CHANGEFREQ_MAP[row.content_type] || 'weekly';
-    const lastmod = row.updated_at
-      ? row.updated_at.split('T')[0]
-      : today;
-
-    // Build full URL
-    const fullUrl = `${BASE_URL}/${row.slug}`;
-
-    // Parse hreflang map if available
-    let hreflangXml = '';
-    if (row.hreflang_map) {
-      try {
-        const hreflangMap = JSON.parse(row.hreflang_map) as Record<string, string>;
-        hreflangXml = generateHreflangFromMap(hreflangMap);
-      } catch {
-        // Fallback to default hreflang generation
-        hreflangXml = generateHreflangLinks(row.slug);
-      }
-    }
+    const lastmod = row.updated_at ? row.updated_at.split('T')[0] : today;
 
     xml += `  <url>
-    <loc>${escapeXml(fullUrl)}</loc>
+    <loc>${escapeXml(`${BASE_URL}/${row.slug}`)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority.toFixed(2)}</priority>
-${hreflangXml}
   </url>
 `;
   }
 
   xml += `</urlset>`;
-
   return xml;
-}
-
-/**
- * Generate hreflang links for a given slug
- * Assumes URL pattern: /{lang}/path or /path for English
- */
-function generateHreflangLinks(slug: string): string {
-  let links = '';
-
-  for (const lang of SUPPORTED_LANGUAGES) {
-    const langPrefix = lang === 'en' ? '' : `/${lang}`;
-    const hreflang = lang === 'en' ? 'en' : lang;
-    const href = slug
-      ? `${BASE_URL}${langPrefix}/${slug}`
-      : `${BASE_URL}${langPrefix}/`;
-
-    links += `    <xhtml:link rel="alternate" hreflang="${hreflang}" href="${escapeXml(href)}" />\n`;
-  }
-
-  // Add x-default (points to English)
-  const defaultHref = slug ? `${BASE_URL}/${slug}` : `${BASE_URL}/`;
-  links += `    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(defaultHref)}" />`;
-
-  return links;
-}
-
-/**
- * Generate hreflang links from a pre-computed hreflang map
- */
-function generateHreflangFromMap(hreflangMap: Record<string, string>): string {
-  let links = '';
-
-  for (const [lang, href] of Object.entries(hreflangMap)) {
-    const fullHref = href.startsWith('http') ? href : `${BASE_URL}${href}`;
-    links += `    <xhtml:link rel="alternate" hreflang="${lang}" href="${escapeXml(fullHref)}" />\n`;
-  }
-
-  // Add x-default if not present (use English or first entry)
-  if (!hreflangMap['x-default']) {
-    const defaultHref = hreflangMap['en'] || Object.values(hreflangMap)[0] || '/';
-    const fullHref = defaultHref.startsWith('http') ? defaultHref : `${BASE_URL}${defaultHref}`;
-    links += `    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(fullHref)}" />`;
-  }
-
-  return links;
 }
 
 /**

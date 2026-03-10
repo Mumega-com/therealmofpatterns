@@ -69,90 +69,63 @@ function generateRobotsTxt(): string {
   return `# The Realm of Patterns - robots.txt
 # https://therealmofpatterns.com
 
-# Allow all crawlers
 User-agent: *
 Allow: /
 
-# Block API endpoints (not meant for indexing)
+# API endpoints
 Disallow: /api/
-Disallow: /api/*
 
-# Block internal/admin routes
-Disallow: /_/
-Disallow: /_*
+# Auth-gated pages (no public content)
 Disallow: /admin/
-Disallow: /admin/*
 Disallow: /dashboard/
-Disallow: /dashboard/*
+Disallow: /profile/
+Disallow: /settings/
+Disallow: /sol/checkin/
+Disallow: /sol/chart/
+Disallow: /journey/
 
-# Block preview/draft pages
+# Post-conversion pages
+Disallow: /success/
+Disallow: /dna-success/
+Disallow: /remind/
+
+# Internal
+Disallow: /_/
 Disallow: /preview/
-Disallow: /preview/*
-Disallow: /*?preview=*
 
-# Block user-specific pages
-Disallow: /report/
-Disallow: /report/*
-Disallow: /checkout/
-Disallow: /checkout/*
-
-# Block search result pages (if any)
-Disallow: /search?*
-Disallow: /*?search=*
-
-# Block utility files
-Disallow: /*.json$
-Disallow: /*.xml$
-
-# Allow sitemaps explicitly
+# Allow sitemaps
 Allow: /sitemap.xml
 Allow: /sitemap-index.xml
-Allow: /sitemaps/*.xml
+Allow: /sitemaps/static.xml
 
-# Crawl-delay for respectful crawling (optional, not all bots respect this)
-Crawl-delay: 1
+# LLM-friendly context
+# Full machine-readable context: ${BASE_URL}/llms.txt
 
-# ============================================
-# Specific bot rules
-# ============================================
-
-# Googlebot (no special restrictions)
-User-agent: Googlebot
-Allow: /
-Disallow: /api/
-Disallow: /admin/
-Disallow: /dashboard/
-Disallow: /preview/
-Disallow: /report/
-Disallow: /checkout/
-
-# Bingbot
-User-agent: Bingbot
-Allow: /
-Disallow: /api/
-Disallow: /admin/
-Disallow: /dashboard/
-Disallow: /preview/
-Disallow: /report/
-Disallow: /checkout/
-
-# GPTBot (OpenAI crawler) - allow for now
+# AI crawlers — allowed on public content
 User-agent: GPTBot
 Allow: /
 Disallow: /api/
 Disallow: /admin/
-Disallow: /report/
-Disallow: /checkout/
+Disallow: /dashboard/
+Disallow: /profile/
+Disallow: /settings/
+Disallow: /sol/checkin/
+Disallow: /sol/chart/
 
-# CCBot (Common Crawl) - allow for research
-User-agent: CCBot
+User-agent: ClaudeBot
 Allow: /
 Disallow: /api/
 Disallow: /admin/
-Disallow: /report/
-Disallow: /checkout/
+Disallow: /dashboard/
+Disallow: /profile/
+Disallow: /settings/
+Disallow: /sol/checkin/
+Disallow: /sol/chart/
 
-# Block aggressive/unwanted bots
+User-agent: CCBot
+Allow: /
+
+# Aggressive SEO bots — throttle
 User-agent: AhrefsBot
 Crawl-delay: 10
 
@@ -162,28 +135,16 @@ Crawl-delay: 10
 User-agent: MJ12bot
 Crawl-delay: 10
 
+# Spam bots — block
 User-agent: DotBot
 Disallow: /
 
 User-agent: BLEXBot
 Disallow: /
 
-# ============================================
 # Sitemaps
-# ============================================
-
-# Main sitemap index (lists all language-specific sitemaps)
 Sitemap: ${BASE_URL}/sitemap-index.xml
-
-# Primary sitemap (all languages combined)
 Sitemap: ${BASE_URL}/sitemap.xml
-
-# Language-specific sitemaps
-Sitemap: ${BASE_URL}/sitemaps/en.xml
-Sitemap: ${BASE_URL}/sitemaps/pt-br.xml
-Sitemap: ${BASE_URL}/sitemaps/pt-pt.xml
-Sitemap: ${BASE_URL}/sitemaps/es-mx.xml
-Sitemap: ${BASE_URL}/sitemaps/es-ar.xml
-Sitemap: ${BASE_URL}/sitemaps/es-es.xml
+Sitemap: ${BASE_URL}/sitemaps/static.xml
 `;
 }

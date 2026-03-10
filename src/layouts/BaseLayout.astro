@@ -66,12 +66,6 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
 
-    <!-- Language alternates -->
-    <link rel="alternate" hreflang="en" href={`${siteUrl}${Astro.url.pathname}`} />
-    <link rel="alternate" hreflang="es" href={`${siteUrl}/es${Astro.url.pathname}`} />
-    <link rel="alternate" hreflang="pt-BR" href={`${siteUrl}/pt-br${Astro.url.pathname}`} />
-    <link rel="alternate" hreflang="x-default" href={`${siteUrl}${Astro.url.pathname}`} />
-
     <!-- Theme color -->
     <meta name="theme-color" content="#0a0908" />
 
@@ -79,7 +73,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
     <script defer data-domain="therealmofpatterns.com" src="https://plausible.io/js/script.js"></script>
   </head>
   <body class="min-h-screen bg-[#0a0908] text-[#f0e8d8] transition-colors duration-300">
-    {showHeader && <Header client:load currentLang={lang} transparent={transparentHeader} />}
+    {showHeader && <Header client:load transparent={transparentHeader} />}
 
     <main class={showHeader ? 'pt-14' : ''}>
       <slot />
@@ -90,12 +84,6 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
     <script>
       // Sol-default: single voice experience
       document.documentElement.dataset.mode = 'sol';
-
-      // Initialize language from localStorage
-      const savedLang = localStorage.getItem('rop_lang');
-      if (savedLang) {
-        document.documentElement.lang = savedLang;
-      }
 
       // Register service worker for PWA
       if ('serviceWorker' in navigator) {
