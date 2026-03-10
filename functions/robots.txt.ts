@@ -83,6 +83,8 @@ Disallow: /settings/
 Disallow: /sol/checkin/
 Disallow: /sol/chart/
 Disallow: /journey/
+Disallow: /kasra/
+Disallow: /river/
 
 # Post-conversion pages
 Disallow: /success/

@@ -17,6 +17,7 @@ const STATIC_PAGES = [
   { path: '/discover/',      changefreq: 'weekly',   priority: 0.8 },
   { path: '/dna/',           changefreq: 'monthly',  priority: 0.7 },
   { path: '/faq/',           changefreq: 'monthly',  priority: 0.6 },
+  { path: '/hidden-gifts/',  changefreq: 'monthly',  priority: 0.7 },
   { path: '/hidden-gifts/',  changefreq: 'monthly',  priority: 0.6 },
   { path: '/history/',       changefreq: 'monthly',  priority: 0.6 },
   { path: '/privacy/',       changefreq: 'yearly',   priority: 0.3 },

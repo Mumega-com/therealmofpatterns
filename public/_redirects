@@ -1,10 +1,14 @@
-# River and Kasra temporarily hidden — redirect to Sol
-/river /sol/checkin 301
-/river/ /sol/checkin 301
+# Dashboard → Sol (merged)
+/dashboard /sol/ 301
+/dashboard/ /sol/ 301
+
+# River and Kasra → Sol
+/river /sol/ 301
+/river/ /sol/ 301
 /river/checkin /sol/checkin 301
 /river/checkin/ /sol/checkin 301
-/kasra /sol/checkin 301
-/kasra/ /sol/checkin 301
+/kasra /sol/ 301
+/kasra/ /sol/ 301
 /kasra/checkin /sol/checkin 301
 /kasra/checkin/ /sol/checkin 301
 

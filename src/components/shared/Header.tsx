@@ -9,10 +9,10 @@ interface HeaderProps {
 }
 
 const NAV_LINKS = [
-  { href: '/dashboard', label: 'Dashboard', icon: '◎' },
-  { href: '/sol/checkin', label: 'Check In', icon: '◇' },
-  { href: '/journey', label: 'My Journey', icon: '◈' },
-  { href: '/reading', label: 'Daily Reading', icon: '☀' },
+  { href: '/sol',        label: 'Sol',          icon: '◎' },
+  { href: '/sol/today',  label: 'Today',        icon: '☀' },
+  { href: '/sol/checkin',label: 'Check In',     icon: '◇' },
+  { href: '/reading',    label: 'Readings',     icon: '◈' },
 ];
 
 export function Header({ className = '', transparent = false }: HeaderProps) {
