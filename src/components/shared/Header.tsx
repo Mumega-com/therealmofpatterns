@@ -1,12 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { LanguageSelector } from './LanguageSelector';
 import { StreakBadge } from './StreakBadge';
 
 interface HeaderProps {
   className?: string;
-  currentLang?: string;
   transparent?: boolean;
 }
 
@@ -17,7 +15,7 @@ const NAV_LINKS = [
   { href: '/reading', label: 'Daily Reading', icon: '☀' },
 ];
 
-export function Header({ className = '', currentLang = 'en', transparent = false }: HeaderProps) {
+export function Header({ className = '', transparent = false }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const visibleLinks = NAV_LINKS;
 
@@ -63,12 +61,8 @@ export function Header({ className = '', currentLang = 'en', transparent = false
             ))}
           </nav>
 
-          {/* Right Side: Language, Mode, Mobile Menu */}
+          {/* Right Side */}
           <div className="flex items-center gap-2">
-            {/* Language Selector - Always visible, compact on mobile */}
-            <LanguageSelector currentLang={currentLang} compact className="sm:hidden" />
-            <LanguageSelector currentLang={currentLang} className="hidden sm:block" />
-
             {/* Streak Badge */}
             <StreakBadge />
 
@@ -108,10 +102,6 @@ export function Header({ className = '', currentLang = 'en', transparent = false
               </a>
             ))}
 
-            {/* Language Selector - Mobile */}
-            <div className="pt-3 border-t border-[rgba(212,168,84,0.1)]">
-              <LanguageSelector currentLang={currentLang} />
-            </div>
           </nav>
         </div>
       )}
