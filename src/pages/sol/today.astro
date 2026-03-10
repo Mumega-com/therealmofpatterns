@@ -3,8 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="The Field Today | Sol"
-  description="Today's cosmic energy, active archetypes, and field frequency."
+  title="Today's Cosmic Field | Sol — The Realm of Patterns"
+  description="See today's ruling planet, active archetypes, and field frequency. Your natal chart makes this personal — start free."
 >
   <div class="today-page">
 
@@ -125,17 +125,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         </a>
       </section>
 
-      <!-- No chart CTA (shown if no natal chart) -->
+      <!-- No chart CTA (shown if no natal chart / not logged in) -->
       <section id="no-chart-section" style="display:none;padding:0 24px 8px;max-width:560px;margin:0 auto;">
-        <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,84,0.2),transparent);margin-bottom:32px;"></div>
-        <a href="/sol/chart"
-          style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:rgba(212,168,84,0.05);border:1px solid rgba(212,168,84,0.15);border-radius:16px;text-decoration:none;color:#f0e8d8;">
-          <div>
-            <div style="font-size:13px;font-weight:600;margin-bottom:4px;color:#d4a854;">Make it personal</div>
-            <div style="font-size:12px;color:rgba(240,232,216,0.45);">Add your birth data for readings specific to your chart</div>
-          </div>
-          <span style="color:rgba(212,168,84,0.6);font-size:20px;">→</span>
-        </a>
+        <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,84,0.2),transparent);margin-bottom:36px;"></div>
+        <div style="background:rgba(212,168,84,0.04);border:1px solid rgba(212,168,84,0.18);border-radius:20px;padding:28px 24px;text-align:center;">
+          <div style="font-size:22px;margin-bottom:12px;">◎</div>
+          <h3 id="no-chart-headline" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.3rem;font-weight:400;color:#f0e8d8;margin:0 0 8px;line-height:1.4;">Your natal chart changes this reading.</h3>
+          <p id="no-chart-sub" style="font-size:0.85rem;color:rgba(240,232,216,0.5);margin:0 0 24px;line-height:1.6;">See how today's field activates your personal pattern — which planets hit your chart, and what that means for you today.</p>
+          <a id="no-chart-cta" href="/dna/"
+            style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:linear-gradient(135deg,#d4a854,#c49a4a);color:#0a0908;border-radius:12px;text-decoration:none;font-size:0.95rem;font-weight:700;letter-spacing:0.01em;transition:all 0.2s;">
+            <span id="no-chart-cta-label">See yours free</span>
+            <span>→</span>
+          </a>
+          <p id="no-chart-note" style="font-size:0.72rem;color:rgba(240,232,216,0.25);margin:12px 0 0;">Free to start · Just your birth date, time, and place</p>
+        </div>
       </section>
 
       <!-- CTA -->
@@ -652,15 +655,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       if (bar) bar.style.width = Math.round(b.dimension.value * 100) + '%';
     }, 300);
 
+    // Update page title with live planet data
+    document.title = `${b.planet} at ${b.frequency}Hz · ${b.dateFormatted} | Sol`;
+
     // Animate frequency wave
     const canvas = document.getElementById('freq-canvas') as HTMLCanvasElement;
     if (canvas) animateWave(canvas, b.frequency);
 
     // Share button
     document.getElementById('share-btn')?.addEventListener('click', () => {
-      const text = `Today's field: ${b.archetypes.primary.name} meets ${b.archetypes.secondary.name}. ${b.frequency} Hz. ${b.moonEmoji} ${b.moonPhase}.\n\ntherealm ofpatterns.com/sol/today`;
+      const text = `Today's cosmic field: ${b.archetypes.primary.name} meets ${b.archetypes.secondary.name}. ${b.frequency} Hz. ${b.moonEmoji} ${b.moonPhase}.\n\n${b.narrative}\n\ntherealmofpatterns.com/sol/today`;
       if (navigator.share) {
-        navigator.share({ title: `The Field — ${b.dateFormatted}`, text });
+        navigator.share({ title: `The Field — ${b.dateFormatted}`, text, url: 'https://therealmofpatterns.com/sol/today' });
       } else {
         navigator.clipboard.writeText(text).then(() => {
           const btn = document.getElementById('share-btn');
@@ -671,14 +677,30 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   // ── Personal reading ──────────────────────────────────────
+  function showNoChartCta(isLoggedIn: boolean) {
+    const noChart = document.getElementById('no-chart-section');
+    if (!noChart) return;
+    noChart.style.display = 'block';
+
+    if (isLoggedIn) {
+      // Has account but no chart — send to chart form
+      const cta = document.getElementById('no-chart-cta') as HTMLAnchorElement;
+      const label = document.getElementById('no-chart-cta-label');
+      const note = document.getElementById('no-chart-note');
+      if (cta) cta.href = '/sol/chart';
+      if (label) label.textContent = 'Add birth data';
+      if (note) note.textContent = 'Takes 30 seconds';
+    }
+    // else: cold visitor — defaults already set to /dna/ "See yours free"
+  }
+
   async function loadPersonalReading() {
     const user = JSON.parse(localStorage.getItem('rop_user') ?? '{}');
+    const isLoggedIn = !!user.email;
     const hasBirthData = !!user.birthData || !!user.natalSummary;
 
     if (!hasBirthData) {
-      // Show "make it personal" CTA
-      const noChart = document.getElementById('no-chart-section');
-      if (noChart) noChart.style.display = 'block';
+      showNoChartCta(isLoggedIn);
       return;
     }
 
@@ -694,18 +716,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       const res = await fetch('/api/personal-reading', { method: 'POST' });
 
       if (res.status === 401) {
-        // Not logged in — show generic no-chart CTA
         personalSection.style.display = 'none';
-        const noChart = document.getElementById('no-chart-section');
-        if (noChart) noChart.style.display = 'block';
+        showNoChartCta(false);
         return;
       }
 
       if (res.status === 404) {
-        // No natal chart saved server-side yet
         personalSection.style.display = 'none';
-        const noChart = document.getElementById('no-chart-section');
-        if (noChart) noChart.style.display = 'block';
+        showNoChartCta(true);
         return;
       }
 
