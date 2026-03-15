@@ -375,12 +375,14 @@ import { EmailCapture } from '../components/shared/EmailCapture';
   // Load today's reading preview
   async function loadReadingPreview() {
     try {
-      const response = await fetch('/api/weather/today');
+      const response = await fetch('/api/daily-brief');
       if (response.ok) {
         const data = await response.json();
         const textEl = document.getElementById('reading-preview-text');
-        if (data.dominant?.description && textEl) {
-          textEl.textContent = data.dominant.description;
+        if (data.narrative && textEl) {
+          textEl.textContent = data.narrative;
+        } else if (data.dimension?.name && textEl) {
+          textEl.textContent = `Today's dominant dimension is ${data.dimension.name}. ${data.archetypes?.primary?.name ? `The ${data.archetypes.primary.name} archetype is active.` : ''}`;
         }
       }
     } catch {
