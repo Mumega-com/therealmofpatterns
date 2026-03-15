@@ -17,7 +17,7 @@ export interface Props {
 
 const {
   title = 'The Realm of Patterns',
-  description = 'Personal energy forecasting based on FRC mathematics. Know the pattern. Shape the pattern.',
+  description = 'A daily depth psychology practice powered by Jungian astrology. Your 8-dimensional natal profile meets today\'s sky.',
   mode = 'sol',
   stage = 'citrinitas',
   lang = 'en',
@@ -68,6 +68,27 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 
     <!-- Theme color -->
     <meta name="theme-color" content="#0a0908" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "The Realm of Patterns",
+      "url": siteUrl,
+      "description": "A daily depth psychology practice powered by Jungian astrology and an 8-dimensional natal engine.",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "The Realm of Patterns",
+        "url": siteUrl
+      }
+    })} />
 
     <!-- Plausible Analytics -->
     <script defer data-domain="therealmofpatterns.com" src="https://plausible.io/js/script.js"></script>

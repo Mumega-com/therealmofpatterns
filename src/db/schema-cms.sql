@@ -207,7 +207,7 @@ INSERT INTO cms_cosmic_content (
     'dimension_guide',
     'en',
     'Dimension P: Will & Pure Power',
-    'Explore Dimension P in the 16D FRC framework - understand your will, identity, and personal power.',
+    'Explore the Identity dimension - understand your will, core self, and personal power through Jungian depth psychology.',
     'Dimension P represents pure will and personal power...',
     '[{"type": "section", "title": "Understanding Dimension P", "content": "..."}]',
     '[{"question": "What is Dimension P?", "answer": "Dimension P represents..."}]',

@@ -1,53 +1,55 @@
 # The Realm of Patterns
-> Personal energy forecasting based on FRC mathematics — a framework that maps daily planetary cycles to an 8-dimensional field vector and Jungian archetypes, helping people understand their inner patterns in relation to the cosmos.
+> A daily depth psychology practice powered by Jungian astrology. Your birth data produces an 8-dimensional psychological profile. Every day, Sol — an AI narrator — generates a reading that connects your natal pattern to today's planetary transits and to what you report in your daily reflection.
 
 ## What This Site Does
 
-The Realm of Patterns (RoP) is a depth-psychology + astrology platform built on Fractal Resonance Cognition (FRC) mathematics. Each day is mapped to a dominant planetary frequency, an 8-dimensional energy field vector, and two Jungian archetypes (yin/yang polarity). Users interact with Sol — an AI guide that personalizes the daily field through natal chart analysis.
+The Realm of Patterns is a depth-psychology + astrology platform. Each day is mapped to a dominant planetary frequency, an 8-dimensional energy field vector, and two Jungian archetypes. Users interact with Sol — an AI guide that personalizes the daily field through natal chart analysis.
 
 Core loop:
 1. **Daily field** — planetary positions → 8D vector → dominant dimension → archetypes
-2. **Check-in** — user rates their energy across 5 dimensions (grounding, expression, flow, connection, clarity)
-3. **Personal reading** — natal chart × today's field → Gemini-generated narrative
+2. **Check-in** — user rates their inner state across 5 dimensions (clarity, energy, focus, embodiment, direction)
+3. **Personal reading** — natal chart × today's field → AI-generated narrative
 4. **Weekly synthesis** — pattern trends over time (Pro feature)
+
+## The 8 Dimensions
+
+| Dimension | Planet | Psychology |
+|-----------|--------|-----------|
+| Identity | Sun | Core self, ego, what seeks expression |
+| Structure | Saturn | Necessity, discipline, what must be built |
+| Mind | Mercury | Attention, thought patterns, directed focus |
+| Heart | Venus | Values, beauty, relational capacity |
+| Growth | Jupiter | Expansion, narrative of becoming |
+| Drive | Mars | Energy, action, will |
+| Connection | Moon | Bonds, empathy, emotional field |
+| Awareness | Uranus/Neptune | Transcendence, the witness function |
 
 ## Key Concepts
 
-- **FRC (Fractal Resonance Cognition)**: Mathematical framework mapping planetary longitudes to 8-dimensional energy vectors via resonance weighting
-- **8 Dimensions**: Identity, Structure, Mind, Heart, Growth, Drive, Connection, Awareness
-- **Sol**: AI companion guiding daily field awareness and pattern recognition
-- **Archetypes**: Jungian yin/yang pairs — each dimension has two archetypes (e.g., Identity: The Hero (yang) / The Soul (yin))
-- **Natal overlay**: User's birth chart creates a personal baseline; today's transit field is overlaid to generate individual activations
-- **Stages**: Nigredo → Albedo → Citrinitas → Rubedo (alchemical transformation stages used as UX metaphors)
-
-## Planetary Frequencies (Kepler/Cousto ratios)
-
-| Planet | Frequency |
-|---|---|
-| Sun | 126.22 Hz |
-| Moon | 210.42 Hz |
-| Mercury | 141.27 Hz |
-| Venus | 221.23 Hz |
-| Mars | 144.72 Hz |
-| Jupiter | 183.58 Hz |
-| Saturn | 147.85 Hz |
-| Uranus/Neptune | 207.36 Hz |
+- **Sol**: AI companion guiding daily field awareness and pattern recognition. Works in the tradition of Liz Greene (depth-psychological astrology).
+- **Archetypes**: Jungian yin/yang pairs — each dimension maps to hero/shadow archetypes (e.g., Identity: The Hero / The Tyrant)
+- **Natal overlay**: User's birth chart creates a personal baseline; today's transits are overlaid to generate individual activations
+- **Kappa (κ)**: Alignment score between personal and collective field. Higher = more resonance.
+- **Stages**: Nigredo → Albedo → Citrinitas → Rubedo (alchemical transformation used as psychological metaphor)
 
 ## Available Content
 
-- **Daily cosmic weather**: `/api/daily-brief` — planet, frequency, dimension, archetypes, moon phase, narrative
+- **Daily cosmic weather**: `/sol/today/` — today's field, ruling planet, archetypes, narrative
 - **Daily reading pages**: `/reading/[date]/` — cosmic weather for any date
 - **Why pages**: `/why/[slug]/` — energy pattern explanations (tired, stuck, anxious, restless, etc.)
-- **Traditions**: `/traditions/[slug]/` — cultural/spiritual traditions and their resonance with FRC
+- **Traditions**: `/traditions/[slug]/` — cultural/spiritual traditions and their connection to depth psychology
 - **Stage guides**: `/stage/[stage]/` — alchemical transformation stage content
 - **Blog**: `/blog/[slug]/` — articles on patterns, depth psychology, astrology
-- **Sol today**: `/sol/today/` — personalized daily reading (requires natal chart)
+- **Discover**: `/discover/` — enter your birthday, see your 8D pattern
+- **Soul Field**: `/soul/` — 3D toroid visualization of natal field
+- **Journey**: `/journey/` — 8-stage Hero's Journey progression
 - **Subscribe**: `/subscribe/` — pricing and plans
 
 ## API Endpoints (public, no auth)
 
 - `GET /api/daily-brief` — today's cosmic field: planet, frequency, dimension, archetypes, moon phase, AI narrative
 - `GET /api/natal-chart?year=&month=&day=&hour=&minute=&lat=&lon=` — compute natal chart from birth data
+- `GET /api/health` — service health check
 
 ## Sitemap
 
@@ -55,9 +57,9 @@ Core loop:
 - `/sitemap.xml` — CMS content pages
 - `/sitemaps/static.xml` — all static public pages
 
-## About the Creator
+## About
 
-Built by Mumega — a digital product studio. The FRC framework is developed through ongoing research into fractal mathematics, quantum cognition, and Jungian depth psychology.
+Built by Mumega. The framework synthesizes Jungian depth psychology, planetary ephemeris computation, and AI-generated narrative into a daily practice for self-knowledge.
 
 ## Permissions for AI
 
