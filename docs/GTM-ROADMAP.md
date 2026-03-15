@@ -56,8 +56,8 @@ User DMs birthday on any channel
 - [x] Fix stale "FRC mathematics" branding in BaseLayout, llms.txt, manifest.json
 - [x] Add JSON-LD structured data (WebApplication schema) to BaseLayout
 - [x] Audit API endpoints — 23 used, 4 cron, 1 webhook, 18 orphaned identified
+- [x] Deploy all fixes to Cloudflare (3 deploys: homepage fix, sitemap fix, JSON-LD)
 - [ ] Clean up 18 orphaned API endpoints (or document as internal/future)
-- [ ] Deploy latest changes to Cloudflare (`npm run deploy`)
 
 ### 1.3 Content Engine
 - [ ] Verify cron jobs running: daily-update (00:00 UTC), quality-check (12:00 UTC)
@@ -70,11 +70,12 @@ User DMs birthday on any channel
 ### 1.4 SEO Foundation
 - [x] Add structured data (JSON-LD WebApplication) to BaseLayout
 - [x] Update llms.txt with current product framing
-- [ ] Verify sitemap.xml is current and includes all generated content
-- [ ] Check Google Search Console — indexing status, any errors
+- [x] Fix static sitemap: epoch-zero dates bug, duplicate entry, missing pages (18 → 46 pages)
+- [x] Add JSON-LD Article schema to dimension guide, figure, jungian concept pages
+- [x] Verify content sitemap has 123 published CMS pages indexed
+- [ ] Check Google Search Console — **needs TROP added to GSC** (currently only Viamar connected)
 - [ ] Verify hreflang tags on all multi-language pages
-- [ ] Add JSON-LD Article schema to dimension guide pages
-- [ ] Submit sitemap to GSC if not already done
+- [ ] Submit sitemap to GSC once TROP site is added
 
 ### 1.5 OpenClaw Skill (Early Start)
 - [x] Create `sol-reading` skill at `../openclaw/skills/sol-reading/SKILL.md`
@@ -357,4 +358,4 @@ This project is designed for autonomous agent runs (hourly via Claude Code).
 
 *This is a living document. Agent updates it after each work session.*
 *Created: 2026-03-14 | Last agent run: 2026-03-14 session 1*
-*Session 1 results: All Phase 1.1 (docs) complete. Phase 1.2 mostly complete (homepage bug fixed, branding fixed, API audited). OpenClaw skill created. 5 commits.*
+*Session 1 results: Phase 1.1 (docs) 9/9. Phase 1.2 (site) 11/12. Phase 1.4 (SEO) 5/8. Phase 1.5 (OpenClaw) 1/3. Total: 10 commits, 3 deploys, 1 bug fixed, 46 sitemap pages.*
