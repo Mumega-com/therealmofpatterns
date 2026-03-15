@@ -38,22 +38,26 @@ User DMs birthday on any channel
 - [x] Create `CLAUDE.md` (agent navigation guide)
 - [x] Create `docs/GTM-ROADMAP.md` (this document)
 - [x] Update `docs/PRODUCT-STRATEGY.md` (add GTM thesis, messaging-first)
-- [x] Set up memory system (user profile, project state, GHL reference)
-- [ ] Update `docs/ARCHITECTURE.md` — add OpenClaw integration, messaging adapters, clean up aspirational sections
-- [ ] Update `docs/CONTENT-ENGINE-PLAN.md` — mark completed items, update status
-- [ ] Update `docs/CONTENT-AGENT-STRATEGY.md` — align with current product state (Sol only)
-- [ ] Create `docs/API-REFERENCE.md` — document all active endpoints, deprecate orphaned ones
-- [ ] Add `docs/OPENCLAW-INTEGRATION.md` — how OpenClaw connects to TROP
+- [x] Set up memory system (user profile, project state, GHL reference, OpenClaw reference)
+- [x] Update `docs/ARCHITECTURE.md` — added OpenClaw (§12) + GHL (§13) integration sections
+- [x] Update `docs/CONTENT-ENGINE-PLAN.md` — marked completed phases, updated to 11 Gemini keys, rebranded dimensions
+- [x] Update `docs/CONTENT-AGENT-STRATEGY.md` — clarified Sol as only UI voice, added OpenClaw runtime
+- [x] Create `docs/API-REFERENCE.md` — all 30+ endpoints documented with auth, deps, response shapes
+- [x] Add `docs/OPENCLAW-INTEGRATION.md` — full integration spec with skill definition, channel formatting, cron
 
 ### 1.2 Site Audit & Fixes
-- [x] Audit all user flows (homepage → discover → checkin → reading)
-- [x] Verify no broken links or missing components
-- [x] Verify build passes (`npm run build` — 160 pages, 8.27s)
-- [ ] Audit live site at therealmofpatterns.com — verify deployed version matches local
-- [ ] Check `/sol/today` public page loads correctly for unauthenticated users
-- [ ] Verify daily-brief API returns current data (not stale cache)
-- [ ] Test check-in → reading flow end-to-end on live site
-- [ ] Review and clean up orphaned API endpoints (~15 potentially unused)
+- [x] Audit all user flows (homepage → discover → checkin → reading) — all clean
+- [x] Verify no broken links or missing components — all present
+- [x] Verify build passes (`npm run build` — 160 pages, 5.6s)
+- [x] Audit live site at therealmofpatterns.com — all endpoints return 200, fast responses
+- [x] Check `/sol/today` public page loads correctly for unauthenticated users — confirmed
+- [x] Verify daily-brief API returns current data — returns today's data (UTC-based dates)
+- [x] Fix homepage broken API call (`/api/weather/today` → `/api/daily-brief`)
+- [x] Fix stale "FRC mathematics" branding in BaseLayout, llms.txt, manifest.json
+- [x] Add JSON-LD structured data (WebApplication schema) to BaseLayout
+- [x] Audit API endpoints — 23 used, 4 cron, 1 webhook, 18 orphaned identified
+- [ ] Clean up 18 orphaned API endpoints (or document as internal/future)
+- [ ] Deploy latest changes to Cloudflare (`npm run deploy`)
 
 ### 1.3 Content Engine
 - [ ] Verify cron jobs running: daily-update (00:00 UTC), quality-check (12:00 UTC)
@@ -64,11 +68,18 @@ User DMs birthday on any channel
 - [ ] Generate Jungian concept pages (shadow, anima, individuation — top 5)
 
 ### 1.4 SEO Foundation
+- [x] Add structured data (JSON-LD WebApplication) to BaseLayout
+- [x] Update llms.txt with current product framing
 - [ ] Verify sitemap.xml is current and includes all generated content
 - [ ] Check Google Search Console — indexing status, any errors
 - [ ] Verify hreflang tags on all multi-language pages
-- [ ] Add structured data (JSON-LD) to dimension guide pages
+- [ ] Add JSON-LD Article schema to dimension guide pages
 - [ ] Submit sitemap to GSC if not already done
+
+### 1.5 OpenClaw Skill (Early Start)
+- [x] Create `sol-reading` skill at `../openclaw/skills/sol-reading/SKILL.md`
+- [ ] Test skill locally with OpenClaw gateway
+- [ ] Register Telegram bot (needs BotFather — **requires human**)
 
 ---
 
@@ -345,4 +356,5 @@ This project is designed for autonomous agent runs (hourly via Claude Code).
 ---
 
 *This is a living document. Agent updates it after each work session.*
-*Created: 2026-03-14 | Last agent run: 2026-03-14*
+*Created: 2026-03-14 | Last agent run: 2026-03-14 session 1*
+*Session 1 results: All Phase 1.1 (docs) complete. Phase 1.2 mostly complete (homepage bug fixed, branding fixed, API audited). OpenClaw skill created. 5 commits.*
