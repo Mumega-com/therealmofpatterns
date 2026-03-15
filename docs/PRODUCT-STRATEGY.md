@@ -1,6 +1,6 @@
 # Product Strategy — The Realm of Patterns
 
-**Last Updated:** 2026-03-05
+**Last Updated:** 2026-03-14
 
 ---
 
@@ -68,11 +68,13 @@ Birth data → 8D natal vector → archetype assignment
 
 ### What we're building next
 
-**Weekly synthesis** (after 7 check-ins): A longitudinal reading of the week's arc. What pattern has been moving? What dimension has been consistently withdrawn? This is the primary planned retention feature.
+**Messaging-first delivery (GTM priority).** Sol's daily reading belongs in the user's DM, not behind a website visit. Telegram bot first (richest interface, no approval needed), then Instagram DM and WhatsApp via GHL. The website remains the computation engine and content hub. See `docs/GTM-ROADMAP.md` for the full phased plan.
 
-**Integration arc** (30/60/90 days): A shadow tracking narrative. What has appeared repeatedly? What has the user been consistently not looking at? This is the long-term retention mechanic.
+**GHL integration.** GoHighLevel as the CRM and messaging orchestrator. Contact lifecycle: birthday captured → first reading → daily active → subscriber → advocate. Custom fields store birth data, 8D vector, kappa, streak.
 
-**Relationship compare**: Two soul fields side-by-side with a cosine similarity resonance score. The secondary acquisition loop — users share their field, someone else checks theirs.
+**Weekly synthesis** (after 7 check-ins): A longitudinal reading of the week's arc. What pattern has been moving? What dimension has been consistently withdrawn? Delivered via messaging channel, not just website.
+
+**Relationship compare**: Two soul fields side-by-side with a cosine similarity resonance score. In messaging: "Reply with a friend's birthday" → instant comparison. Viral acquisition loop.
 
 ---
 
@@ -134,11 +136,30 @@ Sol's depth and context scale with check-in history:
 - Personalization tiers (intro through deep)
 
 ### Planned 🔄
-- Weekly synthesis reading (after 7 check-ins)
-- Integration arc (30/60/90 day longitudinal)
-- Relationship compare (two soul fields)
-- Pro subscription gating weekly synthesis
-- Email capture for weekly synthesis
+- Messaging-first delivery (Telegram → IG DM → WhatsApp)
+- GHL integration (contact lifecycle, pipelines, automated workflows)
+- Weekly synthesis reading (delivered via messaging)
+- Relationship compare (two soul fields, triggered via DM)
+- Automated content posting (daily cosmic weather to socials)
+- Monetization triggers (streak-based, kappa-based upgrade prompts)
+
+---
+
+## Go-To-Market Strategy
+
+**Core thesis:** Sol is a message, not a webpage.
+
+The website is the engine (computation, content, SEO). Messaging channels are the interface (daily delivery, check-in, upgrade prompts). GHL orchestrates the lifecycle.
+
+**Acquisition:** Social content (automated daily cosmic weather posts) + SEO (dimension guides, archetype pages, historical figures) → DM CTA ("send me your birthday")
+
+**Activation:** Birthday → instant 8D reading via DM → "Want daily readings? Say yes" → tagged in GHL
+
+**Retention:** Daily Sol message in user's preferred channel → evening micro-check-in → weekly synthesis
+
+**Monetization:** Automated triggers based on streak, kappa patterns, and engagement (see `docs/GTM-ROADMAP.md`)
+
+**Viral:** Comparison mode ("reply with a friend's birthday"), shareable toroid images, "What's your 8D type?" shorthand
 
 ---
 
@@ -149,9 +170,10 @@ The earlier product strategy documents reference features that were either never
 - **$497 PDF reports** — not built, not planned
 - **Kasra/River narrator modes** — removed from UI; Sol is the only narrator
 - **"Coherence Intelligence" positioning** — replaced by depth psychology framing
-- **Failure mode detection** — not shipped, not planned in current roadmap
+- **Failure mode detection** — code exists but not exposed in UI, not planned for current roadmap
 - **ARL (Adaptive Resonance Learning)** — research concept, not implemented
 - **DBSCAN attractor basin clustering** — research concept, not implemented
-- **Stripe checkout** — not implemented
+- **Stripe checkout** — not yet implemented (planned for Phase 5)
+- **Integration arc (30/60/90 day)** — deferred; weekly synthesis comes first
 
 The product is simpler and more focused than the early research docs suggest. That is intentional.

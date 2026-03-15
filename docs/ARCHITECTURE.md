@@ -653,7 +653,128 @@ the-realm-of-patterns/
 
 ---
 
-**STATUS:** CANONICAL REFERENCE
+## 12. Multi-Channel Messaging (OpenClaw Integration)
+
+OpenClaw (`../openclaw`) serves as the messaging gateway — a multi-channel AI agent platform that delivers Sol readings across 31+ communication channels.
+
+### 12.1 Role in Architecture
+
+```
+User (any channel)
+        │
+        ▼
+┌───────────────────────┐
+│      OpenClaw         │
+│  Gateway (VPS/local)  │
+│                       │
+│  Channels:            │
+│  - Telegram (grammy)  │
+│  - WhatsApp (Baileys) │
+│  - Discord            │
+│  - Signal             │
+│  - iMessage            │
+│  - Slack, Teams, etc. │
+│                       │
+│  Skills:              │
+│  - sol-reading        │
+│  - sol-checkin        │
+│  - sol-compare        │
+│                       │
+│  Cron:                │
+│  - Daily reading push │
+│  - Evening reflection │
+└──────────┬────────────┘
+           │ HTTP calls
+           ▼
+┌───────────────────────┐
+│  TROP Cloudflare API  │
+│  /api/daily-brief     │
+│  /api/preview         │
+│  /api/narrator        │
+│  /api/personal-reading│
+│  /api/openclaw-webhook│
+└───────────────────────┘
+```
+
+### 12.2 OpenClaw Skill: `sol-reading`
+
+```markdown
+---
+name: sol-reading
+description: "Deliver personalized Sol readings from The Realm of Patterns"
+metadata:
+  openclaw:
+    emoji: "☀"
+    env: ["TROP_API_URL", "TROP_API_KEY"]
+---
+
+Commands:
+- Birthday → instant 8D reading via /api/preview
+- /sol → today's reading via /api/daily-brief
+- /checkin → quick 3-question check-in → kappa score
+- compare [birthday] → two vectors compared → resonance score
+```
+
+### 12.3 Data Flow
+
+1. User sends message on any channel → OpenClaw receives
+2. OpenClaw skill parses intent (birthday? check-in? compare?)
+3. Skill calls TROP Cloudflare API with relevant data
+4. API computes 8D vector / generates reading / returns narrative
+5. Skill formats response for channel (rich for Telegram, plain for SMS)
+6. OpenClaw delivers response on same channel
+7. Optional: sync contact data to GHL via `/api/ghl-sync`
+
+### 12.4 Deployment
+
+- **Local development:** `../openclaw` on same machine
+- **Production:** VPS at `gateway.mumega.com` (Docker + Fly.io)
+- **Config:** `~/.openclaw/config.json5` with TROP API credentials
+
+---
+
+## 13. CRM & Lifecycle (GHL Integration)
+
+GHL (GoHighLevel) manages the contact lifecycle, social media posting, and automated workflows.
+
+### 13.1 Role
+
+- **Not** the messaging interface (that's OpenClaw)
+- **Is** the CRM, workflow engine, and social media manager
+- Tracks: who joined, when, from which channel, engagement metrics
+- Automates: upgrade prompts, re-engagement, social content posting
+
+### 13.2 Contact Schema
+
+Custom fields on GHL contacts:
+- `birth_date`, `birth_time`, `birth_lat`, `birth_lng` — natal data
+- `vector_8d` — computed 8D vector (JSON)
+- `dominant_dimension`, `archetype_match` — derived from vector
+- `kappa_score`, `check_in_streak` — engagement metrics
+- `subscription_tier` — free/pro/team
+- `acquisition_channel` — telegram/instagram/web/referral
+
+### 13.3 Pipeline: Soul Journey
+
+```
+Lead → Birthday Captured → First Reading → Day 3 Active → Day 7 Active → Subscriber → Advocate
+```
+
+### 13.4 Automated Workflows
+
+| Trigger | Action |
+|---------|--------|
+| Birthday captured | Welcome email with 8D overview |
+| No check-in 24h | Nudge via preferred channel |
+| 3 days dormant | Re-engagement message |
+| 7-day streak | Upgrade prompt (Pro) |
+| κ < 0.3 for 3 days | Shadow content delivery |
+| Birthday month | Solar return forecast upsell |
+| 14 days active | Referral prompt |
+
+---
+
+**STATUS:** CANONICAL REFERENCE (Updated 2026-03-14)
 
 ---
 
