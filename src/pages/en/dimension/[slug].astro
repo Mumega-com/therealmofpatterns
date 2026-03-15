@@ -247,12 +247,41 @@ const orderedDimensions = ['phase', 'existence', 'cognition', 'value', 'expansio
 const currentIndex = orderedDimensions.indexOf(slug);
 const prevSlug = currentIndex > 0 ? orderedDimensions[currentIndex - 1] : null;
 const nextSlug = currentIndex < orderedDimensions.length - 1 ? orderedDimensions[currentIndex + 1] : null;
+
+// JSON-LD structured data
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": `${dimension.name} - Dimension Guide`,
+  "description": dimension.summary,
+  "url": `https://therealmofpatterns.com/en/dimension/${slug}`,
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "The Realm of Patterns",
+    "url": "https://therealmofpatterns.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "The Realm of Patterns",
+    "url": "https://therealmofpatterns.com"
+  },
+  "datePublished": "2025-01-01",
+  "dateModified": "2025-01-01",
+  "about": {
+    "@type": "Thing",
+    "name": `${dimension.name} Dimension`,
+    "description": dimension.summary
+  }
+});
 ---
 
 <BaseLayout
   title={`${dimension.name} - Dimension Guide | The Realm of Patterns`}
   description={dimension.summary}
 >
+  <script type="application/ld+json" set:html={jsonLd} is:inline />
+
   <main class="min-h-screen bg-gradient-to-b from-[#0a0908] to-[#1a1814]">
     <!-- Hero -->
     <section class="pt-24 pb-8 px-4">

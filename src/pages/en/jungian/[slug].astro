@@ -157,12 +157,41 @@ const concept = JUNGIAN_CONCEPTS[slug];
 if (!concept) {
   return Astro.redirect('/404');
 }
+
+// JSON-LD structured data
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": `${concept.name} - Jungian Concepts`,
+  "description": concept.summary,
+  "url": `https://therealmofpatterns.com/en/jungian/${slug}`,
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "The Realm of Patterns",
+    "url": "https://therealmofpatterns.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "The Realm of Patterns",
+    "url": "https://therealmofpatterns.com"
+  },
+  "datePublished": "2025-01-01",
+  "dateModified": "2025-01-01",
+  "about": {
+    "@type": "Thing",
+    "name": concept.name,
+    "description": concept.summary
+  }
+});
 ---
 
 <BaseLayout
   title={`${concept.name} - Jungian Concepts | The Realm of Patterns`}
   description={concept.summary}
 >
+  <script type="application/ld+json" set:html={jsonLd} is:inline />
+
   <main class="min-h-screen bg-gradient-to-b from-[#0a0908] to-[#1a1814]">
     <!-- Hero -->
     <section class="pt-24 pb-12 px-4">
