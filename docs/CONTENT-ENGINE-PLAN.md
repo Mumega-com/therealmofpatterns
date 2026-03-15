@@ -3,8 +3,8 @@
 > Learning from mumega-cms architecture for programmatic SEO at scale
 
 **Created:** 2026-02-01
-**Updated:** 2026-02-01
-**Status:** Phase 1 Complete - 48/48 Dimension Guides Generated
+**Updated:** 2026-03-14
+**Status:** Phase 4 Mostly Complete - Schema markup, analytics tracking, admin dashboard all live. Sitemap submission to GSC pending.
 **Goal:** 15,000+ unique pages across 6 languages
 
 ---
@@ -12,22 +12,23 @@
 ## Executive Summary
 
 Apply mumega-cms patterns to Realm of Patterns:
-- **Language × Dimension × Content-Type = Unique Page**
-- **Gemini 3 Flash** with 6-key rotation (~1.2M tokens/day free)
+- **Language x Dimension x Content-Type = Unique Page**
+- **Gemini 3 Flash** with 11-key rotation (~2M tokens/day free)
 - **Cloudflare edge** (D1 + KV + R2 + Pages)
 - **Cultural voices** already built (Luz, Sophia, Citlali, Valentina, Isabel, Pattern Guide)
 - **Daily automation** via cron workers
+- **OpenClaw integration** for agent-based content delivery across messaging channels
 
 ---
 
 ## 1. Content Matrix (Page Potential)
 
-### Formula: `Language × Dimension × ContentType × Date = Page`
+### Formula: `Language x Dimension x ContentType x Date = Page`
 
 | Axis | Count | Examples |
 |------|-------|----------|
 | **Languages** | 6 | en, pt-br, pt-pt, es-mx, es-ar, es-es |
-| **Dimensions** | 8 | phase, existence, cognition, value, expansion, action, relation, field |
+| **Dimensions** | 8 | Identity, Structure, Mind, Heart, Growth, Drive, Connection, Awareness |
 | **Content Types** | 10 | daily_weather, dimension_guide, jungian_concept, historical_figure, historical_era, vedic_dasha, transit_guide, compatibility, blog_post, archetype_profile |
 | **Historical Figures** | 50+ | Rumi, Jung, Tesla, Frida Kahlo, Marcus Aurelius... |
 | **Jungian Concepts** | 10 | shadow, anima, animus, persona, self, individuation, archetype, complex, projection, synchronicity |
@@ -37,18 +38,18 @@ Apply mumega-cms patterns to Realm of Patterns:
 
 ```
 Static Content:
-  6 languages × 8 dimension guides          =    48 pages
-  6 languages × 10 jungian concepts         =    60 pages
-  6 languages × 50 historical figures       =   300 pages
-  6 languages × 5 historical eras           =    30 pages
-  6 languages × 9 vedic dasha guides        =    54 pages
-  6 languages × 10 transit guides           =    60 pages
-  6 languages × 28 compatibility combos     =   168 pages
+  6 languages x 8 dimension guides          =    48 pages
+  6 languages x 10 jungian concepts         =    60 pages
+  6 languages x 50 historical figures       =   300 pages
+  6 languages x 5 historical eras           =    30 pages
+  6 languages x 9 vedic dasha guides        =    54 pages
+  6 languages x 10 transit guides           =    60 pages
+  6 languages x 28 compatibility combos     =   168 pages
                                             ─────────────
                                 Subtotal:      720 pages
 
 Daily Content (Year 1):
-  6 languages × 365 days × cosmic weather   = 2,190 pages
+  6 languages x 365 days x cosmic weather   = 2,190 pages
 
 Total Year 1:                               ~3,000 pages
 ```
@@ -82,11 +83,13 @@ def calculate_page_priority(language: str, content_type: str, dimension: str) ->
     score += content_weight.get(content_type, 3)
 
     # Dimension interest (based on search volume estimates)
+    # User-facing names: Identity, Structure, Mind, Heart, Growth, Drive, Connection, Awareness
+    # Internal keys: phase, existence, cognition, value, expansion, action, relation, field
     dimension_weight = {
         'phase': 10,      # Identity - universal appeal
-        'relation': 9,    # Relationships - high search
-        'value': 8,       # Self-worth topics
-        'field': 7,       # Spirituality seekers
+        'relation': 9,    # Connection/Relationships - high search
+        'value': 8,       # Heart/Self-worth topics
+        'field': 7,       # Awareness/Spirituality seekers
     }
     score += dimension_weight.get(dimension, 5)
 
@@ -96,19 +99,19 @@ def calculate_page_priority(language: str, content_type: str, dimension: str) ->
 ### Batch Strategy
 
 ```
-Daily Generation Budget: ~1.2M tokens (6 keys × 200K each)
+Daily Generation Budget: ~2M tokens (11 keys x ~180K each)
 
 Allocation:
-├── 6 × Daily Weather (~5K tokens each)     =  30K tokens
-├── 2 × Dimension Guides (~8K tokens each)  =  16K tokens
-├── 3 × Historical Figures (~6K tokens each)=  18K tokens
-├── 2 × Jungian Concepts (~5K tokens each)  =  10K tokens
-├── 1 × Compatibility Guide (~5K tokens)    =   5K tokens
+├── 6 x Daily Weather (~5K tokens each)     =  30K tokens
+├── 2 x Dimension Guides (~8K tokens each)  =  16K tokens
+├── 3 x Historical Figures (~6K tokens each)=  18K tokens
+├── 2 x Jungian Concepts (~5K tokens each)  =  10K tokens
+├── 1 x Compatibility Guide (~5K tokens)    =   5K tokens
 └── Buffer for retries/images               =  20K tokens
                                             ─────────────
                               Daily Total:    ~100K tokens
 
-Runway: 1.2M ÷ 100K = 12x safety margin
+Runway: 2M / 100K = 20x safety margin
 ```
 
 ---
@@ -131,11 +134,11 @@ Runway: 1.2M ÷ 100K = 12x safety margin
 │     ├── Load voice config (content/voices/{lang}.json)          │
 │     ├── Fetch dimension metadata (MU_DIMENSIONS)                │
 │     ├── Get historical data (content/historical-astrology.json) │
-│     └── Calculate current cosmic vector (8 Mu)                  │
+│     └── Calculate current cosmic vector (8D)                    │
 │                                                                 │
 │  3. PROMPT CONSTRUCTION                                         │
 │     ├── Load cultural voice (Luz, Citlali, etc.)                │
-│     ├── Inject FRC context (16D framework)                      │
+│     ├── Inject framework context (8D system)                    │
 │     ├── Add language-specific cultural references               │
 │     └── Include dimension/figure/concept metadata               │
 │                                                                 │
@@ -166,6 +169,11 @@ Runway: 1.2M ÷ 100K = 12x safety margin
 │     ├── Update sitemap.xml                                      │
 │     └── Log to content_analytics                                │
 │                                                                 │
+│  8. DELIVER VIA OPENCLAW (optional)                             │
+│     ├── Push daily weather to messaging channels                │
+│     ├── Sol skill formats content for Telegram/WhatsApp/etc.    │
+│     └── Webhook triggers on new content publish                 │
+│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -177,15 +185,15 @@ Runway: 1.2M ÷ 100K = 12x safety margin
 
 ```
 Static Pages:
-├── /en/dimension/phase                      # Dimension guide
-├── /pt-br/dimensao/fase                     # Portuguese localized
-├── /es-mx/dimension/fase                    # Mexican Spanish
+├── /en/dimension/identity                  # Dimension guide (Identity)
+├── /pt-br/dimensao/identidade              # Portuguese localized
+├── /es-mx/dimension/identidad              # Mexican Spanish
 ├── /en/jungian/shadow                       # Jungian concept
 ├── /en/figure/rumi                          # Historical figure
 ├── /en/era/islamic-golden-age               # Historical era
 ├── /en/dasha/saturn                         # Vedic dasha
 ├── /en/transit/jupiter                      # Transit guide
-└── /en/resonance/phase-relation             # Compatibility
+└── /en/resonance/identity-connection        # Compatibility
 
 Daily Weather:
 ├── /en/cosmic-weather/2026-02-01            # English
@@ -288,7 +296,7 @@ CREATE TABLE generation_stats (
 | Language | Voice | Cultural Framework |
 |----------|-------|-------------------|
 | en | Pattern Guide | Jungian, Campbell, mathematical precision |
-| pt-br | Luz | Candomblé, Orixás, Axé, Bahian warmth |
+| pt-br | Luz | Candomble, Orixas, Axe, Bahian warmth |
 | pt-pt | Sophia | Saudade, Fado, Descobrimentos, Atlantic mysticism |
 | es-mx | Citlali | Nahual/Tonal, Curanderismo, Maya cosmology |
 | es-ar | Valentina | Heavy Jungian, Buenos Aires psychoanalytic |
@@ -314,7 +322,7 @@ async def load_voice(language: str) -> Dict:
 ```python
 class GeminiKeyRotator:
     def __init__(self):
-        self.keys = []  # Load from env: GEMINI_API_KEY, _2, _3, _4, _5, _6
+        self.keys = []  # Load from env: GEMINI_API_KEY, _2, ... _11
         self.current_index = 0
         self.error_counts = {}
 
@@ -327,17 +335,17 @@ class GeminiKeyRotator:
 ### Cloudflare Secrets (11 Keys Configured)
 
 ```
-✅ GEMINI_API_KEY
-✅ GEMINI_API_KEY_2
-✅ GEMINI_API_KEY_3
-✅ GEMINI_API_KEY_4
-✅ GEMINI_API_KEY_5
-✅ GEMINI_API_KEY_6
-✅ GEMINI_API_KEY_7
-✅ GEMINI_API_KEY_8
-✅ GEMINI_API_KEY_9
-✅ GEMINI_API_KEY_10
-✅ GEMINI_API_KEY_11
+GEMINI_API_KEY
+GEMINI_API_KEY_2
+GEMINI_API_KEY_3
+GEMINI_API_KEY_4
+GEMINI_API_KEY_5
+GEMINI_API_KEY_6
+GEMINI_API_KEY_7
+GEMINI_API_KEY_8
+GEMINI_API_KEY_9
+GEMINI_API_KEY_10
+GEMINI_API_KEY_11
 ```
 
 ---
@@ -368,7 +376,7 @@ class GeminiKeyRotator:
 │                                                                 │
 │  18:00 UTC - Analytics & Reporting                              │
 │     ├── Aggregate daily stats                                   │
-│     └── Send summary (optional Telegram/Discord)                │
+│     └── Send summary (optional Telegram/Discord via OpenClaw)   │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -457,12 +465,19 @@ class GeminiKeyRotator:
 - [x] Add language switcher
 - [x] Create navigation (by dimension, by type)
 
-### Phase 4: SEO & Analytics (Week 4) - IN PROGRESS
+### Phase 4: SEO & Analytics (Week 4) - MOSTLY COMPLETE
 
-- [x] Add schema markup injection
-- [x] Implement content_analytics tracking
-- [x] Create admin dashboard for generation stats
+- [x] Add schema markup injection (Article, FAQPage, Person schemas live on all CMS pages)
+- [x] Implement content_analytics tracking (schema deployed, events logged)
+- [x] Create admin dashboard for generation stats (at /admin)
 - [ ] Submit sitemap to Google Search Console
+
+### Phase 5: OpenClaw Content Delivery (Planned)
+
+- [ ] Wire daily weather publish to OpenClaw webhook
+- [ ] Create Sol reading skill for messaging channels (Telegram, WhatsApp)
+- [ ] Add content push notifications via OpenClaw cron skills
+- [ ] Enable cross-channel content discovery (users on Telegram get links to full articles on web)
 
 ---
 
@@ -506,9 +521,9 @@ wrangler.toml                  # Add new cron schedules
 
 ### Month 1
 
-- [x] 48 dimension guides generated (8 × 6 languages) - COMPLETE
+- [x] 48 dimension guides generated (8 x 6 languages) - COMPLETE
 - [ ] 720 static pages generated (all dimension guides, figures, concepts)
-- [ ] 180 daily weather pages (30 days × 6 languages)
+- [ ] 180 daily weather pages (30 days x 6 languages)
 - [ ] Sitemap indexed by Google
 - [x] < 2% generation error rate (currently 0% for dimension guides)
 
@@ -565,7 +580,22 @@ npm run deploy
 | `cosmic_weather_content` | Daily weather cache |
 | `content_analytics` | Page view tracking |
 
+### Dimension Name Mapping (Internal -> User-Facing)
+
+| Internal Key (FRC) | User-Facing Name | Planet |
+|---------------------|-----------------|--------|
+| phase | Identity | Sun |
+| existence | Structure | Saturn |
+| cognition | Mind | Mercury |
+| value | Heart | Venus |
+| expansion | Growth | Jupiter |
+| action | Drive | Mars |
+| relation | Connection | Moon |
+| field | Awareness | Uranus/Neptune |
+
+> **Note:** Internal code (`generate-batch.ts`, `generator.py`, DB schemas) retains FRC keys (phase, existence, etc.). All user-facing content, URLs, and generated articles should use the rebranded names above.
+
 ---
 
 *Plan created: 2026-02-01*
-*Ready for compaction and implementation*
+*Last updated: 2026-03-14*
