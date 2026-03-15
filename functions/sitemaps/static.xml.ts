@@ -42,6 +42,29 @@ const STATIC_PAGES = [
   { path: '/hidden-gifts/',  changefreq: 'monthly',  priority: 0.7 },
   { path: '/compare/',       changefreq: 'monthly',  priority: 0.6 },
 
+  // Archetype pages (high SEO value — search intent)
+  { path: '/archetype/sage/',       changefreq: 'monthly', priority: 0.8 },
+  { path: '/archetype/hero/',       changefreq: 'monthly', priority: 0.8 },
+  { path: '/archetype/ruler/',      changefreq: 'monthly', priority: 0.8 },
+  { path: '/archetype/creator/',    changefreq: 'monthly', priority: 0.8 },
+  { path: '/archetype/explorer/',   changefreq: 'monthly', priority: 0.8 },
+  { path: '/archetype/warrior/',    changefreq: 'monthly', priority: 0.8 },
+  { path: '/archetype/caregiver/',  changefreq: 'monthly', priority: 0.8 },
+  { path: '/archetype/mystic/',     changefreq: 'monthly', priority: 0.8 },
+
+  // Tradition pages
+  { path: '/traditions/chinese/',   changefreq: 'monthly', priority: 0.6 },
+  { path: '/traditions/vedic/',     changefreq: 'monthly', priority: 0.6 },
+  { path: '/traditions/mayan/',     changefreq: 'monthly', priority: 0.6 },
+  { path: '/traditions/western/',   changefreq: 'monthly', priority: 0.6 },
+  { path: '/traditions/celtic/',    changefreq: 'monthly', priority: 0.6 },
+
+  // Stage pages
+  { path: '/stage/reset/',          changefreq: 'monthly', priority: 0.6 },
+  { path: '/stage/clarity/',        changefreq: 'monthly', priority: 0.6 },
+  { path: '/stage/growth/',         changefreq: 'monthly', priority: 0.6 },
+  { path: '/stage/flow/',           changefreq: 'monthly', priority: 0.6 },
+
   // Info pages
   { path: '/about/',         changefreq: 'monthly',  priority: 0.6 },
   { path: '/faq/',           changefreq: 'monthly',  priority: 0.6 },
