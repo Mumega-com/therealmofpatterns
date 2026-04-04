@@ -179,6 +179,8 @@ export interface Env {
   HASH_PEPPER?: string;  // For privacy-first user hash generation
   TWITTER_BEARER_TOKEN?: string;
   TELEGRAM_BOT_TOKEN?: string;
+  TELEGRAM_CHANNEL_ID?: string;
+  TELEGRAM_BOT_USERNAME?: string;
   DISCORD_WEBHOOK_URL?: string;
 
   // Additional Gemini API keys for rotation (optional)
