@@ -12,6 +12,7 @@ const BASE_URL = 'https://therealmofpatterns.com';
 const STATIC_PAGES = [
   // Core
   { path: '/',               changefreq: 'daily',   priority: 1.0 },
+  { path: '/free-report/',   changefreq: 'weekly',   priority: 0.95 },
   { path: '/discover/',      changefreq: 'weekly',   priority: 0.9 },
   { path: '/sol/today/',     changefreq: 'daily',    priority: 0.9 },
   { path: '/sol/checkin/',   changefreq: 'daily',    priority: 0.8 },

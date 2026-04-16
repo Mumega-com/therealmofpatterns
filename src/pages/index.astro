@@ -36,14 +36,18 @@ import { EmailCapture } from '../components/shared/EmailCapture';
           Not predictions. Real presence.
         </p>
 
-        <a href="/discover" class="cta-primary">
-          <span>Begin the practice</span>
+        <a href="/free-report/" class="cta-primary">
+          <span>Get your free archetype report</span>
           <span class="badge">free</span>
           <span class="arrow">&rarr;</span>
         </a>
 
+        <a href="/discover" class="cta-secondary">
+          Or begin the daily practice &rarr;
+        </a>
+
         <p class="micro-copy">
-          No signup required &bull; Your data stays private &bull; Works offline
+          20-section Jungian report &bull; No signup required &bull; Your permalink is yours forever
         </p>
       </div>
 
@@ -611,6 +615,22 @@ import { EmailCapture } from '../components/shared/EmailCapture';
 
   .cta-primary:hover .arrow {
     transform: translateX(4px);
+  }
+
+  .cta-secondary {
+    display: inline-block;
+    margin-top: 0.75rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .cta-secondary:hover {
+    color: var(--text);
+    border-bottom-color: rgba(237, 237, 240, 0.3);
   }
 
   .micro-copy {
