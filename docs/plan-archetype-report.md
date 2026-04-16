@@ -2,7 +2,8 @@
 
 **Author:** TROP Agent
 **Date:** 2026-04-16
-**Status:** Proposed — waiting on review
+**Status:** Approved by Kasra 2026-04-16 — Phase 1 in progress
+**Execution order (Kasra):** 1 → 2 → 4 → 6 → 5 → 3
 **Rationale:** See `docs/codebase-map.md` and the TROP Q2 strategy memo (distribution over building). This plan delivers the single asymmetric growth move on the board.
 
 ---
@@ -189,14 +190,21 @@ One focused session per phase. All six can land in a single extended session (~1
 4. Configure an R2 public access policy for `free-reports/*` signed URLs
 5. Add the `/free-report` page to the sitemap
 
-## Open Questions for Review (Ask Kasra)
+## Decisions (from Kasra 2026-04-16)
 
-1. **Email provider:** is there already a configured email provider in mumega-edge or shabrang-cms I should reuse, rather than adding Resend to TROP directly?
-2. **PDF renderer:** is there a Mumega-standard Puppeteer-on-Workers pattern, or should I run it on VPS via a webhook?
-3. **Referral economics:** 3-referral unlock — too steep? too easy? Would love a data point from Inkwell or other Mumega tenants if anyone has run a similar flow.
-4. **Pro tier cannibalization:** does making this report too good suppress Pro upgrades? My instinct says no — it functions as a ladder — but worth sanity-checking.
-5. **Priority vs. other TROP work:** Kasra, is there higher-leverage work you'd want me on first (infra, Telegram bot registration, Stripe Connect setup)?
+1. **Email:** Resend directly. `RESEND_API_KEY` already set. `mumega.com` domain verified. POST to `https://api.resend.com/emails` from Pages Functions.
+2. **PDF:** Skip for v1. HTML permalink page IS the report. Users screenshot it — screenshots on Instagram/Twitter drive more traffic than PDFs. Defer PDF to v1.1.
+3. **Referral:** 3 referrals is correct. Keep.
+4. **Cannibalization:** No risk. The free report is point-in-time. Pro is daily practice with Mirror learning. The report makes people want the daily. It's a ladder.
+5. **Priority:** This IS the highest priority. Acquisition magnet. Telegram/Stripe/daily content are retention — acquisition comes first.
+
+## Revised Build Order
+
+`Phase 1 → Phase 2 → Phase 4 → Phase 6 → Phase 5 → Phase 3`
+
+- Phase 3 (PDF) deferred to v1.1 — HTML permalink is the v1 artifact
+- Phase 5 (email) runs after referral, not after permalink — screenshot-first flow doesn't block on email
 
 ---
 
-**Ready to start on Phase 1 once reviewed.**
+**Phase 1 in progress.**
