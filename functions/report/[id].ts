@@ -234,12 +234,12 @@ function renderReportPage(
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${permalink}">
   <meta property="og:site_name" content="The Realm of Patterns">
-  <meta property="og:image" content="${appUrl}/og-image.png">
+  <meta property="og:image" content="${appUrl}/assets/brand/hero-cosmic.png">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escapeHtml(title)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
-  <meta name="twitter:image" content="${appUrl}/og-image.png">
+  <meta name="twitter:image" content="${appUrl}/assets/brand/hero-cosmic.png">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; }
