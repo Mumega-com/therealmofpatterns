@@ -1,5 +1,6 @@
 import type { Env } from '../../../src/types';
 import { remember } from '../../../src/lib/mirror-client';
+import { upgradePitch, PRODUCTS, formatPrice } from '../../../src/lib/products';
 
 interface TelegramUser {
   id: number;
@@ -97,6 +98,24 @@ async function handleMessage(message: TelegramMessage, env: Env) {
 
   if (text === '/today' || text === '/sol') {
     await sendDailyReading(env, chatId, telegramUserId);
+    return;
+  }
+
+  if (text === '/upgrade' || text === '/premium') {
+    const u = await getTelegramUser(env, telegramUserId);
+    if (u?.subscription_status === 'premium' || u?.subscription_status === 'founder') {
+      await sendMessage(env, chatId,
+        `You are already ${u.subscription_status}. 🙏\n\nAsk for a deep reading anytime: /today`);
+      return;
+    }
+    const proUrl = `${env.APP_URL}/api/create-subscription-checkout?tier=pro_monthly&telegram_user_id=${telegramUserId}`;
+    const singleUrl = `${env.APP_URL}/api/create-checkout?tier=single_reading&telegram_user_id=${telegramUserId}`;
+    await sendMessage(env, chatId, upgradePitch(), {
+      inline_keyboard: [
+        [{ text: `${PRODUCTS.pro_monthly.name} — ${formatPrice(PRODUCTS.pro_monthly.priceCents)}/mo`, url: proUrl }],
+        [{ text: `${PRODUCTS.single_reading.name} — ${formatPrice(PRODUCTS.single_reading.priceCents)}`, url: singleUrl }],
+      ],
+    });
     return;
   }
 

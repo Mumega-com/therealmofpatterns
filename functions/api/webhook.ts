@@ -26,6 +26,8 @@ interface StripeObject {
   metadata?: Record<string, string>;
   cancel_at_period_end?: boolean;
   current_period_end?: number;
+  amount_total?: number;
+  currency?: string;
 }
 
 interface StripeEvent {
@@ -131,6 +133,39 @@ async function handleCheckoutCompleted(event: StripeEvent, env: Env) {
       INSERT OR IGNORE INTO circles (id, name, owner_email_hash, max_seats, stripe_subscription_id, created_at)
       VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
     `).bind(circleId, session.metadata.circle_name, emailHash, seats, subscriptionId).run();
+  }
+
+  // Bridge Telegram users: when checkout was initiated with telegram_user_id
+  // in metadata, flip the subscription_status on telegram_users so the bot
+  // recognizes the upgrade without requiring email linkage first.
+  const tgUserId = session.metadata?.telegram_user_id;
+  const tier = session.metadata?.tier ?? session.metadata?.plan;
+  if (tgUserId) {
+    const newStatus = tier === 'founder' ? 'founder' : 'premium';
+    await env.DB.prepare(`
+      UPDATE telegram_users
+      SET subscription_status = ?, entitlement_source = 'stripe',
+          email_hash = COALESCE(email_hash, ?), updated_at = datetime('now')
+      WHERE telegram_user_id = ?
+    `).bind(newStatus, emailHash, tgUserId).run();
+
+    // Record payment
+    await env.DB.prepare(`
+      INSERT INTO telegram_payments (id, telegram_user_id, provider, payment_type,
+        provider_payment_id, currency, amount, status, entitlement_granted, metadata, created_at, updated_at)
+      VALUES (?, ?, 'stripe', ?, ?, ?, ?, 'paid', ?, ?, datetime('now'), datetime('now'))
+    `).bind(
+      crypto.randomUUID(),
+      tgUserId,
+      tier ?? 'pro_monthly',
+      session.id,
+      session.currency ?? 'usd',
+      session.amount_total ?? 0,
+      newStatus,
+      JSON.stringify({ stripe_session_id: session.id, plan, tier }),
+    ).run();
+
+    console.log(`Telegram user ${tgUserId} upgraded to ${newStatus}`);
   }
 
   console.log(`Subscription activated: ${plan} for ${emailHash}`);
