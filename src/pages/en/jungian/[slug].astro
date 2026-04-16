@@ -158,6 +158,12 @@ if (!concept) {
   return Astro.redirect('/404');
 }
 
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'About', url: '/about' },
+  { name: concept.name, url: `/en/jungian/${slug}` },
+];
+
 // JSON-LD structured data
 const jsonLd = JSON.stringify({
   "@context": "https://schema.org",
@@ -189,6 +195,7 @@ const jsonLd = JSON.stringify({
 <BaseLayout
   title={`${concept.name} - Jungian Concepts | The Realm of Patterns`}
   description={concept.summary}
+  breadcrumbs={breadcrumbs}
 >
   <script type="application/ld+json" set:html={jsonLd} is:inline />
 

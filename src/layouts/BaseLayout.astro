@@ -13,6 +13,9 @@ export interface Props {
   showFooter?: boolean;
   transparentHeader?: boolean;
   ogImage?: string;
+  breadcrumbs?: { name: string; url: string }[];
+  faqItems?: { question: string; answer: string }[];
+  structuredData?: Record<string, unknown>[];
 }
 
 const {
@@ -24,11 +27,73 @@ const {
   showHeader = true,
   showFooter = true,
   transparentHeader = false,
-  ogImage = '/assets/brand/hero-cosmic.png'
+  ogImage = '/assets/brand/hero-cosmic.png',
+  breadcrumbs = [],
+  faqItems = [],
+  structuredData = []
 } = Astro.props;
 
 const siteUrl = 'https://therealmofpatterns.com';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'The Realm of Patterns',
+  url: siteUrl,
+  logo: `${siteUrl}/assets/brand/logo.png`,
+  description: 'A daily depth psychology practice powered by Jungian astrology and an 8-dimensional natal engine.'
+};
+
+const schemas: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'The Realm of Patterns',
+    url: siteUrl,
+    description: 'A daily depth psychology practice powered by Jungian astrology and an 8-dimensional natal engine.',
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD'
+    },
+    author: {
+      '@type': 'Organization',
+      name: 'The Realm of Patterns',
+      url: siteUrl
+    }
+  },
+  organizationSchema,
+  ...(breadcrumbs.length > 0
+    ? [{
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs.map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: item.name,
+          item: item.url.startsWith('http') ? item.url : new URL(item.url, siteUrl).toString()
+        }))
+      }]
+    : []),
+  ...(faqItems.length > 0
+    ? [{
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer
+          }
+        }))
+      }]
+    : []),
+  ...structuredData
+];
 ---
 
 <!DOCTYPE html>
@@ -70,25 +135,9 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
     <meta name="theme-color" content="#0a0908" />
 
     <!-- Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "The Realm of Patterns",
-      "url": siteUrl,
-      "description": "A daily depth psychology practice powered by Jungian astrology and an 8-dimensional natal engine.",
-      "applicationCategory": "LifestyleApplication",
-      "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "author": {
-        "@type": "Organization",
-        "name": "The Realm of Patterns",
-        "url": siteUrl
-      }
-    })} />
+    {schemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
 
     <!-- Plausible Analytics -->
     <script defer data-domain="therealmofpatterns.com" src="https://plausible.io/js/script.js"></script>

@@ -126,6 +126,12 @@ if (!figure) {
   return Astro.redirect('/404');
 }
 
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'About', url: '/about' },
+  { name: figure.name, url: `/en/figure/${slug}` },
+];
+
 const dimensions = ['P', 'E', 'μ', 'V', 'N', 'Δ', 'R', 'Φ'] as const;
 const dimensionNames: Record<string, string> = {
   P: 'Identity',
@@ -169,6 +175,7 @@ const jsonLd = JSON.stringify({
 <BaseLayout
   title={`${figure.name} - Energy Profile | The Realm of Patterns`}
   description={figure.summary}
+  breadcrumbs={breadcrumbs}
 >
   <script type="application/ld+json" set:html={jsonLd} is:inline />
 

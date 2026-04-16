@@ -59,11 +59,17 @@ const WHY_ARTICLES = [
     symbol: '♃',
   },
 ];
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Why Am I...?', url: '/why' },
+];
 ---
 
 <BaseLayout
   title="Why Am I...? - Pattern Insights"
   description="Understand common feelings through the lens of your cosmic pattern. Discover why you feel tired, stuck, anxious, or unmotivated."
+  breadcrumbs={breadcrumbs}
 >
   <div class="why-index">
     <div class="index-container">

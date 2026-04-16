@@ -478,6 +478,12 @@ if (!arch) {
 const ALL_ARCHETYPES = Object.values(ARCHETYPES);
 const relatedArchs = arch.relatedArchetypes.map(id => ARCHETYPES[id as keyof typeof ARCHETYPES]).filter(Boolean);
 
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Archetypes', url: '/archetype/sage' },
+  { name: arch.name, url: `/archetype/${arch.id}` },
+];
+
 // JSON-LD structured data
 const jsonLd = JSON.stringify({
   "@context": "https://schema.org",
@@ -500,6 +506,7 @@ const jsonLd = JSON.stringify({
 <BaseLayout
   title={arch.searchTitle}
   description={arch.metaDescription}
+  breadcrumbs={breadcrumbs}
 >
   <script type="application/ld+json" set:html={jsonLd} is:inline />
 

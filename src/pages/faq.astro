@@ -100,9 +100,26 @@ const FAQ_ITEMS = [
     ],
   },
 ];
+
+const faqItems = FAQ_ITEMS.flatMap((section) =>
+  section.questions.map((item) => ({
+    question: item.q,
+    answer: item.a,
+  }))
+);
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'FAQ', url: '/faq' },
+];
 ---
 
-<BaseLayout title="FAQ - The Realm of Patterns" description="Frequently asked questions about pricing, accuracy, and how to get started with The Realm of Patterns.">
+<BaseLayout
+  title="FAQ - The Realm of Patterns"
+  description="Frequently asked questions about pricing, accuracy, and how to get started with The Realm of Patterns."
+  breadcrumbs={breadcrumbs}
+  faqItems={faqItems}
+>
   <div class="faq-page">
     <div class="page-container">
       <header class="page-header">

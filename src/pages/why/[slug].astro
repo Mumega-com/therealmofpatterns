@@ -212,9 +212,19 @@ const content = WHY_CONTENT[slug];
 if (!content) {
   return Astro.redirect('/404');
 }
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Why Am I...?', url: '/why' },
+  { name: content.title, url: `/why/${slug}` },
+];
 ---
 
-<BaseLayout title={`${content.title} - Pattern Insight`} description={content.question + ' ' + content.intro.slice(0, 120)}>
+<BaseLayout
+  title={`${content.title} - Pattern Insight`}
+  description={content.question + ' ' + content.intro.slice(0, 120)}
+  breadcrumbs={breadcrumbs}
+>
   <article class="why-article">
     <div class="article-container">
       <header class="article-header">
