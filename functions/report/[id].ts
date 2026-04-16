@@ -105,7 +105,100 @@ function renderFigureCard(f: ArchetypeReport['historical_resonance'][number], ra
     </article>`;
 }
 
-function renderReportPage(report: ArchetypeReport, appUrl: string): string {
+interface CompatibilityMatch {
+  report_id: string;
+  archetype: string;
+  birth_date: string;
+  resonance: number;      // 0..1
+  shared_strengths: string[];
+  complementary: string;  // which dimension of theirs offsets which of mine
+  shared_shadow: string | null;
+}
+
+function cosine(a: number[], b: number[]): number {
+  let dot = 0, na = 0, nb = 0;
+  const n = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i++) { dot += a[i] * b[i]; na += a[i] * a[i]; nb += b[i] * b[i]; }
+  return na > 0 && nb > 0 ? dot / (Math.sqrt(na) * Math.sqrt(nb)) : 0;
+}
+
+function computeCompatibility(mine: ArchetypeReport, theirs: ArchetypeReport): CompatibilityMatch {
+  const myInner = mine.dimensions_16d.filter(d => d.octave === 'inner').map(d => d.value);
+  const theirInner = theirs.dimensions_16d.filter(d => d.octave === 'inner').map(d => d.value);
+  const resonance = cosine(myInner, theirInner);
+
+  // Shared strengths: dimensions where both are > 0.6
+  const dimNames = mine.dimensions_16d.filter(d => d.octave === 'inner').map(d => d.name);
+  const shared_strengths: string[] = [];
+  for (let i = 0; i < myInner.length; i++) {
+    if (myInner[i] > 0.6 && theirInner[i] > 0.6) shared_strengths.push(dimNames[i]);
+  }
+
+  // Complementary: my weakest dimension is their strongest, or vice versa
+  let myMinIdx = 0, theirMaxIdx = 0;
+  for (let i = 1; i < myInner.length; i++) {
+    if (myInner[i] < myInner[myMinIdx]) myMinIdx = i;
+    if (theirInner[i] > theirInner[theirMaxIdx]) theirMaxIdx = i;
+  }
+  const complementary = myMinIdx === theirMaxIdx
+    ? `Your ${dimNames[myMinIdx]} — your shadow teacher — is exactly where they shine. They can show you this dimension from the inside.`
+    : `Different weights across the octave — you bring ${dimNames[0]} depth, they bring ${dimNames[theirMaxIdx]} fluency.`;
+
+  // Shared shadow: dimension where both are < 0.35
+  let shared_shadow: string | null = null;
+  for (let i = 0; i < myInner.length; i++) {
+    if (myInner[i] < 0.35 && theirInner[i] < 0.35) {
+      shared_shadow = dimNames[i];
+      break;
+    }
+  }
+
+  return {
+    report_id: theirs.report_id,
+    archetype: theirs.identity.primary_archetype.title,
+    birth_date: theirs.birth.date,
+    resonance: Math.round(resonance * 1000) / 1000,
+    shared_strengths,
+    complementary,
+    shared_shadow,
+  };
+}
+
+function renderBonusChapter(matches: CompatibilityMatch[], appUrl: string): string {
+  if (matches.length === 0) return '';
+  return `
+    <section class="bonus-chapter">
+      <div class="bonus-header">
+        <p class="bonus-eyebrow">✦ Bonus chapter · unlocked</p>
+        <h2 style="color:#d4a017;">Compatibility readings</h2>
+        <p style="color:rgba(237,237,240,0.75);">The people who generated their report through your link — and how your patterns meet theirs.</p>
+      </div>
+      ${matches.map(m => `
+        <article class="compat-card">
+          <div class="compat-head">
+            <div>
+              <h3 style="margin:0; color:#ededf0; font-weight:500;">${escapeHtml(m.archetype)}</h3>
+              <p style="margin:0.25rem 0 0; color:rgba(237,237,240,0.55); font-size:0.875rem;">Born ${escapeHtml(m.birth_date)} · <a href="${appUrl}/report/${encodeURIComponent(m.report_id)}" style="color:#d4a017;">view their report</a></p>
+            </div>
+            <div class="compat-score">${Math.round(m.resonance * 100)}%<span>resonance</span></div>
+          </div>
+          ${m.shared_strengths.length > 0 ? `
+            <p><strong style="color:#d4a017;">Shared strengths:</strong> ${m.shared_strengths.map(escapeHtml).join(' · ')}</p>
+          ` : ''}
+          <p style="color:rgba(237,237,240,0.85);">${escapeHtml(m.complementary)}</p>
+          ${m.shared_shadow ? `
+            <p style="color:rgba(237,237,240,0.65); font-style:italic;">You both have a quiet edge at <strong>${escapeHtml(m.shared_shadow)}</strong> — this is where your relationship will ask both of you to grow.</p>
+          ` : ''}
+        </article>
+      `).join('')}
+    </section>`;
+}
+
+function renderReportPage(
+  report: ArchetypeReport,
+  appUrl: string,
+  bonusMatches: CompatibilityMatch[] = [],
+): string {
   const { identity, dimensions_16d, jungian_threads, historical_resonance,
           oracle_sentence, practice_prompts, sol_voice, referral } = report;
 
@@ -230,6 +323,14 @@ function renderReportPage(report: ArchetypeReport, appUrl: string): string {
     .upgrade-card p { color: rgba(237, 237, 240, 0.7); margin: 0 0 1.25rem; }
     .upgrade-btn { display: inline-block; background: linear-gradient(135deg, #d4a017, #c08610); color: #0a0a10; padding: 0.8rem 1.8rem; border-radius: 8px; text-decoration: none; font-weight: 600; }
 
+    .bonus-chapter { margin: 3rem 0; padding: 2rem; background: linear-gradient(135deg, rgba(212, 160, 23, 0.12), rgba(124, 92, 230, 0.08)); border: 1px solid rgba(212, 160, 23, 0.35); border-radius: 16px; }
+    .bonus-eyebrow { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: #d4a017; margin: 0 0 0.5rem; }
+    .bonus-header { text-align: center; margin-bottom: 2rem; }
+    .compat-card { padding: 1.5rem; background: rgba(10, 10, 16, 0.55); border: 1px solid rgba(237, 237, 240, 0.08); border-radius: 12px; margin-bottom: 1rem; }
+    .compat-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(237, 237, 240, 0.06); }
+    .compat-score { font-family: Georgia, serif; font-size: 1.75rem; color: #d4a017; text-align: right; line-height: 1; }
+    .compat-score span { display: block; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(237, 237, 240, 0.55); margin-top: 0.25rem; font-family: inherit; }
+
     footer.report-footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(237, 237, 240, 0.08); color: rgba(237, 237, 240, 0.45); font-size: 0.8125rem; text-align: center; }
 
     @media (max-width: 640px) {
@@ -332,6 +433,8 @@ function renderReportPage(report: ArchetypeReport, appUrl: string): string {
       </div>
     </section>
 
+    ${renderBonusChapter(bonusMatches, appUrl)}
+
     <section class="referral-card">
       <h3>Unlock your bonus compatibility chapter</h3>
       <p>When 3 friends generate their report with your code, we unlock a chapter showing how your pattern resonates with theirs.</p>
@@ -404,7 +507,29 @@ export const onRequestGet: PagesFunction<Env, 'id'> = async ({ params, env }) =>
       .bind(id).run();
   } catch { /* non-fatal */ }
 
-  const html = renderReportPage(report, env.APP_URL);
+  // Bonus chapter: if unlocked, compute compatibility with referred reports
+  let bonusMatches: CompatibilityMatch[] = [];
+  if (row.bonus_unlocked === 1) {
+    try {
+      const { results } = await env.DB.prepare(`
+        SELECT id, report_data FROM free_reports
+        WHERE referrer_report_id = ?
+        ORDER BY created_at DESC
+        LIMIT 5
+      `).bind(id).all<{ id: string; report_data: string }>();
+
+      for (const row of results ?? []) {
+        try {
+          const theirs = JSON.parse(row.report_data) as ArchetypeReport;
+          bonusMatches.push(computeCompatibility(report, theirs));
+        } catch { /* skip bad row */ }
+      }
+    } catch (err) {
+      console.warn('[REPORT] bonus fetch failed (non-fatal):', err);
+    }
+  }
+
+  const html = renderReportPage(report, env.APP_URL, bonusMatches);
   return new Response(html, {
     status: 200,
     headers: {
