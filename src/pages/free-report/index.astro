@@ -1,0 +1,439 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { FreeReportForm } from '../../components/shared/FreeReportForm';
+
+// Pick up ?ref=<code> if user arrived via a shared link
+const url = new URL(Astro.request.url);
+const referrerCode = url.searchParams.get('ref');
+---
+
+<BaseLayout
+  title="Free Birth Chart Archetype Report | The Realm of Patterns"
+  description="A 20-section depth-psychology report of your birth chart — archetype, shadow, historical resonance, and Jungian threads. Free, no account required."
+  transparentHeader={true}
+>
+  <main class="free-report-page">
+    <div class="hero-bg">
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+    </div>
+
+    <section class="hero">
+      <p class="eyebrow">✦ Free report</p>
+      <h1>
+        Your birth chart as a
+        <span class="accent">20-section Jungian archetype report.</span>
+      </h1>
+      <p class="subhead">
+        Not a horoscope. A mirror — written from the same 16-dimensional framework our paying
+        members use daily.
+      </p>
+
+      <ul class="credibility">
+        <li>
+          <span class="bullet">·</span>
+          <span>Computed from real planetary positions, not generic sun-sign archetypes</span>
+        </li>
+        <li>
+          <span class="bullet">·</span>
+          <span>Matches your pattern against 200+ historical figures (Jung, Hypatia, Rumi, da Vinci…)</span>
+        </li>
+        <li>
+          <span class="bullet">·</span>
+          <span>Reads like a Jung seminar — no prescription, no "you should"</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="form-section">
+      <FreeReportForm client:load referrerCode={referrerCode} />
+    </section>
+
+    <section class="how-it-works">
+      <h2>What you'll get</h2>
+      <ol>
+        <li>
+          <strong>Your core archetype</strong> — one of eight Jungian figures, computed from your
+          strongest dimension. Hero, Sage, Warrior, Lover, Ruler, Explorer, Caregiver, or Mystic.
+        </li>
+        <li>
+          <strong>Your shadow</strong> — the weakest dimension, read not as a weakness but as the
+          door you've been avoiding.
+        </li>
+        <li>
+          <strong>Three historical resonances</strong> — the figures across history whose natal
+          pattern most closely matches yours, with their actual quotes and biographies.
+        </li>
+        <li>
+          <strong>Three Jungian threads</strong> — the concepts from depth psychology most active
+          in your field (individuation, anima/animus, the senex, synchronicity…).
+        </li>
+        <li>
+          <strong>Your oracle sentence</strong> — one line that names the lifelong tension at the
+          center of your pattern.
+        </li>
+        <li>
+          <strong>Three practice prompts</strong> — open questions to carry into the next week.
+        </li>
+      </ol>
+    </section>
+
+    <section class="fine-print-section">
+      <p>
+        <strong>Free forever.</strong> Your report lives at a permanent link only you have. Share
+        it with three friends and unlock a bonus compatibility chapter showing how your pattern
+        resonates with another person's.
+      </p>
+      <p class="small">
+        Birth time is optional. If you don't know it, we use a noon chart — still accurate for
+        dimensional weighting, less accurate for house-specific readings.
+      </p>
+    </section>
+  </main>
+</BaseLayout>
+
+<style is:global>
+  .free-report-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 6rem;
+    position: relative;
+    color: #ededf0;
+  }
+
+  .hero-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-bg .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.35;
+  }
+
+  .hero-bg .glow-1 {
+    width: 520px;
+    height: 520px;
+    background: radial-gradient(circle, #7c5ce6 0%, transparent 70%);
+    top: -200px;
+    left: -180px;
+  }
+
+  .hero-bg .glow-2 {
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, #d4a017 0%, transparent 70%);
+    bottom: -160px;
+    right: -140px;
+    opacity: 0.25;
+  }
+
+  .free-report-page .eyebrow {
+    font-size: 0.875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #d4a017;
+    margin-bottom: 1rem;
+  }
+
+  .free-report-page h1 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1.15;
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    margin: 0 0 1.5rem;
+  }
+
+  .free-report-page h1 .accent {
+    color: #d4a017;
+    display: block;
+    font-weight: 400;
+  }
+
+  .free-report-page .subhead {
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: rgba(237, 237, 240, 0.78);
+    margin-bottom: 2rem;
+  }
+
+  .credibility {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 3rem;
+  }
+
+  .credibility li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: rgba(237, 237, 240, 0.88);
+    border-bottom: 1px solid rgba(237, 237, 240, 0.08);
+  }
+
+  .credibility .bullet {
+    color: #d4a017;
+    font-size: 1.25rem;
+    line-height: 1;
+    flex-shrink: 0;
+    padding-top: 0.15rem;
+  }
+
+  .form-section {
+    margin-bottom: 4rem;
+  }
+
+  /* Form styles */
+  .free-report-form {
+    background: rgba(20, 20, 30, 0.55);
+    border: 1px solid rgba(237, 237, 240, 0.09);
+    border-radius: 16px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .field-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .field-group label,
+  .free-report-form legend {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(237, 237, 240, 0.72);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .free-report-form input[type="text"],
+  .free-report-form input[type="email"],
+  .free-report-form input[type="number"] {
+    width: 100%;
+    background: rgba(10, 10, 16, 0.6);
+    border: 1px solid rgba(237, 237, 240, 0.12);
+    border-radius: 8px;
+    padding: 0.75rem 0.875rem;
+    color: #ededf0;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .free-report-form input:focus {
+    outline: none;
+    border-color: #d4a017;
+    background: rgba(10, 10, 16, 0.8);
+  }
+
+  .date-row {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .date-row input {
+    text-align: center;
+  }
+
+  .time-known {
+    border: none;
+    padding: 0;
+    margin-bottom: 1.25rem;
+  }
+
+  .radio {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    color: rgba(237, 237, 240, 0.88);
+  }
+
+  .radio input {
+    width: auto;
+    margin: 0;
+    accent-color: #d4a017;
+  }
+
+  .time-row .time-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 200px;
+  }
+
+  .time-row .time-inputs input {
+    text-align: center;
+  }
+
+  .time-row .sep {
+    font-size: 1.25rem;
+    color: rgba(237, 237, 240, 0.5);
+  }
+
+  .error-msg {
+    color: #ef6461;
+    font-size: 0.875rem;
+    margin: 0.5rem 0 1rem;
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #d4a017, #c08610);
+    border: none;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    color: #0a0a10;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.2s, opacity 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(212, 160, 23, 0.35);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .fine-print {
+    font-size: 0.8125rem;
+    color: rgba(237, 237, 240, 0.55);
+    text-align: center;
+    margin: 1rem 0 0;
+  }
+
+  /* Loading state */
+  .free-report-loading {
+    background: rgba(20, 20, 30, 0.55);
+    border: 1px solid rgba(237, 237, 240, 0.09);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+
+  .orbit {
+    width: 80px;
+    height: 80px;
+    border: 1px solid rgba(212, 160, 23, 0.3);
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    animation: spin 4s linear infinite;
+  }
+
+  .orbit-dot {
+    width: 10px;
+    height: 10px;
+    background: #d4a017;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 16px #d4a017;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .loading-line {
+    font-size: 1.0625rem;
+    color: #ededf0;
+    margin: 0 0 0.5rem;
+    min-height: 1.6em;
+  }
+
+  .loading-sub {
+    font-size: 0.875rem;
+    color: rgba(237, 237, 240, 0.55);
+    margin: 0;
+  }
+
+  /* Below-fold sections */
+  .how-it-works {
+    margin-top: 5rem;
+  }
+
+  .how-it-works h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #d4a017;
+    margin-bottom: 1.5rem;
+  }
+
+  .how-it-works ol {
+    padding-left: 1.5rem;
+    color: rgba(237, 237, 240, 0.85);
+  }
+
+  .how-it-works li {
+    padding: 0.75rem 0;
+    line-height: 1.55;
+    border-bottom: 1px solid rgba(237, 237, 240, 0.06);
+  }
+
+  .how-it-works li:last-child {
+    border-bottom: none;
+  }
+
+  .how-it-works strong {
+    color: #ededf0;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .fine-print-section {
+    margin-top: 4rem;
+    padding: 2rem;
+    background: rgba(20, 20, 30, 0.35);
+    border-radius: 12px;
+    border: 1px solid rgba(237, 237, 240, 0.06);
+  }
+
+  .fine-print-section p {
+    color: rgba(237, 237, 240, 0.8);
+    line-height: 1.55;
+    margin: 0 0 1rem;
+  }
+
+  .fine-print-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  .fine-print-section .small {
+    font-size: 0.875rem;
+    color: rgba(237, 237, 240, 0.55);
+  }
+
+  .fine-print-section strong {
+    color: #d4a017;
+  }
+
+  @media (max-width: 640px) {
+    .free-report-page {
+      padding: 2rem 1rem 4rem;
+    }
+    .free-report-form {
+      padding: 1.5rem;
+    }
+  }
+</style>
