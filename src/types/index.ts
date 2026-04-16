@@ -183,6 +183,11 @@ export interface Env {
   TELEGRAM_BOT_USERNAME?: string;
   DISCORD_WEBHOOK_URL?: string;
 
+  // Mirror (Mumega memory API) — optional; remember() no-ops when unset
+  MIRROR_API_URL?: string;
+  MIRROR_API_TOKEN?: string;
+  MIRROR_PROJECT?: string;
+
   // Additional Gemini API keys for rotation (optional)
   GEMINI_API_KEY_2?: string;
   GEMINI_API_KEY_3?: string;

@@ -1,4 +1,5 @@
 import type { Env } from '../../../src/types';
+import { remember } from '../../../src/lib/mirror-client';
 
 interface TelegramUser {
   id: number;
@@ -176,6 +177,19 @@ async function sendDailyReading(env: Env, chatId: string, telegramUserId: string
       UPDATE telegram_users SET last_interaction_at = datetime('now'), updated_at = datetime('now')
       WHERE telegram_user_id = ?
     `).bind(telegramUserId).run();
+
+    // Mirror: record reading view (retention signal)
+    await remember(env, {
+      text: `Reading viewed ${brief.dateFormatted}: ${brief.dimension.name} / ${brief.planet} / ${brief.moonPhase}`,
+      subject: `telegram:${telegramUserId}`,
+      kind: 'view',
+      tags: ['telegram', 'daily-reading', brief.dimension.name.toLowerCase()],
+      metadata: {
+        dimension: brief.dimension.name,
+        planet: brief.planet,
+        moon_phase: brief.moonPhase,
+      },
+    });
   } catch (err) {
     console.error('[TELEGRAM] sendDailyReading error:', err);
     await sendMessage(env, chatId, 'I could not read today\'s field right now. Try again shortly.');
@@ -306,6 +320,28 @@ async function handleCheckinNote(env: Env, chatId: string, telegramUserId: strin
   `).bind(telegramUserId).run();
 
   await sendMessage(env, chatId, preview);
+
+  // Write engram to Mirror (non-blocking, no-op if Mirror not configured)
+  const engramText = [
+    `Check-in ${today}`,
+    `state: ${stateLabel}`,
+    `area: ${areaLabel}`,
+    note ? `note: ${note}` : undefined,
+  ].filter(Boolean).join(' | ');
+
+  await remember(env, {
+    text: engramText,
+    subject: `telegram:${telegramUserId}`,
+    kind: 'checkin',
+    tags: ['telegram', 'checkin', stateLabel, areaLabel].filter(Boolean) as string[],
+    metadata: {
+      date: today,
+      state: stateLabel,
+      area: areaLabel,
+      has_note: Boolean(note),
+      streak: (user?.streak_current ?? 0) + 1,
+    },
+  });
 }
 
 async function buildNatalPreview(env: Env, user: any) {
