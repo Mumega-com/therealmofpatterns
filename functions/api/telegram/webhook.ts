@@ -94,6 +94,21 @@ async function handleMessage(message: TelegramMessage, env: Env) {
     return;
   }
 
+  if (text === '/today' || text === '/sol') {
+    await sendDailyReading(env, chatId, telegramUserId);
+    return;
+  }
+
+  if (text === '/streak') {
+    const u = await getTelegramUser(env, telegramUserId);
+    const streak = u?.streak_current ?? 0;
+    const longest = u?.streak_longest ?? 0;
+    const count = u?.checkin_count ?? 0;
+    await sendMessage(env, chatId,
+      `Your rhythm:\n• Current streak: ${streak} days\n• Longest streak: ${longest} days\n• Total check-ins: ${count}\n\nSend /checkin to log today.`);
+    return;
+  }
+
   if (text === '/checkin') {
     await setBotState(env, telegramUserId, 'awaiting_checkin_state');
     await sendMessage(env, chatId, 'Today\'s check-in 🌅\n\nHow are you arriving today?', {
@@ -123,8 +138,47 @@ async function handleMessage(message: TelegramMessage, env: Env) {
       return;
     default:
       await sendMessage(env, chatId,
-        `I can help you with two things right now:\n\n• send /start for your natal reading\n• send /checkin for today's mirror`
+        `Three things I can do right now:\n\n• /today — today's cosmic weather\n• /checkin — log today's mirror\n• /streak — your rhythm so far\n\nOr /start to set up your natal field.`
       );
+  }
+}
+
+async function sendDailyReading(env: Env, chatId: string, telegramUserId: string) {
+  try {
+    const res = await fetch(`${env.APP_URL}/api/daily-brief`);
+    if (!res.ok) {
+      await sendMessage(env, chatId, 'I could not read today\'s field right now. Try again shortly.');
+      return;
+    }
+    const brief = await res.json<{
+      dateFormatted: string; planet: string; dimension: { name: string; domain: string };
+      archetypes: { primary: { name: string; symbol: string; quality: string } };
+      moonPhase: string; moonEmoji: string; narrative: string;
+    }>();
+
+    const text = [
+      `🪞 *${brief.dateFormatted}*`,
+      '',
+      `*${brief.dimension.name}* · ruled by ${brief.planet}`,
+      `${brief.moonEmoji} ${brief.moonPhase}`,
+      '',
+      brief.narrative,
+      '',
+      `Archetype: *${brief.archetypes.primary.name}* ${brief.archetypes.primary.symbol}`,
+      `_${brief.archetypes.primary.quality}_`,
+      '',
+      'Ready to log today\'s mirror? /checkin',
+    ].join('\n');
+
+    await sendMessage(env, chatId, text);
+
+    await env.DB.prepare(`
+      UPDATE telegram_users SET last_interaction_at = datetime('now'), updated_at = datetime('now')
+      WHERE telegram_user_id = ?
+    `).bind(telegramUserId).run();
+  } catch (err) {
+    console.error('[TELEGRAM] sendDailyReading error:', err);
+    await sendMessage(env, chatId, 'I could not read today\'s field right now. Try again shortly.');
   }
 }
 
