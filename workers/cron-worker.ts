@@ -45,6 +45,16 @@ interface DailyUpdateResult {
   error?: { code: string; message: string };
 }
 
+interface ContentLoopResult {
+  success: boolean;
+  date: string;
+  cosmic_events: Array<{ type: string; name: string; description: string }>;
+  social_posts: Array<{ language: string; stored: boolean; caption_x_preview: string }>;
+  blog_generated: number;
+  languages_completed: string[];
+  errors: string[];
+}
+
 interface BatchResult {
   success: boolean;
   generated: number;
@@ -127,12 +137,16 @@ export default {
 // ============================================
 
 /**
- * 00:00 UTC - Daily weather generation for all 6 languages
+ * 00:00 UTC - Daily content loop: blog + social + cosmic events + UV snapshots
+ * Delegates to /api/content-loop which internally calls /api/daily-update,
+ * detects cosmic events, and persists social posts to D1.
+ * Falls back to /api/daily-update directly if content-loop fails (safety net).
  */
 async function runDailyWeather(env: Env, startTime: number): Promise<void> {
-  console.log('[CRON] Running daily weather generation...');
+  console.log('[CRON] Running daily content loop (blog + social + events)...');
 
-  const response = await fetch(`${env.PAGES_URL}/api/daily-update`, {
+  // Step 1: Run the full content loop (blog via daily-update + social + events)
+  const loopResponse = await fetch(`${env.PAGES_URL}/api/content-loop`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -140,30 +154,65 @@ async function runDailyWeather(env: Env, startTime: number): Promise<void> {
       'User-Agent': 'therealmofpatterns-cron-worker'
     },
     body: JSON.stringify({
-      skip_users: false, // Also update user snapshots
+      // languages: omit to default to ['en'] for social; blog does all 6 via daily-update delegation
+      // skip_blog: false, skip_social: false, skip_events: false
     })
   });
 
-  const result = await response.json() as DailyUpdateResult;
-  const duration = Date.now() - startTime;
+  const loopResult = await loopResponse.json() as ContentLoopResult;
 
-  if (response.ok && result.success) {
-    console.log('[CRON] Daily weather successful:', {
-      duration: `${duration}ms`,
-      content_generated: result.content_generated,
-      languages: result.languages_completed,
-      users_updated: result.users_updated,
-      snapshots: result.snapshots_created,
-      notifications: result.notifications_queued,
-      errors: result.errors
+  if (loopResponse.ok && loopResult.success) {
+    console.log('[CRON] Content loop successful:', {
+      duration: `${Date.now() - startTime}ms`,
+      date: loopResult.date,
+      cosmic_events: loopResult.cosmic_events?.length ?? 0,
+      social_posts_stored: loopResult.social_posts?.filter(p => p.stored).length ?? 0,
+      blog_generated: loopResult.blog_generated,
+      languages_completed: loopResult.languages_completed,
     });
   } else {
-    console.error('[CRON] Daily weather failed:', result);
+    console.error('[CRON] Content loop failed:', loopResult);
     if (env.DISCORD_WEBHOOK_URL) {
-      await sendDiscordAlert(env.DISCORD_WEBHOOK_URL, 'Daily Weather Failed', {
+      await sendDiscordAlert(env.DISCORD_WEBHOOK_URL, 'Content Loop Failed', {
         job: 'daily-weather',
+        duration: `${Date.now() - startTime}ms`,
+        result: loopResult,
+      });
+    }
+  }
+
+  // Step 2: Update user UV snapshots (separate from content-loop which is content-only)
+  const snapshotResponse = await fetch(`${env.PAGES_URL}/api/daily-update`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Key': env.ADMIN_KEY,
+      'User-Agent': 'therealmofpatterns-cron-worker'
+    },
+    body: JSON.stringify({
+      skip_content: true, // content already handled by content-loop
+      skip_users: false,
+    })
+  });
+
+  const snapshotResult = await snapshotResponse.json() as DailyUpdateResult;
+  const duration = Date.now() - startTime;
+
+  if (snapshotResponse.ok && snapshotResult.success) {
+    console.log('[CRON] UV snapshots successful:', {
+      duration: `${duration}ms`,
+      users_updated: snapshotResult.users_updated,
+      snapshots: snapshotResult.snapshots_created,
+      notifications: snapshotResult.notifications_queued,
+      errors: snapshotResult.errors
+    });
+  } else {
+    console.error('[CRON] UV snapshots failed:', snapshotResult);
+    if (env.DISCORD_WEBHOOK_URL) {
+      await sendDiscordAlert(env.DISCORD_WEBHOOK_URL, 'UV Snapshots Failed', {
+        job: 'daily-weather-snapshots',
         duration: `${duration}ms`,
-        result
+        result: snapshotResult
       });
     }
   }
