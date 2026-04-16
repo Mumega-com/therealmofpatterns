@@ -48,6 +48,8 @@ import {
   getJourneyContent,
   ARCHETYPES,
 } from '../../src/lib/archetype-engine';
+import { sendEmail } from '../../src/lib/resend-client';
+import { remember } from '../../src/lib/mirror-client';
 
 // ─────────────────────────────────────────────
 // Request / response types
@@ -365,6 +367,80 @@ function buildReferralCode(primaryArchetypeId: string, reportId: string): string
   return `${primaryArchetypeId}-${reportId.slice(0, 6)}`;
 }
 
+/** Build the delivery email HTML. Kept inline — small template, rarely changes. */
+function buildReportEmailHtml(
+  archetypeTitle: string,
+  oracleSentence: string,
+  permalink: string,
+  referralCode: string,
+  appUrl: string,
+): string {
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="dark">
+  <title>Your archetype report is ready</title>
+</head>
+<body style="margin:0; padding:0; background:#0a0a10; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; color:#ededf0;">
+  <div style="max-width:560px; margin:0 auto; padding:48px 24px;">
+
+    <p style="color:#d4a017; letter-spacing:0.15em; text-transform:uppercase; font-size:12px; margin:0 0 12px;">✦ Your report is ready</p>
+
+    <h1 style="font-size:28px; font-weight:300; color:#ededf0; margin:0 0 24px; line-height:1.2;">
+      You are <span style="color:#d4a017;">${archetypeTitle}</span>.
+    </h1>
+
+    <p style="font-family:Georgia,serif; font-style:italic; font-size:18px; line-height:1.5; color:rgba(237,237,240,0.9); padding:20px; border-left:3px solid #d4a017; background:rgba(212,160,23,0.05); margin:0 0 32px;">
+      ${oracleSentence}
+    </p>
+
+    <p style="font-size:15px; line-height:1.55; color:rgba(237,237,240,0.85); margin:0 0 24px;">
+      Your full 20-section report is waiting at your permanent link. It's yours forever — no account, no login.
+    </p>
+
+    <div style="text-align:center; margin:32px 0;">
+      <a href="${permalink}" style="display:inline-block; background:linear-gradient(135deg,#d4a017,#c08610); color:#0a0a10; text-decoration:none; font-weight:600; padding:14px 32px; border-radius:8px; font-size:15px;">
+        Open your report
+      </a>
+    </div>
+
+    <p style="font-size:14px; line-height:1.55; color:rgba(237,237,240,0.65); margin:32px 0 0; padding-top:24px; border-top:1px solid rgba(237,237,240,0.08);">
+      <strong style="color:#d4a017;">Want a bonus compatibility chapter?</strong><br>
+      Share your report with three friends. When they generate theirs using your code, we'll unlock a chapter showing how your pattern meets theirs.
+    </p>
+
+    <p style="font-size:13px; color:rgba(237,237,240,0.6); margin:12px 0 0;">
+      Your code: <code style="background:rgba(212,160,23,0.12); color:#d4a017; padding:3px 6px; border-radius:4px;">${referralCode}</code>
+    </p>
+
+    <p style="font-size:13px; color:rgba(237,237,240,0.5); margin:48px 0 0; text-align:center;">
+      Sol, via The Realm of Patterns · <a href="${appUrl}" style="color:rgba(212,160,23,0.7);">therealmofpatterns.com</a>
+    </p>
+
+  </div>
+</body>
+</html>`;
+}
+
+function buildReportEmailText(archetypeTitle: string, oracleSentence: string, permalink: string, referralCode: string): string {
+  return `Your archetype report is ready.
+
+You are ${archetypeTitle}.
+
+"${oracleSentence}"
+
+Open your full report:
+${permalink}
+
+Want a bonus compatibility chapter?
+Share your report with three friends. When they generate theirs using your code, we'll unlock a chapter showing how your pattern meets theirs.
+
+Your referral code: ${referralCode}
+
+— Sol, via The Realm of Patterns`;
+}
+
 // ─────────────────────────────────────────────
 // Handler
 // ─────────────────────────────────────────────
@@ -372,7 +448,8 @@ function buildReferralCode(primaryArchetypeId: string, reportId: string): string
 export const onRequestOptions: PagesFunction = async () =>
   new Response(null, { status: 204, headers: CORS_HEADERS });
 
-export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+export const onRequestPost: PagesFunction<Env> = async (context) => {
+  const { request, env } = context;
   let body: RequestBody;
   try {
     body = await request.json();
@@ -597,6 +674,43 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       ).run();
     } catch (err) {
       console.warn('[ARCHETYPE-REPORT] subscriber upsert failed (non-fatal):', err);
+    }
+  }
+
+  // Email delivery + Mirror engram (non-blocking, best-effort)
+  if (emailProvided) {
+    const emailPromise = sendEmail(env, {
+      to: emailProvided,
+      subject: `You are ${archetypeResult.primary.title} — your report is ready`,
+      html: buildReportEmailHtml(
+        archetypeResult.primary.title, oracle, permalink, referralCode, env.APP_URL,
+      ),
+      text: buildReportEmailText(
+        archetypeResult.primary.title, oracle, permalink, referralCode,
+      ),
+      tags: [
+        { name: 'source', value: 'free_report' },
+        { name: 'archetype', value: archetypeResult.primary.id },
+      ],
+    }).catch(err => console.warn('[ARCHETYPE-REPORT] email send failed:', err));
+
+    const mirrorPromise = remember(env, {
+      text: `Free report generated: ${archetypeResult.primary.title} · dominant ${dominantMeta.name} · shadow ${archetypeResult.primary.shadowName}`,
+      subject: `email:${emailHash ?? 'anon'}`,
+      kind: 'reading',
+      tags: ['free-report', archetypeResult.primary.id, dominantMeta.name.toLowerCase()],
+      metadata: {
+        report_id: reportId,
+        archetype: archetypeResult.primary.title,
+        dominant: dominantMeta.name,
+        shadow: archetypeResult.primary.shadowName,
+        language,
+      },
+    }).catch(err => console.warn('[ARCHETYPE-REPORT] mirror write failed:', err));
+
+    // Fire-and-forget — don't block the response on email delivery
+    if (typeof context.waitUntil === 'function') {
+      context.waitUntil(Promise.all([emailPromise, mirrorPromise]));
     }
   }
 

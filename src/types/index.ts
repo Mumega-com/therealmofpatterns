@@ -188,6 +188,15 @@ export interface Env {
   MIRROR_API_TOKEN?: string;
   MIRROR_PROJECT?: string;
 
+  // Resend (email provider) — optional; sendReportEmail() no-ops when unset
+  RESEND_API_KEY?: string;
+  RESEND_FROM_EMAIL?: string;      // e.g. "Sol <sol@mumega.com>"
+  RESEND_REPLY_TO?: string;
+
+  // Glass Commerce (Stripe Connect fee split) — optional
+  GLASS_PLATFORM_ACCOUNT_ID?: string;
+  GLASS_PLATFORM_FEE_PERCENT?: string;
+
   // Additional Gemini API keys for rotation (optional)
   GEMINI_API_KEY_2?: string;
   GEMINI_API_KEY_3?: string;
