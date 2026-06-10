@@ -17,6 +17,8 @@ export default defineConfig({
     baseURL: process.env.BASE_URL || 'https://therealmofpatterns.com',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    // For sandboxed/proxied environments with TLS interception
+    ignoreHTTPSErrors: process.env.E2E_IGNORE_HTTPS === '1',
   },
 
   projects: [

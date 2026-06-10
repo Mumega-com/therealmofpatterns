@@ -32,7 +32,7 @@ npm run typecheck    # Astro check + tsc
 ```
 src/
 ├── pages/           # Astro routes (static + dynamic)
-├── components/      # React islands (sol/, kasra/, river/, shared/, charts/)
+├── components/      # React islands (sol/, shared/, charts/, checkin/, soul/)
 ├── lib/             # Core engine (16d-engine.ts, natal.ts, ephemeris.ts, narrator-*.ts)
 ├── stores/          # Nanostores ($mode, $stage, $forecast, $user)
 ├── hooks/           # React hooks
