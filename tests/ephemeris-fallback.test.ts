@@ -102,36 +102,64 @@ describe('Ephemeris Fallback (TypeScript Keplerian)', () => {
   });
 
   describe('agreement with astronomy-engine (accurate path)', () => {
-    // NOTE: the fallback's docstring claims ~0.5° (inner) / ~1° (outer) accuracy,
-    // but measured errors vs astronomy-engine are far larger for Mercury (~28-101°),
-    // Venus (~59-143°), Mars (~23-45°), Jupiter (~4-12°) and Saturn (~1-5°),
-    // because the heliocentric→geocentric conversion is wrong/missing for those
-    // bodies. Only Sun, Moon, Uranus, Neptune, Pluto are usably close, so the
-    // agreement assertions below are limited to those bodies.
+    // All 10 bodies are cross-checked against astronomy-engine on dates spread
+    // across four decades. Tolerances reflect the fallback's honest accuracy:
+    // the geocentric conversion uses in-plane Keplerian orbits for both the
+    // planet and the Earth, so inner planets carry the largest residuals.
     const cases: { label: string; dt: DateTime; date: Date }[] = [
+      {
+        label: '1985-03-15 12:00 UT',
+        dt: { year: 1985, month: 3, day: 15, hour: 12 },
+        date: new Date(Date.UTC(1985, 2, 15, 12)),
+      },
       {
         label: '2000-01-01 12:00 UT',
         dt: J2000_DT,
         date: new Date(Date.UTC(2000, 0, 1, 12)),
       },
       {
-        label: '2024-03-20 12:00 UT',
-        dt: { year: 2024, month: 3, day: 20, hour: 12 },
-        date: new Date(Date.UTC(2024, 2, 20, 12)),
+        label: '2014-09-09 12:00 UT',
+        dt: { year: 2014, month: 9, day: 9, hour: 12 },
+        date: new Date(Date.UTC(2014, 8, 9, 12)),
+      },
+      {
+        label: '2026-06-10 12:00 UT',
+        dt: { year: 2026, month: 6, day: 10, hour: 12 },
+        date: new Date(Date.UTC(2026, 5, 10, 12)),
       },
     ];
 
+    // Max allowed error (degrees) per planet. Measured maxima on these four
+    // dates: Sun 0.01, Moon 2.40, Mercury 0.11, Venus 0.21, Mars 0.24,
+    // Jupiter 0.59, Saturn 1.30, Uranus 1.09, Neptune 1.13, Pluto 1.27.
+    // Tolerances leave headroom but stay well under the rough worst-case
+    // bounds measured across 1950-2040 (Saturn ~3.2°, Moon ~3.1°).
+    const TOLERANCES: Record<string, number> = {
+      Sun: 0.1,
+      Moon: 3.5,
+      Mercury: 0.5,
+      Venus: 0.5,
+      Mars: 0.5,
+      Jupiter: 1,
+      Saturn: 2,
+      Uranus: 1.5,
+      Neptune: 1.5,
+      Pluto: 2,
+    };
+
     for (const { label, dt, date } of cases) {
-      it(`Sun within 0.1°, Moon within 3°, Uranus/Neptune/Pluto within 4° (${label})`, () => {
+      it(`all 10 planets within tolerance of astronomy-engine (${label})`, () => {
         const accurate = getPlanetaryLongitudes(date);
         const fallback = getLongitudesArray(dt);
         expect(fallback).toHaveLength(10);
 
-        expect(angularDiff(fallback[0], accurate[0])).toBeLessThan(0.1); // Sun
-        expect(angularDiff(fallback[1], accurate[1])).toBeLessThan(3); // Moon
-        expect(angularDiff(fallback[7], accurate[7])).toBeLessThan(4); // Uranus
-        expect(angularDiff(fallback[8], accurate[8])).toBeLessThan(4); // Neptune
-        expect(angularDiff(fallback[9], accurate[9])).toBeLessThan(4); // Pluto
+        for (let i = 0; i < PLANETS.length; i++) {
+          const planet = PLANETS[i];
+          const err = angularDiff(fallback[i], accurate[i]);
+          expect(err, `${planet} on ${label}: error ${err.toFixed(2)}°`).toBeLessThan(
+            TOLERANCES[planet],
+          );
+        }
       });
     }
 

@@ -1,11 +1,16 @@
 /**
  * TypeScript Ephemeris Fallback
  *
- * Client-side planetary position calculator for when Swiss Ephemeris
- * or backend API is unavailable. Uses simplified VSOP87 orbital elements
- * with perturbation corrections for improved accuracy.
+ * Client-side planetary position calculator for when astronomy-engine
+ * or the backend API is unavailable. Uses Keplerian orbital elements at
+ * J2000 with a proper heliocentric→geocentric rectangular conversion
+ * (planet vector minus Earth vector, in-plane approximation; ecliptic
+ * latitude/inclination ignored).
  *
- * Accuracy: ~0.5° for inner planets, ~1° for outer planets
+ * Measured accuracy vs astronomy-engine (worst case, 1950-2040):
+ *   Sun ~0.02°, Mercury ~1°, Venus ~2°, Mars ~2°, Jupiter ~1.6°,
+ *   Saturn ~3.2°, Uranus ~2.3°, Neptune ~1.5°, Pluto ~2.2°, Moon ~3.1°.
+ * Typical errors are well under 1° for most bodies.
  * Suitable for: Pattern calculations, chart approximations, fallback mode
  */
 
@@ -224,9 +229,13 @@ function trueAnomaly(E: number, e: number): number {
 }
 
 /**
- * Calculate heliocentric longitude for a planet
+ * Solve a planet's Keplerian orbit at a given instant.
+ *
+ * Returns the heliocentric ecliptic longitude (degrees, in-plane
+ * approximation: inclination ignored) and the radius vector r in AU
+ * from r = a(1 - e·cos E).
  */
-function heliocentricLongitude(planet: PlanetName, jd: number): number {
+function heliocentricState(planet: PlanetName, jd: number): { longitude: number; r: number } {
   const elements = ORBITAL_ELEMENTS[planet];
   const rates = ELEMENT_RATES[planet] || {};
   const T = julianCenturies(jd);
@@ -234,7 +243,6 @@ function heliocentricLongitude(planet: PlanetName, jd: number): number {
 
   // Update elements for precession
   const varpi = elements.varpi + (rates.varpi || 0) * T;
-  const omega = elements.omega + (rates.omega || 0) * T;
 
   // Mean longitude
   const L = normalizeDegrees(elements.L0 + elements.n * d);
@@ -249,10 +257,30 @@ function heliocentricLongitude(planet: PlanetName, jd: number): number {
   // True anomaly
   const v = trueAnomaly(E, elements.e);
 
-  // Heliocentric longitude
+  // Heliocentric longitude and radius vector
   const longitude = normalizeDegrees(toDegrees(v) + varpi);
+  const r = elements.a * (1 - elements.e * Math.cos(E));
 
-  return longitude;
+  return { longitude, r };
+}
+
+/**
+ * Earth's heliocentric ecliptic position.
+ *
+ * The Sun's geocentric longitude is Earth's heliocentric longitude + 180°,
+ * and Earth's radius vector comes from solving its own Keplerian orbit
+ * (the "Sun" orbital elements describe Earth's orbit).
+ */
+function earthState(jd: number, sunLong: number): { longitude: number; r: number } {
+  const elements = ORBITAL_ELEMENTS.Sun;
+  const d = daysSinceJ2000(jd);
+
+  // Earth's (= Sun's) mean anomaly
+  const M = normalizeDegrees(357.529 + 0.985600 * d);
+  const E = solveKepler(toRadians(M), elements.e);
+  const r = elements.a * (1 - elements.e * Math.cos(E));
+
+  return { longitude: normalizeDegrees(sunLong + 180), r };
 }
 
 /**
@@ -333,7 +361,12 @@ function sunPosition(jd: number): { longitude: number; latitude: number; speed: 
 }
 
 /**
- * Get geocentric longitude by applying parallax correction
+ * Get geocentric ecliptic longitude for a planet.
+ *
+ * Converts heliocentric to geocentric coordinates via rectangular
+ * ecliptic coordinates: the geocentric position vector is the planet's
+ * heliocentric vector minus Earth's heliocentric vector. Works the same
+ * for inner and outer planets (in-plane approximation, latitude ignored).
  */
 function geocentricLongitude(planet: PlanetName, jd: number, sunLong: number): number {
   if (planet === 'Sun' || planet === 'Moon') {
@@ -341,33 +374,17 @@ function geocentricLongitude(planet: PlanetName, jd: number, sunLong: number): n
     return planet === 'Sun' ? sunLong : moonPosition(jd).longitude;
   }
 
-  const helio = heliocentricLongitude(planet, jd);
-  const elements = ORBITAL_ELEMENTS[planet];
-  const sunElements = ORBITAL_ELEMENTS.Sun;
+  const p = heliocentricState(planet, jd);
+  const earth = earthState(jd, sunLong);
 
-  // Simple geocentric conversion (parallax)
-  // For outer planets, the correction is small
-  // For inner planets (Mercury, Venus), larger correction needed
+  // Heliocentric rectangular ecliptic coordinates (in-plane)
+  const xp = p.r * Math.cos(toRadians(p.longitude));
+  const yp = p.r * Math.sin(toRadians(p.longitude));
+  const xe = earth.r * Math.cos(toRadians(earth.longitude));
+  const ye = earth.r * Math.sin(toRadians(earth.longitude));
 
-  if (elements.a < sunElements.a) {
-    // Inner planet - more complex geometry
-    const T = julianCenturies(jd);
-    const d = daysSinceJ2000(jd);
-
-    // Use mean longitude for approximation
-    const earthLong = normalizeDegrees(280.466 + 0.985647 * d);
-
-    // Calculate elongation
-    const elongation = helio - earthLong;
-
-    // Apply correction based on planet's distance
-    const correction = Math.asin(Math.sin(toRadians(elongation)) * elements.a);
-
-    return normalizeDegrees(helio + toDegrees(correction));
-  } else {
-    // Outer planet - smaller correction
-    return helio;
-  }
+  // Geocentric vector = planet - Earth
+  return normalizeDegrees(toDegrees(Math.atan2(yp - ye, xp - xe)));
 }
 
 /**
@@ -538,7 +555,7 @@ export function isAvailable(): boolean {
 export function getEngineInfo(): { name: string; version: string; accuracy: string } {
   return {
     name: 'TypeScript Ephemeris Fallback',
-    version: '1.0.0',
-    accuracy: '~0.5-1.0 degrees',
+    version: '1.1.0',
+    accuracy: '~0.02° Sun, ~1-3° planets/Moon (worst case 1950-2040)',
   };
 }
