@@ -32,7 +32,7 @@ function getZodiacSymbol(longitude: number): string {
  * Compares Sun-Moon elongation (angular distance).
  */
 function getMoonPhase(sun: PlanetPosition, moon: PlanetPosition): CosmicEvent | null {
-  let elongation = ((moon.longitude - sun.longitude) % 360 + 360) % 360;
+  const elongation = ((moon.longitude - sun.longitude) % 360 + 360) % 360;
 
   // Check within ±6° of exact phase angles
   const tolerance = 6;

@@ -508,7 +508,7 @@ export const onRequestGet: PagesFunction<Env, 'id'> = async ({ params, env }) =>
   } catch { /* non-fatal */ }
 
   // Bonus chapter: if unlocked, compute compatibility with referred reports
-  let bonusMatches: CompatibilityMatch[] = [];
+  const bonusMatches: CompatibilityMatch[] = [];
   if (row.bonus_unlocked === 1) {
     try {
       const { results } = await env.DB.prepare(`

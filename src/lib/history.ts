@@ -100,7 +100,7 @@ export function getStreak(): number {
   }
 
   let streak = 0;
-  let expectedDate = new Date(lastCheckin);
+  const expectedDate = new Date(lastCheckin);
   
   for (const record of history) {
     const recordDate = record.date;
