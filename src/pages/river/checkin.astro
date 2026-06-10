@@ -494,7 +494,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     page.setAttribute('data-stage', stage);
 
     // Highlight current stage dot
-    document.querySelectorAll('.stage-dot').forEach(dot => {
+    document.querySelectorAll<HTMLElement>('.stage-dot').forEach(dot => {
       dot.style.transform = 'scale(1)';
       dot.style.boxShadow = dot.style.boxShadow?.replace('0.5', '0.3');
     });

@@ -35,6 +35,7 @@
   "author": "Hadi Servat (FRC 893 Series)",
   "license": "MIT",
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "@cloudflare/workers-types": "^4.20240117.0",
     "@playwright/test": "^1.58.1",
     "@types/node": "^20.11.0",

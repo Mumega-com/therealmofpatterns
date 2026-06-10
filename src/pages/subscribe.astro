@@ -1168,7 +1168,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
-      const data = await res.json();
+      const data = await res.json() as { url?: string; error?: string };
       if (data.url) {
         window.location.href = data.url;
       } else {
@@ -1394,7 +1394,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json() as { url?: string; error?: string };
 
       if (data.url) {
         // Redirect to Stripe

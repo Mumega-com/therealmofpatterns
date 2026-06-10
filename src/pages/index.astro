@@ -381,7 +381,7 @@ import { EmailCapture } from '../components/shared/EmailCapture';
     try {
       const response = await fetch('/api/daily-brief');
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json() as { narrative?: string; dimension?: { name?: string }; archetypes?: { primary?: { name?: string } } };
         const textEl = document.getElementById('reading-preview-text');
         if (data.narrative && textEl) {
           textEl.textContent = data.narrative;

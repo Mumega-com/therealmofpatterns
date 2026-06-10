@@ -679,7 +679,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         body: JSON.stringify({ birth_data: { year, month, day, hour: 12, latitude: 0, longitude: 0 } }),
       });
       if (!res.ok) throw new Error();
-      const data = await res.json();
+      const data = await res.json() as { vector?: number[]; dominant?: { index: number } };
       vector = data.vector || [];
       dominantIdx = data.dominant?.index ?? findDominant(vector);
     } catch {

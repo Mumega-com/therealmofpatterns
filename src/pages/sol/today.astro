@@ -590,7 +590,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const H = canvas.height;
     let t = 0;
 
-    function draw() {
+    const draw = () => {
       ctx.clearRect(0, 0, W, H);
       const grad = ctx.createLinearGradient(0, 0, W, 0);
       grad.addColorStop(0,    'transparent');
@@ -616,7 +616,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       ctx.stroke();
       t += 0.04;
       requestAnimationFrame(draw);
-    }
+    };
     draw();
   }
 

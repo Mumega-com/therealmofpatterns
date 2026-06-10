@@ -138,7 +138,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   const summaryEl = document.getElementById('chart-summary') as HTMLDivElement;
 
   // Auto-detect timezone
-  const tzSelect = document.getElementById('birth-tz') as HTMLSelectElement;
+  const tzSelect = document.getElementById('birth-tz') as unknown as HTMLSelectElement;
   const tzOffset = -new Date().getTimezoneOffset() / 60;
   const matchingOption = Array.from(tzSelect.options).find(o => parseFloat(o.value) === tzOffset);
   if (matchingOption) tzSelect.value = matchingOption.value;

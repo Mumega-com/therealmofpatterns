@@ -85,7 +85,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         body: JSON.stringify({ sessionId }),
       });
       if (res.ok) {
-        const data = await res.json();
+        const data = await res.json() as { success?: boolean; isPro?: boolean; tier: string; email?: string };
         if (data.success && data.isPro) {
           localStorage.setItem('rop_subscription_tier', data.tier);
           const existing = JSON.parse(localStorage.getItem('rop_user') || '{}');

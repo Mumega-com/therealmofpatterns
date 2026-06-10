@@ -423,7 +423,7 @@ import { NarratorCard } from '../components/shared/NarratorCard';
       const data = JSON.parse(stored);
       (document.getElementById('birthDate') as HTMLInputElement).value = data.date || '';
       (document.getElementById('birthTime') as HTMLInputElement).value = data.time || '';
-      (document.getElementById('birthTimeKnown') as HTMLSelectElement).value = data.timeKnown || 'exact';
+      (document.getElementById('birthTimeKnown') as unknown as HTMLSelectElement).value = data.timeKnown || 'exact';
       (document.getElementById('birthCity') as HTMLInputElement).value = data.city || '';
       (document.getElementById('birthCountry') as HTMLInputElement).value = data.country || '';
     }
@@ -443,7 +443,7 @@ import { NarratorCard } from '../components/shared/NarratorCard';
     const birthData = {
       date: (document.getElementById('birthDate') as HTMLInputElement).value,
       time: (document.getElementById('birthTime') as HTMLInputElement).value || '12:00',
-      timeKnown: (document.getElementById('birthTimeKnown') as HTMLSelectElement).value,
+      timeKnown: (document.getElementById('birthTimeKnown') as unknown as HTMLSelectElement).value,
       city: (document.getElementById('birthCity') as HTMLInputElement).value,
       country: (document.getElementById('birthCountry') as HTMLInputElement).value,
     };

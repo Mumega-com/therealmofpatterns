@@ -39,6 +39,41 @@ interface TelegramUpdate {
   callback_query?: TelegramCallbackQuery;
 }
 
+/** Row shape of the telegram_users table (see src/db/migration-telegram.sql) */
+interface TelegramUserRow {
+  telegram_user_id: string;
+  chat_id: string;
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  language_code: string | null;
+  bot_state: string | null;
+  bot_state_data: string | null;
+  user_hash: string | null;
+  email_hash: string | null;
+  birth_date: string | null;
+  birth_time: string | null;
+  birth_time_unknown: number;
+  birth_location_name: string | null;
+  birth_latitude: number | null;
+  birth_longitude: number | null;
+  birth_timezone_offset: number | null;
+  free_reading_used: number;
+  subscription_status: string;
+  entitlement_source: string | null;
+  streak_current: number;
+  streak_longest: number;
+  checkin_count: number;
+  last_checkin_at: string | null;
+  last_interaction_at: string | null;
+  referral_code: string | null;
+  referred_by_telegram_user_id: string | null;
+  invite_count: number;
+  successful_referrals: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
     const update = await request.json<TelegramUpdate>();
@@ -422,7 +457,7 @@ async function upsertTelegramUser(env: Env, input: {
 }
 
 async function getTelegramUser(env: Env, telegramUserId: string) {
-  return env.DB.prepare(`SELECT * FROM telegram_users WHERE telegram_user_id = ?`).bind(telegramUserId).first();
+  return env.DB.prepare(`SELECT * FROM telegram_users WHERE telegram_user_id = ?`).bind(telegramUserId).first<TelegramUserRow>();
 }
 
 async function setBotState(env: Env, telegramUserId: string, state: string) {

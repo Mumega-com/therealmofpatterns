@@ -12,7 +12,8 @@
  */
 
 import type { Env } from '../../src/types';
-import { approximateLongitudes, compute8D, getDominant } from '../../src/lib/16d-engine';
+import { compute8D, getDominant } from '../../src/lib/16d-engine';
+import { getPlanetaryLongitudes } from '../../src/lib/ephemeris';
 import { DIMENSION_METADATA } from '../../src/types';
 
 const CORS = {
@@ -63,7 +64,7 @@ function getMoonPhase(date: Date): { phase: string; emoji: string } {
 
 // ── Compute tomorrow's brief ──────────────────────────────────
 function computeBrief(date: Date) {
-  const lons     = approximateLongitudes(date);
+  const lons     = getPlanetaryLongitudes(date);
   const vector   = compute8D(lons);
   const dominant = getDominant(vector);
   const meta     = DIMENSION_METADATA[dominant.index];

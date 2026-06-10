@@ -215,9 +215,6 @@ export interface Env {
   // Python backend for PDF generation (optional)
   PYTHON_BACKEND_URL?: string;
 
-  // Email service
-  RESEND_API_KEY?: string;
-
   // Stripe Price IDs (set in Cloudflare dashboard)
   STRIPE_PRO_MONTHLY_PRICE_ID: string;
   STRIPE_PRO_ANNUAL_PRICE_ID: string;
