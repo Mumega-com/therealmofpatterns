@@ -220,8 +220,8 @@ export function calibratePrediction(
     profile.dimensionSensitivities[transitDominant]
   ) {
     const sensitivity = profile.dimensionSensitivities[transitDominant];
-    // Adjust towards the sensitivity direction
-    adjusted = rawPrediction * (1 + (sensitivity - 1) * 0.3);
+    // Adjust towards the sensitivity direction (on top of the bias correction)
+    adjusted *= 1 + (sensitivity - 1) * 0.3;
   }
 
   // Clamp to valid range

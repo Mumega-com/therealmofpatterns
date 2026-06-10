@@ -14,7 +14,10 @@ export function SyncPrompt() {
   useEffect(() => {
     // Check conditions
     const hasSeen = localStorage.getItem('rop_seen_sync_prompt');
-    const hasSyncEnabled = localStorage.getItem('rop_user_data');
+    let hasSyncEnabled = false;
+    try {
+      hasSyncEnabled = !!JSON.parse(localStorage.getItem('rop_user') || '{}').email;
+    } catch { /* corrupt storage — treat as not synced */ }
 
     if (hasSeen || hasSyncEnabled) return;
 

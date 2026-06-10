@@ -274,7 +274,7 @@ import { NarratorCard } from '../components/shared/NarratorCard';
     const user = localStorage.getItem('rop_user');
     const birthData = localStorage.getItem('rop_birth_data');
     const prefs = localStorage.getItem('rop_preferences');
-    const subscription = localStorage.getItem('rop_subscription');
+    const subscriptionTier = localStorage.getItem('rop_subscription_tier');
 
     // Display email
     if (user) {
@@ -323,10 +323,9 @@ import { NarratorCard } from '../components/shared/NarratorCard';
       });
     }
 
-    // Load subscription
-    if (subscription) {
-      const subData = JSON.parse(subscription);
-      updateSubscriptionDisplay(subData);
+    // Load subscription (tier string set by success.astro and the user store)
+    if (subscriptionTier) {
+      updateSubscriptionDisplay({ tier: subscriptionTier });
     }
 
     // Set active mode button

@@ -566,7 +566,12 @@ export function useUpgradeTrigger() {
 
   const showTrigger = (context: TriggerContext, variant: 'inline' | 'modal' | 'banner' = 'modal') => {
     // Check if user is already a subscriber
-    const isSubscribed = localStorage.getItem('rop_subscription_active');
+    let isSubscribed = false;
+    try {
+      const tier = localStorage.getItem('rop_subscription_tier');
+      isSubscribed = (!!tier && tier !== 'free')
+        || JSON.parse(localStorage.getItem('rop_user') || '{}').isPro === true;
+    } catch { /* corrupt storage — treat as not subscribed */ }
     if (isSubscribed) return;
 
     setActiveTrigger({ context, variant });
