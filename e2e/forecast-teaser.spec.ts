@@ -18,7 +18,8 @@ test.describe('Forecast Pages', () => {
     await page.goto(`/forecast/${today}`);
 
     // Page should load with date heading and forecast subtitle
-    await expect(page.getByText('Your Daily Forecast')).toBeVisible();
+    // (exact match: the EmailCapture island also contains "Get Your Daily Forecast")
+    await expect(page.getByText('Your Daily Forecast', { exact: true })).toBeVisible();
 
     // Navigation links should exist
     const nextLink = page.getByRole('link', { name: /next/i });

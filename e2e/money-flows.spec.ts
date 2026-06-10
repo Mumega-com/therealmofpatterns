@@ -99,12 +99,9 @@ test.describe('Money flows — pages', () => {
     await expect(previewBtn).toBeEnabled();
   });
 
-  // FIXME(deploy pending): the deployed /dna page has the buy modal
-  // (#buy-modal) stuck OPEN on load, blocking all pointer events — the page
-  // CSS `.modal-overlay { display: flex }` overrode the UA `[hidden]` rule.
-  // The fix (`.modal-overlay[hidden] { display: none }`) is committed in
-  // src/pages/dna.astro; switch fixme → test after the next production deploy.
-  test.fixme('dna preview generates a result after clicking the preview button', async ({ page }) => {
+  // Regression test for the buy modal that rendered stuck-open on page load
+  // (CSS display:flex overrode [hidden]), blocking the whole /dna funnel.
+  test('dna preview generates a result after clicking the preview button', async ({ page }) => {
     await page.goto('/dna/');
 
     const dateInput = page.locator('#f-date');
