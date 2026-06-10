@@ -57,3 +57,10 @@ video/public/preview-frame*.png
 .env.local
 .env
 alice/
+
+# Generated build/test artifacts
+playwright-report/
+test-results/
+.astro/
+.wrangler/
+node_modules/
