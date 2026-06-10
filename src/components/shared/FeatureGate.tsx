@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { useStore } from '@nanostores/react';
 import { $mode } from '../../stores';
+import { PAYWALL_ENABLED } from '../../lib/monetization';
 
 type Feature =
   | 'shadow-octave'    // 16D full analysis (9-16 dimensions)
@@ -194,8 +195,28 @@ export function FeatureGate({
   const mode = useStore($mode);
   const userTier = useSubscription();
 
-  // All features are currently free — Pro gating disabled
-  return <>{children}</>;
+  // Master switch lives in src/lib/monetization.ts — gates pass until
+  // Stripe checkout is verified end-to-end.
+  if (!PAYWALL_ENABLED) return <>{children}</>;
+
+  const meta = FEATURE_META[feature];
+  if (canAccess(userTier, meta.tier)) return <>{children}</>;
+
+  return (
+    <div className={`feature-gate ${className}`} style={{ textAlign: 'center', padding: compact ? '1rem' : '2rem 1.5rem', border: '1px solid rgba(212,168,84,0.25)', borderRadius: '10px' }}>
+      <p style={{ fontSize: '0.95rem', color: 'rgba(240,232,216,0.8)', marginBottom: '0.35rem' }}>
+        {meta.name[mode]}
+      </p>
+      {!compact && (
+        <p style={{ fontSize: '0.85rem', color: 'rgba(240,232,216,0.45)', marginBottom: '1rem' }}>
+          {meta.description[mode]}
+        </p>
+      )}
+      <a href="/subscribe" style={{ display: 'inline-block', padding: '0.5rem 1.25rem', background: 'rgba(212,168,84,0.12)', border: '1px solid rgba(212,168,84,0.3)', borderRadius: '8px', color: '#d4a854', fontSize: '0.85rem', textDecoration: 'none' }}>
+        Explore Sol Pro →
+      </a>
+    </div>
+  );
 }
 
 // Hook to check feature access

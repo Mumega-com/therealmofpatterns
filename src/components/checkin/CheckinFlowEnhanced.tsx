@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { $mode, $forecast, updateForecast, setFailureMode } from '../../stores';
-import { saveCheckin, getCheckinHistory, getTodaysCheckin } from '../../lib/checkin-storage';
+import { saveCheckin, getCheckinHistory, getTodaysCheckin, getCheckinsThisWeek } from '../../lib/checkin-storage';
+import { canCheckin, getUserTier, FREE_WEEKLY_CHECKIN_LIMIT } from '../../lib/monetization';
 import { fetchNarrative } from '../../lib/narrator-client';
 import { BirthDataPrompt } from '../shared/BirthDataPrompt';
 import { PredictionCard } from '../shared/PredictionCard';
@@ -149,6 +150,9 @@ export function CheckinFlowEnhanced({ onComplete, className = '' }: CheckinFlowE
   const todayEntry = getTodaysCheckin();
   const [alreadyDone] = useState(() => !!getTodaysCheckin());
 
+  // Free-tier weekly limit (inert while PAYWALL_ENABLED is false)
+  const [limitReached] = useState(() => !canCheckin(getUserTier(), getCheckinsThisWeek()));
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [isComplete, setIsComplete] = useState(false);
@@ -253,6 +257,27 @@ export function CheckinFlowEnhanced({ onComplete, className = '' }: CheckinFlowE
           </a>
         </div>
         <SavePrompt />
+      </div>
+    );
+  }
+
+  // Free-tier weekly limit reached — soft gate with upgrade path
+  if (limitReached) {
+    return (
+      <div className={`checkin-flow checkin-flow--${mode} ${className}`}>
+        <style>{getStyles(mode)}</style>
+        <div style={{ textAlign: 'center', padding: '3rem 1.5rem' }}>
+          <div style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--checkin-accent)' }}>◉</div>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: '1.4rem', color: 'var(--checkin-text)', marginBottom: '0.75rem' }}>
+            You've used your {FREE_WEEKLY_CHECKIN_LIMIT} check-ins this week.
+          </h2>
+          <p style={{ fontSize: '0.9rem', color: 'rgba(240,232,216,0.45)', marginBottom: '2rem' }}>
+            Sol Pro includes unlimited check-ins and a daily personalized reading.
+          </p>
+          <a href="/subscribe" style={{ display: 'inline-block', padding: '0.65rem 1.5rem', background: 'rgba(212,168,84,0.12)', border: '1px solid rgba(212,168,84,0.3)', borderRadius: '8px', color: '#d4a854', fontSize: '0.875rem', textDecoration: 'none' }}>
+            Explore Sol Pro →
+          </a>
+        </div>
       </div>
     );
   }

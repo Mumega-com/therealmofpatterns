@@ -103,7 +103,20 @@ export async function onRequestPost(
       );
     }
 
-    // 3. Fetch last 3 narratives for anti-repetition context
+    // 3. Rate limit actual generation (cache/D1 hits above are exempt).
+    // This endpoint is unauthenticated and each generation spends model quota.
+    const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
+    const rateKey = `rate:narrator:${clientIP}`;
+    const rateCount = parseInt((await env.CACHE.get(rateKey)) || '0');
+    if (rateCount >= 20) {
+      return new Response(
+        JSON.stringify({ error: 'Too many requests. Please wait an hour.', retry_after: 3600 }),
+        { status: 429, headers: CORS_HEADERS }
+      );
+    }
+    await env.CACHE.put(rateKey, String(rateCount + 1), { expirationTtl: 3600 });
+
+    // 4. Fetch last 3 narratives for anti-repetition context
     const previousNarratives = await env.DB.prepare(
       'SELECT narrative, date FROM narrator_reflections WHERE user_hash = ? ORDER BY date DESC LIMIT 3'
     ).bind(userHash).all<{ narrative: string; date: string }>();
@@ -116,7 +129,7 @@ export async function onRequestPost(
 
     const fullUserPrompt = userPrompt + historyContext;
 
-    // 4. Generate narrative with model chain
+    // 5. Generate narrative with model chain
     let narrative: string | null = null;
     let modelUsed = '';
 
@@ -161,7 +174,7 @@ export async function onRequestPost(
       );
     }
 
-    // 5. Store in D1
+    // 6. Store in D1
     try {
       await env.DB.prepare(
         'INSERT INTO narrator_reflections (user_hash, date, context_tier, narrative, model, context_snapshot) VALUES (?, ?, ?, ?, ?, ?)'
@@ -174,7 +187,7 @@ export async function onRequestPost(
       console.warn('[NARRATOR] D1 insert failed (likely duplicate):', (e as Error).message);
     }
 
-    // 6. Cache in KV
+    // 7. Cache in KV
     const result: NarratorResponse = { narrative, tier: tier || 'intro', model: modelUsed, cached: false };
     await env.CACHE.put(cacheKey, JSON.stringify(result), { expirationTtl: 86400 });
 

@@ -112,6 +112,29 @@ export function getRecentCheckins(limit: number = 7): CheckinEntry[] {
 }
 
 /**
+ * Start of the current week (Monday 00:00 local time).
+ */
+export function startOfWeek(now: Date = new Date()): Date {
+  const d = new Date(now);
+  const day = d.getDay(); // 0 = Sunday
+  const daysSinceMonday = (day + 6) % 7;
+  d.setDate(d.getDate() - daysSinceMonday);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+/**
+ * Count check-ins since the start of the current week (for the
+ * free-tier weekly limit — see src/lib/monetization.ts).
+ */
+export function getCheckinsThisWeek(now: Date = new Date()): number {
+  const weekStart = startOfWeek(now).getTime();
+  return getCheckinHistory().entries.filter(
+    entry => new Date(entry.timestamp).getTime() >= weekStart
+  ).length;
+}
+
+/**
  * Get today's check-in if exists
  */
 export function getTodaysCheckin(): CheckinEntry | null {
