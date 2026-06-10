@@ -41,10 +41,14 @@ src/
 ├── db/              # D1 schemas + migrations
 └── types/           # TypeScript types
 
-functions/api/       # 42 Cloudflare Pages Functions endpoints
+functions/api/       # Cloudflare Pages Functions endpoints
 core/                # Python ephemeris + batch engine (Docker)
 content-engine/      # Content generation pipeline (Gemini)
 docs/                # Architecture, strategy, specs
+workers/             # cron-worker.ts — scheduled triggers for daily content
+premium_app/         # Legacy Flask premium-report generator (separate service, not imported here)
+video/               # Dormant Remotion project for social video rendering (not wired up)
+research/            # Experimental Python (image gen, sacred geometry) — not part of the product
 ```
 
 ## The 8 Dimensions

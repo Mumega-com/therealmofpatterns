@@ -34,12 +34,6 @@ export function PreviewResult({ preview, archetype, archetypeLoading, onContinue
     kasra: 'BEGIN_CALIBRATION',
   };
 
-  const ctaSub = {
-    sol: "Compare today's energy with your birth pattern",
-    river: 'Let the daily transit illuminate your path',
-    kasra: 'Cross-reference transit vector with natal matrix',
-  };
-
   return (
     <div className="preview-result">
       {/* Header */}
