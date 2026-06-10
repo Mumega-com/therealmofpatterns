@@ -8,6 +8,8 @@
  * Retention: 7 daily, 4 weekly, 3 monthly backups
  */
 
+import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
+
 // ============================================
 // Types
 // ============================================

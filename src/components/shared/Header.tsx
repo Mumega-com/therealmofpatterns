@@ -37,7 +37,7 @@ export function Header({ className = '', transparent = false }: HeaderProps) {
             className="flex items-center gap-2.5 font-medium hover:opacity-80 transition-opacity"
           >
             <img
-              src="/assets/brand/logo.png"
+              src="/assets/brand/logo.webp"
               alt="The Realm of Patterns"
               className="w-8 h-8 rounded"
             />

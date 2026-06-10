@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["@cloudflare/workers-types"]
+  },
+  "include": [
+    "./**/*.ts",
+    "../workers/**/*.ts",
+    "../src/types/**/*.ts",
+    "../src/lib/**/*.ts"
+  ],
+  "exclude": ["../node_modules", "../dist"]
+}

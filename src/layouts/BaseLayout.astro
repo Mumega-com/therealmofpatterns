@@ -161,6 +161,35 @@ const schemas: Record<string, unknown>[] = [
           console.log('Service worker registration failed:', error);
         });
       }
+
+      // Client error visibility — beacon uncaught errors to analytics
+      // (capped per session so a render loop can't flood the endpoint)
+      let errorsSent = 0;
+      function reportClientError(message: string, source: string) {
+        if (errorsSent >= 5) return;
+        errorsSent++;
+        try {
+          const payload = JSON.stringify({
+            session_id: 'err-' + Date.now().toString(36),
+            events: [{
+              event: 'client_error',
+              props: {
+                message: String(message).slice(0, 500),
+                source: String(source).slice(0, 200),
+                page: location.pathname,
+              },
+              timestamp: Date.now(),
+            }],
+          });
+          navigator.sendBeacon?.('/api/analytics', payload);
+        } catch { /* never let error reporting throw */ }
+      }
+      window.addEventListener('error', (e) => {
+        reportClientError(e.message || 'unknown error', `${e.filename || ''}:${e.lineno || 0}`);
+      });
+      window.addEventListener('unhandledrejection', (e) => {
+        reportClientError(e.reason?.message || String(e.reason || 'unhandled rejection'), 'promise');
+      });
     </script>
   </body>
 </html>

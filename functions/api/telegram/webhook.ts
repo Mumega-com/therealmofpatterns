@@ -74,6 +74,37 @@ interface TelegramUserRow {
   updated_at: string;
 }
 
+// ============================================
+// Reading feedback ("Sol was right ✓ / Sol missed ✗") — GTM roadmap §2.4
+// Pure helpers exported for reuse (push-daily.ts) and unit tests.
+// ============================================
+
+export type FeedbackVerdict = 'hit' | 'miss';
+
+/** Inline keyboard attached to every daily reading. */
+export function buildFeedbackKeyboard() {
+  return {
+    inline_keyboard: [[
+      { text: 'Sol was right ✓', callback_data: 'feedback:hit' },
+      { text: 'Sol missed ✗', callback_data: 'feedback:miss' },
+    ]],
+  };
+}
+
+/** Parses feedback callback_data. Returns null for anything that isn't a valid feedback vote. */
+export function parseFeedbackCallback(data: string): FeedbackVerdict | null {
+  if (data === 'feedback:hit') return 'hit';
+  if (data === 'feedback:miss') return 'miss';
+  return null;
+}
+
+/** Sol's one-line acknowledgement for a feedback vote. */
+export function feedbackAckText(verdict: FeedbackVerdict): string {
+  return verdict === 'hit'
+    ? 'Noted — the field agrees.'
+    : 'Thank you — Sol listens. Tomorrow sharpens.';
+}
+
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
     const update = await request.json<TelegramUpdate>();
@@ -225,7 +256,7 @@ async function sendDailyReading(env: Env, chatId: string, telegramUserId: string
       'Ready to log today\'s mirror? /checkin',
     ].join('\n');
 
-    await sendMessage(env, chatId, text);
+    await sendMessage(env, chatId, text, buildFeedbackKeyboard());
 
     await env.DB.prepare(`
       UPDATE telegram_users SET last_interaction_at = datetime('now'), updated_at = datetime('now')
@@ -261,6 +292,17 @@ async function handleCallback(callback: TelegramCallbackQuery, env: Env) {
     updateType: 'callback_query',
     payload: callback,
   });
+
+  const verdict = parseFeedbackCallback(data);
+  if (verdict) {
+    await recordReadingFeedback(env, telegramUserId, verdict);
+    await answerCallback(env, callback.id, feedbackAckText(verdict));
+    // Remove the buttons so the vote can't be repeated from the UI.
+    if (callback.message) {
+      await editMessageReplyMarkup(env, String(callback.message.chat.id), callback.message.message_id);
+    }
+    return;
+  }
 
   if (data.startsWith('checkin_state:')) {
     const stateLabel = data.split(':')[1];
@@ -495,6 +537,20 @@ async function attachReferral(env: Env, telegramUserId: string, referralCode: st
   `).bind(crypto.randomUUID(), referrer.telegram_user_id, telegramUserId, referralCode).run();
 }
 
+/** Records a daily-reading feedback vote. One per user per day; a re-vote replaces the old one. */
+async function recordReadingFeedback(env: Env, telegramUserId: string, verdict: FeedbackVerdict) {
+  const today = new Date().toISOString().slice(0, 10);
+  await env.DB.prepare(`
+    INSERT OR REPLACE INTO telegram_reading_feedback (id, telegram_user_id, reading_date, verdict, created_at)
+    VALUES (?, ?, ?, ?, datetime('now'))
+  `).bind(crypto.randomUUID(), telegramUserId, today, verdict).run();
+
+  await env.DB.prepare(`
+    UPDATE telegram_users SET last_interaction_at = datetime('now'), updated_at = datetime('now')
+    WHERE telegram_user_id = ?
+  `).bind(telegramUserId).run();
+}
+
 async function logTelegramEvent(env: Env, input: { telegramUserId?: string; chatId?: string; updateType: string; payload: unknown }) {
   await env.DB.prepare(`
     INSERT INTO telegram_events (id, telegram_user_id, chat_id, update_type, payload, created_at)
@@ -527,6 +583,20 @@ async function answerCallback(env: Env, callbackQueryId: string, text: string) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ callback_query_id: callbackQueryId, text })
+  });
+}
+
+/** Clears (or replaces) the inline keyboard on a previously sent message. */
+async function editMessageReplyMarkup(env: Env, chatId: string, messageId: number, replyMarkup?: unknown) {
+  if (!env.TELEGRAM_BOT_TOKEN) return;
+  await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/editMessageReplyMarkup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chatId,
+      message_id: messageId,
+      reply_markup: replyMarkup ?? { inline_keyboard: [] },
+    })
   });
 }
 

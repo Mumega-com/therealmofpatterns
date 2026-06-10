@@ -3,6 +3,7 @@
  * Shared by /api/preview and /api/openclaw-webhook.
  */
 
+import type { D1Database } from '@cloudflare/workers-types';
 import type { HistoricalFigure, FigureMatch } from '../types';
 import { cosineResonance } from './16d-engine';
 

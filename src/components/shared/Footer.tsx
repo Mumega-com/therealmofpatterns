@@ -36,7 +36,7 @@ export function Footer({ className = '' }: FooterProps) {
           <div className="col-span-2 md:col-span-1">
             <a href="/" className="flex items-center gap-2 mb-4">
               <img
-                src="/assets/brand/logo.png"
+                src="/assets/brand/logo.webp"
                 alt="The Realm of Patterns"
                 className="w-10 h-10 rounded"
               />

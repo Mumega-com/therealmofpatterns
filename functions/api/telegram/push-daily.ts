@@ -20,6 +20,7 @@
  */
 
 import type { Env } from '../../../src/types';
+import { buildFeedbackKeyboard } from './webhook';
 
 interface RequestBody {
   admin_key?: string;
@@ -89,6 +90,7 @@ async function sendToUser(
         text,
         parse_mode: 'Markdown',
         disable_web_page_preview: true,
+        reply_markup: buildFeedbackKeyboard(),
       }),
     });
     const data = await res.json() as { ok: boolean; description?: string };

@@ -1768,6 +1768,12 @@ PEAK WINDOWS: ${peakHour}
     animation: fade-in 0.2s ease;
   }
 
+  /* display:flex above would otherwise override the UA [hidden] rule,
+     leaving the overlay open on page load and blocking the whole page */
+  .modal-overlay[hidden] {
+    display: none;
+  }
+
   @keyframes fade-in {
     from { opacity: 0; }
     to   { opacity: 1; }

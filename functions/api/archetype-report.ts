@@ -491,6 +491,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }), { status: 200, headers: CORS_HEADERS });
   }
 
+  // ── Rate limit fresh generations (cache hits above are exempt) ──
+  const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const rateKey = `rate:archetype-report:${clientIP}`;
+  const rateCount = parseInt((await env.CACHE.get(rateKey)) || '0');
+  if (rateCount >= 8) {
+    return errorResponse('RATE_LIMITED', 'Too many reports generated. Please wait an hour.', 429);
+  }
+  await env.CACHE.put(rateKey, String(rateCount + 1), { expirationTtl: 3600 });
+
   // ── Compute from physics ──
   let vector16d: number[];
   try {

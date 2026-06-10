@@ -8,6 +8,7 @@
  */
 
 interface Env {
+  CACHE: KVNamespace;
   GEMINI_API_KEY: string;
   GEMINI_API_KEY_2?: string;
   GEMINI_API_KEY_3?: string;
@@ -263,6 +264,19 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
         headers,
       });
     }
+
+    // Rate limit — unauthenticated image generation is the most
+    // expensive call in the product
+    const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
+    const rateKey = `rate:generate-scene:${clientIP}`;
+    const rateCount = parseInt((await env.CACHE.get(rateKey)) || '0');
+    if (rateCount >= 10) {
+      return new Response(JSON.stringify({ error: 'Too many requests. Please wait an hour.', retry_after: 3600 }), {
+        status: 429,
+        headers,
+      });
+    }
+    await env.CACHE.put(rateKey, String(rateCount + 1), { expirationTtl: 3600 });
 
     // Get API keys and select one (round-robin based on day)
     const apiKeys = getApiKeys(env);

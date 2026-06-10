@@ -2,6 +2,8 @@
  * The Realm of Patterns - Type Definitions
  */
 
+import type { D1Database, KVNamespace, R2Bucket, Ai } from '@cloudflare/workers-types';
+
 // ============================================
 // Birth Data
 // ============================================
