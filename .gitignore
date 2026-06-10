@@ -64,3 +64,4 @@ test-results/
 .astro/
 .wrangler/
 node_modules/
+.claude/worktrees/
