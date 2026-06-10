@@ -3,8 +3,9 @@
  * Generate a free 8D preview based on birth data
  */
 
-import type { Env, BirthData, PreviewResponse, ErrorResponse, HistoricalFigure, FigureMatch } from '../../src/types';
-import { computeFromBirthData, getDominant, cosineResonance, getDimensionTeaser } from '../../src/lib/16d-engine';
+import type { Env, BirthData, PreviewResponse, ErrorResponse } from '../../src/types';
+import { computeFromBirthData, getDominant, getDimensionTeaser } from '../../src/lib/16d-engine';
+import { findBestMatch } from '../../src/lib/archetype-match';
 
 interface RequestBody {
   birth_data: BirthData;
@@ -117,59 +118,3 @@ function validateBirthData(data: BirthData): boolean {
   return true;
 }
 
-async function findBestMatch(db: D1Database, userVector: number[]): Promise<FigureMatch> {
-  try {
-    // Fetch all historical figures
-    const { results } = await db.prepare('SELECT * FROM historical_figures').all<HistoricalFigure>();
-
-    if (!results || results.length === 0) {
-      // Return fallback if no figures in database
-      return {
-        id: 0,
-        name: 'Rumi',
-        era: '1207-1273',
-        culture: 'Persian',
-        domains: ['poetry', 'mysticism', 'philosophy'],
-        vector: [0.72, 0.45, 0.88, 0.91, 0.85, 0.33, 0.78, 0.95],
-        quote: 'What you seek is seeking you.',
-        resonance: 0.85,
-      };
-    }
-
-    // Find best match by cosine similarity
-    let bestMatch: FigureMatch | null = null;
-    let bestScore = -1;
-
-    for (const figure of results) {
-      const figureVector = typeof figure.vector === 'string' ? JSON.parse(figure.vector) : figure.vector;
-      const domains = typeof figure.domains === 'string' ? JSON.parse(figure.domains) : figure.domains;
-
-      const resonance = cosineResonance(userVector, figureVector);
-
-      if (resonance > bestScore) {
-        bestScore = resonance;
-        bestMatch = {
-          ...figure,
-          vector: figureVector,
-          domains,
-          resonance: Math.round(resonance * 100) / 100,
-        };
-      }
-    }
-
-    return bestMatch!;
-  } catch (error) {
-    console.error('Database error:', error);
-    // Return fallback
-    return {
-      id: 0,
-      name: 'Rumi',
-      era: '1207-1273',
-      culture: 'Persian',
-      domains: ['poetry', 'mysticism', 'philosophy'],
-      vector: [0.72, 0.45, 0.88, 0.91, 0.85, 0.33, 0.78, 0.95],
-      quote: 'What you seek is seeking you.',
-      resonance: 0.85,
-    };
-  }
-}

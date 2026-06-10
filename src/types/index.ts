@@ -188,6 +188,10 @@ export interface Env {
   MIRROR_API_TOKEN?: string;
   MIRROR_PROJECT?: string;
 
+  // OpenClaw messaging gateway bridge — optional; /api/openclaw-webhook
+  // returns 503 until this shared secret is set
+  OPENCLAW_WEBHOOK_SECRET?: string;
+
   // Resend (email provider) — optional; sendReportEmail() no-ops when unset
   RESEND_API_KEY?: string;
   RESEND_FROM_EMAIL?: string;      // e.g. "Sol <sol@mumega.com>"
