@@ -66,6 +66,15 @@ export async function onRequestPost(
       );
     }
 
+    // Cap prompt sizes — prompts are client-supplied, and oversized input
+    // is either abuse or a client bug; legit prompts are well under this.
+    if (systemPrompt.length > 12000 || userPrompt.length > 12000 || userHash.length > 128) {
+      return new Response(
+        JSON.stringify({ error: 'Prompt too large' }),
+        { status: 413, headers: CORS_HEADERS }
+      );
+    }
+
     const today = new Date().toISOString().split('T')[0];
     // For weekly: key by week start. For daily: key by date + checkin ID so new check-ins bust the cache.
     const isWeekly = type === 'weekly';
