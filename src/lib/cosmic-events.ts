@@ -122,32 +122,35 @@ function getMajorAspects(positions: PlanetPosition[]): CosmicEvent[] {
       if (!aspect) continue;
 
       // Only report conjunction, opposition, and trine (most impactful)
-      if (!['Conjunction', 'Opposition', 'Trine'].includes(aspect.aspect)) continue;
+      const aspectType = aspect.aspect.toLowerCase();
+      if (!['conjunction', 'opposition', 'trine'].includes(aspectType)) continue;
 
       const aspectDescriptions: Record<string, string> = {
-        Conjunction: `${p1.name} and ${p2.name} merge energies — intensified focus in their shared domain.`,
-        Opposition: `${p1.name} opposes ${p2.name} — tension that drives awareness and balance.`,
-        Trine: `${p1.name} trines ${p2.name} — harmonious flow and natural support.`,
+        conjunction: `${p1.name} and ${p2.name} merge energies — intensified focus in their shared domain.`,
+        opposition: `${p1.name} opposes ${p2.name} — tension that drives awareness and balance.`,
+        trine: `${p1.name} trines ${p2.name} — harmonious flow and natural support.`,
       };
 
       const aspectIcons: Record<string, string> = {
-        Conjunction: '☌',
-        Opposition: '☍',
-        Trine: '△',
+        conjunction: '☌',
+        opposition: '☍',
+        trine: '△',
       };
 
       const aspectColors: Record<string, string> = {
-        Conjunction: '#d4a854',
-        Opposition: '#f87171',
-        Trine: '#34d399',
+        conjunction: '#d4a854',
+        opposition: '#f87171',
+        trine: '#34d399',
       };
+
+      const aspectNameFormatted = aspectType.charAt(0).toUpperCase() + aspectType.slice(1);
 
       events.push({
         type: 'aspect',
-        name: `${p1.name} ${aspect.aspect} ${p2.name}`,
-        description: aspectDescriptions[aspect.aspect] || '',
-        icon: aspectIcons[aspect.aspect] || '⚹',
-        color: aspectColors[aspect.aspect] || '#d4a854',
+        name: `${p1.name} ${aspectNameFormatted} ${p2.name}`,
+        description: aspectDescriptions[aspectType] || '',
+        icon: aspectIcons[aspectType] || '⚹',
+        color: aspectColors[aspectType] || '#d4a854',
       });
     }
   }
