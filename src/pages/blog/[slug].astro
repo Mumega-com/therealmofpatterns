@@ -12,6 +12,49 @@ const BLOG_POSTS: Record<string, {
   category: string;
   content: string;
 }> = {
+  'today-astrology-september-17-2026': {
+    title: 'The Edge of Awareness: Today’s Field Reading',
+    excerpt: 'Sun in analytical Virgo meets a Waxing Crescent Moon in Sagittarius, while the Awareness dimension and Uranus/Neptune attunement dominate the collective field.',
+    author: 'Sol',
+    authorRole: 'Guide',
+    date: '2026-09-17',
+    readTime: '4 min',
+    category: 'Daily Reading',
+    content: `
+## The Current Field: September 17, 2026
+
+Today the sky presents a subtle, quiet tension between the discerning detail of the material realm and an expansive, transpersonal undercurrent. With the **Sun in late Virgo** and the **Moon waxing through Sagittarius**, the psyche is asked to balance exactitude with breadth—holding the small, necessary adjustments of daily existence while keeping an eye on the horizon of meaning.
+
+Across the collective 8-dimensional pattern, the dominant charge today concentrates in **Awareness (Φ)**—the transpersonal domain ruled jointly by Uranus and Neptune at a resonant frequency of 207.36 Hz. When Awareness leads the field, individual consciousness touches the perimeter of what can be rationally codified. 
+
+## The Active Archetypes: The Witness and The Mystic
+
+In depth psychology, the transpersonal dimensions rarely announce themselves with dramatic outer events. Rather, they alter the density of inner perception. Today’s field mobilizes two complementary polarities of the Awareness archetype:
+
+- **The Witness (Yang polarity):** The capacity for clean, objective seeing. The Self watching the personality go through its routines, noticing without clinging and without judgment.
+- **The Mystic (Yin polarity):** The receptive dissolution of rigid ego boundaries, allowing intuition, symbolic synchronicity, and quiet attunement to wash through what felt static yesterday.
+
+Because the dominant field activation is at peak intensity, the invitation is to observe where you have been over-identifying with your immediate mental narratives.
+
+## Saturn Retrograde in Aries: The Inward Realist
+
+Adding weight to today's field is **Saturn retrograde in early Aries**. In psychological astrology, Saturn represents the reality principle—the boundaries, commitments, and necessary friction that give the soul enduring form. 
+
+When Saturn turns retrograde in a cardinal fire sign, initiative cannot be forced through raw willpower alone. The question Saturn poses today is not *"What can I conquer next?"* but *"What have I begun that needs an honest foundation?"* Where have you rushed forward out of habit rather than genuine calling? This retrograde is not an obstacle; it is a diagnostic pause to ensure that what you construct can bear the weight of your actual life.
+
+## Navigating Today's Pattern
+
+On days where Awareness and Structure converse across the field:
+
+- **Notice the Periphery:** Pay attention to what sits on the edge of your consciousness—the thought you almost think, the dream fragment that lingers past breakfast, the feeling that resists categorization.
+- **Resist Premature Solutions:** When a paradox surfaces in your work or relationships, permit it to remain unresolved for an afternoon. Some patterns clarify only when the mind ceases its demand for an immediate answer.
+- **Ground the Vision:** With Saturn retrograde reminding us of limits, pair your intuitive flashes with one small, concrete act of integrity.
+
+The outer world asks for performance; the field simply asks for presence.
+
+*What is on the edge of your awareness is quietly preparing to become your next ground.*
+    `,
+  },
   'understanding-your-kappa-coefficient': {
     title: 'Understanding Your Kappa (κ) Coefficient',
     excerpt: 'Learn what your kappa score really means and how to interpret changes in your field coherence over time.',
@@ -324,6 +367,7 @@ The check-in is a tool for awareness, not judgment. There's no "passing" or "fai
 
 export function getStaticPaths() {
   return [
+    { params: { slug: 'today-astrology-september-17-2026' }, props: { slug: 'today-astrology-september-17-2026' } },
     { params: { slug: 'understanding-your-kappa-coefficient' }, props: { slug: 'understanding-your-kappa-coefficient' } },
     { params: { slug: 'the-eight-dimensions-explained' }, props: { slug: 'the-eight-dimensions-explained' } },
     { params: { slug: 'jung-and-the-cosmic-signature' }, props: { slug: 'jung-and-the-cosmic-signature' } },
