@@ -300,8 +300,8 @@ ACTION (Conversion)
 
 ### Using Mumega-CMS Engine
 
-1. Fork content generation from `/home/mumega/dentalnearyou/mumega-cms/generators/`
-2. Replace dental content types with cosmic content types
+1. Adapt the Mumega-CMS content generation pipeline for this project
+2. Define cosmic content types for the new pipeline
 3. Add voice configs for PT/ES/EN
 4. Integrate 16D API for calculations
 5. Set up Gemini 2.5 Flash prompts with cultural context

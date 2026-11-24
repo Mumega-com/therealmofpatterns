@@ -73,7 +73,7 @@ User DMs birthday on any channel
 - [x] Fix static sitemap: epoch-zero dates bug, duplicate entry, missing pages (18 → 46 pages)
 - [x] Add JSON-LD Article schema to dimension guide, figure, jungian concept pages
 - [x] Verify content sitemap has 123 published CMS pages indexed
-- [ ] Check Google Search Console — **needs TROP added to GSC** (currently only Viamar connected)
+- [ ] Check Google Search Console — add and verify the TROP property, then submit its sitemap
 - [ ] Verify hreflang tags on all multi-language pages
 - [ ] Submit sitemap to GSC once TROP site is added
 
