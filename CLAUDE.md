@@ -124,7 +124,7 @@ See `docs/GTM-ROADMAP.md` for the phased plan. Summary:
 ## External Systems
 
 - **OpenClaw** (`../openclaw`): Multi-channel AI gateway. 31+ channel plugins (Telegram, WhatsApp, Discord, Signal, iMessage, Slack, etc.). Skills system for Sol reading delivery. Deployed on VPS at `gateway.mumega.com` (Docker). This is how Sol reaches users via messaging.
-- **GHL (GoHighLevel):** CRM + workflow automation + social media posting. Current instance is Viamar (shipping). TROP needs its own sub-account. Handles contact lifecycle, pipeline (Soul Journey), automated upgrade prompts, and social content posting.
+- **GHL (GoHighLevel):** Planned CRM + workflow automation + social media posting for TROP, with a dedicated project sub-account. Intended uses: contact lifecycle, pipeline (Soul Journey), automated upgrade prompts, and social content posting.
 - **Cloudflare:** Dashboard for D1 queries, KV, R2, deployments. All computation + API lives here.
 - **Stripe:** Webhook endpoint exists (`/api/webhook`), subscription checkout exists (`/api/create-subscription-checkout`). Not yet fully wired to product.
 - **Google Search Console:** Sitemap submitted, monitoring indexing.
